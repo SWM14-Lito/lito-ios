@@ -1,4 +1,4 @@
 # lito-ios
 
-Tuist edit - edit project configuration
-Tuist generate - generate project from configuration 
+<strong>Tuist edit</strong> - edit project configuration <br/>
+<strong>Tuist generate</strong> - generate project from configuration 
