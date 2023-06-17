@@ -7,15 +7,16 @@
 
 import ProjectDescription
 import ProjectDescriptionHelpers
+import DependencyPlugin
 
 let project = Project.makeModule(
     name: "App",
     platform: .iOS,
     product: .app,
     dependencies: [
-        .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "Data", path: .relativeToRoot("Projects/Data")),
+        .Presentation,
+        .Domain,
+        .Data
     ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Support/Info.plist")
