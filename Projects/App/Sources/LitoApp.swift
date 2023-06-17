@@ -1,5 +1,5 @@
 import SwiftUI
-import Home
+import Presentation
 
 @main
 struct LitoApp: App {
