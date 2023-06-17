@@ -2,6 +2,6 @@ import ProjectDescription
 
 let config = Config(
     plugins: [
-        .local(path: .relativeToManifest("../../Plugins/Lito")),
+        .local(path: .relativeToManifest("../../Plugins/DependencyPlugin")),
     ]
 )
