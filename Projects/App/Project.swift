@@ -13,7 +13,9 @@ let project = Project.makeModule(
     platform: .iOS,
     product: .app,
     dependencies: [
-        .project(target: "Home", path: .relativeToRoot("Projects/Home")),
+        .project(target: "Presentation", path: .relativeToRoot("Projects/Presentation")),
+        .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
+        .project(target: "Data", path: .relativeToRoot("Projects/Data")),
     ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Support/Info.plist")
