@@ -1,0 +1,16 @@
+//
+//  Dependency.swift
+//  Config
+//
+//  Created by Lee Myeonghwan on 2023/06/19.
+//
+
+import Foundation
+import ProjectDescription
+
+let dependencies = Dependencies(
+    swiftPackageManager: [
+        .remote(url: "https://github.com/onevcat/Kingfisher.git", requirement: .upToNextMajor(from: "7.0.0")),
+    ],
+    platforms: [.iOS]
+)

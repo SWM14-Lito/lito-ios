@@ -13,6 +13,6 @@ let project = Project.makeModule(
     name: "Presentation",
     product: .staticFramework,
     dependencies: [
-        .Domain
+        .Projcet.Domain
     ]
 )
