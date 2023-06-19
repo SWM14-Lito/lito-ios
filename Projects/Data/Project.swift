@@ -2,14 +2,17 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by Lee Myeonghwan on 2023/05/01.
+//  Created by Lee Myeonghwan on 2023/06/17.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
+import DependencyPlugin
 
 let project = Project.makeModule(
-    name: "Home",
+    name: "Data",
     product: .staticFramework,
-    dependencies: []
+    dependencies: [
+        .Domain
+    ]
 )

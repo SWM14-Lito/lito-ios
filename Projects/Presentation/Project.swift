@@ -1,5 +1,5 @@
 //
-//  Projects.swift
+//  Project.swift
 //  ProjectDescriptionHelpers
 //
 //  Created by Lee Myeonghwan on 2023/05/01.
@@ -10,14 +10,9 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: "App",
-    platform: .iOS,
-    product: .app,
+    name: "Presentation",
+    product: .staticFramework,
     dependencies: [
-        .Presentation,
-        .Domain,
-        .Data
-    ],
-    resources: ["Resources/**"],
-    infoPlist: .file(path: "Support/Info.plist")
+        .Domain
+    ]
 )
