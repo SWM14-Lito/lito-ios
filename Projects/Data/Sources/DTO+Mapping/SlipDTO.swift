@@ -11,7 +11,7 @@ import Domain
 public struct Maxim: Codable {
     let slip: Slip
     
-    func toSlip() -> SlipVO{
+    func toSlip() -> SlipVO {
         return SlipVO(id: slip.id ?? 0, advice: slip.advice ?? "no advice")
     }
 }
