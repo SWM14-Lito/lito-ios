@@ -17,7 +17,6 @@ let project = Project.makeModule(
         .Projcet.Presentation,
         .Projcet.Domain,
         .Projcet.Data,
-        .SPM.Kingfisher,
         .SPM.Swinject
     ],
     resources: ["Resources/**"],

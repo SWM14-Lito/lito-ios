@@ -13,6 +13,7 @@ let project = Project.makeModule(
     name: "Presentation",
     product: .staticFramework,
     dependencies: [
-        .Projcet.Domain
+        .Projcet.Domain,
+        .SPM.Kingfisher
     ]
 )

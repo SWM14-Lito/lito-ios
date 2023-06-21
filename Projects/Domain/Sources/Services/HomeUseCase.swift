@@ -17,6 +17,11 @@ public final class DefaultHomeUseCase: HomeUseCase {
         return repository.loadSlip()
     }
 }
+//
+//public final class StubHomeUseCase: HomeUseCase {
+//    public func load() -> AnyPublisher<SlipVO, Error> {
+//    }
+//}
 
 //struct StubHomeService: HomeService {
 //    func load() -> AnyPublisher<Slip, Error> {
