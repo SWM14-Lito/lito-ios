@@ -8,11 +8,11 @@
 
 import Domain
 
-public struct Maxim: Codable {
+public struct SlipDTO: Codable {
     let slip: Slip
     
     func toSlip() -> SlipVO {
-        return SlipVO(id: slip.id ?? 0, advice: slip.advice ?? "no advice")
+        return SlipVO(id: slip.id ?? 0, advice: slip.advice ?? "Unknown")
     }
 }
 
