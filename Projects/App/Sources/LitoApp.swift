@@ -1,5 +1,6 @@
 import SwiftUI
 import Presentation
+import Domain
 import Swinject
 
 @main
@@ -21,8 +22,8 @@ struct LitoApp: App {
     }
 }
 
-//struct Previews_LitoApp_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
+struct Previews_LitoApp_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
+    }
+}

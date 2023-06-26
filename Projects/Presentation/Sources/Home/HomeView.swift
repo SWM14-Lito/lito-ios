@@ -62,8 +62,9 @@ private extension HomeView {
     }
 }
 
+//TODO: 모듈화로 인해 preview 사용이 안되는듯?
 //struct HomeView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        HomeView(viewModel: .init(container: .preview))
+//        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
 //    }
 //}
