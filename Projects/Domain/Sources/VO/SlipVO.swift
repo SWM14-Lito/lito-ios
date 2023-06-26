@@ -20,5 +20,5 @@ public struct SlipVO {
 }
 
 extension SlipVO {
-    static private let mock = SlipVO(id: 0, advice: "Slip mock")
+    static let mock = SlipVO(id: 0, advice: "Slip mock")
 }
