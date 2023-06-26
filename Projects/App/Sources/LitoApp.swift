@@ -21,8 +21,8 @@ struct LitoApp: App {
     }
 }
 
-struct Previews_LitoApp_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct Previews_LitoApp_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

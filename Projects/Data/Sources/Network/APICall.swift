@@ -52,3 +52,9 @@ typealias HTTPCodes = Range<HTTPCode>
 extension HTTPCodes {
     static let success = 200 ..< 300
 }
+
+struct APICallHeaders {
+    
+    static let Json = ["Accept": "application/json"]
+    
+}

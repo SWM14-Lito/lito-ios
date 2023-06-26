@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 public protocol HomeDataSource {
-    func loadMaxim() -> AnyPublisher<Maxim, Error>
+    func loadMaxim() -> AnyPublisher<SlipDTO, Error>
 }
 
 public class DefaultHomeDataSource: ServerDataSource, HomeDataSource {
@@ -24,7 +24,7 @@ public class DefaultHomeDataSource: ServerDataSource, HomeDataSource {
         self.baseURL = baseURL
     }
     
-    public func loadMaxim() -> AnyPublisher<Maxim, Error> {
+    public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
         return call(endpoint: API.oneSlip)
     }
     
@@ -51,7 +51,7 @@ extension DefaultHomeDataSource.API: APICall {
         }
     }
     var headers: [String: String]? {
-        return ["Accept": "application/json"]
+        return APICallHeaders.Json
     }
     func body() throws -> Data? {
         return nil
