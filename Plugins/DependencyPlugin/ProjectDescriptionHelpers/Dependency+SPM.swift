@@ -12,7 +12,8 @@ public extension TargetDependency {
 }
 
 public extension TargetDependency.SPM {
-    static let Kingfisher = TargetDependency.external(name: "Kingfisher")
-    static let Swinject = TargetDependency.external(name: "Swinject")
-    static let Moya = TargetDependency.external(name: "Moya")
+    static let Kingfisher = TargetDependency.package(product: "Kingfisher")
+    static let Swinject = TargetDependency.package(product: "Swinject")
+    static let Moya = TargetDependency.package(product: "Moya")
+    static let CombineMoya = TargetDependency.package(product: "CombineMoya")
 }
