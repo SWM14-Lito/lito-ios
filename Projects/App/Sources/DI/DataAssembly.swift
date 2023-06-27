@@ -14,10 +14,7 @@ import Foundation
 public struct DataAssembly: Assembly {
     public func assemble(container: Container) {
         container.register(HomeDataSource.self) { _ in
-            // TODO: Data 모듈에서 설정하도록 분리하는게 좋을까?
-            let session = NetworkConfiguration.configuredURLSession()
-            let baseURL = "https://api.adviceslip.com/advice"
-            return DefaultHomeDataSource(session: session, baseURL: baseURL)
+            return DefaultHomeDataSource()
         }
         
         container.register(HomeRepository.self) { resolver in

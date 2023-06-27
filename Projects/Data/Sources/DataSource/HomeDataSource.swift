@@ -8,52 +8,21 @@
 
 import Foundation
 import Combine
+import CombineMoya
+import Moya
 
 public protocol HomeDataSource {
     func loadMaxim() -> AnyPublisher<SlipDTO, Error>
 }
 
-public class DefaultHomeDataSource: ServerDataSource, HomeDataSource {
+public class DefaultHomeDataSource: HomeDataSource {
     
-    public let session: URLSession
-    public let baseURL: String
-    public let bgQueue = DispatchQueue(label: "bg_parse_queue")
+    public init() {}
     
-    public init(session: URLSession, baseURL: String) {
-        self.session = session
-        self.baseURL = baseURL
-    }
+    private let moyaProvider = MoyaWrapper<APIService>()
     
     public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
-        return call(endpoint: API.oneSlip)
+        return moyaProvider.call(target: .oneSlip)
     }
     
-}
-
-extension DefaultHomeDataSource {
-    enum API {
-        case oneSlip
-    }
-}
-
-extension DefaultHomeDataSource.API: APICall {
-    
-    var path: String {
-        switch self {
-        case .oneSlip:
-            return ""
-        }
-    }
-    var method: String {
-        switch self {
-        case .oneSlip:
-            return "GET"
-        }
-    }
-    var headers: [String: String]? {
-        return APICallHeaders.Json
-    }
-    func body() throws -> Data? {
-        return nil
-    }
 }
