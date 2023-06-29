@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// 탭별로 화면을 나눠야하할까
+// 근데 B탭 화면에서 A탭 화면으로 이동하는게 있다면?
 enum Page: Hashable {
     case ATabFirstView
     case ATabSecondView(str: String)
@@ -28,6 +30,8 @@ class Coordinator: ObservableObject {
         path.removeLast()
     }
     
+    // 여러 뷰 없애는거면 애니메이션 효과가 적용되지 않음
+    // 커스텀 애니메이션 필요?
     func popToRoot() {
         path.removeLast(path.count)
     }
