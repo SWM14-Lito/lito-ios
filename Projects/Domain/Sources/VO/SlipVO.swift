@@ -9,8 +9,8 @@
 import Foundation
 
 public struct SlipVO {
-    public var id     : Int
-    public var advice : String
+    public let id     : Int
+    public let advice : String
     
     public init(id: Int, advice: String) {
         self.id = id

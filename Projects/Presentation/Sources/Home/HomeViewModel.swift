@@ -13,7 +13,7 @@ import Domain
 
 final public class HomeViewModel: ObservableObject {
         
-        @Published var slip: Loadable<SlipVO>
+        @Published private(set) var slip: Loadable<SlipVO>
         
         private let homeUseCase: HomeUseCase
         private let cancelBag = CancelBag()
@@ -24,6 +24,7 @@ final public class HomeViewModel: ObservableObject {
         }
         
         func loadSlip() {
+            slip.setIsLoading(cancelBag: cancelBag)
             homeUseCase.load()
                 .receive(on: DispatchQueue.main)
                 .sinkToLoadable {

@@ -11,7 +11,7 @@ import Domain
 public struct SlipDTO: Codable {
     let slip: Slip
     
-    func toSlip() -> SlipVO {
+    func toVO() -> SlipVO {
         return SlipVO(id: slip.id ?? 0, advice: slip.advice ?? "Unknown")
     }
 }
