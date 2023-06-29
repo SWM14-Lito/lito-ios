@@ -25,7 +25,9 @@ public struct HomeView: View {
 //                self.viewModel.loadSlip()
 //            }
 //        }
-        RootTabView()
+        if #available(iOS 16.0, *) {
+            RootTabView()
+        }
 
     }
     

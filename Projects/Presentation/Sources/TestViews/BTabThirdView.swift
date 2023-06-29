@@ -8,13 +8,13 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct BTabThirdView: View {
     
-    @StateObject var coordinator = BTabCoordinator()
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         VStack {
-            coordinator.navigationLinkSection()
             Text("This is BTab Third View")
             Button  {
                 coordinator.popToRoot()
@@ -25,8 +25,8 @@ struct BTabThirdView: View {
     }
 }
 
-struct BTabThirdView_Previews: PreviewProvider {
-    static var previews: some View {
-        BTabThirdView()
-    }
-}
+//struct BTabThirdView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BTabThirdView()
+//    }
+//}
