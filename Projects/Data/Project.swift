@@ -13,6 +13,8 @@ let project = Project.makeModule(
     name: "Data",
     product: .staticFramework,
     dependencies: [
-        .Domain
+        .Projcet.Domain,
+        .SPM.Moya,
+        .SPM.CombineMoya
     ]
 )
