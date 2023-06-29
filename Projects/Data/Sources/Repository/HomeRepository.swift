@@ -18,6 +18,6 @@ final public class DefaultHomeRepository: HomeRepository {
     }
     
     public func loadSlip() -> AnyPublisher<SlipVO, Error> {
-        return dataSource.loadMaxim().map{$0.toSlip()}.eraseToAnyPublisher()
+        return dataSource.loadMaxim().map{$0.toVO()}.eraseToAnyPublisher()
     }
 }

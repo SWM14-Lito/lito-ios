@@ -9,8 +9,6 @@
 import Foundation
 import SwiftUI
 
-typealias LoadableSubject<Value> = Binding<Loadable<Value>>
-
 public enum Loadable<T> {
 
     case notRequested
@@ -70,32 +68,6 @@ extension Loadable {
         } catch {
             return .failed(error)
         }
-    }
-}
-
-protocol SomeOptional {
-    associatedtype Wrapped
-    func unwrap() throws -> Wrapped
-}
-
-struct ValueIsMissingError: Error {
-    var localizedDescription: String {
-        NSLocalizedString("Data is missing", comment: "")
-    }
-}
-
-extension Optional: SomeOptional {
-    func unwrap() throws -> Wrapped {
-        switch self {
-        case let .some(value): return value
-        case .none: throw ValueIsMissingError()
-        }
-    }
-}
-
-extension Loadable where T: SomeOptional {
-    func unwrap() -> Loadable<T.Wrapped> {
-        map { try $0.unwrap() }
     }
 }
 

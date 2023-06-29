@@ -54,7 +54,7 @@ private extension HomeView {
     }
     
     func failedView(_ error: Error) -> some View {
-        Text("Unable to load string")
+        ErrorView(error: error, retryAction: self.viewModel.loadSlip)
     }
     
     func loadedView(_ slip: SlipVO) -> some View {
