@@ -18,12 +18,15 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-        VStack{
-            content
-                .padding(.bottom, 30)
-            Button("Change Quote") {
-                self.viewModel.loadSlip()
-            }
+//        VStack{
+//            content
+//                .padding(.bottom, 30)
+//            Button("Change Quote") {
+//                self.viewModel.loadSlip()
+//            }
+//        }
+        if #available(iOS 16.0, *) {
+            RootTabView()
         }
 
     }
