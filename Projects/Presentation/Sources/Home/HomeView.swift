@@ -36,8 +36,8 @@ public struct HomeView: View {
             loadingView
         case let .loaded(slip):
             loadedView(slip)
-        case let .failed(errorType):
-            failedView(errorType)
+        case let .failed(error):
+            failedView(error)
         }
     }
 }
