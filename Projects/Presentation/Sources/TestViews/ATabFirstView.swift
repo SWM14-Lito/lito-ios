@@ -8,16 +8,16 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct ATabFirstView: View {
     
-    @StateObject var coordinator = ATabCoordinator(isRoot: true)
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         VStack {
-            coordinator.navigationLinkSection()
             Text("This is ATab First View")
             Button  {
-                coordinator.push(destination: .secondView("Hi"))
+                coordinator.push(.ATabSecondView(str: "Hi"))
             } label: {
                 Text("Move to Second View")
             }
@@ -25,8 +25,8 @@ struct ATabFirstView: View {
     }
 }
 
-struct FirstView_Previews: PreviewProvider {
-    static var previews: some View {
-        ATabFirstView()
-    }
-}
+//struct FirstView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ATabFirstView()
+//    }
+//}

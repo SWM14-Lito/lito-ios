@@ -8,25 +8,31 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct BTabFirstView: View {
     
-    @StateObject var coordinator = BTabCoordinator(isRoot: true)
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         VStack {
-            coordinator.navigationLinkSection()
             Text("This is BTab First View")
             Button  {
-                coordinator.push(destination: .secondView)
+                coordinator.push(.BTabSecondView)
             } label: {
                 Text("Move to Second View")
+            }
+            Button  {
+                coordinator.push(.BTabSecondView)
+                coordinator.push(.BTabThirdView)
+            } label: {
+                Text("Move to Third View (Deep Link)")
             }
         }
     }
 }
 
-struct BTabFirstView_Previews: PreviewProvider {
-    static var previews: some View {
-        BTabFirstView()
-    }
-}
+//struct BTabFirstView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BTabFirstView()
+//    }
+//}
