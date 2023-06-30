@@ -16,7 +16,7 @@ jobs:
         run: curl -Ls https://install.tuist.io | bash
       - name: Fetch Swift Packages
         run: tuist fetch
-      - name: Generate Project
-        run: tuist generate
-      - name: Build and Test
+      - name: Build
         run: tuist build
+      - name: Test
+        run: tuist test
