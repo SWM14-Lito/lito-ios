@@ -10,8 +10,13 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'build'
-          arguments: ''
+      - name: Test
+        uses: actions/checkout@v3
+	    - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Fetch Swift Packages
+        run: tuist fetch
+      - name: Generate Project
+        run: tuist generate
+      - name: Build and Test
+        run:  xcodebuild build -project lito-ios/Lito.xcodeproj
