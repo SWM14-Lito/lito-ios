@@ -9,10 +9,10 @@ on:
   
     
 jobs:
-  build:
+  buildtest:
     runs-on: macos-latest
     steps:
-      - name: Test
+      - name: Checkout
         uses: actions/checkout@v3
       - name: Install Tuist
         run: curl -Ls https://install.tuist.io | bash
