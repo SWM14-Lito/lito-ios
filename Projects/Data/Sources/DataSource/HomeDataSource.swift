@@ -10,7 +10,6 @@ import Foundation
 import Combine
 import CombineMoya
 import Moya
-import Domain
 
 public protocol HomeDataSource {
     func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO>
