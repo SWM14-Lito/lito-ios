@@ -8,26 +8,30 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct RootTabView: View {
+    
+    // swinject로 의존성 주입 받기?
+    @StateObject private var coordinator = Coordinator()
+    
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $coordinator.path) {
             TabView {
-                ATabFirstView()
-                    .tabItem {
-                        Text("ATab")
-                    }
-                
-                BTabFirstView()
-                    .tabItem {
-                        Text("BTab")
-                    }
+                coordinator.build(page: .ATabFirstView)
+                    .tabItem { Text("ATab") }
+                coordinator.build(page: .BTabFirstView)
+                    .tabItem { Text("BTab") }
+            }
+            .navigationDestination(for: Page.self) { page in
+                coordinator.build(page: page)
             }
         }
+        .environmentObject(coordinator)
     }
 }
 
-struct TabView_Previews: PreviewProvider {
-    static var previews: some View {
-        RootTabView()
-    }
-}
+//struct TabView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RootTabView()
+//    }
+//}

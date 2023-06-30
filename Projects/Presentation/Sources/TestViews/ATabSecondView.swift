@@ -8,9 +8,10 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 struct ATabSecondView: View {
     
-    @StateObject var coordinator = ATabCoordinator()
+    @EnvironmentObject private var coordinator: Coordinator
     var str: String
     
     init(str: String) {
@@ -20,11 +21,10 @@ struct ATabSecondView: View {
     
     var body: some View {
         VStack {
-            coordinator.navigationLinkSection()
             Text("This is ATab Second View")
-            Text(str)
+            Text("From previous view: " + str)
             Button  {
-                coordinator.popToRoot()
+                coordinator.pop()
             } label: {
                 Text("Pop to Root")
             }
@@ -32,8 +32,8 @@ struct ATabSecondView: View {
     }
 }
 
-struct ATabSeconddView_Previews: PreviewProvider {
-    static var previews: some View {
-        ATabSecondView(str: "")
-    }
-}
+//struct ATabSeconddView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ATabSecondView(str: "")
+//    }
+//}
