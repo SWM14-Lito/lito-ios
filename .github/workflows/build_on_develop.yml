@@ -4,7 +4,7 @@ name: Run Test
 
 on:
   push:
-    branches: [ test ]
+    branches: [ github-action-test ]
     
 jobs:
   build:
