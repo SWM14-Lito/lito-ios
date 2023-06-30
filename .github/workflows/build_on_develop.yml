@@ -19,4 +19,4 @@ jobs:
       - name: Generate Project
         run: tuist generate
       - name: Build and Test
-        run:  xcodebuild build -project lito-ios/Lito.xcodeproj
+        run:  xcodebuild build -project lito-ios/Lito.xcworkspace
