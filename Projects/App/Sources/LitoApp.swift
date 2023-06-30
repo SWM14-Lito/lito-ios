@@ -27,5 +27,3 @@ struct Previews_LitoApp_Previews: PreviewProvider {
         HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
     }
 }
-
-ddd

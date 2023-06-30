@@ -21,6 +21,7 @@ final public class HomeViewModel: ObservableObject {
         public init(homeUseCase: HomeUseCase, slip: Loadable<SlipVO> = .notRequested) {
             self.slip = slip
             self.homeUseCase = homeUseCase
+            print("AAAA")
         }
         
         func loadSlip() {
