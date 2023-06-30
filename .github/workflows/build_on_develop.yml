@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Test
         uses: actions/checkout@v3
-	    - name: Install Tuist
+      - name: Install Tuist
         run: curl -Ls https://install.tuist.io | bash
       - name: Fetch Swift Packages
         run: tuist fetch
