@@ -36,8 +36,8 @@ public struct HomeView: View {
             loadingView
         case let .loaded(slip):
             loadedView(slip)
-        case let .failed(error):
-            failedView(error)
+        case let .failed(errorType):
+            failedView(errorType)
         }
     }
 }
@@ -53,7 +53,7 @@ private extension HomeView {
        ProgressView()
     }
     
-    func failedView(_ error: Error) -> some View {
+    func failedView(_ error: NetworkErrorVO) -> some View {
         ErrorView(error: error, retryAction: self.viewModel.loadSlip)
     }
     
