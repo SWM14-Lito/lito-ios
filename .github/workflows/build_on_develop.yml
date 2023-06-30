@@ -1,0 +1,17 @@
+
+# workflow 의 이름
+name: Run Test
+
+on:
+  push:
+    branches: [ test ]
+    
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'build'
+          arguments: ''
