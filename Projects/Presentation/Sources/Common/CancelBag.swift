@@ -19,7 +19,7 @@ final public class CancelBag {
     func collect(@Builder _ cancellables: () -> [AnyCancellable]) {
         subscriptions.formUnion(cancellables())
     }
-
+    
     @resultBuilder
     struct Builder {
         static func buildBlock(_ cancellables: AnyCancellable...) -> [AnyCancellable] {

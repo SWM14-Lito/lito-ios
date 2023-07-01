@@ -12,6 +12,7 @@ import Data
 import Foundation
 
 public struct DataAssembly: Assembly {
+    
     public func assemble(container: Container) {
         container.register(HomeDataSource.self) { _ in
             return DefaultHomeDataSource()
@@ -21,6 +22,6 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(HomeDataSource.self)!
             return DefaultHomeRepository(dataSource: dataSource)
         }
-        
     }
+    
 }

@@ -17,6 +17,6 @@ public struct SlipDTO: Codable {
 }
 
 public struct Slip: Codable {
-  var id     : Int?    = nil
-  var advice : String? = nil
+    var id: Int?
+    var advice: String?
 }
