@@ -9,9 +9,9 @@
 import SwiftUI
 
 public class LearningCategoryViewModel: ObservableObject {
-    private var coordinator: Coordinator
+    private var coordinator: CoordinatorProtocol
     
-    public init(coordinator: Coordinator) {
+    public init(coordinator: CoordinatorProtocol) {
         self.coordinator = coordinator
     }
 }
