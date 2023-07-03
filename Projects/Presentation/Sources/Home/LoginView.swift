@@ -56,7 +56,7 @@ public struct LoginView: View {
 //    }
 }
 
-//private extension LoginView {
+// private extension LoginView {
 //    var notRequestedView: some View {
 //        Text("").onAppear {
 //            //            self.viewModel.loadSlip()
@@ -74,4 +74,4 @@ public struct LoginView: View {
 //    func loadedView(_ slip: SlipVO) -> some View {
 //        Text(slip.advice)
 //    }
-//}
+// }
