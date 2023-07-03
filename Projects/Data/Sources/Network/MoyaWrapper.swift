@@ -17,18 +17,18 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     func call<Value>(target: Provider) -> AnyPublisher<Value, NetworkErrorDTO> where Value: Decodable {
         return self.requestPublisher(target)
             .map(Value.self)
-            .mapError { error -> NetworkErrorDTO in
-                return self.mapNetworkError(error: error)
+            .mapError { moyaError -> NetworkErrorDTO in
+                return moyaError.toNetworkError()
             }
             .eraseToAnyPublisher()
     }
     
 }
 
-extension MoyaWrapper {
+extension MoyaError {
     
-    private func mapNetworkError(error: MoyaError) -> NetworkErrorDTO {
-        switch error {
+    public func toNetworkError() -> NetworkErrorDTO {
+        switch self {
             // Encoding Error
         case .encodableMapping(let error):
             return NetworkErrorDTO.encodeError(error)
