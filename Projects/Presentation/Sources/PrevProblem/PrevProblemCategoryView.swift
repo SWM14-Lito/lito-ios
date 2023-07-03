@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-struct PrevProblemView: View {
+struct PrevProblemCategoryView: View {
     
-    @ObservedObject private(set) var viewModel: PrevProblemViewModel
+    @ObservedObject private(set) var viewModel: PrevProblemCategoryViewModel
     
-    public init(viewModel: PrevProblemViewModel) {
+    public init(viewModel: PrevProblemCategoryViewModel) {
         self.viewModel = viewModel
     }
     
