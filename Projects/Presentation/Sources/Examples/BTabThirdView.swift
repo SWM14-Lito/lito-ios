@@ -1,5 +1,5 @@
 //
-//  FirstView.swift
+//  BTabThirdView.swift
 //  Presentation
 //
 //  Created by 김동락 on 2023/06/27.
@@ -9,17 +9,17 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-struct ATabFirstView: View {
+struct BTabThirdView: View {
     
-    @EnvironmentObject private var coordinator: Coordinator
+    @EnvironmentObject private var coordinator: ExampleCoordinator
     
     var body: some View {
         VStack {
-            Text("This is ATab First View")
+            Text("This is BTab Third View")
             Button {
-                coordinator.push(.ATabSecondView(str: "Hi"))
+                coordinator.popToRoot()
             } label: {
-                Text("Move to Second View")
+                Text("Pop to Root")
             }
         }
     }

@@ -8,6 +8,6 @@
 
 import Foundation
 
-class MyPageViewModel {
+class MyPageViewModel: ObservableObject {
     
 }

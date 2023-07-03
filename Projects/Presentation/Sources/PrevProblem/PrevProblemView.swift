@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct PrevProblemView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+    @ObservedObject private(set) var viewModel: PrevProblemViewModel
+    
+    public init(viewModel: PrevProblemViewModel) {
+        self.viewModel = viewModel
     }
-}
-
-struct PrevProblemView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrevProblemView()
+    
+    var body: some View {
+        Text("PrevProblemView")
     }
 }
