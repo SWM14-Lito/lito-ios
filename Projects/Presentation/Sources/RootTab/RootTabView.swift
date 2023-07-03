@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+// View와 ViewModel로 나눠보려했지만 실패 (navigationDestination에서 모든 뷰가 가능해서 viewModel에서 any View를 반환해봤지만 문법적 에러 발생)
 public struct RootTabView: View {
     
     private var coordinator: Coordinator
