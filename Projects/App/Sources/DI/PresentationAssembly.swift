@@ -22,6 +22,15 @@ public struct PresentationAssembly: Assembly {
             let homeViewModel = resolver.resolve(HomeViewModel.self)!
             return HomeView(viewModel: homeViewModel)
         }
+        
+        container.register(Coordinator.self) { _ in
+            return Coordinator()
+        }
+        
+        container.register(RootTabView.self) { resolver in
+            let coordinator = resolver.resolve(Coordinator.self)!
+            return RootTabView(coordinator: coordinator)
+        }
     }
     
 }

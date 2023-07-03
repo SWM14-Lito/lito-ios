@@ -18,7 +18,7 @@ struct LitoApp: App {
     var body: some Scene {
         WindowGroup {
 //            HomeView(viewModel: injector.resolve(HomeViewModel.self))
-            RootTabView()
+            RootTabView(coordinator: injector.resolve(Coordinator.self))
         }
     }
 }

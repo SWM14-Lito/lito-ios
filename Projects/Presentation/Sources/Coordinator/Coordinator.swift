@@ -15,8 +15,10 @@ enum Page: Hashable {
 }
 
 @available(iOS 16.0, *)
-class Coordinator: ObservableObject {
+public class Coordinator: ObservableObject {
     @Published var path = NavigationPath()
+    
+    public init() { }
     
     func push(_ page: ExamplePage) {
         path.append(page)
@@ -34,11 +36,11 @@ class Coordinator: ObservableObject {
     func build(page: Page) -> some View {
         switch page {
         case .learningHomeView:
-            LearningHomeView(viewModel: LearningHomeViewModel())
+            LearningHomeView(viewModel: LearningHomeViewModel(coordinator: self))
         case .prevProblemCategoryView:
-            PrevProblemView(viewModel: PrevProblemViewModel())
+            PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: self))
         case .myPageView:
-            MyPageView(viewModel: MyPageViewModel())
+            MyPageView(viewModel: MyPageViewModel(coordinator: self))
         }
     }
 }
