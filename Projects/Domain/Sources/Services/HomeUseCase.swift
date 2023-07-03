@@ -13,7 +13,7 @@ public final class DefaultHomeUseCase: HomeUseCase {
         self.repository = repository
     }
     
-    public func load() -> AnyPublisher<SlipVO, NetworkErrorVO>{
+    public func load() -> AnyPublisher<SlipVO, NetworkErrorVO> {
         return repository.loadSlip()
     }
 }

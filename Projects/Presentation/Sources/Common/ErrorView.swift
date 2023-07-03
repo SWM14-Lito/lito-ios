@@ -14,7 +14,7 @@ struct ErrorView: View {
     let error: NetworkErrorVO
     let retryAction: () -> Void
     
-    //TODO: 정의된 Error에 따라 보여줄 view build
+    // TODO: 정의된 Error에 따라 보여줄 view build
     // retryable Error: 로깅 + viewModel의 메소드 재실행
     // fatal Error: 로깅 + 가능한 다른 처리 필요
     
@@ -32,15 +32,3 @@ struct ErrorView: View {
         }
     }
 }
-//
-//#if DEBUG
-//struct ErrorView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ErrorView(error:
-//                    ErrorVO.presentationError(NSError(domain: "", code: 0, userInfo: [
-//                        NSLocalizedDescriptionKey: "Something went wrong"]))
-//                        ,retryAction: {}
-//        )
-//    }
-//}
-//#endif

@@ -18,12 +18,11 @@ struct ATabSecondView: View {
         self.str = str
     }
     
-    
     var body: some View {
         VStack {
             Text("This is ATab Second View")
             Text("From previous view: " + str)
-            Button  {
+            Button {
                 coordinator.pop()
             } label: {
                 Text("Pop to Root")
@@ -31,9 +30,3 @@ struct ATabSecondView: View {
         }
     }
 }
-
-//struct ATabSeconddView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ATabSecondView(str: "")
-//    }
-//}

@@ -16,12 +16,12 @@ struct BTabFirstView: View {
     var body: some View {
         VStack {
             Text("This is BTab First View")
-            Button  {
+            Button {
                 coordinator.push(.BTabSecondView)
             } label: {
                 Text("Move to Second View")
             }
-            Button  {
+            Button {
                 coordinator.push(.BTabSecondView)
                 coordinator.push(.BTabThirdView)
             } label: {
@@ -30,9 +30,3 @@ struct BTabFirstView: View {
         }
     }
 }
-
-//struct BTabFirstView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BTabFirstView()
-//    }
-//}

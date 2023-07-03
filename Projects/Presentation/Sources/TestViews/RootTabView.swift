@@ -29,9 +29,3 @@ struct RootTabView: View {
         .environmentObject(coordinator)
     }
 }
-
-//struct TabView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RootTabView()
-//    }
-//}

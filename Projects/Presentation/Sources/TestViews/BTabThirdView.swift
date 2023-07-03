@@ -16,7 +16,7 @@ struct BTabThirdView: View {
     var body: some View {
         VStack {
             Text("This is BTab Third View")
-            Button  {
+            Button {
                 coordinator.popToRoot()
             } label: {
                 Text("Pop to Root")
@@ -24,9 +24,3 @@ struct BTabThirdView: View {
         }
     }
 }
-
-//struct BTabThirdView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BTabThirdView()
-//    }
-//}

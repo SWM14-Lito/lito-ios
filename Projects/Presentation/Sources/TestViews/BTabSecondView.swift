@@ -16,7 +16,7 @@ struct BTabSecondView: View {
     var body: some View {
         VStack {
             Text("This is BTab Second View")
-            Button  {
+            Button {
                 coordinator.push(.BTabThirdView)
             } label: {
                 Text("Move to Third View")
@@ -24,9 +24,3 @@ struct BTabSecondView: View {
         }
     }
 }
-
-//struct BTabSecondView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BTabSecondView()
-//    }
-//}
