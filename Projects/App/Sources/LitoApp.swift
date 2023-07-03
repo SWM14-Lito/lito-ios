@@ -11,7 +11,8 @@ struct LitoApp: App {
     private let injector: Injector
     
     init() {
-        KakaoSDK.initSDK(appKey: "ef1b461bf006b7bd5460a4ec15236fe1")
+        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
@@ -24,7 +25,7 @@ struct LitoApp: App {
 //            HomeView(viewModel: injector.resolve(HomeViewModel.self))
             LoginView(viewModel: .init(useCase: DefaultLoginUseCase(repository: DefaultLoginRepository()))).onOpenURL(perform: { url in
                 if AuthApi.isKakaoTalkLoginUrl(url) {
-                    AuthController.handleOpenUrl(url: url)
+                    _ = AuthController.handleOpenUrl(url: url)
                 }
             })
         }
