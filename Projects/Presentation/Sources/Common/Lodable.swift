@@ -8,13 +8,14 @@
 
 import Foundation
 import SwiftUI
+import Domain
 
 public enum Loadable<T> {
 
     case notRequested
     case isLoading(last: T?, cancelBag: CancelBag)
     case loaded(T)
-    case failed(Error)
+    case failed(NetworkErrorVO)
 
     var value: T? {
         switch self {
@@ -44,11 +45,7 @@ extension Loadable {
             if let last = last {
                 self = .loaded(last)
             } else {
-                let error = NSError(
-                    domain: NSCocoaErrorDomain, code: NSUserCancelledError,
-                    userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Canceled by user",
-                                                                            comment: "")])
-                self = .failed(error)
+                self = .failed(.retryableError)
             }
         default: break
         }
@@ -66,7 +63,7 @@ extension Loadable {
                 return .loaded(try transform(value))
             }
         } catch {
-            return .failed(error)
+            return .failed(.fatalError)
         }
     }
 }
