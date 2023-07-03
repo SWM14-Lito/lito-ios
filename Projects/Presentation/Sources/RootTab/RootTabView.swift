@@ -10,12 +10,15 @@ import SwiftUI
 
 public struct RootTabView: View {
     
-    @StateObject private var coordinator = Coordinator()
+    private var coordinator: Coordinator
+    @State private var navigationPath = NavigationPath()
     
-    public init() { }
+    public init(coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
     
     public var body: some View {
-        NavigationStack(path: $coordinator.path) {
+        NavigationStack(path: $navigationPath) {
             TabView {
                 coordinator.build(page: .learningHomeView)
                     .tabItem { Text("학습") }
@@ -28,6 +31,8 @@ public struct RootTabView: View {
                 coordinator.build(page: page)
             }
         }
-        .environmentObject(coordinator)
+        .onReceive(coordinator.$path) { navigationPath in
+            self.navigationPath = navigationPath
+        }
     }
 }
