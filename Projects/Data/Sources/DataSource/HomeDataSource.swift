@@ -12,7 +12,7 @@ import CombineMoya
 import Moya
 
 public protocol HomeDataSource {
-    func loadMaxim() -> AnyPublisher<SlipDTO, Error>
+    func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO>
 }
 
 public class DefaultHomeDataSource: HomeDataSource {
@@ -21,8 +21,9 @@ public class DefaultHomeDataSource: HomeDataSource {
     
     private let moyaProvider = MoyaWrapper<APIService>()
     
-    public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
+    public func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO> {
         return moyaProvider.call(target: .oneSlip)
+            .eraseToAnyPublisher()
     }
     
 }

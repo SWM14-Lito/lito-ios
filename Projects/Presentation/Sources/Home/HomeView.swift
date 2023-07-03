@@ -56,7 +56,7 @@ private extension HomeView {
        ProgressView()
     }
     
-    func failedView(_ error: Error) -> some View {
+    func failedView(_ error: NetworkErrorVO) -> some View {
         ErrorView(error: error, retryAction: self.viewModel.loadSlip)
     }
     

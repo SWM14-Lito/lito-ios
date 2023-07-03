@@ -16,14 +16,14 @@ extension APIService: TargetType {
     var baseURL: URL {
         switch self {
         case .oneSlip:
-            return URL(string: "https://api.adviceslip.com/advice")!
+            return URL(string: "https://api.adviceslip.com/")!
         }
     }
     
     var path: String {
         switch self {
         case .oneSlip:
-            return ""
+            return "advice"
         }
     }
     
