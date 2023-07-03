@@ -14,7 +14,7 @@ public protocol LoginUseCase {
     
     var appleLoginOnRequest: (ASAuthorizationAppleIDRequest) -> Void { get }
     var appleLoginOnCompletion: (Result<ASAuthorization, Error>) -> Void { get }
-    
+    func kakaoLogin()
 }
 
 public final class DefaultLoginUseCase: LoginUseCase {
