@@ -11,11 +11,8 @@ import SwiftUI
 import Combine
 
 public protocol CoordinatorProtocol {
-    var path: Published<NavigationPath>.Publisher { get set }
+    var pathPublisher: Published<NavigationPath>.Publisher { get }
     
-    func buildLearningTabRootView() -> LearningHomeView
-    func buildPrevProblemTabRootView() -> PrevProblemCategoryView
-    func buildMyPageTabRootView() -> MyPageView
     func push(_ page: Page)
     func pop()
     func popToRoot()
