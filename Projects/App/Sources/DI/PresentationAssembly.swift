@@ -27,11 +27,6 @@ public struct PresentationAssembly: Assembly {
             return Coordinator()
         }
         
-        container.register(RootTabView.self) { resolver in
-            let coordinator = resolver.resolve(Coordinator.self)!
-            return RootTabView(coordinator: coordinator)
-        }
-        
         container.register(LearningHomeViewModel.self) { resolver in
             let coordinator = resolver.resolve(Coordinator.self)!
             return LearningHomeViewModel(coordinator: coordinator)

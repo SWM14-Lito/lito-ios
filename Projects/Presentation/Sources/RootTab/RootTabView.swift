@@ -10,29 +10,32 @@ import SwiftUI
 
 public struct RootTabView: View {
     
-    private var coordinator: any CoordinatorProtocol
+    private var coordinator: CoordinatorProtocol
+    private let viewResolver: ViewResolverProtocol
     @State private var navigationPath = NavigationPath()
     
-    public init(coordinator: any CoordinatorProtocol) {
+    public init(coordinator: CoordinatorProtocol, viewResolver: ViewResolverProtocol) {
         self.coordinator = coordinator
+        self.viewResolver = viewResolver
     }
     
     public var body: some View {
         NavigationStack(path: $navigationPath) {
             TabView {
-                LearningHomeView(viewModel: LearningHomeViewModel(coordinator: coordinator))
+                viewResolver.resolveView(LearningHomeView.self)
                     .tabItem { Text("학습") }
-                PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: coordinator))
+                viewResolver.resolveView(PrevProblemCategoryView.self)
                     .tabItem { Text("기출문제") }
-                MyPageView(viewModel: MyPageViewModel(coordinator: coordinator))
+                viewResolver.resolveView(MyPageView.self)
                     .tabItem { Text("마이페이지") }
             }
             .navigationDestination(for: Page.self) { page in
-                page.getView(coordinator: coordinator)
+                page.getView(coordinator: coordinator, viewResolver: viewResolver)
             }
         }
         .onReceive(coordinator.pathPublisher) { navigationPath in
             self.navigationPath = navigationPath
+            print("push!!")
         }
     }
 }
