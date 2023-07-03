@@ -14,16 +14,16 @@ public enum Page: Hashable {
     case myPageView
     
     @ViewBuilder
-    func getView(coordinator: any CoordinatorProtocol) -> some View {
+    func getView(coordinator: CoordinatorProtocol, viewResolver: ViewResolverProtocol) -> some View {
         switch self {
         case .learningHomeView:
-            LearningHomeView(viewModel: LearningHomeViewModel(coordinator: coordinator))
+            viewResolver.resolveView(LearningHomeView.self)
         case .learningCategoryView:
-            LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: coordinator))
+            viewResolver.resolveView(LearningCategoryView.self)
         case .prevProblemCategoryView:
-            PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: coordinator))
+            viewResolver.resolveView(PrevProblemCategoryView.self)
         case .myPageView:
-            MyPageView(viewModel: MyPageViewModel(coordinator: coordinator))
+            viewResolver.resolveView(MyPageView.self)
         }
     }
 }

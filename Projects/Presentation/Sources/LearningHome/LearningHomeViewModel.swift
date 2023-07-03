@@ -9,9 +9,9 @@
 import SwiftUI
 
 public class LearningHomeViewModel: ObservableObject {
-    private var coordinator: any CoordinatorProtocol
+    private var coordinator: CoordinatorProtocol
     
-    public init(coordinator: any CoordinatorProtocol) {
+    public init(coordinator: CoordinatorProtocol) {
         self.coordinator = coordinator
     }
     
