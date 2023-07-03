@@ -1,7 +1,9 @@
 import SwiftUI
+import Data
 import Presentation
 import Domain
 import Swinject
+import KakaoSDKCommon
 
 @main
 struct LitoApp: App {
@@ -18,7 +20,7 @@ struct LitoApp: App {
     var body: some Scene {
         WindowGroup {
 //            HomeView(viewModel: injector.resolve(HomeViewModel.self))
-            LoginView(viewModel: .init())
+            LoginView(viewModel: .init(useCase: DefaultLoginUseCase(repository: DefaultLoginRepository())))
         }
     }
 }
