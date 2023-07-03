@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct ExampleRootTabView: View {
     
     // swinject로 의존성 주입 받기?

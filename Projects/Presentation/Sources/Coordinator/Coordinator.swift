@@ -14,7 +14,6 @@ enum Page: Hashable {
     case myPageView
 }
 
-@available(iOS 16.0, *)
 public class Coordinator: ObservableObject {
     @Published var path = NavigationPath()
     
