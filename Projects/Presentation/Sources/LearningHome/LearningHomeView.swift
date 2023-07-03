@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LearningHomeView: View {
+public struct LearningHomeView: View {
     
     @ObservedObject private(set) var viewModel: LearningHomeViewModel
     
@@ -16,7 +16,7 @@ struct LearningHomeView: View {
         self.viewModel = viewModel
     }
     
-    var body: some View {
+    public var body: some View {
         VStack {
             Text("LearningHomeView")
             Button {

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PrevProblemCategoryView: View {
+public struct PrevProblemCategoryView: View {
     
     @ObservedObject private(set) var viewModel: PrevProblemCategoryViewModel
     
@@ -16,7 +16,7 @@ struct PrevProblemCategoryView: View {
         self.viewModel = viewModel
     }
     
-    var body: some View {
+    public var body: some View {
         Text("PrevProblemView")
     }
 }

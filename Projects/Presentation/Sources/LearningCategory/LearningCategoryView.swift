@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LearningCategoryView: View {
+public struct LearningCategoryView: View {
     
     @ObservedObject private(set) var viewModel: LearningCategoryViewModel
     
@@ -16,7 +16,7 @@ struct LearningCategoryView: View {
         self.viewModel = viewModel
     }
     
-    var body: some View {
+    public var body: some View {
         Text("LearningCategoryView")
     }
 }

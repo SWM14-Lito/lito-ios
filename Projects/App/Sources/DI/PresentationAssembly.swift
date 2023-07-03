@@ -31,6 +31,46 @@ public struct PresentationAssembly: Assembly {
             let coordinator = resolver.resolve(Coordinator.self)!
             return RootTabView(coordinator: coordinator)
         }
+        
+        container.register(LearningHomeViewModel.self) { resolver in
+            let coordinator = resolver.resolve(Coordinator.self)!
+            return LearningHomeViewModel(coordinator: coordinator)
+        }
+        
+        container.register(LearningHomeView.self) { resolver in
+            let viewModel = resolver.resolve(LearningHomeViewModel.self)!
+            return LearningHomeView(viewModel: viewModel)
+        }
+        
+        container.register(LearningCategoryViewModel.self) { resolver in
+            let coordinator = resolver.resolve(Coordinator.self)!
+            return LearningCategoryViewModel(coordinator: coordinator)
+        }
+        
+        container.register(LearningCategoryView.self) { resolver in
+            let viewModel = resolver.resolve(LearningCategoryViewModel.self)!
+            return LearningCategoryView(viewModel: viewModel)
+        }
+        
+        container.register(PrevProblemCategoryViewModel.self) { resolver in
+            let coordinator = resolver.resolve(Coordinator.self)!
+            return PrevProblemCategoryViewModel(coordinator: coordinator)
+        }
+        
+        container.register(PrevProblemCategoryView.self) { resolver in
+            let viewModel = resolver.resolve(PrevProblemCategoryViewModel.self)!
+            return PrevProblemCategoryView(viewModel: viewModel)
+        }
+        
+        container.register(MyPageViewModel.self) { resolver in
+            let coordinator = resolver.resolve(Coordinator.self)!
+            return MyPageViewModel(coordinator: coordinator)
+        }
+        
+        container.register(MyPageView.self) { resolver in
+            let viewModel = resolver.resolve(MyPageViewModel.self)!
+            return MyPageView(viewModel: viewModel)
+        }
     }
     
 }

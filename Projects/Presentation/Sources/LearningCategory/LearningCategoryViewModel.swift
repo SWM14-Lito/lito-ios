@@ -6,12 +6,12 @@
 //  Copyright © 2023 Lito. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
-class LearningCategoryViewModel: ObservableObject {
+public class LearningCategoryViewModel: ObservableObject {
     private var coordinator: Coordinator
     
-    init(coordinator: Coordinator) {
+    public init(coordinator: Coordinator) {
         self.coordinator = coordinator
     }
 }
