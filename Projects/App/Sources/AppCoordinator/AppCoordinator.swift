@@ -1,33 +1,29 @@
 //
-//  Coordinator.swift
-//  Presentation
+//  AppCoordinator.swift
+//  App
 //
 //  Created by 김동락 on 2023/07/03.
 //  Copyright © 2023 Lito. All rights reserved.
 //
 
 import SwiftUI
+import Presentation
 
-enum Page: Hashable {
-    case learningHomeView, learningCategoryView
-    case prevProblemCategoryView
-    case myPageView
-}
-
-public class Coordinator: ObservableObject {
-    @Published var path = NavigationPath()
+public class Coordinator: ObservableObject, CoordinatorProtocol {
+        
+    @Published public var path = NavigationPath()
     
     public init() { }
     
-    func push(_ page: Page) {
+    public func push(_ page: Page) {
         path.append(page)
     }
     
-    func pop() {
+    public func pop() {
         path.removeLast()
     }
     
-    func popToRoot() {
+    public func popToRoot() {
         path.removeLast(path.count)
     }
     
@@ -48,4 +44,17 @@ public class Coordinator: ObservableObject {
             MyPageView(viewModel: MyPageViewModel(coordinator: self))
         }
     }
+    
+    public func buildLearningTabRootView() -> LearningHomeView {
+        return build(page: .learningHomeView) as! LearningHomeView
+    }
+    
+    public func buildPrevProblemTabRootView() -> PrevProblemCategoryView {
+        return build(page: .prevProblemCategoryView) as! PrevProblemCategoryView
+    }
+    
+    public func buildMyPageTabRootView() -> MyPageView {
+        return build(page: .myPageView) as! MyPageView
+    }
+
 }
