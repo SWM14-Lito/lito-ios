@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MyPageView: View {
+public struct MyPageView: View {
     
     @ObservedObject private(set) var viewModel: MyPageViewModel
     
@@ -16,7 +16,7 @@ struct MyPageView: View {
         self.viewModel = viewModel
     }
     
-    var body: some View {
+    public var body: some View {
         Text("MyPageView")
     }
 }
