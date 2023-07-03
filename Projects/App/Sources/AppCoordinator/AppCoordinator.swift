@@ -10,8 +10,8 @@ import SwiftUI
 import Presentation
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
-        
     @Published public var path = NavigationPath()
+    public var pathPublisher: Published<NavigationPath>.Publisher { $path }
     
     public init() { }
     
@@ -31,30 +31,17 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
     // viewModel은 coordinator에 의존 (화면 전환하기 위함)
     // coordinator는 view에 의존 (전환할 화면 가지고 있음)
     // 의존 관계가 순환되는게 과연 맞는가? -> 맞다면 coordinator를 self로 해도 되는가?
-    @ViewBuilder
-    func build(page: Page) -> some View {
-        switch page {
-        case .learningHomeView:
-            LearningHomeView(viewModel: LearningHomeViewModel(coordinator: self))
-        case .learningCategoryView:
-            LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: self))
-        case .prevProblemCategoryView:
-            PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: self))
-        case .myPageView:
-            MyPageView(viewModel: MyPageViewModel(coordinator: self))
-        }
-    }
-    
-    public func buildLearningTabRootView() -> LearningHomeView {
-        return build(page: .learningHomeView) as! LearningHomeView
-    }
-    
-    public func buildPrevProblemTabRootView() -> PrevProblemCategoryView {
-        return build(page: .prevProblemCategoryView) as! PrevProblemCategoryView
-    }
-    
-    public func buildMyPageTabRootView() -> MyPageView {
-        return build(page: .myPageView) as! MyPageView
-    }
-
+//    @ViewBuilder
+//    public func build(page: Page) -> some View {
+//        switch page {
+//        case .learningHomeView:
+//            LearningHomeView(viewModel: LearningHomeViewModel(coordinator: self))
+//        case .learningCategoryView:
+//            LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: self))
+//        case .prevProblemCategoryView:
+//            PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: self))
+//        case .myPageView:
+//            MyPageView(viewModel: MyPageViewModel(coordinator: self))
+//        }
+//    }
 }

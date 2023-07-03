@@ -8,31 +8,30 @@
 
 import SwiftUI
 
-// View와 ViewModel로 나눠보려했지만 실패 (navigationDestination에서 모든 뷰가 가능해서 viewModel에서 any View를 반환해봤지만 문법적 에러 발생)
 public struct RootTabView: View {
     
-    private var coordinator: CoordinatorProtocol
+    private var coordinator: any CoordinatorProtocol
     @State private var navigationPath = NavigationPath()
     
-    public init(coordinator: CoordinatorProtocol) {
+    public init(coordinator: any CoordinatorProtocol) {
         self.coordinator = coordinator
     }
     
     public var body: some View {
         NavigationStack(path: $navigationPath) {
             TabView {
-                coordinator.buildLearningTabRootView()
+                LearningHomeView(viewModel: LearningHomeViewModel(coordinator: coordinator))
                     .tabItem { Text("학습") }
-                coordinator.buildPrevProblemTabRootView()
+                PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: coordinator))
                     .tabItem { Text("기출문제") }
-                coordinator.buildMyPageTabRootView()
+                MyPageView(viewModel: MyPageViewModel(coordinator: coordinator))
                     .tabItem { Text("마이페이지") }
             }
             .navigationDestination(for: Page.self) { page in
-                coordinator.build(page: page)
+                page.getView(coordinator: coordinator)
             }
         }
-        .onReceive(coordinator.path) { navigationPath in
+        .onReceive(coordinator.pathPublisher) { navigationPath in
             self.navigationPath = navigationPath
         }
     }
