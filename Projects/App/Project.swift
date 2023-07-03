@@ -20,5 +20,6 @@ let project = Project.makeModule(
         .SPM.Swinject
     ],
     resources: ["Resources/**"],
-    infoPlist: .file(path: "Support/Info.plist")
+    infoPlist: .file(path: "Support/Info.plist"),
+    entitlements: .relativeToCurrentFile("App.entitlements")
 )

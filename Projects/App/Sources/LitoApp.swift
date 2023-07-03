@@ -17,13 +17,8 @@ struct LitoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: injector.resolve(HomeViewModel.self))
+//            HomeView(viewModel: injector.resolve(HomeViewModel.self))
+            LoginView(viewModel: .init())
         }
-    }
-}
-
-struct Previews_LitoApp_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
     }
 }
