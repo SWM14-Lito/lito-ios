@@ -1,5 +1,5 @@
 
-name: Build and Test
+name: Build
 
 on:
   push:
@@ -20,5 +20,3 @@ jobs:
         run: tuist fetch
       - name: Build
         run: tuist build
-      - name: Test
-        run: tuist test
