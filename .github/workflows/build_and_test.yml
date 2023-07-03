@@ -1,0 +1,24 @@
+
+name: Build and Test
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+  
+    
+jobs:
+  buildtest:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Fetch Swift Packages
+        run: tuist fetch
+      - name: Build
+        run: tuist build
+      - name: Test
+        run: tuist test
