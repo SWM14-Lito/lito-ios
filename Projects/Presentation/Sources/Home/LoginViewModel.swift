@@ -13,16 +13,20 @@ import AuthenticationServices
 
 final public class LoginViewModel: ObservableObject {
     
-    private let loginUseCase: LoginUseCase
+    private let useCase: LoginUseCase
     private let cancelBag = CancelBag()
     
     let appleLoginOnRequest: (ASAuthorizationAppleIDRequest) -> Void
     let appleLoginOnCompletion: (Result<ASAuthorization, Error>) -> Void
     
     public init(useCase: LoginUseCase, slip: Loadable<SlipVO> = .notRequested) {
-        self.loginUseCase = useCase
+        self.useCase = useCase
         self.appleLoginOnRequest = useCase.appleLoginOnRequest
         self.appleLoginOnCompletion = useCase.appleLoginOnCompletion
+    }
+    
+    public func kakaoLogin() {
+        useCase.kakaoLogin()
     }
     
 }

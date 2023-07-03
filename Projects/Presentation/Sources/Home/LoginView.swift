@@ -26,8 +26,7 @@ public struct LoginView: View {
 
             VStack {
                 Button(action: {
-                    // Action to perform when the button is tapped
-                    print("Button tapped")
+                    viewModel.kakaoLogin()
                 }, label: {
                     Image(.btnKakaologin) // Replace with the name of your image
                         .resizable()
