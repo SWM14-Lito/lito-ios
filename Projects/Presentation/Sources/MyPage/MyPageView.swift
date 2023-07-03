@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct MyPageView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+    @ObservedObject private(set) var viewModel: MyPageViewModel
+    
+    public init(viewModel: MyPageViewModel) {
+        self.viewModel = viewModel
     }
-}
-
-struct MyPageView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyPageView()
+    
+    var body: some View {
+        Text("MyPageView")
     }
 }

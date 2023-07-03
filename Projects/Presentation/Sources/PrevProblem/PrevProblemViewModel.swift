@@ -8,6 +8,6 @@
 
 import Foundation
 
-class PrevProblemViewModel {
+class PrevProblemViewModel: ObservableObject {
     
 }
