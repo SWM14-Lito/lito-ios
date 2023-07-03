@@ -35,7 +35,6 @@ public struct RootTabView: View {
         }
         .onReceive(coordinator.pathPublisher) { navigationPath in
             self.navigationPath = navigationPath
-            print("push!!")
         }
     }
 }

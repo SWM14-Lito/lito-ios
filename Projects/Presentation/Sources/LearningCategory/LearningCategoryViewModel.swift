@@ -14,4 +14,8 @@ public class LearningCategoryViewModel: ObservableObject {
     public init(coordinator: CoordinatorProtocol) {
         self.coordinator = coordinator
     }
+    
+    func back() {
+        coordinator.pop()
+    }
 }

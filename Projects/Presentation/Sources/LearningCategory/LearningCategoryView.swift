@@ -17,6 +17,14 @@ public struct LearningCategoryView: View {
     }
     
     public var body: some View {
-        Text("LearningCategoryView")
+        VStack {
+            Text("LearningCategoryView")
+            Button {
+                viewModel.back()
+            } label: {
+                Text("Back")
+            }
+
+        }
     }
 }
