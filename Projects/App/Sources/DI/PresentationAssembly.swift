@@ -11,6 +11,7 @@ import Domain
 import Presentation
 
 public struct PresentationAssembly: Assembly {
+    
     public func assemble(container: Container) {
         container.register(HomeViewModel.self) { resolver in
             let useCase = resolver.resolve(HomeUseCase.self)!
@@ -22,4 +23,5 @@ public struct PresentationAssembly: Assembly {
             return HomeView(viewModel: homeViewModel)
         }
     }
+    
 }

@@ -25,10 +25,7 @@ public struct HomeView: View {
 //                self.viewModel.loadSlip()
 //            }
 //        }
-        if #available(iOS 16.0, *) {
             RootTabView()
-        }
-
     }
     
     @ViewBuilder private var content: some View {
@@ -53,7 +50,7 @@ private extension HomeView {
     }
     
     var loadingView: some View {
-       ProgressView()
+        ProgressView()
     }
     
     func failedView(_ error: NetworkErrorVO) -> some View {
@@ -64,10 +61,3 @@ private extension HomeView {
         Text(slip.advice)
     }
 }
-
-//TODO: 모듈화로 인해 preview 사용이 안되는듯?
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
-//    }
-//}

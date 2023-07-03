@@ -16,7 +16,7 @@ struct ATabFirstView: View {
     var body: some View {
         VStack {
             Text("This is ATab First View")
-            Button  {
+            Button {
                 coordinator.push(.ATabSecondView(str: "Hi"))
             } label: {
                 Text("Move to Second View")
@@ -24,9 +24,3 @@ struct ATabFirstView: View {
         }
     }
 }
-
-//struct FirstView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ATabFirstView()
-//    }
-//}
