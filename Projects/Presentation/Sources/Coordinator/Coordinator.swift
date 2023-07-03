@@ -9,7 +9,7 @@
 import SwiftUI
 
 enum Page: Hashable {
-    case learningHomeView
+    case learningHomeView, learningCategoryView
     case prevProblemCategoryView
     case myPageView
 }
@@ -20,7 +20,7 @@ public class Coordinator: ObservableObject {
     
     public init() { }
     
-    func push(_ page: ExamplePage) {
+    func push(_ page: Page) {
         path.append(page)
     }
     
@@ -37,6 +37,8 @@ public class Coordinator: ObservableObject {
         switch page {
         case .learningHomeView:
             LearningHomeView(viewModel: LearningHomeViewModel(coordinator: self))
+        case .learningCategoryView:
+            LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: self))
         case .prevProblemCategoryView:
             PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: self))
         case .myPageView:

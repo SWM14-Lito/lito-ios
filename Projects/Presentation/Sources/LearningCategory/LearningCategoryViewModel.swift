@@ -1,5 +1,5 @@
 //
-//  LearningHomeViewModel.swift
+//  LearningCategoryViewModel.swift
 //  Presentation
 //
 //  Created by 김동락 on 2023/07/03.
@@ -8,14 +8,10 @@
 
 import Foundation
 
-class LearningHomeViewModel: ObservableObject {
+class LearningCategoryViewModel: ObservableObject {
     private var coordinator: Coordinator
     
     init(coordinator: Coordinator) {
         self.coordinator = coordinator
-    }
-    
-    func moveToLearningCategoryView() {
-        coordinator.push(.learningCategoryView)
     }
 }

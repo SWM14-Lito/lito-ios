@@ -17,6 +17,14 @@ struct LearningHomeView: View {
     }
     
     var body: some View {
-        Text("LearningHomeView")
+        VStack {
+            Text("LearningHomeView")
+            Button {
+                viewModel.moveToLearningCategoryView()
+            } label: {
+                Text("Move to LearningCategoryView")
+            }
+
+        }
     }
 }
