@@ -17,17 +17,17 @@ final public class DefaultHomeRepository: HomeRepository {
         self.dataSource = dataSource
     }
     
-    public func loadSlip() -> AnyPublisher<SlipVO, NetworkErrorVO> {
+    public func loadSlip() -> AnyPublisher<SlipVO, ErrorVO> {
         return dataSource.loadMaxim()
-            .mapError { networkErrorDTO -> NetworkErrorVO in
+            .mapError { networkErrorDTO -> ErrorVO in
                 #if DEBUG
                 print(networkErrorDTO.debugString)
                 #endif
                 return networkErrorDTO.toVO()
             }
-            .flatMap { value -> AnyPublisher<SlipVO, NetworkErrorVO> in
+            .flatMap { value -> AnyPublisher<SlipVO, ErrorVO> in
                 Just(value.toVO())
-                    .setFailureType(to: NetworkErrorVO.self)
+                    .setFailureType(to: ErrorVO.self)
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
