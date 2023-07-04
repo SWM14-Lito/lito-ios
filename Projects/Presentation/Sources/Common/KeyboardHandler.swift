@@ -9,6 +9,11 @@
 import Combine
 import SwiftUI
 
+// 키보드 올라올시 텍스트필드가 가려지지 않도록 화면을 올려주는 클래스
+// - 사용 방법 -
+// @StateObject private var keyboardHandler = KeyboardHandler()
+// .padding(.bottom, keyboardHandler.keyboardHeight)
+
 final class KeyboardHandler: ObservableObject {
     @Published private(set) var keyboardHeight: CGFloat = 0
     

@@ -8,6 +8,11 @@
 
 import Combine
 
+// 글자 제한 있는 텍스트
+// - 사용 방법 -
+// @ObservedObject private var nickname = LimitedText(limit: 10)
+// TextField("", text: $nickname.text)
+
 class LimitedText: ObservableObject {
     let limit: Int
     
