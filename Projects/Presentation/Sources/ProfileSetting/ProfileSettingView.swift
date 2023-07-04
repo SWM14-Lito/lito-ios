@@ -11,7 +11,6 @@ import PhotosUI
 
 public struct ProfileSettingView: View {
     @ObservedObject private(set) var viewModel: ProfileSettingViewModel
-    @StateObject private var keyboardHandler = KeyboardHandler()
     @FocusState private var focus: TextFieldCategory?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedPhotoData: Data?
@@ -33,7 +32,6 @@ public struct ProfileSettingView: View {
             Spacer()
             finishButtonView()
         }
-//        .padding(.bottom, keyboardHandler.keyboardHeight)
         .padding([.leading, .trailing], 15)
         .onAppear {
             focus = .nickname
