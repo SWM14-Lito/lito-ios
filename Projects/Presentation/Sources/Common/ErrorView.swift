@@ -11,8 +11,13 @@ import SwiftUI
 import Domain
 
 struct ErrorView: View {
-    let error: NetworkErrorVO
+    let error: ErrorVO
     let retryAction: () -> Void
+    
+    public init(error: ErrorVO, retryAction: @escaping () -> Void = {}) {
+        self.error = error
+        self.retryAction = retryAction
+    }
     
     // TODO: 정의된 Error에 따라 보여줄 view build
     // retryable Error: 로깅 + viewModel의 메소드 재실행

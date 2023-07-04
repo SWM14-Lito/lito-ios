@@ -8,80 +8,41 @@
 
 import Combine
 import Foundation
-import AuthenticationServices
 
 public protocol LoginUseCase {
     
-    var appleLoginOnRequest: (ASAuthorizationAppleIDRequest) -> Void { get }
-    var appleLoginOnCompletion: (Result<ASAuthorization, Error>) -> Void { get }
-    func kakaoLogin()
+    func kakaoLogin() -> AnyPublisher<Void, ErrorVO>
+    func performAppleLogin()
+    func bindAppleLogin() -> AnyPublisher<Void, ErrorVO>
+    
 }
 
+// TODO: 유저 정보 keychain 저장
 public final class DefaultLoginUseCase: LoginUseCase {
     
     let repository: LoginRepository
     
     private var cancleBag = Set<AnyCancellable>()
-
+    
     public init(repository: LoginRepository) {
         self.repository = repository
     }
     
-    public let appleLoginOnRequest: (ASAuthorizationAppleIDRequest) -> Void = { request in
-        request.requestedScopes = [.fullName, .email]
+    public func performAppleLogin() {
+        repository.performAppleLogin()
     }
     
-    public let appleLoginOnCompletion: (Result<ASAuthorization, Error>) -> Void  = { result in
-        switch result {
-        case .success(let authorization):
-            print("apple login sucess")
-            switch authorization.credential {
-            case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                /*
-                 Info
-                 appleIDCredential.fullName
-                 appleIDCredential.email
-                 appleIDCredential.user
-                 appleIDCredential.authorizationCode
-                 appleIDCredential.identityToken
-                 */
-                break
-            default:
-                break
-            }
-        case .failure(let error):
-            print("error")
-        }
+    // Void를 줘야할까 아니면 그대로 VO를 내려줘야할까?
+    public func bindAppleLogin() -> AnyPublisher<Void, ErrorVO> {
+        repository.appleLoginSubject
+            .map { _ in () }
+            .eraseToAnyPublisher()
     }
     
-    public func kakaoLogin() {
+    public func kakaoLogin() -> AnyPublisher<Void, ErrorVO> {
         repository.kakaoLogin()
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print(error)
-                default:
-                    break
-                }
-            } receiveValue: { kakaoVO in
-                print(kakaoVO)
-            }
-            .store(in: &cancleBag)
-
+            .map { _ in () }
+            .eraseToAnyPublisher()
     }
     
 }
-
-//#if DEBUG
-//public final class StubLoginUseCase: LoginUseCase {
-//
-//    public init() {}
-//
-//    public func load() -> AnyPublisher<SlipVO, NetworkErrorVO> {
-//        return Just(SlipVO.mock)
-//            .setFailureType(to: NetworkErrorVO.self)
-//            .eraseToAnyPublisher()
-//    }
-//
-//}
-//#endif

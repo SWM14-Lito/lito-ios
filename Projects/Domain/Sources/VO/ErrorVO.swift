@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum NetworkErrorVO: Error {
+public enum ErrorVO: Error {
     
     case retryableError
     case fatalError
