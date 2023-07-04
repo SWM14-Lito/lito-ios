@@ -18,13 +18,6 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-//        VStack{
-//            content
-//                .padding(.bottom, 30)
-//            Button("Change Quote") {
-//                self.viewModel.loadSlip()
-//            }
-//        }
             RootTabView()
     }
     
@@ -53,7 +46,7 @@ private extension HomeView {
         ProgressView()
     }
     
-    func failedView(_ error: NetworkErrorVO) -> some View {
+    func failedView(_ error: ErrorVO) -> some View {
         ErrorView(error: error, retryAction: self.viewModel.loadSlip)
     }
     
