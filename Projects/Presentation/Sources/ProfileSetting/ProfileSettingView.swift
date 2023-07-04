@@ -32,21 +32,27 @@ public struct ProfileSettingView: View {
             setTextFieldView(fieldCategory: .introduce, limitedText: _introduce, focus: _focus)
             Spacer()
             finishButtonView()
-            Spacer()
         }
 //        .padding(.bottom, keyboardHandler.keyboardHeight)
         .padding([.leading, .trailing], 15)
         .onAppear {
             focus = .nickname
         }
-        .onSubmit {
-            switch focus {
-            case .nickname:
-                focus = .introduce
-            case .introduce:
-                 focus = nil
-            case .none:
-                break
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button {
+                    switch focus {
+                    case .nickname:
+                        focus = .introduce
+                    case .introduce:
+                        focus = nil
+                    case .none:
+                        break
+                    }
+                } label: {
+                    Text("Done")
+                }
             }
         }
     }
@@ -59,17 +65,19 @@ public struct ProfileSettingView: View {
                let image = UIImage(data: selectedPhotoData) {
                 Image(uiImage: image)
                     .resizable()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .foregroundColor(.gray)
                     .padding(.bottom, 20)
+                    .padding(.top, 30)
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
-                    .frame(width: 80, height: 80)
+                    .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .foregroundColor(.gray)
                     .padding(.bottom, 20)
+                    .padding(.top, 30)
             }
         }
         .onChange(of: selectedPhoto) { newItem in
@@ -108,9 +116,10 @@ public struct ProfileSettingView: View {
             Text(fieldCategory.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 10))
-            ZStack(alignment: .trailing) {
-                TextField(fieldCategory.placeHolder, text: limitedText.projectedValue.text)
+            ZStack(alignment: .bottomTrailing) {
+                TextField(fieldCategory.placeHolder, text: limitedText.projectedValue.text, axis: .vertical)
                     .font(.system(size: 15))
+                    .padding(.trailing, 70)
                     .focused($focus, equals: fieldCategory)
                 HStack {
                     Text(curLength + "/" + maxLength)
@@ -136,6 +145,7 @@ public struct ProfileSettingView: View {
         }
         .buttonStyle(.bordered)
         .tint(.orange)
+        .padding(.bottom, 20)
 
     }
 }
