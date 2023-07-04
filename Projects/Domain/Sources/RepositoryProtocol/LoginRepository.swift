@@ -10,5 +10,9 @@ import Foundation
 import Combine
 
 public protocol LoginRepository {
-    func kakaoLogin() -> AnyPublisher<OAuth.kakaoVO, Error>
+    
+    func performAppleLogin()
+    var appleLoginSubject: PassthroughSubject<OAuth.appleVO, ErrorVO> { get }
+    func kakaoLogin() -> AnyPublisher<OAuth.kakaoVO, ErrorVO>
+    
 }

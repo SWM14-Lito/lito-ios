@@ -23,55 +23,49 @@ public struct LoginView: View {
         VStack {
             Text("로그인")
                 .font(.title)
-
+            
             VStack {
+                SignInWithAppleButtonView()
+                    .onTapGesture {
+                        viewModel.performAppleLogin()
+                    }
+                    .frame(width: 280, height: 45)
+                    .cornerRadius(10)
+                
                 Button(action: {
                     viewModel.kakaoLogin()
                 }, label: {
-                    Image(.btnKakaologin) // Replace with the name of your image
+                    Image(.btnKakaologin)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 })
                 .padding(20)
 
+                loginFeedbackView
+                
             }
-            SignInWithAppleButton(onRequest: viewModel.appleLoginOnRequest, onCompletion: viewModel.appleLoginOnCompletion)
-            .frame(width: 280, height: 45)
-            .cornerRadius(10)
         }
-        
     }
     
-//    @ViewBuilder private var content: some View {
-//        switch viewModel.slip {
-//        case .notRequested:
-//            notRequestedView
-//        case .isLoading:
-//            loadingView
-//        case let .loaded(slip):
-//            loadedView(slip)
-//        case let .failed(error):
-//            failedView(error)
-//        }
-//    }
+    @ViewBuilder private var loginFeedbackView: some View {
+        switch viewModel.loginFeedback {
+        case .idle:
+            EmptyView()
+        case .feedback(let text):
+            Text(text)
+        case .failed(let error):
+            ErrorView(error: error)
+        }
+    }
 }
 
-// private extension LoginView {
-//    var notRequestedView: some View {
-//        Text("").onAppear {
-//            //            self.viewModel.loadSlip()
-//        }
-//    }
-//
-//    var loadingView: some View {
-//        ProgressView()
-//    }
-//
-//    func failedView(_ error: NetworkErrorVO) -> some View {
-//        ErrorView(error: error, retryAction: self.viewModel.loadSlip)
-//    }
-//
-//    func loadedView(_ slip: SlipVO) -> some View {
-//        Text(slip.advice)
-//    }
-// }
+struct SignInWithAppleButtonView: UIViewRepresentable {
+    
+    func makeUIView(context: Context) -> UIView {
+        return ASAuthorizationAppleIDButton()
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // Update the view controller if needed
+    }
+}
