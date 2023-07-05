@@ -27,9 +27,6 @@ public struct ProfileSettingView: View {
             finishButtonView()
         }
         .padding([.leading, .trailing], 15)
-        .onAppear {
-            focus = .nickname
-        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
