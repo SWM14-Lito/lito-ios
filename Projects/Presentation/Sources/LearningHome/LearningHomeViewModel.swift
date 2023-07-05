@@ -8,13 +8,7 @@
 
 import SwiftUI
 
-public class LearningHomeViewModel: ObservableObject {
-    private var coordinator: CoordinatorProtocol
-    
-    public init(coordinator: CoordinatorProtocol) {
-        self.coordinator = coordinator
-    }
-    
+public class LearningHomeViewModel: BaseViewModel, ObservableObject {    
     func moveToLearningCategoryView() {
         coordinator.push(.learningCategoryView)
     }

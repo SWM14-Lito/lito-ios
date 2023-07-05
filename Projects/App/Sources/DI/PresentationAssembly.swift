@@ -24,7 +24,6 @@ public struct PresentationAssembly: Assembly {
             return HomeView(viewModel: homeViewModel)
         }
         
-        
         container.register(LearningHomeViewModel.self) { _ in
             return LearningHomeViewModel(coordinator: coordinator)
         }
@@ -32,7 +31,6 @@ public struct PresentationAssembly: Assembly {
             return LearningHomeView(viewModel: resolver.resolve(LearningHomeViewModel.self)!)
         }
         
-
         container.register(LearningCategoryViewModel.self) { _ in
             return LearningCategoryViewModel(coordinator: coordinator)
         }
@@ -40,15 +38,13 @@ public struct PresentationAssembly: Assembly {
             return LearningCategoryView(viewModel: resolver.resolve(LearningCategoryViewModel.self)!)
         }
         
-        
         container.register(PrevProblemCategoryViewModel.self) { _ in
             return PrevProblemCategoryViewModel(coordinator: coordinator)
         }
         container.register(PrevProblemCategoryView.self) { resolver in
             return PrevProblemCategoryView(viewModel: resolver.resolve(PrevProblemCategoryViewModel.self)!)
         }
-        
-
+    
         container.register(MyPageViewModel.self) { _ in
             return MyPageViewModel(coordinator: coordinator)
         }
