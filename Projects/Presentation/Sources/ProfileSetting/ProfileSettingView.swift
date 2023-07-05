@@ -96,6 +96,7 @@ public struct ProfileSettingView: View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)
+        let isExceed = fieldCategory == .nickname ? viewModel.isNicknameExceedLimit : viewModel.isIntroduceExceedLimit
         
         VStack {
             Text(fieldCategory.title)
@@ -109,6 +110,7 @@ public struct ProfileSettingView: View {
                 HStack {
                     Text(curLength + "/" + maxLength)
                         .font(.system(size: 10))
+                        .foregroundColor(isExceed ? .red : .black)
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.secondary)
                         .onTapGesture {
