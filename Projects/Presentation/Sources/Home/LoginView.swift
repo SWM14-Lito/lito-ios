@@ -14,12 +14,15 @@ public struct LoginView: View {
     
     @ObservedObject private(set) var viewModel: LoginViewModel
     
+    private var errorView = ErrorView()
+    
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
+        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
-        
+        errorView
         VStack {
             Text("로그인")
                 .font(.title)
@@ -41,20 +44,20 @@ public struct LoginView: View {
                 })
                 .padding(20)
 
-                loginFeedbackView
+                loginFeedbackView()
                 
             }
         }
     }
     
-    @ViewBuilder private var loginFeedbackView: some View {
+    @ViewBuilder private func loginFeedbackView() -> some View {
         switch viewModel.loginFeedback {
         case .idle:
             EmptyView()
         case .feedback(let text):
             Text(text)
-        case .failed(let error):
-            ErrorView(error: error)
+        case .failed(_):
+            ErrorView()
         }
     }
 }

@@ -11,13 +11,10 @@ import SwiftUI
 import Domain
 
 struct ErrorView: View {
-    let error: ErrorVO
-    let retryAction: () -> Void
+//    let error: ErrorVO
+    @ObservedObject var errorObject: ErrorObject = ErrorObject()
     
-    public init(error: ErrorVO, retryAction: @escaping () -> Void = {}) {
-        self.error = error
-        self.retryAction = retryAction
-    }
+    public init() {}
     
     // TODO: 정의된 Error에 따라 보여줄 view build
     // retryable Error: 로깅 + viewModel의 메소드 재실행
@@ -25,14 +22,16 @@ struct ErrorView: View {
     
     var body: some View {
         VStack {
-            Text("An Error Occured")
-                .font(.title)
-            Text(error.localizedString)
-                .font(.callout)
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 40).padding()
-            if error == .retryableError {
-                Button(action: retryAction, label: { Text("Retry").bold() })
+            if let error = errorObject.error {
+                Text("An Error Occured")
+                    .font(.title)
+                    .padding(20)
+                Text(error.localizedString)
+                    .font(.callout)
+                    .multilineTextAlignment(.center)
+                if errorObject.error == .retryableError {
+                    Button(action: errorObject.retryAction, label: { Text("Retry").bold() })
+                }
             }
         }
     }

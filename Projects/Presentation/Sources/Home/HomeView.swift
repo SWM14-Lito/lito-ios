@@ -47,7 +47,7 @@ private extension HomeView {
     }
     
     func failedView(_ error: ErrorVO) -> some View {
-        ErrorView(error: error, retryAction: self.viewModel.loadSlip)
+        ErrorView()
     }
     
     func loadedView(_ slip: SlipVO) -> some View {
