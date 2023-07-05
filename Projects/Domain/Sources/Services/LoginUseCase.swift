@@ -11,9 +11,9 @@ import Foundation
 
 public protocol LoginUseCase {
     
-    func kakaoLogin() -> AnyPublisher<Void, ErrorVO>
+    func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO>
     func performAppleLogin()
-    func bindAppleLogin() -> AnyPublisher<Void, ErrorVO>
+    func bindAppleLogin() -> AnyPublisher<Result<RequestResultVO, ErrorVO>, Never>
     
 }
 
@@ -32,15 +32,22 @@ public final class DefaultLoginUseCase: LoginUseCase {
         repository.performAppleLogin()
     }
     
-    public func bindAppleLogin() -> AnyPublisher<Void, ErrorVO> {
+    public func bindAppleLogin() -> AnyPublisher<Result<RequestResultVO, ErrorVO>, Never> {
         repository.bindAppleLogin()
-            .map { _ in () }
+            .map { result in
+                switch result {
+                case .success(_):
+                    return .success(.successed)
+                case .failure(let error):
+                    return .failure(error)
+                }
+            }
             .eraseToAnyPublisher()
     }
     
-    public func kakaoLogin() -> AnyPublisher<Void, ErrorVO> {
+    public func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
         repository.kakaoLogin()
-            .map { _ in () }
+            .map { _ in .successed }
             .eraseToAnyPublisher()
     }
     

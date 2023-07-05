@@ -15,7 +15,7 @@ import KakaoSDKUser
 public protocol OAuthServiceDataSource {
     
     func performAppleLogin()
-    var appleLoginSubject: PassthroughSubject<OAuth.AppleDTO, ErrorVO> { get }
+    var appleLoginSubject: PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never> { get }
     func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO>
     
 }
@@ -33,10 +33,10 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         controller.performRequests()
     }
     
-    public let appleLoginSubject = PassthroughSubject<OAuth.AppleDTO, ErrorVO>()
+    public let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never>()
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        appleLoginSubject.send(completion: .failure(.retryableError))
+        appleLoginSubject.send(.failure(.retryableError))
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
@@ -46,7 +46,7 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
             let userName = (appleIDCredential.fullName?.namePrefix ?? "") + (appleIDCredential.fullName?.namePrefix ?? "")
             let userEmail = appleIDCredential.email
             let appleDTO = OAuth.AppleDTO(userIdentifier: userIdentifier, userName: userName, userEmail: userEmail)
-            appleLoginSubject.send(appleDTO)
+            appleLoginSubject.send(.success(appleDTO))
         default:
             break
         }
