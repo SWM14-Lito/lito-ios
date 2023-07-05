@@ -96,7 +96,7 @@ public struct ProfileSettingView: View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)
-        let isExceed = fieldCategory == .nickname ? viewModel.isNicknameExceedLimit : viewModel.isIntroduceExceedLimit
+        let isExceed = viewModel.getIsExceed(fieldCategory: fieldCategory)
         
         VStack {
             Text(fieldCategory.title)
@@ -138,7 +138,7 @@ public struct ProfileSettingView: View {
 }
 
 extension ProfileSettingView {
-    private enum TextFieldCategory: Hashable {
+    enum TextFieldCategory: Hashable {
         case nickname, introduce
         var title: String {
             switch self {
