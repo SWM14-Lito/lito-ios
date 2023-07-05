@@ -14,7 +14,9 @@ public class ProfileSettingViewModel: ObservableObject {
     let nicknameLimit = 10
     let introduceLimit = 250
     let userName: String
+    private let cancelBag = CancelBag()
     @Published var selectedPhotoData: Data?
+    @Published var selectedPhoto: PhotosPickerItem?
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     
@@ -22,17 +24,22 @@ public class ProfileSettingViewModel: ObservableObject {
         self.userName = userName
         nickname = LimitedText(limit: nicknameLimit)
         introduce = LimitedText(limit: introduceLimit)
+        initPublisher()
+    }
+    
+    func initPublisher() {
+        $selectedPhoto
+            .sink { value in
+                value?.loadTransferable(type: Data.self) { result in
+                    DispatchQueue.main.async {
+                        self.selectedPhotoData = try? result.get()
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
     func moveToLearningHomeView() {
-
-    }
-    
-    func transformPhotoToData(selectedPhoto: PhotosPickerItem?) {
-        Task {
-            if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
-                selectedPhotoData = data
-            }
-        }
+        
     }
 }

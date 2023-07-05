@@ -12,7 +12,6 @@ import PhotosUI
 public struct ProfileSettingView: View {
     @ObservedObject private(set) var viewModel: ProfileSettingViewModel
     @FocusState private var focus: TextFieldCategory?
-    @State private var selectedPhoto: PhotosPickerItem?
     
     public init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
@@ -53,7 +52,7 @@ public struct ProfileSettingView: View {
     // 프로필 이미지 설정 뷰
     @ViewBuilder
     private func setProfileImageView() -> some View {
-        PhotosPicker(selection: $selectedPhoto) {
+        PhotosPicker(selection: $viewModel.selectedPhoto) {
             if let selectedPhotoData = viewModel.selectedPhotoData,
                let image = UIImage(data: selectedPhotoData) {
                 Image(uiImage: image)
@@ -72,9 +71,6 @@ public struct ProfileSettingView: View {
                     .padding(.bottom, 20)
                     .padding(.top, 30)
             }
-        }
-        .onChange(of: selectedPhoto) { newItem in
-            viewModel.transformPhotoToData(selectedPhoto: newItem)
         }
     }
     
