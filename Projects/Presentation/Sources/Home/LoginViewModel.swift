@@ -12,6 +12,7 @@ import Domain
 
 final public class LoginViewModel: ObservableObject {
     
+    @Published private(set) var errorObject = ErrorObject()
     @Published private(set) var loginFeedback: Feedbackable
     
     private let useCase: LoginUseCase
@@ -33,9 +34,12 @@ final public class LoginViewModel: ObservableObject {
                 case .failure(let error):
                     switch error {
                     case .fatalError:
-                        self.loginFeedback = .failed(error)
+                        self.errorObject.error = error
+                        self.errorObject.retryAction = self.performAppleLogin
                     case .retryableError:
-                        self.loginFeedback = .idle
+                        // self.loginFeedback = .idle
+                        self.errorObject.error = error
+                        self.errorObject.retryAction = self.performAppleLogin
                     }
                 }
             })
@@ -48,17 +52,20 @@ final public class LoginViewModel: ObservableObject {
     
     private func bindAppleLogin() {
         useCase.bindAppleLogin()
-            .sinkToResult({ result in
+            .sink(receiveValue: { result in
                 switch result {
-                case .success():
-                    print("apple login sucess")
+                case .success(_):
+                    print("apple login Sucess")
                     //TODO: routing to next view
                 case .failure(let error):
                     switch error {
                     case .fatalError:
-                        self.loginFeedback = .failed(error)
+                        self.errorObject.error = error
+                        self.errorObject.retryAction = self.performAppleLogin
                     case .retryableError:
-                        self.loginFeedback = .idle
+                        self.errorObject.error = error
+                        self.errorObject.retryAction = self.performAppleLogin
+//                        self.loginFeedback = .idle
                     }
                 }
             })
