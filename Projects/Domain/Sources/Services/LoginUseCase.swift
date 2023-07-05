@@ -32,9 +32,8 @@ public final class DefaultLoginUseCase: LoginUseCase {
         repository.performAppleLogin()
     }
     
-    // Void를 줘야할까 아니면 그대로 VO를 내려줘야할까?
     public func bindAppleLogin() -> AnyPublisher<Void, ErrorVO> {
-        repository.appleLoginSubject
+        repository.bindAppleLogin()
             .map { _ in () }
             .eraseToAnyPublisher()
     }

@@ -15,7 +15,7 @@ public enum OAuth {
         case kakao
     }
     
-    public struct appleVO {
+    public struct AppleVO {
         let provider = OAuth.provider.apple
         let userIdentifier: String
         let userName: String?
@@ -28,13 +28,13 @@ public enum OAuth {
         }
     }
     
-    public struct kakaoVO {
+    public struct KakaoVO {
         let provider = OAuth.provider.kakao
-        let identifier: String
-        let userEmail: String?
+        let userIdentifier: String
+        let userEmail: String
         
-        public init(identifier: String, userEmail: String?) {
-            self.identifier = identifier
+        public init(userIdentifier: String, userEmail: String) {
+            self.userIdentifier = userIdentifier
             self.userEmail = userEmail
         }
     }
