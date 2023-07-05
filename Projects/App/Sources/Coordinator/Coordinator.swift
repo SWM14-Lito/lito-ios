@@ -11,7 +11,6 @@ import Presentation
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
     @Published public var path = NavigationPath()
-    public static let instance = Coordinator()
     
     public init() { }
     
