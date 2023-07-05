@@ -6,6 +6,7 @@ import Swinject
 @main
 struct LitoApp: App {
     private let injector: Injector
+    private let viewResolver: ViewResolver
     
     init() {
         injector = DependencyInjector(container: Container())
@@ -13,11 +14,13 @@ struct LitoApp: App {
                            DataAssembly(),
                            PresentationAssembly()
                           ])
+        viewResolver = ViewResolver(injector: injector)
     }
 
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: injector.resolve(HomeViewModel.self))
+//            HomeView(viewModel: injector.resolve(HomeViewModel.self))
+            RootTabView(coordinator: Coordinator.instance, viewResolver: viewResolver)
         }
     }
 }

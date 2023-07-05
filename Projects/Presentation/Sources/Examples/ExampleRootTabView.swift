@@ -8,11 +8,10 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
-struct RootTabView: View {
+struct ExampleRootTabView: View {
     
     // swinject로 의존성 주입 받기?
-    @StateObject private var coordinator = Coordinator()
+    @StateObject private var coordinator = ExampleCoordinator()
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -22,7 +21,7 @@ struct RootTabView: View {
                 coordinator.build(page: .BTabFirstView)
                     .tabItem { Text("BTab") }
             }
-            .navigationDestination(for: Page.self) { page in
+            .navigationDestination(for: ExamplePage.self) { page in
                 coordinator.build(page: page)
             }
         }
