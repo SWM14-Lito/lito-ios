@@ -53,6 +53,15 @@ public class ProfileSettingViewModel: ObservableObject {
             .store(in: cancelBag)
     }
     
+    func getIsExceed(fieldCategory: ProfileSettingView.TextFieldCategory) -> Bool {
+        switch fieldCategory {
+        case .nickname:
+            return isNicknameExceedLimit
+        case .introduce:
+            return isIntroduceExceedLimit
+        }
+    }
+    
     func moveToLearningHomeView() {
         
     }
