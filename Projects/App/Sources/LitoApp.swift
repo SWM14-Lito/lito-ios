@@ -17,7 +17,7 @@ struct LitoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ProfileSettingView(viewModel: ProfileSettingViewModel(), name: "홍길동")
+            ProfileSettingView(viewModel: ProfileSettingViewModel(userName: "홍길동"))
         }
     }
 }

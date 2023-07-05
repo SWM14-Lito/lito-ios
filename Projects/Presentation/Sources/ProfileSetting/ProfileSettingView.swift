@@ -13,22 +13,17 @@ public struct ProfileSettingView: View {
     @ObservedObject private(set) var viewModel: ProfileSettingViewModel
     @FocusState private var focus: TextFieldCategory?
     @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedPhotoData: Data?
-    @ObservedObject private var nickname = LimitedText(limit: 10)
-    @ObservedObject private var introduce = LimitedText(limit: 250)
-    private let name: String
     
-    public init(viewModel: ProfileSettingViewModel, name: String) {
+    public init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
-        self.name = name
     }
     
     public var body: some View {
         VStack {
-            setProfileImageView(photoItem: $selectedPhoto, photoData: $selectedPhotoData)
-            nameView(text: name)
-            setTextFieldView(fieldCategory: .nickname, limitedText: _nickname, focus: _focus)
-            setTextFieldView(fieldCategory: .introduce, limitedText: _introduce, focus: _focus)
+            setProfileImageView()
+            nameView(text: viewModel.userName)
+            setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
+            setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
             Spacer()
             finishButtonView()
         }
@@ -57,9 +52,9 @@ public struct ProfileSettingView: View {
     
     // 프로필 이미지 설정 뷰
     @ViewBuilder
-    private func setProfileImageView(photoItem: Binding<PhotosPickerItem?>, photoData: Binding<Data?>) -> some View {
+    private func setProfileImageView() -> some View {
         PhotosPicker(selection: $selectedPhoto) {
-            if let selectedPhotoData,
+            if let selectedPhotoData = viewModel.selectedPhotoData,
                let image = UIImage(data: selectedPhotoData) {
                 Image(uiImage: image)
                     .resizable()
@@ -79,11 +74,7 @@ public struct ProfileSettingView: View {
             }
         }
         .onChange(of: selectedPhoto) { newItem in
-            Task {
-                if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                    selectedPhotoData = data
-                }
-            }
+            viewModel.transformPhotoToData(selectedPhoto: newItem)
         }
     }
     
@@ -103,9 +94,9 @@ public struct ProfileSettingView: View {
         }
     }
     
-    // 텍스트 입력 뷰 (닉네임, 소개말)
+    // 프로필 관련 텍스트 입력 뷰 (fieldCategory로 선택 가능)
     @ViewBuilder
-    private func setTextFieldView(fieldCategory: TextFieldCategory, limitedText: ObservedObject<LimitedText>, focus: FocusState<TextFieldCategory?>) -> some View {
+    private func setProfileTextFieldView(fieldCategory: TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<TextFieldCategory?>) -> some View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)
