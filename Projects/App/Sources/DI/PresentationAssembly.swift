@@ -12,31 +12,48 @@ import Presentation
 
 public struct PresentationAssembly: Assembly {
     
+    let coordinator: Coordinator
+    
     public func assemble(container: Container) {
         container.register(HomeViewModel.self) { resolver in
             let useCase = resolver.resolve(HomeUseCase.self)!
             return HomeViewModel(homeUseCase: useCase)
         }
-        
         container.register(HomeView.self) { resolver in
             let homeViewModel = resolver.resolve(HomeViewModel.self)!
             return HomeView(viewModel: homeViewModel)
         }
         
-        container.register(LearningHomeView.self) { _ in
-            return LearningHomeView(viewModel: LearningHomeViewModel(coordinator: Coordinator.instance))
+        
+        container.register(LearningHomeViewModel.self) { _ in
+            return LearningHomeViewModel(coordinator: coordinator)
         }
-
-        container.register(LearningCategoryView.self) { _ in
-            return LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: Coordinator.instance))
+        container.register(LearningHomeView.self) { resolver in
+            return LearningHomeView(viewModel: resolver.resolve(LearningHomeViewModel.self)!)
         }
         
-        container.register(PrevProblemCategoryView.self) { _ in
-            return PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: Coordinator.instance))
-        }
 
-        container.register(MyPageView.self) { _ in
-            return MyPageView(viewModel: MyPageViewModel(coordinator: Coordinator.instance))
+        container.register(LearningCategoryViewModel.self) { _ in
+            return LearningCategoryViewModel(coordinator: coordinator)
+        }
+        container.register(LearningCategoryView.self) { resolver in
+            return LearningCategoryView(viewModel: resolver.resolve(LearningCategoryViewModel.self)!)
+        }
+        
+        
+        container.register(PrevProblemCategoryViewModel.self) { _ in
+            return PrevProblemCategoryViewModel(coordinator: coordinator)
+        }
+        container.register(PrevProblemCategoryView.self) { resolver in
+            return PrevProblemCategoryView(viewModel: resolver.resolve(PrevProblemCategoryViewModel.self)!)
+        }
+        
+
+        container.register(MyPageViewModel.self) { _ in
+            return MyPageViewModel(coordinator: coordinator)
+        }
+        container.register(MyPageView.self) { resolver in
+            return MyPageView(viewModel: resolver.resolve(MyPageViewModel.self)!)
         }
     }
     

@@ -10,19 +10,18 @@ struct LitoApp: App {
     @ObservedObject private var coordinator: Coordinator
     
     init() {
+        coordinator = Coordinator()
         injector = DependencyInjector(container: Container())
+        viewResolver = ViewResolver(injector: injector)
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
-                           PresentationAssembly()
+                           PresentationAssembly(coordinator: coordinator)
                           ])
-        viewResolver = ViewResolver(injector: injector)
-        coordinator = Coordinator.instance
     }
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-//            HomeView(viewModel: injector.resolve(HomeViewModel.self))
             RootTabView(viewResolver: viewResolver)
                     .navigationDestination(for: Page.self) { page in
                         page.getView(viewResolver: viewResolver)
