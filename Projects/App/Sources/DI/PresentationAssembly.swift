@@ -22,6 +22,11 @@ public struct PresentationAssembly: Assembly {
             let homeViewModel = resolver.resolve(HomeViewModel.self)!
             return HomeView(viewModel: homeViewModel)
         }
+        
+        container.register(LoginViewModel.self) { resolver in
+            let useCase = resolver.resolve(LoginUseCase.self)!
+            return LoginViewModel(useCase: useCase)
+        }
     }
     
 }

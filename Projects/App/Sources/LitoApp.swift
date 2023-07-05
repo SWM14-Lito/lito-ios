@@ -22,8 +22,7 @@ struct LitoApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            HomeView(viewModel: injector.resolve(HomeViewModel.self))
-            LoginView(viewModel: .init(useCase: DefaultLoginUseCase(repository: DefaultLoginRepository()))).onOpenURL(perform: { url in
+            LoginView(viewModel: injector.resolve(LoginViewModel.self)).onOpenURL(perform: { url in
                 if AuthApi.isKakaoTalkLoginUrl(url) {
                     _ = AuthController.handleOpenUrl(url: url)
                 }

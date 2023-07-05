@@ -22,6 +22,16 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(HomeDataSource.self)!
             return DefaultHomeRepository(dataSource: dataSource)
         }
+        
+        container.register(OAuthServiceDataSource.self) { _ in
+            return DefaultOAuthServiceDataSource()
+        }
+        
+        container.register(LoginRepository.self) { resolver in
+            let dataSource = resolver.resolve(OAuthServiceDataSource.self)!
+            return DefaultLoginRepository(dataSource: dataSource)
+        }
+        
     }
     
 }
