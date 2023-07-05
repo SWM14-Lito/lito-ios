@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-public class MyPageViewModel: ObservableObject {
-    private var coordinator: CoordinatorProtocol
-    
-    public init(coordinator: CoordinatorProtocol) {
-        self.coordinator = coordinator
-    }
+public class MyPageViewModel: BaseViewModel, ObservableObject {
+
 }
