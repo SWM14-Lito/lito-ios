@@ -7,6 +7,7 @@ import Swinject
 struct LitoApp: App {
     private let injector: Injector
     private let viewResolver: ViewResolver
+    @ObservedObject private var coordinator: Coordinator
     
     init() {
         injector = DependencyInjector(container: Container())
@@ -15,12 +16,18 @@ struct LitoApp: App {
                            PresentationAssembly()
                           ])
         viewResolver = ViewResolver(injector: injector)
+        coordinator = Coordinator.instance
     }
 
     var body: some Scene {
         WindowGroup {
+            NavigationStack(path: $coordinator.path) {
 //            HomeView(viewModel: injector.resolve(HomeViewModel.self))
-            RootTabView(coordinator: Coordinator.instance, viewResolver: viewResolver)
+            RootTabView(viewResolver: viewResolver)
+                    .navigationDestination(for: Page.self) { page in
+                        page.getView(viewResolver: viewResolver)
+                    }
+            }
         }
     }
 }

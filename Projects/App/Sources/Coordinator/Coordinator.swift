@@ -11,13 +11,9 @@ import Presentation
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
     @Published public var path = NavigationPath()
-    public var pathPublisher: Published<NavigationPath>.Publisher { $path }
     public static let instance = Coordinator()
     
-    public init() {
-        
-        print("init!!")
-    }
+    public init() { }
     
     public func push(_ page: Page) {
         path.append(page)
