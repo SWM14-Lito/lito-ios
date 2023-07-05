@@ -19,6 +19,8 @@ public class ProfileSettingViewModel: ObservableObject {
     @Published var selectedPhoto: PhotosPickerItem?
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
+    @Published var isNicknameExceedLimit: Bool = false
+    @Published var isIntroduceExceedLimit: Bool = false
     
     public init(userName: String) {
         self.userName = userName
@@ -35,6 +37,18 @@ public class ProfileSettingViewModel: ObservableObject {
                         self.selectedPhotoData = try? result.get()
                     }
                 }
+            }
+            .store(in: cancelBag)
+        
+        nickname.reachLimit
+            .sink { isExceed in
+                self.isNicknameExceedLimit = isExceed ? true : false
+            }
+            .store(in: cancelBag)
+        
+        introduce.reachLimit
+            .sink { isExceed in
+                self.isIntroduceExceedLimit = isExceed ? true : false
             }
             .store(in: cancelBag)
     }
