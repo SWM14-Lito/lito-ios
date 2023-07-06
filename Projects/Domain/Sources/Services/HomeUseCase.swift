@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 public protocol HomeUseCase {
-    func load() -> AnyPublisher<SlipVO, NetworkErrorVO>
+    func load() -> AnyPublisher<SlipVO, ErrorVO>
 }
 
 public final class DefaultHomeUseCase: HomeUseCase {
@@ -13,7 +13,7 @@ public final class DefaultHomeUseCase: HomeUseCase {
         self.repository = repository
     }
     
-    public func load() -> AnyPublisher<SlipVO, NetworkErrorVO> {
+    public func load() -> AnyPublisher<SlipVO, ErrorVO> {
         return repository.loadSlip()
     }
 }
@@ -23,9 +23,9 @@ public final class StubHomeUseCase: HomeUseCase {
     
     public init() {}
     
-    public func load() -> AnyPublisher<SlipVO, NetworkErrorVO> {
+    public func load() -> AnyPublisher<SlipVO, ErrorVO> {
         return Just(SlipVO.mock)
-            .setFailureType(to: NetworkErrorVO.self)
+            .setFailureType(to: ErrorVO.self)
             .eraseToAnyPublisher()
     }
     

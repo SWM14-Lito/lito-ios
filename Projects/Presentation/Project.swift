@@ -15,5 +15,6 @@ let project = Project.makeModule(
     dependencies: [
         .Projcet.Domain,
         .SPM.Kingfisher
-    ]
+    ],
+    resources: ["Resources/**"]
 )

@@ -34,7 +34,7 @@ public enum NetworkErrorDTO: Error {
         }
     }
     
-    public func toVO() -> NetworkErrorVO {
+    public func toVO() -> ErrorVO {
         // TODO: 상황에 맞게 지속적으로 Error handling 업데이트 필요
         switch self {
         case .encodeError(_):
