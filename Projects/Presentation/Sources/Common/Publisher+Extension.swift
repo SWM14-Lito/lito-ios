@@ -57,10 +57,10 @@ extension Publisher {
 }
 
 extension Subscribers.Completion {
-    var error: NetworkErrorVO? {
+    var error: ErrorVO? {
         switch self {
         case let .failure(error):
-            return error as? NetworkErrorVO
+            return error as? ErrorVO
         default: return nil
         }
     }

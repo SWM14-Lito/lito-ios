@@ -16,6 +16,7 @@ public extension TargetDependency.SPM {
     static let Swinject = TargetDependency.external(name: "Swinject")
     static let Moya = TargetDependency.external(name: "Moya")
     static let CombineMoya = TargetDependency.external(name: "CombineMoya")
+    static let KakaoOpenSDK = TargetDependency.external(name: "KakaoSDK")
     // For tuist graph
 //    static let Kingfisher = TargetDependency.package(product: "Kingfisher")
 //    static let Swinject = TargetDependency.package(product: "Swinject")
