@@ -28,13 +28,13 @@ public final class DefaultLoginUseCase: LoginUseCase {
     }
     
     public func appleLogin() -> AnyPublisher<RequestResultVO, Error> {
-        // 2차적으로 이곳에서 errorDTO 를 핸들링?
+        // 2차적으로 이곳에서 errorVO 를 핸들링?
         // repository or useCase 에서 어떤 문제를 어떻게 핸들링할지 여전히 고민..
         repository.appleLogin()
             .catch({ error -> Fail in
-                if let oauthError = error as? OAuthErrorVO {
+                if let oauthErrorVO = error as? OAuthErrorVO {
                     #if DEBUG
-                    print(oauthError.debugString)
+                    print(oauthErrorVO.debugString)
                     #endif
                     return Fail(error: ErrorVO.retryableError)
                 }
