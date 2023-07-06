@@ -18,5 +18,10 @@ jobs:
         run: curl -Ls https://install.tuist.io | bash
       - name: Fetch Swift Packages
         run: tuist fetch
+      - name: Use xcconfig file
+        env:
+          XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
+        run: |
+          echo "$XC_CONFIG_FILE" > config.xcconfig
       - name: Build
         run: tuist build
