@@ -8,10 +8,9 @@
 
 import SwiftUI
 
-@available(iOS 16.0, *)
 struct BTabThirdView: View {
     
-    @EnvironmentObject private var coordinator: Coordinator
+    @EnvironmentObject private var coordinator: ExampleCoordinator
     
     var body: some View {
         VStack {

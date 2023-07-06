@@ -22,6 +22,22 @@ public struct PresentationAssembly: Assembly {
             let homeViewModel = resolver.resolve(HomeViewModel.self)!
             return HomeView(viewModel: homeViewModel)
         }
+        
+        container.register(LearningHomeView.self) { _ in
+            return LearningHomeView(viewModel: LearningHomeViewModel(coordinator: Coordinator.instance))
+        }
+
+        container.register(LearningCategoryView.self) { _ in
+            return LearningCategoryView(viewModel: LearningCategoryViewModel(coordinator: Coordinator.instance))
+        }
+        
+        container.register(PrevProblemCategoryView.self) { _ in
+            return PrevProblemCategoryView(viewModel: PrevProblemCategoryViewModel(coordinator: Coordinator.instance))
+        }
+
+        container.register(MyPageView.self) { _ in
+            return MyPageView(viewModel: MyPageViewModel(coordinator: Coordinator.instance))
+        }
     }
     
 }
