@@ -15,36 +15,4 @@ public enum Page: Hashable {
     case learningHomeView, learningCategoryView
     case prevProblemCategoryView
     case myPageView
-    
-    @ViewBuilder
-    public func getView(viewResolver: ViewResolverProtocol) -> some View {
-        switch self {
-        case .loginView:
-            viewResolver.resolveView(LoginView.self)
-                .onOpenURL(perform: { url in
-                    if AuthApi.isKakaoTalkLoginUrl(url) {
-                        _ = AuthController.handleOpenUrl(url: url)
-                    }
-                })
-        case .profileSettingView(let name):
-            setDataInProfileSettingView(viewResolver: viewResolver, name: name)
-        case .learningHomeView:
-            viewResolver.resolveView(LearningHomeView.self)
-        case .learningCategoryView:
-            viewResolver.resolveView(LearningCategoryView.self)
-        case .prevProblemCategoryView:
-            viewResolver.resolveView(PrevProblemCategoryView.self)
-        case .myPageView:
-            viewResolver.resolveView(MyPageView.self)
-        case .rootTabView:
-            viewResolver.resolveView(RootTabView.self)
-        }
-    }
-    
-    func setDataInProfileSettingView(viewResolver: ViewResolverProtocol, name: String) -> ProfileSettingView {
-        let view = viewResolver.resolveView(ProfileSettingView.self)
-        view.viewModel.userName = name
-        return view
-    }
-    
 }

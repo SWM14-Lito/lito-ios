@@ -63,6 +63,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        
+        coordinator.push(.learningHomeView)
     }
 }

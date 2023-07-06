@@ -13,7 +13,6 @@ import Presentation
 public struct PresentationAssembly: Assembly {
     
     let coordinator: Coordinator
-    let viewResolver: ViewResolver
     
     public func assemble(container: Container) {
         container.register(ExampleViewModel.self) { resolver in
@@ -40,10 +39,6 @@ public struct PresentationAssembly: Assembly {
         container.register(ProfileSettingView.self) { resolver in
             let viewModel = resolver.resolve(ProfileSettingViewModel.self)!
             return ProfileSettingView(viewModel: viewModel)
-        }
-        
-        container.register(RootTabView.self) { _ in
-            return RootTabView(viewResolver: viewResolver)
         }
         
         container.register(LearningHomeViewModel.self) { _ in
@@ -78,6 +73,14 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(MyPageViewModel.self)!
             return MyPageView(viewModel: viewModel)
         }
+        
+        container.register(RootTabView.self) { resolver in
+            let tab1 = resolver.resolve(LearningHomeView.self)!
+            let tab2 = resolver.resolve(PrevProblemCategoryView.self)!
+            let tab3 = resolver.resolve(MyPageView.self)!
+            return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3)
+        }
+        
     }
     
 }
