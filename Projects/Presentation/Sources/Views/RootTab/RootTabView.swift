@@ -10,19 +10,23 @@ import SwiftUI
 
 public struct RootTabView: View {
     
-    private let viewResolver: ViewResolverProtocol
+    let tab1: LearningHomeView
+    let tab2: PrevProblemCategoryView
+    let tab3: MyPageView
     
-    public init(viewResolver: ViewResolverProtocol) {
-        self.viewResolver = viewResolver
+    public init(tab1: LearningHomeView, tab2: PrevProblemCategoryView, tab3: MyPageView) {
+        self.tab1 = tab1
+        self.tab2 = tab2
+        self.tab3 = tab3
     }
     
     public var body: some View {
         TabView {
-            viewResolver.resolveView(LearningHomeView.self)
+            tab1
                 .tabItem { Text("학습") }
-            viewResolver.resolveView(PrevProblemCategoryView.self)
+            tab2
                 .tabItem { Text("기출문제") }
-            viewResolver.resolveView(MyPageView.self)
+            tab3
                 .tabItem { Text("마이페이지") }
         }
     }

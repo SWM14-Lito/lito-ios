@@ -9,33 +9,26 @@ import KakaoSDKAuth
 @main
 struct LitoApp: App {
     private let injector: Injector
-    private let viewResolver: ViewResolver
     @ObservedObject private var coordinator: Coordinator
     
     init() {
-        coordinator = Coordinator()
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
-        viewResolver = ViewResolver(injector: injector)
+        coordinator = Coordinator()
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
-                           PresentationAssembly(coordinator: coordinator, viewResolver: viewResolver)
+                           PresentationAssembly(coordinator: coordinator)
                           ])
+        coordinator.injector = injector
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-            injector.resolve(LoginView.self)
-                .onOpenURL(perform: { url in
-                    if AuthApi.isKakaoTalkLoginUrl(url) {
-                        _ = AuthController.handleOpenUrl(url: url)
-                    }
-                })
-//            RootTabView(viewResolver: viewResolver)
+                coordinator.buildView(page: .loginView)
                     .navigationDestination(for: Page.self) { page in
-                        page.getView(viewResolver: viewResolver)
+                        coordinator.buildView(page: page)
                     }
             }
         }

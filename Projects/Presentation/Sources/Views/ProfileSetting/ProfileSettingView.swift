@@ -10,7 +10,7 @@ import SwiftUI
 import PhotosUI
 
 public struct ProfileSettingView: View {
-    @ObservedObject private(set) var viewModel: ProfileSettingViewModel
+    @ObservedObject public var viewModel: ProfileSettingViewModel
     @FocusState private var focus: TextFieldCategory?
     
     public init(viewModel: ProfileSettingViewModel) {
