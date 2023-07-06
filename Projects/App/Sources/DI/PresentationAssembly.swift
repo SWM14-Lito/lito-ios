@@ -15,13 +15,13 @@ public struct PresentationAssembly: Assembly {
     let coordinator: Coordinator
     
     public func assemble(container: Container) {
-        container.register(HomeViewModel.self) { resolver in
-            let useCase = resolver.resolve(HomeUseCase.self)!
-            return HomeViewModel(homeUseCase: useCase)
+        container.register(ExampleViewModel.self) { resolver in
+            let useCase = resolver.resolve(ExampleUseCase.self)!
+            return ExampleViewModel(exampleUseCase: useCase)
         }
-        container.register(HomeView.self) { resolver in
-            let homeViewModel = resolver.resolve(HomeViewModel.self)!
-            return HomeView(viewModel: homeViewModel)
+        container.register(ExampleView.self) { resolver in
+            let exampleViewModel = resolver.resolve(ExampleViewModel.self)!
+            return ExampleView(viewModel: exampleViewModel)
         }
         container.register(LoginViewModel.self) { resolver in
             let useCase = resolver.resolve(LoginUseCase.self)!
