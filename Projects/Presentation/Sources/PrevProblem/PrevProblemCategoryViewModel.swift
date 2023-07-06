@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-public class PrevProblemCategoryViewModel: ObservableObject {
-    private var coordinator: CoordinatorProtocol
-    
-    public init(coordinator: CoordinatorProtocol) {
-        self.coordinator = coordinator
-    }
+public class PrevProblemCategoryViewModel: BaseViewModel, ObservableObject {
+
 }
