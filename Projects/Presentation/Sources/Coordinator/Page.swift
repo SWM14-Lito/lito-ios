@@ -7,9 +7,10 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
 
 public enum Page: Hashable {
-    case loginView
+    case loginView, profileSettingView(String)
     case rootTabView
     case learningHomeView, learningCategoryView
     case prevProblemCategoryView
@@ -20,6 +21,13 @@ public enum Page: Hashable {
         switch self {
         case .loginView:
             viewResolver.resolveView(LoginView.self)
+                .onOpenURL(perform: { url in
+                    if AuthApi.isKakaoTalkLoginUrl(url) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    }
+                })
+        case .profileSettingView(let name):
+            setDataInProfileSettingView(viewResolver: viewResolver, name: name)
         case .learningHomeView:
             viewResolver.resolveView(LearningHomeView.self)
         case .learningCategoryView:
@@ -32,4 +40,11 @@ public enum Page: Hashable {
             viewResolver.resolveView(RootTabView.self)
         }
     }
+    
+    func setDataInProfileSettingView(viewResolver: ViewResolverProtocol, name: String) -> ProfileSettingView {
+        let view = viewResolver.resolveView(ProfileSettingView.self)
+        view.viewModel.userName = name
+        return view
+    }
+    
 }
