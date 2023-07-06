@@ -5,20 +5,21 @@ public extension Project {
         name: String,
         platform: Platform = .iOS,
         product: Product,
-        organizationName: String = "Lito",
+        organizationName: String = "com.lito",
         packages: [Package] = [],
         deploymentTarget: DeploymentTarget? = .iOS(targetVersion: "16.0", devices: [.iphone]),
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
         infoPlist: InfoPlist = .default,
+        entitlements: Path? = nil,
         makeExample: Bool = false
     ) -> Project {
         let settings: Settings = .settings(
             base: [:],
             configurations: [
-                .debug(name: .debug),
-                .release(name: .release)
+                .debug(name: .debug, xcconfig: .relativeToRoot("config.xcconfig")),
+                .release(name: .release, xcconfig: .relativeToRoot("config.xcconfig"))
             ], defaultSettings: .recommended)
 
         let appTarget = Target(
@@ -30,6 +31,7 @@ public extension Project {
             infoPlist: infoPlist,
             sources: sources,
             resources: resources,
+            entitlements: entitlements,
             scripts: [.SwiftLint],
             dependencies: dependencies
         )
@@ -42,6 +44,7 @@ public extension Project {
             deploymentTarget: deploymentTarget,
             infoPlist: .default,
             sources: ["Tests/**"],
+            entitlements: entitlements,
             dependencies: [.target(name: name)]
         )
     
