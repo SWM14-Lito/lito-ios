@@ -33,7 +33,16 @@ public struct PresentationAssembly: Assembly {
             return LoginView(viewModel: viewModel)
         }
         
-        container.register(RootTabView.self) { resolver in
+        container.register(ProfileSettingViewModel.self) { _ in
+            return ProfileSettingViewModel(coordinator: coordinator)
+        }
+        
+        container.register(ProfileSettingView.self) { resolver in
+            let viewModel = resolver.resolve(ProfileSettingViewModel.self)!
+            return ProfileSettingView(viewModel: viewModel)
+        }
+        
+        container.register(RootTabView.self) { _ in
             return RootTabView(viewResolver: viewResolver)
         }
         

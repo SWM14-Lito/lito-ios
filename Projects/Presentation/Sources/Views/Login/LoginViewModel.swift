@@ -31,7 +31,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 switch result {
                 case .success(_):
                     print("kakao login Sucess")
-                    self.coordinator.push(.rootTabView)
+                    self.coordinator.push(.profileSettingView("test"))
                 case .failure(let error):
                     switch error {
                     case .fatalError:
@@ -57,6 +57,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 switch result {
                 case .success(_):
                     print("apple login Sucess")
+                    self.coordinator.push(.profileSettingView("test"))
                     //TODO: routing to next view
                 case .failure(let error):
                     switch error {

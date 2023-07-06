@@ -73,16 +73,18 @@ public struct ProfileSettingView: View {
     
     // 이름 보여주는 뷰 (소셜 로그인 화면에서 넘겨받기)
     @ViewBuilder
-    private func nameView(text: String) -> some View {
+    private func nameView(text: String?) -> some View {
         VStack {
             Text("이름")
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 10))
                 .padding(.bottom, 2)
-            Text(text)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 15))
-                .foregroundColor(.gray)
+            if let text {
+                Text(text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.system(size: 15))
+                    .foregroundColor(.gray)
+            }
             Divider()
         }
     }

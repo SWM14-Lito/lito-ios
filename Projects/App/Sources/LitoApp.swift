@@ -28,6 +28,11 @@ struct LitoApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
             injector.resolve(LoginView.self)
+                .onOpenURL(perform: { url in
+                    if AuthApi.isKakaoTalkLoginUrl(url) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    }
+                })
 //            RootTabView(viewResolver: viewResolver)
                     .navigationDestination(for: Page.self) { page in
                         page.getView(viewResolver: viewResolver)
