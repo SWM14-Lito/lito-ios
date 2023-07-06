@@ -10,8 +10,6 @@ import SwiftUI
 import Combine
 
 public protocol CoordinatorProtocol {
-    var pathPublisher: Published<NavigationPath>.Publisher { get }
-    
     func push(_ page: Page)
     func pop()
     func popToRoot()

@@ -14,7 +14,7 @@ public enum Page: Hashable {
     case myPageView
     
     @ViewBuilder
-    func getView(coordinator: CoordinatorProtocol, viewResolver: ViewResolverProtocol) -> some View {
+    public func getView(viewResolver: ViewResolverProtocol) -> some View {
         switch self {
         case .learningHomeView:
             viewResolver.resolveView(LearningHomeView.self)

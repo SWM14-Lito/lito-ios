@@ -10,21 +10,28 @@ import KakaoSDKAuth
 struct LitoApp: App {
     private let injector: Injector
     private let viewResolver: ViewResolver
+    @ObservedObject private var coordinator: Coordinator
     
     init() {
+        coordinator = Coordinator()
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
+        viewResolver = ViewResolver(injector: injector)
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
-                           PresentationAssembly()
+                           PresentationAssembly(coordinator: coordinator)
                           ])
-        viewResolver = ViewResolver(injector: injector)
     }
     
     var body: some Scene {
         WindowGroup {
-            RootTabView(coordinator: Coordinator.instance, viewResolver: viewResolver)
+            NavigationStack(path: $coordinator.path) {
+            RootTabView(viewResolver: viewResolver)
+                    .navigationDestination(for: Page.self) { page in
+                        page.getView(viewResolver: viewResolver)
+                    }
+            }
         }
     }
 }
