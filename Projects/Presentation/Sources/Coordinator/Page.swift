@@ -9,6 +9,8 @@
 import SwiftUI
 
 public enum Page: Hashable {
+    case loginView
+    case rootTabView
     case learningHomeView, learningCategoryView
     case prevProblemCategoryView
     case myPageView
@@ -16,6 +18,8 @@ public enum Page: Hashable {
     @ViewBuilder
     public func getView(viewResolver: ViewResolverProtocol) -> some View {
         switch self {
+        case .loginView:
+            viewResolver.resolveView(LoginView.self)
         case .learningHomeView:
             viewResolver.resolveView(LearningHomeView.self)
         case .learningCategoryView:
@@ -24,6 +28,8 @@ public enum Page: Hashable {
             viewResolver.resolveView(PrevProblemCategoryView.self)
         case .myPageView:
             viewResolver.resolveView(MyPageView.self)
+        case .rootTabView:
+            viewResolver.resolveView(RootTabView.self)
         }
     }
 }
