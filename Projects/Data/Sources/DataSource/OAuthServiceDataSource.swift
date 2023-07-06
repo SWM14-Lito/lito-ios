@@ -49,7 +49,6 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         controller.delegate = self
         controller.performRequests()
         return appleLoginPublisher
-            .eraseToAnyPublisher()
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
