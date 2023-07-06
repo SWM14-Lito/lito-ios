@@ -37,7 +37,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
             .map { result in
                 switch result {
                 case .success(_):
-                    return .success(.successed)
+                    return .success(.succeed)
                 case .failure(let error):
                     return .failure(error)
                 }
@@ -47,7 +47,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
     
     public func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
         repository.kakaoLogin()
-            .map { _ in .successed }
+            .map { _ in .succeed }
             .eraseToAnyPublisher()
     }
     
