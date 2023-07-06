@@ -7,23 +7,12 @@
 //
 
 import SwiftUI
+import KakaoSDKAuth
 
 public enum Page: Hashable {
+    case loginView, profileSettingView(String)
+    case rootTabView
     case learningHomeView, learningCategoryView
     case prevProblemCategoryView
     case myPageView
-    
-    @ViewBuilder
-    public func getView(viewResolver: ViewResolverProtocol) -> some View {
-        switch self {
-        case .learningHomeView:
-            viewResolver.resolveView(LearningHomeView.self)
-        case .learningCategoryView:
-            viewResolver.resolveView(LearningCategoryView.self)
-        case .prevProblemCategoryView:
-            viewResolver.resolveView(PrevProblemCategoryView.self)
-        case .myPageView:
-            viewResolver.resolveView(MyPageView.self)
-        }
-    }
 }
