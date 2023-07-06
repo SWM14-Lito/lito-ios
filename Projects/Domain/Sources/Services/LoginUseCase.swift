@@ -11,8 +11,8 @@ import Foundation
 
 public protocol LoginUseCase {
     
-    func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO>
-    func appleLogin() -> AnyPublisher<RequestResultVO, ErrorVO>
+    func kakaoLogin() -> AnyPublisher<RequestResultVO, Error>
+    func appleLogin() -> AnyPublisher<RequestResultVO, Error>
     
 }
 
@@ -27,13 +27,24 @@ public final class DefaultLoginUseCase: LoginUseCase {
         self.repository = repository
     }
     
-    public func appleLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
+    public func appleLogin() -> AnyPublisher<RequestResultVO, Error> {
+        // 2차적으로 이곳에서 errorDTO 를 핸들링?
+        // repository or useCase 에서 어떤 문제를 어떻게 핸들링할지 여전히 고민..
         repository.appleLogin()
+            .catch({ error -> Fail in
+                if let oauthError = error as? OAuthErrorVO {
+                    #if DEBUG
+                    print(oauthError.debugString)
+                    #endif
+                    return Fail(error: ErrorVO.retryableError)
+                }
+                return Fail(error: ErrorVO.fatalError)
+            })
             .map { _ in .succeed }
             .eraseToAnyPublisher()
     }
     
-    public func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
+    public func kakaoLogin() -> AnyPublisher<RequestResultVO, Error> {
         repository.kakaoLogin()
             .map { _ in .succeed }
             .eraseToAnyPublisher()
