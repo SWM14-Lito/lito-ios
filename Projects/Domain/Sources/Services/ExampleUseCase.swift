@@ -1,15 +1,15 @@
 import Combine
 import Foundation
 
-public protocol HomeUseCase {
+public protocol ExampleUseCase {
     func load() -> AnyPublisher<SlipVO, ErrorVO>
 }
 
-public final class DefaultHomeUseCase: HomeUseCase {
+public final class DefaultExampleUseCase: ExampleUseCase {
     
-    let repository: HomeRepository
+    let repository: ExampleRepository
     
-    public init(repository: HomeRepository) {
+    public init(repository: ExampleRepository) {
         self.repository = repository
     }
     
@@ -19,7 +19,7 @@ public final class DefaultHomeUseCase: HomeUseCase {
 }
 
 #if DEBUG
-public final class StubHomeUseCase: HomeUseCase {
+public final class StubExampleUseCase: ExampleUseCase {
     
     public init() {}
     

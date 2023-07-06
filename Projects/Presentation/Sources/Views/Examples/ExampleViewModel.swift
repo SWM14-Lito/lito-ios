@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  ExampleViewModel.swift
 //  Presentation
 //
 //  Created by Lee Myeonghwan on 2023/06/20.
@@ -10,21 +10,21 @@ import Foundation
 import Combine
 import Domain
 
-final public class HomeViewModel: ObservableObject {
+final public class ExampleViewModel: ObservableObject {
     
     @Published private(set) var slip: Loadable<SlipVO>
     
-    private let homeUseCase: HomeUseCase
+    private let exampleUseCase: ExampleUseCase
     private let cancelBag = CancelBag()
     
-    public init(homeUseCase: HomeUseCase, slip: Loadable<SlipVO> = .notRequested) {
+    public init(exampleUseCase: ExampleUseCase, slip: Loadable<SlipVO> = .notRequested) {
         self.slip = slip
-        self.homeUseCase = homeUseCase
+        self.exampleUseCase = exampleUseCase
     }
     
     func loadSlip() {
         slip.setIsLoading(cancelBag: cancelBag)
-        homeUseCase.load()
+        exampleUseCase.load()
             .receive(on: DispatchQueue.main)
             .sinkToLoadable {
                 self.slip = $0

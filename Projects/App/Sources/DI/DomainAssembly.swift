@@ -12,9 +12,9 @@ import Swinject
 public struct DomainAssembly: Assembly {
     
     public func assemble(container: Container) {
-        container.register(HomeUseCase.self) { resolver in
-            let repository = resolver.resolve(HomeRepository.self)!
-            return DefaultHomeUseCase(repository: repository)
+        container.register(ExampleUseCase.self) { resolver in
+            let repository = resolver.resolve(ExampleRepository.self)!
+            return DefaultExampleUseCase(repository: repository)
         }
         
         container.register(LoginUseCase.self) { resolver in
