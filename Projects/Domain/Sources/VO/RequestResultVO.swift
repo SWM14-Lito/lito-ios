@@ -9,6 +9,6 @@
 import Foundation
 
 public enum RequestResultVO {
-    case successed
+    case succeed
     case failed
 }
