@@ -20,14 +20,15 @@ struct LitoApp: App {
         viewResolver = ViewResolver(injector: injector)
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
-                           PresentationAssembly(coordinator: coordinator)
+                           PresentationAssembly(coordinator: coordinator, viewResolver: viewResolver)
                           ])
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-            RootTabView(viewResolver: viewResolver)
+            injector.resolve(LoginView.self)
+//            RootTabView(viewResolver: viewResolver)
                     .navigationDestination(for: Page.self) { page in
                         page.getView(viewResolver: viewResolver)
                     }
