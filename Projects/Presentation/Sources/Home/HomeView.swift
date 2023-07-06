@@ -18,7 +18,13 @@ public struct HomeView: View {
     }
     
     public var body: some View {
-            RootTabView()
+        VStack {
+            content
+                .padding(.bottom, 30)
+            Button("Change Quote") {
+                self.viewModel.loadSlip()
+            }
+        }
     }
     
     @ViewBuilder private var content: some View {

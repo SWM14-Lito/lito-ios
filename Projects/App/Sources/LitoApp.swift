@@ -9,6 +9,7 @@ import KakaoSDKAuth
 @main
 struct LitoApp: App {
     private let injector: Injector
+    private let viewResolver: ViewResolver
     
     init() {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
@@ -18,15 +19,12 @@ struct LitoApp: App {
                            DataAssembly(),
                            PresentationAssembly()
                           ])
+        viewResolver = ViewResolver(injector: injector)
     }
     
     var body: some Scene {
         WindowGroup {
-            LoginView(viewModel: injector.resolve(LoginViewModel.self)).onOpenURL(perform: { url in
-                if AuthApi.isKakaoTalkLoginUrl(url) {
-                    _ = AuthController.handleOpenUrl(url: url)
-                }
-            })
+            RootTabView(coordinator: Coordinator.instance, viewResolver: viewResolver)
         }
     }
 }

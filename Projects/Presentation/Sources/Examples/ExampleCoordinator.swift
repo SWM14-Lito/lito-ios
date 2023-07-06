@@ -10,7 +10,7 @@ import SwiftUI
 
 // 탭별로 화면을 나눠야하할까
 // 근데 B탭 화면에서 A탭 화면으로 이동하는게 있다면?
-enum Page: Hashable {
+enum ExamplePage: Hashable {
     case ATabFirstView
     case ATabSecondView(str: String)
     case BTabFirstView
@@ -18,11 +18,10 @@ enum Page: Hashable {
     case BTabThirdView
 }
 
-@available(iOS 16.0, *)
-class Coordinator: ObservableObject {
+class ExampleCoordinator: ObservableObject {
     @Published var path = NavigationPath()
     
-    func push(_ page: Page) {
+    func push(_ page: ExamplePage) {
         path.append(page)
     }
     
@@ -37,7 +36,7 @@ class Coordinator: ObservableObject {
     }
     
     @ViewBuilder
-    func build(page: Page) -> some View {
+    func build(page: ExamplePage) -> some View {
         switch page {
         case .ATabFirstView:
             ATabFirstView()
