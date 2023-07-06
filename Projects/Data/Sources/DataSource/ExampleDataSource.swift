@@ -1,5 +1,5 @@
 //
-//  HomeDataSource.swift
+//  ExampleDataSource.swift
 //  Data
 //
 //  Created by Lee Myeonghwan on 2023/06/20.
@@ -11,11 +11,11 @@ import Combine
 import CombineMoya
 import Moya
 
-public protocol HomeDataSource {
+public protocol ExampleDataSource {
     func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO>
 }
 
-public class DefaultHomeDataSource: HomeDataSource {
+public class DefaultExampleDataSource: ExampleDataSource {
     
     public init() {}
     

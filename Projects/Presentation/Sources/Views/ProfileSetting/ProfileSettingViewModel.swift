@@ -9,11 +9,11 @@
 import SwiftUI
 import PhotosUI
 
-public class ProfileSettingViewModel: ObservableObject {
+public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     let nicknameLimit = 10
     let introduceLimit = 250
-    let userName: String
+    public var userName: String?
     private let cancelBag = CancelBag()
     @Published var selectedPhotoData: Data?
     @Published var selectedPhoto: PhotosPickerItem?
@@ -22,10 +22,10 @@ public class ProfileSettingViewModel: ObservableObject {
     @Published var isNicknameExceedLimit: Bool = false
     @Published var isIntroduceExceedLimit: Bool = false
     
-    public init(userName: String) {
-        self.userName = userName
+    public override init(coordinator: CoordinatorProtocol) {
         nickname = LimitedText(limit: nicknameLimit)
         introduce = LimitedText(limit: introduceLimit)
+        super.init(coordinator: coordinator)
         initPublisher()
     }
     
@@ -63,6 +63,6 @@ public class ProfileSettingViewModel: ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        
+        coordinator.push(.learningHomeView)
     }
 }

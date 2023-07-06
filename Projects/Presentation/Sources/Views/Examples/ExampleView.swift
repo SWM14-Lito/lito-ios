@@ -9,11 +9,11 @@
 import SwiftUI
 import Domain
 
-public struct HomeView: View {
+public struct ExampleView: View {
     
-    @ObservedObject private(set) var viewModel: HomeViewModel
+    @ObservedObject private(set) var viewModel: ExampleViewModel
     
-    public init(viewModel: HomeViewModel) {
+    public init(viewModel: ExampleViewModel) {
         self.viewModel = viewModel
     }
     
@@ -41,7 +41,7 @@ public struct HomeView: View {
     }
 }
 
-private extension HomeView {
+private extension ExampleView {
     var notRequestedView: some View {
         Text("").onAppear {
             self.viewModel.loadSlip()

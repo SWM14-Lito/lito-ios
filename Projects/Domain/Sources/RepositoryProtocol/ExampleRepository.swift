@@ -8,6 +8,6 @@
 
 import Combine
 
-public protocol HomeRepository {
+public protocol ExampleRepository {
     func loadSlip() -> AnyPublisher<SlipVO, ErrorVO>
 }

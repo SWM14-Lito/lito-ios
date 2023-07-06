@@ -1,5 +1,5 @@
 //
-//  HomeRepository.swift
+//  ExampleRepository.swift
 //  Data
 //
 //  Created by Lee Myeonghwan on 2023/06/20.
@@ -10,10 +10,10 @@ import Combine
 import Foundation
 import Domain
 
-final public class DefaultHomeRepository: HomeRepository {
-    let dataSource: HomeDataSource
+final public class DefaultExampleRepository: ExampleRepository {
+    let dataSource: ExampleDataSource
     
-    public init(dataSource: HomeDataSource) {
+    public init(dataSource: ExampleDataSource) {
         self.dataSource = dataSource
     }
     

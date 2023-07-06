@@ -14,13 +14,13 @@ import Foundation
 public struct DataAssembly: Assembly {
     
     public func assemble(container: Container) {
-        container.register(HomeDataSource.self) { _ in
-            return DefaultHomeDataSource()
+        container.register(ExampleDataSource.self) { _ in
+            return DefaultExampleDataSource()
         }
         
-        container.register(HomeRepository.self) { resolver in
-            let dataSource = resolver.resolve(HomeDataSource.self)!
-            return DefaultHomeRepository(dataSource: dataSource)
+        container.register(ExampleRepository.self) { resolver in
+            let dataSource = resolver.resolve(ExampleDataSource.self)!
+            return DefaultExampleRepository(dataSource: dataSource)
         }
         
         container.register(OAuthServiceDataSource.self) { _ in

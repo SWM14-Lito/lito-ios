@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import Domain
 
-final public class LoginViewModel: ObservableObject {
+final public class LoginViewModel: BaseViewModel, ObservableObject {
     
     @Published private(set) var errorObject = ErrorObject()
     @Published private(set) var loginFeedback: Feedbackable
@@ -18,9 +18,10 @@ final public class LoginViewModel: ObservableObject {
     private let useCase: LoginUseCase
     private let cancelBag = CancelBag()
     
-    public init(useCase: LoginUseCase, loginFeedback: Feedbackable = .idle) {
+    public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase, loginFeedback: Feedbackable = .idle) {
         self.useCase = useCase
         self.loginFeedback = loginFeedback
+        super.init(coordinator: coordinator)
         bindAppleLogin()
     }
     
@@ -30,7 +31,7 @@ final public class LoginViewModel: ObservableObject {
                 switch result {
                 case .success(_):
                     print("kakao login Sucess")
-                    //TODO: routing to next view
+                    self.coordinator.push(.profileSettingView("test"))
                 case .failure(let error):
                     switch error {
                     case .fatalError:
@@ -56,6 +57,7 @@ final public class LoginViewModel: ObservableObject {
                 switch result {
                 case .success(_):
                     print("apple login Sucess")
+                    self.coordinator.push(.profileSettingView("test"))
                     //TODO: routing to next view
                 case .failure(let error):
                     switch error {
