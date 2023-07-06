@@ -23,33 +23,42 @@ public struct PresentationAssembly: Assembly {
             let homeViewModel = resolver.resolve(HomeViewModel.self)!
             return HomeView(viewModel: homeViewModel)
         }
+        container.register(LoginViewModel.self) { resolver in
+            let useCase = resolver.resolve(LoginUseCase.self)!
+            return LoginViewModel(useCase: useCase)
+        }
         
         container.register(LearningHomeViewModel.self) { _ in
             return LearningHomeViewModel(coordinator: coordinator)
+        
         }
         container.register(LearningHomeView.self) { resolver in
-            return LearningHomeView(viewModel: resolver.resolve(LearningHomeViewModel.self)!)
+            let viewModel = resolver.resolve(LearningHomeViewModel.self)!
+            return LearningHomeView(viewModel: viewModel)
         }
         
         container.register(LearningCategoryViewModel.self) { _ in
             return LearningCategoryViewModel(coordinator: coordinator)
         }
         container.register(LearningCategoryView.self) { resolver in
-            return LearningCategoryView(viewModel: resolver.resolve(LearningCategoryViewModel.self)!)
+            let viewModel = resolver.resolve(LearningCategoryViewModel.self)!
+            return LearningCategoryView(viewModel: viewModel)
         }
         
         container.register(PrevProblemCategoryViewModel.self) { _ in
             return PrevProblemCategoryViewModel(coordinator: coordinator)
         }
         container.register(PrevProblemCategoryView.self) { resolver in
-            return PrevProblemCategoryView(viewModel: resolver.resolve(PrevProblemCategoryViewModel.self)!)
+            let viewModel = resolver.resolve(PrevProblemCategoryViewModel.self)!
+            return PrevProblemCategoryView(viewModel: viewModel)
         }
     
         container.register(MyPageViewModel.self) { _ in
             return MyPageViewModel(coordinator: coordinator)
         }
         container.register(MyPageView.self) { resolver in
-            return MyPageView(viewModel: resolver.resolve(MyPageViewModel.self)!)
+            let viewModel = resolver.resolve(MyPageViewModel.self)!
+            return MyPageView(viewModel: viewModel)
         }
     }
     

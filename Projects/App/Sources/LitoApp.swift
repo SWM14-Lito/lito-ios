@@ -1,7 +1,10 @@
 import SwiftUI
+import Data
 import Presentation
 import Domain
 import Swinject
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct LitoApp: App {
@@ -11,6 +14,8 @@ struct LitoApp: App {
     
     init() {
         coordinator = Coordinator()
+        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
         viewResolver = ViewResolver(injector: injector)
         injector.assemble([DomainAssembly(),
@@ -18,7 +23,7 @@ struct LitoApp: App {
                            PresentationAssembly(coordinator: coordinator)
                           ])
     }
-
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
@@ -28,11 +33,5 @@ struct LitoApp: App {
                     }
             }
         }
-    }
-}
-
-struct Previews_LitoApp_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
     }
 }
