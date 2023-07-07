@@ -16,7 +16,6 @@ struct ErrorView: View {
     
     public init() {}
     
-    // TODO: 정의된 Error에 따라 보여줄 view build
     // retryable Error: 로깅 + viewModel의 메소드 재실행
     // fatal Error: 로깅 + 가능한 다른 처리 필요
     
