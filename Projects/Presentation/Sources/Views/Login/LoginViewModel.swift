@@ -22,7 +22,6 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
         self.useCase = useCase
         self.loginFeedback = loginFeedback
         super.init(coordinator: coordinator)
-        bindAppleLogin()
     }
     
     public func kakaoLogin() {
@@ -30,48 +29,36 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
             .sinkToResult({ result in
                 switch result {
                 case .success(_):
-                    print("kakao login Sucess")
                     self.coordinator.push(.profileSettingView("test"))
                 case .failure(let error):
                     switch error {
                     case .fatalError:
                         self.errorObject.error = error
-                        self.errorObject.retryAction = self.performAppleLogin
                     case .retryableError:
-                        // self.loginFeedback = .idle
                         self.errorObject.error = error
-                        self.errorObject.retryAction = self.performAppleLogin
+                        self.errorObject.retryAction = self.kakaoLogin
                     }
                 }
             })
             .store(in: cancelBag)
     }
     
-    public func performAppleLogin() {
-        useCase.performAppleLogin()
-    }
-    
-    private func bindAppleLogin() {
-        useCase.bindAppleLogin()
-            .sink(receiveValue: { result in
+    public func appleLogin() {
+        useCase.appleLogin()
+            .sinkToResult({ result in
                 switch result {
                 case .success(_):
-                    print("apple login Sucess")
                     self.coordinator.push(.profileSettingView("test"))
-                    //TODO: routing to next view
                 case .failure(let error):
                     switch error {
                     case .fatalError:
                         self.errorObject.error = error
-                        self.errorObject.retryAction = self.performAppleLogin
                     case .retryableError:
                         self.errorObject.error = error
-                        self.errorObject.retryAction = self.performAppleLogin
-//                        self.loginFeedback = .idle
+                        self.errorObject.retryAction = self.appleLogin
                     }
                 }
             })
             .store(in: cancelBag)
     }
-    
 }

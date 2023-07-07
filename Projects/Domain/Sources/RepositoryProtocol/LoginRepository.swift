@@ -11,8 +11,7 @@ import Combine
 
 public protocol LoginRepository {
     
-    func performAppleLogin()
-    func bindAppleLogin() -> AnyPublisher<Result<OAuth.AppleVO, ErrorVO>, Never>
+    func appleLogin() -> AnyPublisher<OAuth.AppleVO, ErrorVO>
     func kakaoLogin() -> AnyPublisher<OAuth.KakaoVO, ErrorVO>
     
 }

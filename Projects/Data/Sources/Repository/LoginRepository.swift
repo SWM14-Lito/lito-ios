@@ -18,23 +18,12 @@ final public class DefaultLoginRepository: LoginRepository {
         self.dataSource = dataSource
     }
     
-    public func performAppleLogin() {
-        dataSource.performAppleLogin()
-    }
-    
-    public func bindAppleLogin() -> AnyPublisher<Result<OAuth.AppleVO, ErrorVO>, Never> {
-        dataSource.appleLoginSubject
-            .map { result in
-                switch result {
-                case .success(let appleDTO):
-                    return .success(appleDTO.toVO())
-                case .failure(let errorVO):
-                    return .failure(errorVO)
-                }
-            }
+    public func appleLogin() -> AnyPublisher<OAuth.AppleVO, ErrorVO> {
+        dataSource.appleLogin()
+            .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
-
+    
     public func kakaoLogin() -> AnyPublisher<OAuth.KakaoVO, ErrorVO> {
         dataSource.kakaoLogin()
             .map { $0.toVO() }

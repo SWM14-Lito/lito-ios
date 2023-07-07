@@ -4,7 +4,6 @@ import Presentation
 import Domain
 import Swinject
 import KakaoSDKCommon
-import KakaoSDKAuth
 
 @main
 struct LitoApp: App {
