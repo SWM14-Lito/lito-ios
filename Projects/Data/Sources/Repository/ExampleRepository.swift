@@ -9,6 +9,7 @@
 import Combine
 import Foundation
 import Domain
+import Moya
 
 final public class DefaultExampleRepository: ExampleRepository {
     let dataSource: ExampleDataSource
@@ -17,19 +18,19 @@ final public class DefaultExampleRepository: ExampleRepository {
         self.dataSource = dataSource
     }
     
-    public func loadSlip() -> AnyPublisher<SlipVO, ErrorVO> {
+    public func loadSlip() -> AnyPublisher<SlipVO, Error> {
         return dataSource.loadMaxim()
-            .mapError { networkErrorDTO -> ErrorVO in
-                #if DEBUG
-                print(networkErrorDTO.debugString)
-                #endif
-                return networkErrorDTO.toVO()
+            .catch { error -> Fail in
+                if let moyaError = error as? MoyaError {
+                    #if DEBUG
+                    let networkError = moyaError.toNetworkError()
+                    print(networkError.debugString)
+                    #endif
+                    return Fail(error: networkError)
+                }
+                return Fail(error: ErrorVO.fatalError)
             }
-            .flatMap { value -> AnyPublisher<SlipVO, ErrorVO> in
-                Just(value.toVO())
-                    .setFailureType(to: ErrorVO.self)
-                    .eraseToAnyPublisher()
-            }
+            .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
 }

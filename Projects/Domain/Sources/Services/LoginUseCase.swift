@@ -31,7 +31,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
         // 2차적으로 이곳에서 errorVO 를 핸들링?
         // repository or useCase 에서 어떤 문제를 어떻게 핸들링할지 여전히 고민..
         repository.appleLogin()
-            .catch({ error -> Fail in
+            .catch { error -> Fail in
                 if let oauthErrorVO = error as? OAuthErrorVO {
                     #if DEBUG
                     print(oauthErrorVO.debugString)
@@ -39,14 +39,43 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     return Fail(error: ErrorVO.retryableError)
                 }
                 return Fail(error: ErrorVO.fatalError)
-            })
-            .map { _ in .succeed }
+            }
+            .flatMap { appleVO -> AnyPublisher<RequestResultVO, Error> in
+                self.repository.postLoginInfo(OAuthProvider: OAuth.apple(appleVO))
+                    .catch { error -> Fail in
+                        return Fail(error: error)
+                    }
+                    .map { responseVO in
+                        print(responseVO)
+                        return .succeed
+                    }
+                    .eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
     
     public func kakaoLogin() -> AnyPublisher<RequestResultVO, Error> {
         repository.kakaoLogin()
-            .map { _ in .succeed }
+            .catch { error -> Fail in
+                if let oauthErrorVO = error as? OAuthErrorVO {
+                    #if DEBUG
+                    print(oauthErrorVO.debugString)
+                    #endif
+                    return Fail(error: ErrorVO.retryableError)
+                }
+                return Fail(error: ErrorVO.fatalError)
+            }
+            .flatMap { kakaoVO -> AnyPublisher<RequestResultVO, Error> in
+                self.repository.postLoginInfo(OAuthProvider: OAuth.kakao(kakaoVO))
+                    .catch { error -> Fail in
+                        return Fail(error: error)
+                    }
+                    .map { responseVO in
+                        print(responseVO)
+                        return .succeed
+                    }
+                    .eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
     
