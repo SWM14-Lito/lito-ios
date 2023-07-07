@@ -44,7 +44,7 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     public func appleLogin() -> AnyPublisher<OAuth.AppleDTO, Error> {
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
-        request.requestedScopes = [.fullName, .email]
+        request.requestedScopes = [.email]
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.performRequests()
@@ -59,9 +59,8 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             let userIdentifier = appleIDCredential.user
-            let userName = (appleIDCredential.fullName?.namePrefix ?? "") + (appleIDCredential.fullName?.namePrefix ?? "")
             let userEmail = appleIDCredential.email
-            let appleDTO = OAuth.AppleDTO(userIdentifier: userIdentifier, userName: userName, userEmail: userEmail)
+            let appleDTO = OAuth.AppleDTO(userIdentifier: userIdentifier, userEmail: userEmail)
             appleLoginSubject.send(.success(appleDTO))
         default:
             break

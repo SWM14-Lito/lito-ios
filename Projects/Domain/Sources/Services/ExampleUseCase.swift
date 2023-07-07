@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 public protocol ExampleUseCase {
-    func load() -> AnyPublisher<SlipVO, ErrorVO>
+    func load() -> AnyPublisher<SlipVO, Error>
 }
 
 public final class DefaultExampleUseCase: ExampleUseCase {
@@ -13,7 +13,7 @@ public final class DefaultExampleUseCase: ExampleUseCase {
         self.repository = repository
     }
     
-    public func load() -> AnyPublisher<SlipVO, ErrorVO> {
+    public func load() -> AnyPublisher<SlipVO, Error> {
         return repository.loadSlip()
     }
 }
@@ -23,9 +23,9 @@ public final class StubExampleUseCase: ExampleUseCase {
     
     public init() {}
     
-    public func load() -> AnyPublisher<SlipVO, ErrorVO> {
+    public func load() -> AnyPublisher<SlipVO, Error> {
         return Just(SlipVO.mock)
-            .setFailureType(to: ErrorVO.self)
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
     

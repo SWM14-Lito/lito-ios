@@ -10,28 +10,22 @@ import Foundation
 
 public enum OAuth {
     
-    public enum provider {
-        case apple
-        case kakao
-    }
+    case apple(AppleVO)
+    case kakao(KakaoVO)
     
     public struct AppleVO {
-        let provider = OAuth.provider.apple
-        let userIdentifier: String
-        let userName: String?
-        let userEmail: String?
+        public let userIdentifier: String
+        public let userEmail: String?
         
-        public init(userIdentifier: String, userName: String?, userEmail: String?) {
+        public init(userIdentifier: String, userEmail: String?) {
             self.userIdentifier = userIdentifier
-            self.userName = userName
             self.userEmail = userEmail
         }
     }
     
     public struct KakaoVO {
-        let provider = OAuth.provider.kakao
-        let userIdentifier: String
-        let userEmail: String
+        public let userIdentifier: String
+        public let userEmail: String
         
         public init(userIdentifier: String, userEmail: String) {
             self.userIdentifier = userIdentifier

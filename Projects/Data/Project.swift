@@ -16,5 +16,6 @@ let project = Project.makeModule(
         .Projcet.Domain,
         .SPM.Moya,
         .SPM.CombineMoya
-    ]
+    ],
+    infoPlist: .file(path: "Support/Info.plist")
 )
