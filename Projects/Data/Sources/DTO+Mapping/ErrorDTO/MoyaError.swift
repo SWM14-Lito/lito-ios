@@ -13,7 +13,7 @@ extension MoyaError {
     
     public func toNetworkError() -> NetworkErrorDTO {
         switch self {
-            // Encoding Error
+            // Client Error
         case .encodableMapping(let error):
             return NetworkErrorDTO.clientError(error)
         case .parameterEncoding(let error):
