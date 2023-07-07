@@ -22,6 +22,11 @@ public struct DomainAssembly: Assembly {
             return DefaultLoginUseCase(repository: repository)
         }
         
+        container.register(ProfileSettingUseCase.self) { resolver in
+            let repository = resolver.resolve(ProfileSettingRepository.self)!
+            return DefaultProfileSettingUseCase(repository: repository)
+        }
+        
     }
     
 }

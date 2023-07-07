@@ -37,6 +37,15 @@ public struct DataAssembly: Assembly {
             return DefaultLoginRepository(oauthDataSource: oauthDataSource, loginDataSource: loginDataSource)
         }
         
+        container.register(ProfileSettingDataSource.self) { _ in
+            return DefaultProfileSettingDataSource()
+        }
+        
+        container.register(ProfileSettingRepository.self) { resolver in
+            let dataSource = resolver.resolve(ProfileSettingDataSource.self)!
+            return DefaultProfileSettingRepository(dataSource: dataSource)
+        }
+        
     }
     
 }
