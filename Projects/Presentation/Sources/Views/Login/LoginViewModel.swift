@@ -31,12 +31,14 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 case .success(_):
                     self.coordinator.push(.profileSettingView("test"))
                 case .failure(let error):
-                    switch error {
-                    case .fatalError:
-                        self.errorObject.error = error
-                    case .retryableError:
-                        self.errorObject.error = error
-                        self.errorObject.retryAction = self.kakaoLogin
+                    if let errorVO = error as? ErrorVO {
+                        switch errorVO {
+                        case .fatalError:
+                            self.errorObject.error = errorVO
+                        case .retryableError:
+                            self.errorObject.error = errorVO
+                            self.errorObject.retryAction = self.appleLogin
+                        }
                     }
                 }
             })
@@ -50,12 +52,14 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 case .success(_):
                     self.coordinator.push(.profileSettingView("test"))
                 case .failure(let error):
-                    switch error {
-                    case .fatalError:
-                        self.errorObject.error = error
-                    case .retryableError:
-                        self.errorObject.error = error
-                        self.errorObject.retryAction = self.appleLogin
+                    if let errorVO = error as? ErrorVO {
+                        switch errorVO {
+                        case .fatalError:
+                            self.errorObject.error = errorVO
+                        case .retryableError:
+                            self.errorObject.error = errorVO
+                            self.errorObject.retryAction = self.appleLogin
+                        }
                     }
                 }
             })
