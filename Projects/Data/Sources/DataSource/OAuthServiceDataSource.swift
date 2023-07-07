@@ -14,8 +14,7 @@ import KakaoSDKUser
 
 public protocol OAuthServiceDataSource {
     
-    func performAppleLogin()
-    var appleLoginSubject: PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never> { get }
+    func appleLogin() -> AnyPublisher<OAuth.AppleDTO, ErrorVO>
     func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO>
     
 }
@@ -24,16 +23,33 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     
     public override init() {}
     
-    public func performAppleLogin() {
+    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never>()
+    
+    private var appleLoginPublisher: AnyPublisher<OAuth.AppleDTO, ErrorVO> {
+        appleLoginSubject
+            .flatMap { result -> AnyPublisher<OAuth.AppleDTO, ErrorVO> in
+                switch result {
+                case .success(let appleDTO):
+                    return Just(appleDTO)
+                        .setFailureType(to: ErrorVO.self)
+                        .eraseToAnyPublisher()
+                case .failure(let error):
+                    return Fail(error: error)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    public func appleLogin() -> AnyPublisher<OAuth.AppleDTO, ErrorVO> {
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
         request.requestedScopes = [.fullName, .email]
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.performRequests()
+        return appleLoginPublisher
     }
-    
-    public let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never>()
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         appleLoginSubject.send(.failure(.retryableError))

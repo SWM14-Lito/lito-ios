@@ -30,7 +30,7 @@ public struct LoginView: View {
             VStack {
                 SignInWithAppleButtonView()
                     .onTapGesture {
-                        viewModel.performAppleLogin()
+                        viewModel.appleLogin()
                     }
                     .frame(width: 280, height: 45)
                     .cornerRadius(10)
