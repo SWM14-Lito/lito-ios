@@ -23,6 +23,7 @@ public struct ProfileSettingView: View {
             nameView(text: viewModel.userName)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            notifyErrorView()
             Spacer()
             finishButtonView()
         }
@@ -121,6 +122,17 @@ public struct ProfileSettingView: View {
         }
     }
     
+    // 에러 발생했을 시 보여주는 뷰
+    @ViewBuilder
+    private func notifyErrorView() -> some View {
+        if let error = viewModel.error {
+            Text(error.localizedString)
+                .foregroundColor(.red)
+        } else {
+            EmptyView()
+        }
+    }
+    
     // 설정 완료 버튼 뷰
     @ViewBuilder
     private func finishButtonView() -> some View {
@@ -132,7 +144,6 @@ public struct ProfileSettingView: View {
         .buttonStyle(.bordered)
         .tint(.orange)
         .padding(.bottom, 20)
-
     }
 }
 

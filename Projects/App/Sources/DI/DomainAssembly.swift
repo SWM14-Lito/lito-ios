@@ -27,6 +27,10 @@ public struct DomainAssembly: Assembly {
             return DefaultProfileSettingUseCase(repository: repository)
         }
         
+    
     }
     
 }
+
+
+// register -> resolve

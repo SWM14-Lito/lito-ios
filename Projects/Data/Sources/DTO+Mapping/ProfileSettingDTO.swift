@@ -6,6 +6,15 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+import Domain
+
 public struct ProfileSettingDTO {
+    let nickname: String?
+    let profileImgUrl: String?
+    let introduce: String?
+    let name: String?
     
+    func toVO() -> ProfileSettingVO {
+        return ProfileSettingVO(nickname: nickname ?? "Unknown", profileImgUrl: profileImgUrl ?? "Unknown", introduce: introduce ?? "Unknown", name: name ?? "Unknown")
+    }
 }

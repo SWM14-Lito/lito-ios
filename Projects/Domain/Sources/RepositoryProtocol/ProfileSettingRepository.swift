@@ -6,8 +6,8 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import Foundation
+import Combine
 
 public protocol ProfileSettingRepository {
-    
+    func postProfileInfo(profileSettingVO: ProfileSettingVO) -> AnyPublisher<Void, Error>
 }

@@ -23,6 +23,22 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
             .eraseToAnyPublisher()
     }
     
+    //            .flatMap({ response -> AnyPublisher<Void, Error> in
+    //                //                // if response 200 ok 일시 return Just(Void).setFailureType(Error.self)
+    //                //                // else return Fail(error)
+    //                return Just(Void).setFailureType(to: Error.self)
+    //            })
+    func call(target: Provider) -> AnyPublisher<Void, Error> {
+        return self.requestPublisher(target)
+            .map({ _ in
+                return ()
+            })
+            .mapError { moyaError -> NetworkErrorDTO in
+                return moyaError.toNetworkError()
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }
 
 extension MoyaError {
