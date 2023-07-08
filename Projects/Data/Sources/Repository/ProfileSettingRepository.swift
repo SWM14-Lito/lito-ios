@@ -7,6 +7,7 @@
 //
 
 import Domain
+import Combine
 
 final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
@@ -14,5 +15,19 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
     public init(dataSource: ProfileSettingDataSource) {
         self.dataSource = dataSource
+    }
+    
+    public func postProfileInfo(profileSettingVO: ProfileSettingVO) -> AnyPublisher<Void, Error> {
+        dataSource.postProfileInfo(profileInfo: profileSettingVO)
+            .catch { error -> Fail in
+                if let networkError = error as? NetworkErrorDTO {
+                    #if DEBUG
+                    print(networkError.debugString)
+                    #endif
+                    return Fail(error: networkError)
+                }
+                return Fail(error: ErrorVO.fatalError)
+            }
+            .eraseToAnyPublisher()
     }
 }

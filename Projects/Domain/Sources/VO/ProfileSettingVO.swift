@@ -9,5 +9,15 @@
 import Foundation
 
 public struct ProfileSettingVO {
+    public let nickname: String
+    public let profileImgUrl: String
+    public let introduce: String
+    public let name: String
     
+    public init(nickname: String, profileImgUrl: String, introduce: String, name: String) {
+        self.nickname = nickname
+        self.profileImgUrl = profileImgUrl
+        self.introduce = introduce
+        self.name = name
+    }
 }

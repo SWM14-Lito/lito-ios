@@ -8,6 +8,7 @@
 
 import SwiftUI
 import PhotosUI
+import Domain
 
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
@@ -15,16 +16,19 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     let introduceLimit = 250
     public var userName: String?
     private let cancelBag = CancelBag()
+    private let useCase: ProfileSettingUseCase
     @Published var selectedPhotoData: Data?
     @Published var selectedPhoto: PhotosPickerItem?
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     @Published var isNicknameExceedLimit: Bool = false
     @Published var isIntroduceExceedLimit: Bool = false
+    @Published var error: ErrorVO?
     
-    public override init(coordinator: CoordinatorProtocol) {
-        nickname = LimitedText(limit: nicknameLimit)
-        introduce = LimitedText(limit: introduceLimit)
+    public init(useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+        self.nickname = LimitedText(limit: nicknameLimit)
+        self.introduce = LimitedText(limit: introduceLimit)
+        self.useCase = useCase
         super.init(coordinator: coordinator)
         initPublisher()
     }
@@ -63,6 +67,17 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        coordinator.push(.learningHomeView)
+        useCase.postProfileInfo(profileSettingVO: ProfileSettingVO(nickname: nickname.text, profileImgUrl: "", introduce: introduce.text, name: userName ?? "Unknown"))
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    self.coordinator.push(.learningHomeView)
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.error = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
 }

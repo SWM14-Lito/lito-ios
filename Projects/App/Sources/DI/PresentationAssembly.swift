@@ -32,8 +32,9 @@ public struct PresentationAssembly: Assembly {
             return LoginView(viewModel: viewModel)
         }
         
-        container.register(ProfileSettingViewModel.self) { _ in
-            return ProfileSettingViewModel(coordinator: coordinator)
+        container.register(ProfileSettingViewModel.self) { resolver in
+            let useCase = resolver.resolve(ProfileSettingUseCase.self)!
+            return ProfileSettingViewModel(useCase: useCase, coordinator: coordinator)
         }
         
         container.register(ProfileSettingView.self) { resolver in

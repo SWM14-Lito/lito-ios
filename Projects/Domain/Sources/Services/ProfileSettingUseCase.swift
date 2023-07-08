@@ -6,8 +6,10 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+import Combine
+
 public protocol ProfileSettingUseCase {
-   
+    func postProfileInfo(profileSettingVO: ProfileSettingVO) -> AnyPublisher<Void, Error>
 }
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
@@ -15,5 +17,9 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     
     public init(repository: ProfileSettingRepository) {
         self.repository = repository
+    }
+    
+    public func postProfileInfo(profileSettingVO: ProfileSettingVO) -> AnyPublisher<Void, Error> {
+        repository.postProfileInfo(profileSettingVO: profileSettingVO)
     }
 }
