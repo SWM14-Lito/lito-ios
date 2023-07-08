@@ -29,7 +29,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
             .sinkToResult({ result in
                 switch result {
                 case .success(_):
-                    self.coordinator.push(.profileSettingView("test"))
+                    self.coordinator.push(.profileSettingView)
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         switch errorVO {
@@ -50,7 +50,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
             .sinkToResult({ result in
                 switch result {
                 case .success(_):
-                    self.coordinator.push(.profileSettingView("test"))
+                    self.coordinator.push(.profileSettingView)
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         switch errorVO {
