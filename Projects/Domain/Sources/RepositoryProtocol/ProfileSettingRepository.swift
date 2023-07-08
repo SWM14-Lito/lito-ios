@@ -9,5 +9,5 @@
 import Combine
 
 public protocol ProfileSettingRepository {
-    func postProfileInfo(profileSettingVO: ProfileSettingVO) -> AnyPublisher<Void, Error>
+    func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error>
 }

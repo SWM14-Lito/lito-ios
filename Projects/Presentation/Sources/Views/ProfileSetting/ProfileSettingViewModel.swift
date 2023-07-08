@@ -91,7 +91,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        useCase.postProfileInfo(profileSettingVO: ProfileSettingVO(nickname: nickname.text, profileImgUrl: "", introduce: introduce.text, name: username.text))
+        useCase.postProfileInfo(profileInfoVO: ProfileInfoVO(profileImg: selectedPhotoData, name: username.text, nickname: nickname.text, introduce: introduce.text))
             .sinkToResult { result in
                 switch result {
                 case .success(_):

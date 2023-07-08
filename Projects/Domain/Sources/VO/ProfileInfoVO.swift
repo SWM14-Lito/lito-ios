@@ -8,16 +8,16 @@
 
 import Foundation
 
-public struct ProfileSettingVO {
-    public let nickname: String
-    public let profileImgUrl: String
-    public let introduce: String
+public struct ProfileInfoVO {
+    public let profileImg: Data?
     public let name: String
+    public let nickname: String
+    public let introduce: String
     
-    public init(nickname: String, profileImgUrl: String, introduce: String, name: String) {
-        self.nickname = nickname
-        self.profileImgUrl = profileImgUrl
-        self.introduce = introduce
+    public init(profileImg: Data?, name: String, nickname: String, introduce: String) {
+        self.profileImg = profileImg
         self.name = name
+        self.nickname = nickname
+        self.introduce = introduce
     }
 }
