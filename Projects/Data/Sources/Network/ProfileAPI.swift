@@ -10,17 +10,17 @@ import Moya
 import Domain
 import Foundation
 
-enum ProfileSettingAPI {
-    case profile(profileSettingVO: ProfileSettingVO)
+enum ProfileAPI {
+    case setProfile(profileInfoVO: ProfileInfoVO)
 }
-extension ProfileSettingAPI: TargetType {
+extension ProfileAPI: TargetType {
     var baseURL: URL {
         return URL(string: NetworkConfiguration.developServerURL as! String)!
     }
     
     var path: String {
         switch self {
-        case .profile:
+        case .setProfile:
             return "/api/auth/apple/login"
         }
     }
@@ -31,22 +31,22 @@ extension ProfileSettingAPI: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .profile(let profileSettingVO):
+        case .setProfile(let profileInfoVO):
             return .requestParameters(
-                parameters: ["nickname": profileSettingVO.nickname,
-                             "profileImgUrl": profileSettingVO.profileImgUrl,
-                             "introduce": profileSettingVO.introduce,
-                             "name": profileSettingVO.name
+                parameters: ["nickname": profileInfoVO.nickname,
+                             "profileImgUrl": profileInfoVO.profileImg,
+                             "introduce": profileInfoVO.introduce,
+                             "name": profileInfoVO.name
                             ], encoding: JSONEncoding.default)
         }
     }
     
     var headers: [String: String]? {
-            return ProfileSettingAPI.APICallHeaders.Json
+            return ProfileAPI.APICallHeaders.Json
     }
 }
 
-extension ProfileSettingAPI {
+extension ProfileAPI {
     
     struct APICallHeaders {
         
