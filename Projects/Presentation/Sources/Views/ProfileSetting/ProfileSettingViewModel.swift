@@ -12,22 +12,48 @@ import Domain
 
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
-    let nicknameLimit = 10
-    let introduceLimit = 250
-    public var userName: String?
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
     @Published var selectedPhotoData: Data?
     @Published var selectedPhoto: PhotosPickerItem?
+    @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
-    @Published var isNicknameExceedLimit: Bool = false
-    @Published var isIntroduceExceedLimit: Bool = false
+    @Published var isExceedLimit: [TextFieldCategory: Bool]
     @Published var error: ErrorVO?
     
+    enum TextFieldCategory: Hashable {
+        case username, nickname, introduce
+        var limit: Int {
+            switch self {
+            case .username:
+                return 10
+            case .nickname:
+                return 10
+            case .introduce:
+                return 250
+            }
+        }
+        var title: String {
+            switch self {
+            case .username:
+                return "이름"
+            case .nickname:
+                return "닉네임"
+            case .introduce:
+                return "소개말"
+            }
+        }
+        var placeHolder: String {
+            return title + "을 입력해주세요."
+        }
+    }
+    
     public init(useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
-        self.nickname = LimitedText(limit: nicknameLimit)
-        self.introduce = LimitedText(limit: introduceLimit)
+        self.username = LimitedText(limit: TextFieldCategory.username.limit)
+        self.nickname = LimitedText(limit: TextFieldCategory.nickname.limit)
+        self.introduce = LimitedText(limit: TextFieldCategory.introduce.limit)
+        self.isExceedLimit = [.username: false, .nickname: false, .introduce: false]
         self.useCase = useCase
         super.init(coordinator: coordinator)
         initPublisher()
@@ -44,30 +70,28 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
             }
             .store(in: cancelBag)
         
+        username.reachLimit
+            .receive(on: DispatchQueue.main)
+            .sink { isExceed in
+                self.isExceedLimit[.username] = isExceed ? true : false
+            }
+            .store(in: cancelBag)
         nickname.reachLimit
+            .receive(on: DispatchQueue.main)
             .sink { isExceed in
-                self.isNicknameExceedLimit = isExceed ? true : false
+                self.isExceedLimit[.nickname] = isExceed ? true : false
             }
             .store(in: cancelBag)
-        
         introduce.reachLimit
+            .receive(on: DispatchQueue.main)
             .sink { isExceed in
-                self.isIntroduceExceedLimit = isExceed ? true : false
+                self.isExceedLimit[.introduce] = isExceed ? true : false
             }
             .store(in: cancelBag)
-    }
-    
-    func getIsExceed(fieldCategory: ProfileSettingView.TextFieldCategory) -> Bool {
-        switch fieldCategory {
-        case .nickname:
-            return isNicknameExceedLimit
-        case .introduce:
-            return isIntroduceExceedLimit
-        }
     }
     
     func moveToLearningHomeView() {
-        useCase.postProfileInfo(profileSettingVO: ProfileSettingVO(nickname: nickname.text, profileImgUrl: "", introduce: introduce.text, name: userName ?? "Unknown"))
+        useCase.postProfileInfo(profileSettingVO: ProfileSettingVO(nickname: nickname.text, profileImgUrl: "", introduce: introduce.text, name: username.text))
             .sinkToResult { result in
                 switch result {
                 case .success(_):
