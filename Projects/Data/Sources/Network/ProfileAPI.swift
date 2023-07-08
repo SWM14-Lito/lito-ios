@@ -32,9 +32,12 @@ extension ProfileAPI: TargetType {
     var task: Moya.Task {
         switch self {
         case .setProfile(let profileInfoVO):
+
+        // TODO: 이미지 데이터를 서버에 업로드할 수 있는 형태로 변환
+        // let imgData = MultipartFormData(provider: .data(profileInfoVO.profileImg), name: "profileImg")
             return .requestParameters(
                 parameters: ["nickname": profileInfoVO.nickname,
-                             "profileImgUrl": profileInfoVO.profileImg,
+                             "profileImg": profileInfoVO.profileImg,
                              "introduce": profileInfoVO.introduce,
                              "name": profileInfoVO.name
                             ], encoding: JSONEncoding.default)
