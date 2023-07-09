@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ProfileInfoVO {
+public struct SetProfileDTO {
     public let profileImg: Data?
     public let name: String
     public let nickname: String

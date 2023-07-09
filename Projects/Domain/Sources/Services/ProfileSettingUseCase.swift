@@ -9,7 +9,7 @@
 import Combine
 
 public protocol ProfileSettingUseCase {
-    func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error>
+    func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error>
 }
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
@@ -19,7 +19,7 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
         self.repository = repository
     }
     
-    public func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error> {
-        repository.postProfileInfo(profileInfoVO: profileInfoVO)
+    public func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error> {
+        repository.postProfileInfo(setProfileDTO: setProfileDTO)
     }
 }
