@@ -11,7 +11,7 @@ import Domain
 import Foundation
 
 enum ProfileAPI {
-    case setProfile(profileInfoVO: ProfileInfoVO)
+    case setProfile(setProfileDTO: SetProfileDTO)
 }
 extension ProfileAPI: TargetType {
     var baseURL: URL {
@@ -21,7 +21,7 @@ extension ProfileAPI: TargetType {
     var path: String {
         switch self {
         case .setProfile:
-            return "/api/auth/apple/login"
+            return "/api/users"
         }
     }
     
@@ -33,11 +33,10 @@ extension ProfileAPI: TargetType {
         switch self {
         case .setProfile(let profileInfoVO):
 
-        // TODO: 이미지 데이터를 서버에 업로드할 수 있는 형태로 변환
-        // let imgData = MultipartFormData(provider: .data(profileInfoVO.profileImg), name: "profileImg")
+        // TODO: 이미지 데이터도 업로드 하기
+
             return .requestParameters(
                 parameters: ["nickname": profileInfoVO.nickname,
-                             "profileImg": profileInfoVO.profileImg,
                              "introduce": profileInfoVO.introduce,
                              "name": profileInfoVO.name
                             ], encoding: JSONEncoding.default)

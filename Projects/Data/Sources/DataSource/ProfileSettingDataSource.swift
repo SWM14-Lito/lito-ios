@@ -10,7 +10,7 @@ import Combine
 import Domain
 
 public protocol ProfileSettingDataSource {
-    func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error>
+    func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error>
 }
 
 public class DefaultProfileSettingDataSource: ProfileSettingDataSource {
@@ -18,7 +18,7 @@ public class DefaultProfileSettingDataSource: ProfileSettingDataSource {
     
     private let moyaProvider = MoyaWrapper<ProfileAPI>()
     
-    public func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error> {
-        moyaProvider.call(target: .setProfile(profileInfoVO: profileInfoVO))
+    public func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error> {
+        moyaProvider.call(target: .setProfile(setProfileDTO: setProfileDTO))
     }
 }

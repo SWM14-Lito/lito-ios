@@ -17,8 +17,8 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
         self.dataSource = dataSource
     }
     
-    public func postProfileInfo(profileInfoVO: ProfileInfoVO) -> AnyPublisher<Void, Error> {
-        dataSource.postProfileInfo(profileInfoVO: profileInfoVO)
+    public func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error> {
+        dataSource.postProfileInfo(setProfileDTO: setProfileDTO)
             .catch { error -> Fail in
                 if let networkError = error as? NetworkErrorDTO {
                     #if DEBUG
