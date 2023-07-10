@@ -26,7 +26,7 @@ final public class DefaultLoginRepository: LoginRepository {
             // 1차적으로 이곳에서 oauthErrorDTO 를 핸들링
             // 만약 catch한 error 가 추가적인 액션을 통해 해결 가능성 있는 error 라면 repository or useCase 어디서 처리 해야할까?
             .catch({ error -> Fail in
-                if let oauthErrorDTO = error as? OAuthErrorDTO {
+                if let oauthErrorDTO = error as? OAuthError.appleErrorDTO {
                     #if DEBUG
                     print(oauthErrorDTO.debugString)
                     #endif
@@ -41,11 +41,11 @@ final public class DefaultLoginRepository: LoginRepository {
     public func kakaoLogin() -> AnyPublisher<OAuth.KakaoVO, Error> {
         oauthDataSource.kakaoLogin()
             .catch({ error -> Fail in
-                if let oauthError = error as? OAuthErrorDTO {
+                if let oauthErrorDTO = error as? OAuthError.kakaoDTO {
                     #if DEBUG
-                    print(oauthError.debugString)
+                    print(oauthErrorDTO.debugString)
                     #endif
-                    return Fail(error: oauthError.toVO())
+                    return Fail(error: oauthErrorDTO.toVO())
                 }
                 return Fail(error: ErrorVO.fatalError)
             })

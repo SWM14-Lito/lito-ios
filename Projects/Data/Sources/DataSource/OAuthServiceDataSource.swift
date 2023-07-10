@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import Domain
 import AuthenticationServices
+import KakaoSDKCommon
 import KakaoSDKUser
 
 public protocol OAuthServiceDataSource {
@@ -23,7 +24,7 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     
     public override init() {}
     
-    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, OAuthErrorDTO>, Never>()
+    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, OAuthError.appleErrorDTO>, Never>()
     
     private var appleLoginPublisher: AnyPublisher<OAuth.AppleDTO, Error> {
         appleLoginSubject
@@ -52,7 +53,11 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        appleLoginSubject.send(.failure(.apple(error)))
+        if let authorizationError = error as? ASAuthorizationError {
+            appleLoginSubject.send(.failure(.authorizationError(authorizationError)))
+        } else {
+            appleLoginSubject.send(.failure(.commonError(error)))
+        }
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
@@ -79,11 +84,17 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         return Future<OAuth.KakaoDTO, Error> { promise in
             UserApi.shared.loginWithKakaoTalk { (_, error) in
                 if let error = error {
-                    return promise(.failure(OAuthErrorDTO.kakao(error)))
+                    if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                        return promise(.failure(kakaoErrorDTO))
+                    }
+                    return promise(.failure(error))
                 }
                 UserApi.shared.me { (user, error) in
                     if let error = error {
-                        return promise(.failure(OAuthErrorDTO.apple(error)))
+                        if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                            return promise(.failure(kakaoErrorDTO))
+                        }
+                        return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
                     }
                     
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
@@ -102,13 +113,18 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         return Future<OAuth.KakaoDTO, Error> { promise in
             UserApi.shared.loginWithKakaoAccount { (_, error) in
                 if let error = error {
-                    return promise(.failure(OAuthErrorDTO.kakao(error)))
+                    if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                        return promise(.failure(kakaoErrorDTO))
+                    }
+                    return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
                 }
                 UserApi.shared.me { (user, error) in
                     if let error = error {
-                        return promise(.failure(OAuthErrorDTO.kakao(error)))
+                        if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                            return promise(.failure(kakaoErrorDTO))
+                        }
+                        return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
                     }
-                    
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
                         let userIdentifier = String(userId)
                         let userEmail = userInfo.email
@@ -119,6 +135,29 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
                 }
             }
         }.eraseToAnyPublisher()
+    }
+    
+    private func sdkErrorMapping(error: Error) -> OAuthError.kakaoDTO? {
+        guard let sdkError = error as? SdkError else { return nil }
+        if sdkError.isClientFailed {
+            let clientError = sdkError.getClientError()
+            let clientFailureReason = clientError.reason
+            let clientFailureMessage = clientError.message
+            return OAuthError.kakaoDTO.clientFailureReson(clientFailureReason, message: clientFailureMessage)
+        }
+        if sdkError.isApiFailed {
+            let apiError = sdkError.getApiError()
+            let apiFailureReason = apiError.reason
+            let apiFailureInfo = apiError.info
+            return OAuthError.kakaoDTO.apiFailureReason(apiFailureReason, apiFailureInfo)
+        }
+        if sdkError.isAuthFailed {
+            let authError = sdkError.getAuthError()
+            let authFailureReason = authError.reason
+            let authFailureInfo = authError.info
+            return OAuthError.kakaoDTO.authFailureReason(authFailureReason, authFailureInfo)
+        }
+        return nil
     }
     
 }
