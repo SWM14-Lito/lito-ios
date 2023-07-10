@@ -28,8 +28,13 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
         useCase.kakaoLogin()
             .sinkToResult({ result in
                 switch result {
-                case .success(_):
-                    self.coordinator.push(.profileSettingView)
+                case .success(let loginResultVO):
+                    switch loginResultVO {
+                    case .registered:
+                        self.coordinator.push(.learningHomeView)
+                    case .unregistered:
+                        self.coordinator.push(.profileSettingView)
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         switch errorVO {
@@ -49,8 +54,13 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
         useCase.appleLogin()
             .sinkToResult({ result in
                 switch result {
-                case .success(_):
-                    self.coordinator.push(.profileSettingView)
+                case .success(let loginResultVO):
+                    switch loginResultVO {
+                    case .registered:
+                        self.coordinator.push(.learningHomeView)
+                    case .unregistered:
+                        self.coordinator.push(.profileSettingView)
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         switch errorVO {

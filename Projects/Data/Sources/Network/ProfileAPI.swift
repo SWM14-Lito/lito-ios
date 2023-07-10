@@ -17,7 +17,7 @@ enum ProfileAPI {
 }
 extension ProfileAPI: TargetType {
     var baseURL: URL {
-        return URL(string: NetworkConfiguration.developServerURL as! String)!
+        return URL(string: NetworkConfiguration.developmentServerURL as! String)!
     }
     
     var path: String {
@@ -25,14 +25,21 @@ extension ProfileAPI: TargetType {
         case .setProfileInfo:
             return "/api/users"
         case .setProfileImage:
-            return "/api/users"
+            return "/api/users/files"
         case .setNotiAcceptance:
-            return "/api/users"
+            return "/api/users/notification"
         }
     }
     
     var method: Moya.Method {
-        return .post
+        switch self {
+        case .setProfileInfo:
+            return .patch
+        case .setProfileImage:
+            return .post
+        case .setNotiAcceptance:
+            return .patch
+        }
     }
     
     var task: Moya.Task {
@@ -48,13 +55,13 @@ extension ProfileAPI: TargetType {
             return .uploadMultipart([imgData])
         case .setNotiAcceptance(let alarmAcceptanceDTO):
             return .requestParameters(parameters: [
-                "alarmStatus": alarmAcceptanceDTO.getAlarm
-            ], encoding: JSONEncoding.default)
+                "alarmStatus": alarmAcceptanceDTO.getAlarm ? "Y" : "N"
+            ], encoding: URLEncoding.queryString)
         }
     }
     
     var headers: [String: String]? {
-            return ProfileAPI.APICallHeaders.Json
+        return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json"]
     }
 }
 

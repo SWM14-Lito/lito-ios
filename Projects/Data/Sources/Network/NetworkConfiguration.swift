@@ -7,7 +7,11 @@
 //
 
 import Foundation
+import Domain
 
 enum NetworkConfiguration {
-    static let developServerURL = Bundle.main.infoDictionary?["DEVELOPMENT_SERVER_URL"] ?? ""
+    static let developmentServerURL = Bundle.main.infoDictionary?["DEVELOPMENT_SERVER_URL"] ?? ""
+    static var authorization: String {
+        return KeyChainManager.read(key: .accessToken) ?? ""
+    }
 }

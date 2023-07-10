@@ -64,10 +64,6 @@ final public class DefaultLoginRepository: LoginRepository {
                 }
                 return Fail(error: ErrorVO.fatalError)
             }
-            .map { responseDTO in
-                print(responseDTO)
-                return responseDTO.toVO()
-            }
             .eraseToAnyPublisher()
     }
     
