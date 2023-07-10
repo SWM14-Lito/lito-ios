@@ -38,8 +38,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
                         _ = AuthController.handleOpenUrl(url: url)
                     }
                 })
-        case .profileSettingView(let name):
-            setDataInProfileSettingView(name: name)
+        case .profileSettingView:
+            injector?.resolve(ProfileSettingView.self)
         case .learningHomeView:
             injector?.resolve(LearningHomeView.self)
         case .learningCategoryView:
@@ -52,11 +52,4 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(RootTabView.self)
         }
     }
-    
-    func setDataInProfileSettingView(name: String) -> ProfileSettingView {
-        let view = injector?.resolve(ProfileSettingView.self)
-        view!.viewModel.userName = name
-        return view!
-    }
-    
 }

@@ -11,7 +11,7 @@ import PhotosUI
 
 public struct ProfileSettingView: View {
     @ObservedObject public var viewModel: ProfileSettingViewModel
-    @FocusState private var focus: TextFieldCategory?
+    @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
     
     public init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
@@ -20,9 +20,10 @@ public struct ProfileSettingView: View {
     public var body: some View {
         VStack {
             setProfileImageView()
-            nameView(text: viewModel.userName)
+            setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            notifyErrorView()
             Spacer()
             finishButtonView()
         }
@@ -32,6 +33,8 @@ public struct ProfileSettingView: View {
                 Spacer()
                 Button {
                     switch focus {
+                    case .username:
+                        focus = .nickname
                     case .nickname:
                         focus = .introduce
                     case .introduce:
@@ -91,11 +94,11 @@ public struct ProfileSettingView: View {
     
     // 프로필 관련 텍스트 입력 뷰 (fieldCategory로 선택 가능)
     @ViewBuilder
-    private func setProfileTextFieldView(fieldCategory: TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<TextFieldCategory?>) -> some View {
+    private func setProfileTextFieldView(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)
-        let isExceed = viewModel.getIsExceed(fieldCategory: fieldCategory)
+        let isExceed = viewModel.isExceedLimit[fieldCategory] ?? false
         
         VStack {
             Text(fieldCategory.title)
@@ -121,6 +124,17 @@ public struct ProfileSettingView: View {
         }
     }
     
+    // 에러 발생했을 시 보여주는 뷰
+    @ViewBuilder
+    private func notifyErrorView() -> some View {
+        if let error = viewModel.uploadError {
+            Text(error.localizedString)
+                .foregroundColor(.red)
+        } else {
+            EmptyView()
+        }
+    }
+    
     // 설정 완료 버튼 뷰
     @ViewBuilder
     private func finishButtonView() -> some View {
@@ -132,23 +146,5 @@ public struct ProfileSettingView: View {
         .buttonStyle(.bordered)
         .tint(.orange)
         .padding(.bottom, 20)
-
-    }
-}
-
-extension ProfileSettingView {
-    enum TextFieldCategory: Hashable {
-        case nickname, introduce
-        var title: String {
-            switch self {
-            case .nickname:
-                return "닉네임"
-            case .introduce:
-                return "소개말"
-            }
-        }
-        var placeHolder: String {
-            return title + "을 입력해주세요."
-        }
     }
 }

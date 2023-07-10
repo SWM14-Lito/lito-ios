@@ -33,7 +33,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                     case .registered:
                         self.coordinator.push(.learningHomeView)
                     case .unregistered:
-                        self.coordinator.push(.profileSettingView("test"))
+                        self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
@@ -59,7 +59,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                     case .registered:
                         self.coordinator.push(.learningHomeView)
                     case .unregistered:
-                        self.coordinator.push(.profileSettingView("test"))
+                        self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
