@@ -56,12 +56,19 @@ extension ProfileAPI: TargetType {
         case .setNotiAcceptance(let alarmAcceptanceDTO):
             return .requestParameters(parameters: [
                 "alarmStatus": alarmAcceptanceDTO.getAlarm ? "Y" : "N"
-            ], encoding: URLEncoding.queryString)
+            ], encoding: URLEncoding.default)
         }
     }
     
     var headers: [String: String]? {
-        return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json"]
+        switch self {
+        case .setProfileInfo:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json;charset=UTF-8"]
+        case .setProfileImage:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
+        case .setNotiAcceptance:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/x-www-form-urlencoded"]
+        }
     }
 }
 
