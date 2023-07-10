@@ -15,15 +15,13 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
-    @Published var selectedPhotoData: Data?
+    @Published var selecetedPhotoData: Data?
     @Published var selectedPhoto: PhotosPickerItem?
+    @Published var showImagePicker: Bool = false
     @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     @Published var isExceedLimit: [TextFieldCategory: Bool]
-    private var succeedUploadingProfileInfo = false
-    private var succeedUploadingProfileImage = false
-    private var succeedUploadingProfileAlarmStatus = false
     @Published var uploadError: ErrorVO?
     
     enum TextFieldCategory: Hashable {
@@ -64,18 +62,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func initPublisher() {
-        $selectedPhoto
-            .sink { value in
-                Task {
-                    value?.loadTransferable(type: Data.self) { result in
-                        DispatchQueue.main.async {
-                            self.selectedPhotoData = try? result.get()
-                        }
-                    }
-                }
-            }
-            .store(in: cancelBag)
-        
         username.reachLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
@@ -97,74 +83,44 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        if let img = selectedPhotoData {
-            postProfile(img: img)
-                .sink { _ in
-                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileImage && self.succeedUploadingProfileAlarmStatus {
-                        self.coordinator.push(.rootTabView)
+        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
+        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: true)
+        
+        let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+        
+        if let data = selecetedPhotoData {
+            let profileImageDTO = ProfileImageDTO(image: data)
+            let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
+            
+            postProfileInfoPublisher
+                .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
+                        print("upload with image success")
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
                     }
                 }
                 .store(in: cancelBag)
+            
         } else {
-            postProfile()
-                .sink { _ in
-                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileAlarmStatus {
-                        self.coordinator.push(.rootTabView)
+            postProfileInfoPublisher
+                .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
+                        print("upload without image success")
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
                     }
                 }
                 .store(in: cancelBag)
-        }
-    }
-    
-    func postProfile(img: Data? = nil) -> Future<Bool, Never> {
-        return Future<Bool, Never> { promise in
-            self.useCase.postProfileInfo(profileInfoDTO: ProfileInfoDTO(name: self.username.text, nickname: self.nickname.text, introduce: self.introduce.text))
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        print("info upload success")
-                        self.succeedUploadingProfileInfo = true
-                        promise(.success(true))
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
-                        }
-                    }
-                }
-                .store(in: self.cancelBag)
-            
-            if let img = img {
-                self.useCase.postProfileImage(profileImageDTO: ProfileImageDTO(image: img))
-                    .sinkToResult { result in
-                        switch result {
-                        case .success(_):
-                            print("image upload success")
-                            self.succeedUploadingProfileImage = true
-                            promise(.success(true))
-                        case .failure(let error):
-                            if let errorVO = error as? ErrorVO {
-                                self.uploadError = errorVO
-                            }
-                        }
-                    }
-                    .store(in: self.cancelBag)
-            }
-            
-            // TODO: 알람 여부 사용자에게 받는 기능 필요
-            self.useCase.postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO(getAlarm: true))
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        print("alarmAcceptance upload success")
-                        self.succeedUploadingProfileAlarmStatus = true
-                        promise(.success(true))
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
-                        }
-                    }
-                }
-                .store(in: self.cancelBag)
         }
     }
 }
