@@ -9,6 +9,7 @@
 import SwiftUI
 import PhotosUI
 import Domain
+import Combine
 
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
@@ -20,7 +21,10 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     @Published var isExceedLimit: [TextFieldCategory: Bool]
-    @Published var error: ErrorVO?
+    private var succeedUploadingProfileInfo = false
+    private var succeedUploadingProfileImage = false
+    private var succeedUploadingProfileAlarmStatus = false
+    @Published var uploadError: ErrorVO?
     
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
@@ -90,48 +94,75 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
             .store(in: cancelBag)
     }
     
-    // TODO: 모든 정보 업로드 성공하면 다음 화면으로 이동하기
     func moveToLearningHomeView() {
-        useCase.postProfileInfo(profileInfoDTO: ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text))
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
-                    print("info upload success")
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.error = errorVO
+        if let img = selectedPhotoData {
+            postProfile(img: img)
+                .sink { _ in
+                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileImage && self.succeedUploadingProfileAlarmStatus {
+                        self.coordinator.push(.rootTabView)
                     }
                 }
-            }
-            .store(in: cancelBag)
-        
-        if let imageData = selectedPhotoData {
-            useCase.postProfileImage(profileImageDTO: ProfileImageDTO(image: imageData))
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        print("image upload success")
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.error = errorVO
-                        }
+                .store(in: cancelBag)
+        } else {
+            postProfile()
+                .sink { _ in
+                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileAlarmStatus {
+                        self.coordinator.push(.rootTabView)
                     }
                 }
                 .store(in: cancelBag)
         }
-        
-        // TODO: 알람 여부 사용자에게 받는 기능 필요
-        useCase.postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO(getAlarm: true))
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
-                    print("alarmAcceptance upload success")
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.error = errorVO
+    }
+    
+    func postProfile(img: Data? = nil) -> Future<Bool, Never> {
+        return Future<Bool, Never> { promise in
+            self.useCase.postProfileInfo(profileInfoDTO: ProfileInfoDTO(name: self.username.text, nickname: self.nickname.text, introduce: self.introduce.text))
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
+                        print("info upload success")
+                        self.succeedUploadingProfileInfo = true
+                        promise(.success(true))
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
                     }
                 }
+                .store(in: self.cancelBag)
+            
+            if let img = img {
+                self.useCase.postProfileImage(profileImageDTO: ProfileImageDTO(image: img))
+                    .sinkToResult { result in
+                        switch result {
+                        case .success(_):
+                            print("image upload success")
+                            self.succeedUploadingProfileImage = true
+                            promise(.success(true))
+                        case .failure(let error):
+                            if let errorVO = error as? ErrorVO {
+                                self.uploadError = errorVO
+                            }
+                        }
+                    }
+                    .store(in: self.cancelBag)
             }
-            .store(in: cancelBag)
+            
+            // TODO: 알람 여부 사용자에게 받는 기능 필요
+            self.useCase.postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO(getAlarm: true))
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
+                        print("alarmAcceptance upload success")
+                        self.succeedUploadingProfileAlarmStatus = true
+                        promise(.success(true))
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
+                    }
+                }
+                .store(in: self.cancelBag)
+        }
     }
 }
