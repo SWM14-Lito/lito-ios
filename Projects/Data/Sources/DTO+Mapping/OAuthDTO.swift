@@ -16,7 +16,7 @@ extension OAuth {
         let userEmail: String?
         
         func toVO() -> AppleVO {
-            return AppleVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "Unknown")
+            return AppleVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "")
         }
     }
     
@@ -25,7 +25,7 @@ extension OAuth {
         let userEmail: String?
         
         func toVO() -> KakaoVO {
-            return KakaoVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "Unknown")
+            return KakaoVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "")
         }
     }
 
