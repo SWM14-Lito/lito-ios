@@ -18,6 +18,7 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         return self.requestPublisher(target)
             .map(Value.self)
             .mapError { moyaError -> NetworkErrorDTO in
+                print(moyaError)
                 return moyaError.toNetworkError()
             }
             .eraseToAnyPublisher()
