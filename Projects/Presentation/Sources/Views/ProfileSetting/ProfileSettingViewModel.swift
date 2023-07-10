@@ -90,12 +90,42 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
             .store(in: cancelBag)
     }
     
+    // TODO: 모든 정보 업로드 성공하면 다음 화면으로 이동하기
     func moveToLearningHomeView() {
-        useCase.postProfileInfo(setProfileDTO: SetProfileDTO(profileImg: selectedPhotoData, name: username.text, nickname: nickname.text, introduce: introduce.text))
+        useCase.postProfileInfo(profileInfoDTO: ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text))
             .sinkToResult { result in
                 switch result {
                 case .success(_):
-                    self.coordinator.push(.learningHomeView)
+                    print("info upload success")
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.error = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
+        
+        if let imageData = selectedPhotoData {
+            useCase.postProfileImage(profileImageDTO: ProfileImageDTO(image: imageData))
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
+                        print("image upload success")
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.error = errorVO
+                        }
+                    }
+                }
+                .store(in: cancelBag)
+        }
+        
+        // TODO: 알람 여부 사용자에게 받는 기능 필요
+        useCase.postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO(getAlarm: true))
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    print("alarmAcceptance upload success")
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.error = errorVO

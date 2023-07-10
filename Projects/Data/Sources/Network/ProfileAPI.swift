@@ -11,7 +11,9 @@ import Domain
 import Foundation
 
 enum ProfileAPI {
-    case setProfile(setProfileDTO: SetProfileDTO)
+    case setProfileInfo(ProfileInfoDTO)
+    case setProfileImage(ProfileImageDTO)
+    case setNotiAcceptance(AlarmAcceptanceDTO)
 }
 extension ProfileAPI: TargetType {
     var baseURL: URL {
@@ -20,7 +22,11 @@ extension ProfileAPI: TargetType {
     
     var path: String {
         switch self {
-        case .setProfile:
+        case .setProfileInfo:
+            return "/api/users"
+        case .setProfileImage:
+            return "/api/users"
+        case .setNotiAcceptance:
             return "/api/users"
         }
     }
@@ -31,15 +37,19 @@ extension ProfileAPI: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .setProfile(let profileInfoVO):
-
-        // TODO: 이미지 데이터도 업로드 하기
-
-            return .requestParameters(
-                parameters: ["nickname": profileInfoVO.nickname,
-                             "introduce": profileInfoVO.introduce,
-                             "name": profileInfoVO.name
-                            ], encoding: JSONEncoding.default)
+        case .setProfileInfo(let profileInfoDTO):
+            return .requestParameters( parameters: [
+                "nickname": profileInfoDTO.nickname,
+                "introduce": profileInfoDTO.introduce,
+                "name": profileInfoDTO.name
+            ], encoding: JSONEncoding.default)
+        case .setProfileImage(let profileImageDTO):
+            let imgData = MultipartFormData(provider: .data(profileImageDTO.image), name: "file", fileName: "image.png", mimeType: "image/png")
+            return .uploadMultipart([imgData])
+        case .setNotiAcceptance(let alarmAcceptanceDTO):
+            return .requestParameters(parameters: [
+                "alarmStatus": alarmAcceptanceDTO.getAlarm
+            ], encoding: JSONEncoding.default)
         }
     }
     
