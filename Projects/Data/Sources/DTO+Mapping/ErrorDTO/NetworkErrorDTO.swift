@@ -24,6 +24,7 @@ public enum NetworkErrorDTO: Error {
         case .encodeError(let error):
             return "⛑️ Encode Error: \(error.localizedDescription) "
         case .mappingError(let response):
+            print(String(decoding: response.data, as: UTF8.self))
             return "⛑️ Mapping Error: \(response.description)"
         case .requestError(let description):
             return "⛑️ Request Error \(description)"

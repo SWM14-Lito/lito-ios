@@ -12,7 +12,7 @@ import CombineMoya
 import Moya
 
 public protocol ExampleDataSource {
-    func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO>
+    func loadMaxim() -> AnyPublisher<SlipDTO, Error>
 }
 
 public class DefaultExampleDataSource: ExampleDataSource {
@@ -21,7 +21,7 @@ public class DefaultExampleDataSource: ExampleDataSource {
     
     private let moyaProvider = MoyaWrapper<APIService>()
     
-    public func loadMaxim() -> AnyPublisher<SlipDTO, NetworkErrorDTO> {
+    public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
         return moyaProvider.call(target: .oneSlip)
             .eraseToAnyPublisher()
     }

@@ -11,12 +11,11 @@ import Foundation
 
 public protocol LoginUseCase {
     
-    func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO>
-    func appleLogin() -> AnyPublisher<RequestResultVO, ErrorVO>
+    func kakaoLogin() -> AnyPublisher<LoginResultVO, Error>
+    func appleLogin() -> AnyPublisher<LoginResultVO, Error>
     
 }
 
-// TODO: 유저 정보 keychain 저장
 public final class DefaultLoginUseCase: LoginUseCase {
     
     let repository: LoginRepository
@@ -27,15 +26,57 @@ public final class DefaultLoginUseCase: LoginUseCase {
         self.repository = repository
     }
     
-    public func appleLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
+    public func appleLogin() -> AnyPublisher<LoginResultVO, Error> {
+        // 2차적으로 이곳에서 errorVO 를 핸들링?
+        // repository or useCase 에서 어떤 문제를 어떻게 핸들링할지 여전히 고민..
         repository.appleLogin()
-            .map { _ in .succeed }
+            .catch { error -> Fail in
+                if let oauthErrorVO = error as? OAuthErrorVO {
+                    #if DEBUG
+                    print(oauthErrorVO.debugString)
+                    #endif
+                    return Fail(error: ErrorVO.retryableError)
+                }
+                return Fail(error: ErrorVO.fatalError)
+            }
+            .flatMap { appleVO -> AnyPublisher<LoginResultVO, Error> in
+                self.repository.postLoginInfo(OAuthProvider: OAuth.apple(appleVO))
+                    .catch { error -> Fail in
+                        return Fail(error: error)
+                    }
+                    .map { loginVO in
+                        KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
+                        KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                        return loginVO.registered ? .registered : .unregistered
+                    }
+                    .eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
     
-    public func kakaoLogin() -> AnyPublisher<RequestResultVO, ErrorVO> {
+    public func kakaoLogin() -> AnyPublisher<LoginResultVO, Error> {
         repository.kakaoLogin()
-            .map { _ in .succeed }
+            .catch { error -> Fail in
+                if let oauthErrorVO = error as? OAuthErrorVO {
+                    #if DEBUG
+                    print(oauthErrorVO.debugString)
+                    #endif
+                    return Fail(error: ErrorVO.retryableError)
+                }
+                return Fail(error: ErrorVO.fatalError)
+            }
+            .flatMap { kakaoVO -> AnyPublisher<LoginResultVO, Error> in
+                self.repository.postLoginInfo(OAuthProvider: OAuth.kakao(kakaoVO))
+                    .catch { error -> Fail in
+                        return Fail(error: error)
+                    }
+                    .map { loginVO in
+                        KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
+                        KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                        return loginVO.registered ? .registered : .unregistered
+                    }
+                    .eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
     
