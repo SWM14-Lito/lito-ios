@@ -44,8 +44,6 @@ struct PhotoPicker: View {
                 if let data = try? await item?.loadTransferable(type: Data.self) {
                     imageData = data
                 }
-
-                print("Failed")
             }
         }
     }
