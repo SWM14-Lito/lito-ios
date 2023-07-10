@@ -64,9 +64,6 @@ final public class DefaultLoginRepository: LoginRepository {
                 }
                 return Fail(error: ErrorVO.fatalError)
             }
-            .map { loginVO in
-                return loginVO
-            }
             .eraseToAnyPublisher()
     }
     
