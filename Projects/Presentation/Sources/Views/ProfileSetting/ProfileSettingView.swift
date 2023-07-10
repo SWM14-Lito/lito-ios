@@ -9,17 +9,16 @@
 import SwiftUI
 
 public struct ProfileSettingView: View {
-    @ObservedObject public var viewModel: ProfileSettingViewModel
+    @StateObject public var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
-    @State private var imageData: Data? // 원래는 ViewModel에 정의하는게 맞지만, 이미지가 안바뀌는 버그가 발생하여 View에 정의
     
     public init(viewModel: ProfileSettingViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         VStack {
-            PhotoPicker(imageData: $imageData)
+            PhotoPicker(imageData: $viewModel.imageData)
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
@@ -114,7 +113,6 @@ public struct ProfileSettingView: View {
     @ViewBuilder
     private func finishButtonView() -> some View {
         Button {
-            viewModel.imageData = imageData
             viewModel.moveToLearningHomeView()
         } label: {
             Text("설정하기")
