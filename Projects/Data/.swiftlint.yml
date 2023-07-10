@@ -4,3 +4,4 @@ disabled_rules:
 - function_body_length
 - empty_enum_arguments
 - type_name
+- force_cast

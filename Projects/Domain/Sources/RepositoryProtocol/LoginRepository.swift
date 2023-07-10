@@ -13,5 +13,6 @@ public protocol LoginRepository {
     
     func appleLogin() -> AnyPublisher<OAuth.AppleVO, Error>
     func kakaoLogin() -> AnyPublisher<OAuth.KakaoVO, Error>
+    func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
     
 }
