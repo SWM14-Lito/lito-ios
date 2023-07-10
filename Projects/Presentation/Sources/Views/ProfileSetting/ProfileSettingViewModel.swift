@@ -96,7 +96,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
-                        print("upload with image success")
+                        coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.uploadError = errorVO
@@ -111,7 +111,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
-                        print("upload without image success")
+                        coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.uploadError = errorVO
