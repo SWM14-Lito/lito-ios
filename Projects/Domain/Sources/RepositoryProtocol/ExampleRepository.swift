@@ -9,5 +9,5 @@
 import Combine
 
 public protocol ExampleRepository {
-    func loadSlip() -> AnyPublisher<SlipVO, ErrorVO>
+    func loadSlip() -> AnyPublisher<SlipVO, Error>
 }

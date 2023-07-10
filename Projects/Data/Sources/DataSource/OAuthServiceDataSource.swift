@@ -14,8 +14,8 @@ import KakaoSDKUser
 
 public protocol OAuthServiceDataSource {
     
-    func appleLogin() -> AnyPublisher<OAuth.AppleDTO, ErrorVO>
-    func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO>
+    func appleLogin() -> AnyPublisher<OAuth.AppleDTO, Error>
+    func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, Error>
     
 }
 
@@ -23,15 +23,15 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     
     public override init() {}
     
-    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, ErrorVO>, Never>()
+    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, OAuthErrorDTO>, Never>()
     
-    private var appleLoginPublisher: AnyPublisher<OAuth.AppleDTO, ErrorVO> {
+    private var appleLoginPublisher: AnyPublisher<OAuth.AppleDTO, Error> {
         appleLoginSubject
-            .flatMap { result -> AnyPublisher<OAuth.AppleDTO, ErrorVO> in
+            .flatMap { result -> AnyPublisher<OAuth.AppleDTO, Error> in
                 switch result {
                 case .success(let appleDTO):
                     return Just(appleDTO)
-                        .setFailureType(to: ErrorVO.self)
+                        .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 case .failure(let error):
                     return Fail(error: error)
@@ -41,10 +41,10 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
             .eraseToAnyPublisher()
     }
     
-    public func appleLogin() -> AnyPublisher<OAuth.AppleDTO, ErrorVO> {
+    public func appleLogin() -> AnyPublisher<OAuth.AppleDTO, Error> {
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
-        request.requestedScopes = [.fullName, .email]
+        request.requestedScopes = [.email]
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.performRequests()
@@ -52,23 +52,22 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        appleLoginSubject.send(.failure(.retryableError))
+        appleLoginSubject.send(.failure(.apple(error)))
     }
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             let userIdentifier = appleIDCredential.user
-            let userName = (appleIDCredential.fullName?.namePrefix ?? "") + (appleIDCredential.fullName?.namePrefix ?? "")
             let userEmail = appleIDCredential.email
-            let appleDTO = OAuth.AppleDTO(userIdentifier: userIdentifier, userName: userName, userEmail: userEmail)
+            let appleDTO = OAuth.AppleDTO(userIdentifier: userIdentifier, userEmail: userEmail)
             appleLoginSubject.send(.success(appleDTO))
         default:
             break
         }
     }
     
-    public func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO> {
+    public func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, Error> {
         if UserApi.isKakaoTalkLoginAvailable() {
             return kakaoLoginWithApp()
         } else {
@@ -76,15 +75,15 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         }
     }
     
-    private func kakaoLoginWithApp() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO> {
-        return Future<OAuth.KakaoDTO, ErrorVO> { promise in
+    private func kakaoLoginWithApp() -> AnyPublisher<OAuth.KakaoDTO, Error> {
+        return Future<OAuth.KakaoDTO, Error> { promise in
             UserApi.shared.loginWithKakaoTalk { (_, error) in
-                if error != nil {
-                    return promise(.failure(ErrorVO.retryableError))
+                if let error = error {
+                    return promise(.failure(OAuthErrorDTO.kakao(error)))
                 }
                 UserApi.shared.me { (user, error) in
-                    if error != nil {
-                        return promise(.failure(ErrorVO.retryableError))
+                    if let error = error {
+                        return promise(.failure(OAuthErrorDTO.apple(error)))
                     }
                     
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
@@ -99,15 +98,15 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
         }.eraseToAnyPublisher()
     }
     
-    private func kakaoLoginWithAccount() -> AnyPublisher<OAuth.KakaoDTO, ErrorVO> {
-        return Future<OAuth.KakaoDTO, ErrorVO> { promise in
+    private func kakaoLoginWithAccount() -> AnyPublisher<OAuth.KakaoDTO, Error> {
+        return Future<OAuth.KakaoDTO, Error> { promise in
             UserApi.shared.loginWithKakaoAccount { (_, error) in
-                if error != nil {
-                    return promise(.failure(ErrorVO.retryableError))
+                if let error = error {
+                    return promise(.failure(OAuthErrorDTO.kakao(error)))
                 }
                 UserApi.shared.me { (user, error) in
-                    if error != nil {
-                        return promise(.failure(ErrorVO.retryableError))
+                    if let error = error {
+                        return promise(.failure(OAuthErrorDTO.kakao(error)))
                     }
                     
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
