@@ -13,7 +13,7 @@ import Moya
 import Domain
 
 public protocol LoginDataSource {
-    func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginDTO, Error>
+    func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
 }
 
 public class DefaultLoginDataSource: LoginDataSource {
@@ -22,8 +22,7 @@ public class DefaultLoginDataSource: LoginDataSource {
     
     private let moyaProvider = MoyaWrapper<LoginAPI>()
     
-    public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginDTO, Error> {
-        print(NetworkConfiguration.developServerURL)
+    public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         switch OAuthProvider {
         case .apple(let appleVO):
             return moyaProvider.call(target: .apple(appleVO: appleVO))

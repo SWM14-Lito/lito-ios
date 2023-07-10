@@ -18,6 +18,7 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         return self.requestPublisher(target)
             .map(Value.self)
             .mapError { moyaError -> NetworkErrorDTO in
+                print(moyaError)
                 return moyaError.toNetworkError()
             }
             .eraseToAnyPublisher()
@@ -25,11 +26,15 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     
     func call(target: Provider) -> AnyPublisher<Void, Error> {
         return self.requestPublisher(target)
-            .mapError { moyaError -> NetworkErrorDTO in
-                return moyaError.toNetworkError()
-            }
+            .catch({ moyaError -> Fail in
+                print(moyaError)
+                return Fail(error: ErrorVO.fatalError)
+            })
+//            .mapError { moyaError -> NetworkErrorDTO in
+//                print(moyaError)
+//                return moyaError.toNetworkError()
+//            }
             .flatMap({ response -> AnyPublisher<Void, Error> in
-                print("response: ", response)
                 if (200..<300).contains(response.statusCode) {
                     return Empty().eraseToAnyPublisher()
                 } else {
