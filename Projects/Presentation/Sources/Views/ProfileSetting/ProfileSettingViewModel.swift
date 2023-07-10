@@ -15,9 +15,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
-    @Published var selecetedPhotoData: Data?
-    @Published var selectedPhoto: PhotosPickerItem?
-    @Published var showImagePicker: Bool = false
+    @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
@@ -89,7 +87,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
         
-        if let data = selecetedPhotoData {
+        if let data = imageData {
             let profileImageDTO = ProfileImageDTO(image: data)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             

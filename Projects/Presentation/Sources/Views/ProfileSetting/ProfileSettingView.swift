@@ -12,7 +12,7 @@ import PhotosUI
 public struct ProfileSettingView: View {
     @ObservedObject public var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
-    @State private var image: UIImage?
+    @State private var imageData: Data?
     
     public init(viewModel: ProfileSettingViewModel) {
         self.viewModel = viewModel
@@ -20,7 +20,7 @@ public struct ProfileSettingView: View {
     
     public var body: some View {
         VStack {
-            setProfileImageView()
+            PhotoPicker(imageData: $imageData)
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
@@ -46,38 +46,6 @@ public struct ProfileSettingView: View {
                 } label: {
                     Text("Done")
                 }
-            }
-        }
-        .onChange(of: viewModel.selectedPhoto) { value in
-            Task {
-                if let data = try? await value?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
-                        image = uiImage
-                }
-            }
-        }
-    }
-    
-    // 프로필 이미지 설정 뷰
-    @ViewBuilder
-    private func setProfileImageView() -> some View {
-        PhotosPicker(selection: $viewModel.selectedPhoto) {
-            if let image = image {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                    .padding(.top, 30)
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                    .padding(.top, 30)
             }
         }
     }
