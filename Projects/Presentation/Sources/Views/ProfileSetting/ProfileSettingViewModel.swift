@@ -88,7 +88,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
         
         if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: data)
+            let profileImageDTO = ProfileImageDTO(image: UIImage(data: data)?.jpegData(compressionQuality: 0.5) ?? Data())
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
             postProfileInfoPublisher
@@ -96,7 +96,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
-                        coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.uploadError = errorVO
@@ -111,7 +111,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
-                        coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.uploadError = errorVO
