@@ -18,7 +18,9 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         return self.requestPublisher(target)
             .map(Value.self)
             .mapError { moyaError -> NetworkErrorDTO in
-                print(moyaError)
+                #if DEBUG
+                print(moyaError.errorDescription ?? moyaError)
+                #endif
                 return moyaError.toNetworkError()
             }
             .eraseToAnyPublisher()
@@ -28,7 +30,7 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         return self.requestPublisher(target)
             .catch({ moyaError -> Fail in
                 #if DEBUG
-                print(moyaError)
+                print(moyaError.errorDescription ?? moyaError)
                 #endif
                 return Fail(error: ErrorVO.fatalError)
             })

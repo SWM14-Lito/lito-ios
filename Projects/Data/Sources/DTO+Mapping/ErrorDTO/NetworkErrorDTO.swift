@@ -25,18 +25,17 @@ public enum NetworkErrorDTO: Error {
             return "⛑️ Request Error \(description)"
         case .serverError(let response):
             let serverErrorMessage = convertServerErrorMessage(response: response)
-            return "⛑️ Server Error \(response.statusCode)\n" + (serverErrorMessage?.description ?? "🫠Failed to decode serverErrorMessage")
+            return "⛑️ Server Error \(response.description)\n" + (serverErrorMessage?.description ?? "")
         case .underlyingError(let error, let response):
             if let response = response {
                 let serverErrorMessage = convertServerErrorMessage(response: response)
-                return "⛑️ UnderlyingError \(error.localizedDescription)\n" + (serverErrorMessage?.description ?? "🫠Failed to decode serverErrorMessage")
+                return "⛑️ UnderlyingError \(error.localizedDescription)\n" + (serverErrorMessage?.description ?? "")
             }
             return "⛑️ UnderlyingError \(error.localizedDescription)"
         }
     }
     
     public func toVO() -> ErrorVO {
-        // TODO: 상황에 맞게 지속적으로 Error handling 업데이트 필요
         switch self {
         case .clientError(_):
             return .fatalError
@@ -63,17 +62,52 @@ public enum NetworkErrorDTO: Error {
         let status: Int
         let message: String
         let code: String
-        let errors: [String]
+        let errors: [DetailedErrors]
         
         public var description: String {
-            return """
+            var serverErrorResponse = """
                 🔊 Server Error Response
-                \(self.time)
-                status code: \(String(self.status))
-                message: \(self.message)
-                code: \(self.code)
-                errors: \(self.errors)
+                time: \(time)
+                status code: \(String(status)) - \(httpStatusDescription)
+                code: \(code) - \(message)
+                🧐errors:\n
                 """
+            for error in errors {
+                serverErrorResponse += """
+                    field: \(error.field)
+                    value: \(error.value ?? "nil")
+                    reason: \(error.reason)
+                    ----------------------
+                    """
+            }
+            return serverErrorResponse
+        }
+        
+        struct DetailedErrors: Decodable {
+            let field: String
+            let value: String?
+            let reason: String
+        }
+        
+        public var httpStatusDescription: String {
+            switch self.status {
+            case 200:
+                return "성공"
+            case 400:
+                return "잘못된 요청"
+            case 401:
+                return "비인증 상태"
+            case 403:
+                return "권한 거부"
+            case 404:
+                return "존재하지 않는 요청 리소스"
+            case 405:
+                return "API 는 존재하나 Method가 존재하지 않는 경우"
+            case 500:
+                return "서버 에러"
+            default:
+                return "정의되지 않은 에러"
+            }
         }
         
     }
@@ -83,6 +117,7 @@ public enum NetworkErrorDTO: Error {
             let serverErrorMessage = try JSONDecoder().decode(ServerErrorMessage.self, from: response.data)
             return serverErrorMessage
         } catch {
+            print("🫠Failed to decode serverErrorMessage\n🧐Reason: \(error))")
             return nil
         }
     }
