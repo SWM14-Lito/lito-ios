@@ -9,7 +9,9 @@
 import Combine
 
 public protocol ProfileSettingUseCase {
-    func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error>
+    func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
+    func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error>
+    func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
 }
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
@@ -19,7 +21,15 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
         self.repository = repository
     }
     
-    public func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error> {
-        repository.postProfileInfo(setProfileDTO: setProfileDTO)
+    public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        repository.postProfileInfo(profileInfoDTO: profileInfoDTO)
+    }
+    
+    public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
+        repository.postProfileImage(profileImageDTO: profileImageDTO)
+    }
+    
+    public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
+        repository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
     }
 }

@@ -9,5 +9,7 @@
 import Combine
 
 public protocol ProfileSettingRepository {
-    func postProfileInfo(setProfileDTO: SetProfileDTO) -> AnyPublisher<Void, Error>
+    func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
+    func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error>
+    func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
 }
