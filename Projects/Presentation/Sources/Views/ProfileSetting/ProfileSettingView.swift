@@ -127,7 +127,7 @@ public struct ProfileSettingView: View {
     // 에러 발생했을 시 보여주는 뷰
     @ViewBuilder
     private func notifyErrorView() -> some View {
-        if let error = viewModel.error {
+        if let error = viewModel.uploadError {
             Text(error.localizedString)
                 .foregroundColor(.red)
         } else {
