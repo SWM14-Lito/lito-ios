@@ -66,9 +66,11 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     func initPublisher() {
         $selectedPhoto
             .sink { value in
-                value?.loadTransferable(type: Data.self) { result in
-                    DispatchQueue.main.async {
-                        self.selectedPhotoData = try? result.get()
+                Task {
+                    value?.loadTransferable(type: Data.self) { result in
+                        DispatchQueue.main.async {
+                            self.selectedPhotoData = try? result.get()
+                        }
                     }
                 }
             }
