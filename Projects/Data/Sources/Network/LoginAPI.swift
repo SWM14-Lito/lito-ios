@@ -16,7 +16,7 @@ enum LoginAPI {
 }
 extension LoginAPI: TargetType {
     var baseURL: URL {
-        return URL(string: NetworkConfiguration.developServerURL as! String)!
+        return URL(string: NetworkConfiguration.developmentServerURL as! String)!
     }
     
     var path: String {
