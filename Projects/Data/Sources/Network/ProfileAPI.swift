@@ -56,7 +56,7 @@ extension ProfileAPI: TargetType {
         case .setNotiAcceptance(let alarmAcceptanceDTO):
             return .requestParameters(parameters: [
                 "alarmStatus": alarmAcceptanceDTO.getAlarm ? "Y" : "N"
-            ], encoding: URLEncoding.default)
+            ], encoding: URLEncoding.httpBody)
         }
     }
     
