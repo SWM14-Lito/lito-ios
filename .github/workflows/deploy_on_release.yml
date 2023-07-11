@@ -86,10 +86,17 @@ jobs:
         # export 를 통해 ipa 파일 만듦
         run: |
           xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+      - name: Install private API key P8
+        env:
+          APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+          APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+        run: | 
+          mkdir -p ~/private_keys
+          echo -n "$APPSTORE_API_PRIVATE_KEY" | base64 --decode --output ~/private_keys/AuthKey_$APPSTORE_API_KEY_ID.p8
+
       - name: Upload app to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with:
           app-path: 'App.ipa'
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
