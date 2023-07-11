@@ -5,7 +5,7 @@ public extension Project {
         name: String,
         platform: Platform = .iOS,
         product: Product,
-        organizationName: String = "Lito",
+        organizationName: String = "com.lito",
         packages: [Package] = [],
         deploymentTarget: DeploymentTarget? = .iOS(targetVersion: "15.0", devices: [.iphone]),
         dependencies: [TargetDependency] = [],
