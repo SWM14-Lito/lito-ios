@@ -73,3 +73,5 @@ Tuist/Dependencies
 Tuist/Signing
 
 graph.png
+
+*.xcconfig
