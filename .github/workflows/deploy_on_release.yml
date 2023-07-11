@@ -12,21 +12,6 @@ jobs:
       XC_SCHEME: ${{ 'App' }}
       XC_ARCHIVE: ${{ 'Lito.xcarchive' }}
       
-      # certificate 
-      ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/certification.p12.gpg' }}
-      DECRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/certification.p12' }}
-      CERT_ENCRYPTION_KEY: ${{ secrets.CERTS_ENCRYPTION_PWD }} # gpg로 파일 암호화할 때 사용한 암호
-      
-      # provisioning
-      ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Lito_GithubActions.mobileprovision.gpg' }}
-      DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/Lito_GithubActions.mobileprovision' }}
-      PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYPTION_PWD }} # gpg로 파일 암호화할 때 사용한 암호
-      
-      # certification export key
-      CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PWD }}
-      
-      KEYCHAIN: ${{ 'test.keychain' }}
-      
       # Tuist signing
       ENCRYPTED_APP_DEBUG_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Debug.mobileprovision.gpg' }}
       ENCRYPTED_APP_RELEASE_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Release.mobileprovision.gpg' }}
@@ -46,30 +31,7 @@ jobs:
       - name: Checkout project
         # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
         uses: actions/checkout@v2
-      - name: Configure Keychain 
-        # 키체인 초기화 - 임시 키체인 생성
-        run: |
-          security create-keychain -p "" "$KEYCHAIN"
-          security list-keychains -s "$KEYCHAIN"
-          security default-keychain -s "$KEYCHAIN"
-          security unlock-keychain -p "" "$KEYCHAIN"
-          security set-keychain-settings
-      - name : Configure Code Signing1
-        run: |
-          # certificate 복호화
-          gpg -d -o "$DECRYPTED_CERT_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERT_ENCRYPTION_KEY" "$ENCRYPTED_CERT_FILE_PATH"
-          
-      - name : Configure Code Signing2
-        run: |
-          # provisioning 복호화
-          gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISIONING_ENCRYPTION_KEY" "$ENCRYPTED_PROVISION_FILE_PATH"
-          
-      - name : Configure Code Signing3
-        run: |
-          # security를 사용하여 인증서와 개인 키를 새로 만든 키 체인으로 가져옴
-          security import "$DECRYPTED_CERT_FILE_PATH" -k "$KEYCHAIN" -P "$CERT_EXPORT_KEY" -A
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
-
+        
       - name : Tuist Signing
         run: |
           # Tuist Signing 파일들 복호화
