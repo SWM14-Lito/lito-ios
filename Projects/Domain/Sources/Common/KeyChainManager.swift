@@ -9,9 +9,9 @@
 import Foundation
 import Security
 
-final class KeyChainManager {
+final public class KeyChainManager {
     
-    enum Keys: String {
+    public enum Keys: String {
         case accessToken
         case refreshToken
         
@@ -29,7 +29,7 @@ final class KeyChainManager {
         assert(status == noErr, "failed to save Token")
     }
     
-    static func read(key: Keys) -> String? {
+    static public func read(key: Keys) -> String? {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue,

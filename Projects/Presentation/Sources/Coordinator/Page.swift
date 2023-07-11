@@ -10,7 +10,7 @@ import SwiftUI
 import KakaoSDKAuth
 
 public enum Page: Hashable {
-    case loginView, profileSettingView(String)
+    case loginView, profileSettingView
     case rootTabView
     case learningHomeView, learningCategoryView
     case prevProblemCategoryView
