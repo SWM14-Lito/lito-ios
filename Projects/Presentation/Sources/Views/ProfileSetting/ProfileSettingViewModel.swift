@@ -21,7 +21,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     @Published var isExceedLimit: [TextFieldCategory: Bool]
-    @Published var uploadError: ErrorVO?
+    @Published private(set) var errorObject = ErrorObject()
     
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
@@ -100,7 +100,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
+                            self.errorObject.error  = errorVO
                         }
                     }
                 }
@@ -115,7 +115,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
+                            self.errorObject.error  = errorVO
                         }
                     }
                 }
@@ -126,10 +126,8 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
             if didAllow {
-                print("Push: 권한 허용")
                 self.acceptAlarm = true
             } else {
-                print("Push: 권한 거부")
                 self.acceptAlarm = false
             }
         })

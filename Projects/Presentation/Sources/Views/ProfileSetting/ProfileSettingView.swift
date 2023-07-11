@@ -11,9 +11,11 @@ import SwiftUI
 public struct ProfileSettingView: View {
     @StateObject public var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
+    private var errorView = ErrorView()
     
     public init(viewModel: ProfileSettingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
+        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
@@ -22,7 +24,7 @@ public struct ProfileSettingView: View {
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
-            notifyErrorView()
+            errorView
             Spacer()
             finishButtonView()
         }
@@ -98,17 +100,6 @@ public struct ProfileSettingView: View {
                 }
             }
             Divider()
-        }
-    }
-    
-    // 에러 발생했을 시 보여주는 뷰
-    @ViewBuilder
-    private func notifyErrorView() -> some View {
-        if let error = viewModel.uploadError {
-            Text(error.localizedString)
-                .foregroundColor(.red)
-        } else {
-            EmptyView()
         }
     }
     
