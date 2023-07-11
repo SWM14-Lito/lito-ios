@@ -93,10 +93,8 @@ jobs:
         run: | 
           mkdir -p ~/private_keys
           echo -n "$APPSTORE_API_PRIVATE_KEY" | base64 --decode --output ~/private_keys/AuthKey_$APPSTORE_API_KEY_ID.p8
-
       - name: Upload app to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: 'App.ipa'
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+        env:
+          API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
+          API_ISSUER : ${{ secrets.APPSTORE_ISSUER_ID  }}
+        run: xcrun altool --output-format xml --upload-app -f App.ipa -t ios --apiKey $API_KEY --apiIssuer $API_ISSUER
