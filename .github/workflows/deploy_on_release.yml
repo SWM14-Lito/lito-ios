@@ -9,7 +9,7 @@ jobs:
     env:
       # app archive 및 export 에 쓰일 환경 변수 설정
       XC_WORKSPACE: ${{ 'Lito.xcworkspace' }}
-      XC_SCHEME: ${{ 'Lito' }}
+      XC_SCHEME: ${{ 'App' }}
       XC_ARCHIVE: ${{ 'Lito.xcarchive' }}
       
       # certificate 
