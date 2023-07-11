@@ -15,6 +15,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
+    private var acceptAlarm: Bool = false
     @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
@@ -82,7 +83,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     func moveToLearningHomeView() {
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
-        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: true)
+        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
         
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
@@ -120,5 +121,17 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 }
                 .store(in: cancelBag)
         }
+    }
+    
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
+            if didAllow {
+                print("Push: 권한 허용")
+                self.acceptAlarm = true
+            } else {
+                print("Push: 권한 거부")
+                self.acceptAlarm = false
+            }
+        })
     }
 }

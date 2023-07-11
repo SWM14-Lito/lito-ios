@@ -46,6 +46,9 @@ public struct ProfileSettingView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.requestNotificationPermission()
+        }
     }
     
     // 이름 보여주는 뷰 (소셜 로그인 화면에서 넘겨받기)
