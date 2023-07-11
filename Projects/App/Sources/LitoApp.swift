@@ -21,9 +21,3 @@ struct LitoApp: App {
         }
     }
 }
-
-struct Previews_LitoApp_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(viewModel: HomeViewModel(homeUseCase: StubHomeUseCase()))
-    }
-}

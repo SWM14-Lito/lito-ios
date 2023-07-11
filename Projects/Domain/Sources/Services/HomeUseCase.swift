@@ -17,17 +17,3 @@ public final class DefaultHomeUseCase: HomeUseCase {
         return repository.loadSlip()
     }
 }
-
-#if DEBUG
-public final class StubHomeUseCase: HomeUseCase {
-    
-    public init() {}
-    
-    public func load() -> AnyPublisher<SlipVO, Error> {
-        return Just(SlipVO.mock)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-    
-}
-#endif
