@@ -60,19 +60,19 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func initPublisher() {
-        username.reachLimit
+        username.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.username] = isExceed ? true : false
             }
             .store(in: cancelBag)
-        nickname.reachLimit
+        nickname.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.nickname] = isExceed ? true : false
             }
             .store(in: cancelBag)
-        introduce.reachLimit
+        introduce.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.introduce] = isExceed ? true : false

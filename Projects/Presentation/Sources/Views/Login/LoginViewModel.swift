@@ -31,7 +31,7 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 case .success(let loginResultVO):
                     switch loginResultVO {
                     case .registered:
-                        self.coordinator.push(.learningHomeView)
+                        self.coordinator.push(.profileSettingView)
                     case .unregistered:
                         self.coordinator.push(.profileSettingView)
                     }
