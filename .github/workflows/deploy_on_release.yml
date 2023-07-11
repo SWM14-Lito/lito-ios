@@ -85,7 +85,7 @@ jobs:
       - name: Export app
         # export 를 통해 ipa 파일 만듦
         run: |
-          tuist export ipa -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+          xcodebuild export ipa -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
       - name: Upload app to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with:
