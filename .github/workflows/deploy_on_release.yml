@@ -27,6 +27,18 @@ jobs:
       
       KEYCHAIN: ${{ 'test.keychain' }}
       
+      # Tuist signing
+      ENCRYPTED_APP_DEBUG_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Debug.mobileprovision.gpg' }}
+      ENCRYPTED_APP_RELEASE_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Release.mobileprovision.gpg' }}
+      ENCRYPTED_LITO_CERT_PATH: ${{ '.github/secrets/Lito.cer.gpg' }}
+      ENCRYPTED_LITO_P12_PATH: ${{ '.github/secrets/Lito.p12.gpg' }}
+      DECRYPTED_APP_DEBUG_MOBILEPROVISION_PATH: ${{ 'Tuist/Signing/App.Debug.mobileprovision' }}
+      DECRYPTED_APP_RELEASE_MOBILEPROVISION_PATH: ${{ 'Tuist/Signing/App.Release.mobileprovision' }}
+      DECRYPTED_LITO_CERT_PATH: ${{ 'Tuist/Signing/Lito.cer' }}
+      DECRYPTED_LITO_P12_PATH: ${{ 'Tuist/Signing/Lito.p12' }}
+      
+      CERT_SIGNING_KEY: ${{ secrets.CERTS_SIGNING_PWD }}
+      
     steps:
       - name: Select latest Xcode
         # shell 이용해서 하나의 command 수행
@@ -63,13 +75,21 @@ jobs:
           # Xcode에서 찾을 수 있는 프로비저닝 프로필 설치하기 위해 우선 프로비저닝 디렉토리를 생성
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
           # 디버깅 용 echo 명령어
-          echo `ls .github/secrets/*.mobileprovision`
+          echo `ls .github/secrets/Lito_GithubActions.mobileprovision`
             # 모든 프로비저닝 프로파일을 rename 하고 위에서 만든 디렉토리로 복사하는 과정
-            for PROVISION in `ls .github/secrets/*.mobileprovision`
+            for PROVISION in `ls .github/secrets/Lito_GithubActions.mobileprovision`
             do
               UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
             cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
           done
+      - name : Tuist Signing
+        run: |
+          # Tuist Signing 파일들 복호화
+          mkdir -p Tuist/Signing
+          gpg -d -o "$DECRYPTED_APP_DEBUG_MOBILEPROVISION_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APP_DEBUG_MOBILEPROVISION_PATH"
+          gpg -d -o "$DECRYPTED_APP_RELEASE_MOBILEPROVISION_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APP_RELEASE_MOBILEPROVISION_PATH"
+          gpg -d -o "$DECRYPTED_LITO_CERT_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_LITO_CERT_PATH"
+          gpg -d -o "$DECRYPTED_LITO_P12_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_LITO_P12_PATH"
       - name: Install Tuist
         run: curl -Ls https://install.tuist.io | bash
       - name: Fetch Swift Packages
