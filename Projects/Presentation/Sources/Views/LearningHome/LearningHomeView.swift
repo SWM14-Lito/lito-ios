@@ -10,10 +10,10 @@ import SwiftUI
 
 public struct LearningHomeView: View {
     
-    @ObservedObject private(set) var viewModel: LearningHomeViewModel
+    @StateObject private var viewModel: LearningHomeViewModel
     
     public init(viewModel: LearningHomeViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {

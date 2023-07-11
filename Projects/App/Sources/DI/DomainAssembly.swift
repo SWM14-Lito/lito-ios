@@ -27,6 +27,11 @@ public struct DomainAssembly: Assembly {
             return DefaultProfileSettingUseCase(repository: repository)
         }
         
+        container.register(LearningHomeUseCase.self) { resolver in
+            let repository = resolver.resolve(LearningHomeRepository.self)!
+            return DefaultLearningHomeUseCase(repository: repository)
+        }
+        
     }
     
 }

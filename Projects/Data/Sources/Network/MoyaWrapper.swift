@@ -33,6 +33,9 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
                 return Fail(error: ErrorVO.fatalError)
             })
             .flatMap({ response -> AnyPublisher<Void, Error> in
+                #if DEBUG
+                print(response)
+                #endif
                 if (200..<300).contains(response.statusCode) {
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()

@@ -46,6 +46,15 @@ public struct DataAssembly: Assembly {
             return DefaultProfileSettingRepository(dataSource: dataSource)
         }
         
+        container.register(LearningHomeDataSource.self) { _ in
+            return DefaultLearningHomeDataSource()
+        }
+        
+        container.register(LearningHomeRepository.self) { resolver in
+            let dataSource = resolver.resolve(LearningHomeDataSource.self)!
+            return DefaultLearningHomeRepository(dataSource: dataSource)
+        }
+        
     }
     
 }

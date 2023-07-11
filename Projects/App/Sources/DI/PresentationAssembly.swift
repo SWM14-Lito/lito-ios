@@ -42,8 +42,9 @@ public struct PresentationAssembly: Assembly {
             return ProfileSettingView(viewModel: viewModel)
         }
         
-        container.register(LearningHomeViewModel.self) { _ in
-            return LearningHomeViewModel(coordinator: coordinator)
+        container.register(LearningHomeViewModel.self) { resolver in
+            let useCase = resolver.resolve(LearningHomeUseCase.self)!
+            return LearningHomeViewModel(useCase: useCase, coordinator: coordinator)
         
         }
         container.register(LearningHomeView.self) { resolver in

@@ -7,8 +7,17 @@
 //
 
 import SwiftUI
+import Domain
 
-public class LearningHomeViewModel: BaseViewModel, ObservableObject {    
+public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
+    
+    private let useCase: LearningHomeUseCase
+    
+    public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
+        self.useCase = useCase
+        super.init(coordinator: coordinator)
+    }
+    
     func moveToLearningCategoryView() {
         coordinator.push(.learningCategoryView)
     }

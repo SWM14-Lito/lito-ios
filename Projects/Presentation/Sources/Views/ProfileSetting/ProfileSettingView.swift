@@ -9,7 +9,7 @@
 import SwiftUI
 
 public struct ProfileSettingView: View {
-    @StateObject public var viewModel: ProfileSettingViewModel
+    @StateObject private var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
     private var errorView = ErrorView()
     
