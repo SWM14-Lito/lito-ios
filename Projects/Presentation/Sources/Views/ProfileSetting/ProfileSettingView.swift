@@ -114,5 +114,6 @@ public struct ProfileSettingView: View {
         .buttonStyle(.bordered)
         .tint(.orange)
         .padding(.bottom, 20)
+        .disabled(viewModel.lockButton)
     }
 }

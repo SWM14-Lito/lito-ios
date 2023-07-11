@@ -16,11 +16,12 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
+    private(set) var lockButton: Bool = false
     @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
-    @Published var isExceedLimit: [TextFieldCategory: Bool]
+    @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
     @Published private(set) var errorObject = ErrorObject()
     
     enum TextFieldCategory: Hashable {
@@ -82,6 +83,8 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
+        lockButton = true
+
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
         
@@ -103,6 +106,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                             self.errorObject.error  = errorVO
                         }
                     }
+                    self.lockButton = false
                 }
                 .store(in: cancelBag)
             
@@ -118,6 +122,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                             self.errorObject.error  = errorVO
                         }
                     }
+                    self.lockButton = false
                 }
                 .store(in: cancelBag)
         }
