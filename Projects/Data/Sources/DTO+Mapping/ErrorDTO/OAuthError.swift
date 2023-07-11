@@ -21,17 +21,14 @@ public enum OAuthError {
         
         public var debugString: String {
             switch self {
-            case .clientFailureReson(let failureReason, let message):
-                print(failureReason)
-                return message ?? "no message"
-            case .authFailureReason(let failureReason, let errorInfo):
-                print(failureReason)
-                return errorInfo.debugDescription
-            case .apiFailureReason(let failureReason, let errorInfo):
-                print(failureReason)
-                return errorInfo.debugDescription
+            case .clientFailureReson(_, let message):
+                return "🧐 " + (message ?? "no message")
+            case .authFailureReason(_, let errorInfo):
+                return "🧐 " + errorInfo.debugDescription
+            case .apiFailureReason(_, let errorInfo):
+                return "🧐 " + errorInfo.debugDescription
             case .commonError(let error):
-                return error.localizedDescription
+                return "🧐 " + error.localizedDescription
             }
         }
         
@@ -59,7 +56,22 @@ public enum OAuthError {
         public var debugString: String {
             switch self {
             case .authorizationError(let authorizationError):
-                return authorizationError.localizedDescription
+                switch authorizationError.code {
+                case .canceled:
+                    return "🧐 The user canceled the authorization attempt."
+                case .failed:
+                    return "🧐 The authorization attempt failed."
+                case .invalidResponse:
+                    return "🧐 The authorization request received an invalid response."
+                case .notHandled:
+                    return "🧐 The authorization request wasn’t handled."
+                case .notInteractive:
+                    return "🧐 The authorization request isn’t interactive."
+                case .unknown:
+                    return "🧐 The authorization attempt failed for an unknown reason."
+                @unknown default:
+                    return "🧐 Unknwon"
+                }
             case .commonError(let error):
                 return error.localizedDescription
             }
