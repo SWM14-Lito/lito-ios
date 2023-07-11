@@ -8,8 +8,8 @@ jobs:
     runs-on: macos-latest
     env:
       # app archive 및 export 에 쓰일 환경 변수 설정
-      XC_WORKSPACE: ${{ 'lito-ios/Lito.xcworkspace' }}
-      XC_SCHEME: ${{ 'Lito' }}
+      XC_WORKSPACE: ${{ 'Lito.xcworkspace' }}
+      XC_SCHEME: ${{ 'App' }}
       XC_ARCHIVE: ${{ 'Lito.xcarchive' }}
       
       # certificate 
@@ -70,6 +70,17 @@ jobs:
               UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
             cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
           done
+      - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Fetch Swift Packages
+        run: tuist fetch
+      - name: Use xcconfig file
+        env:
+          XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
+        run: |
+          echo "$XC_CONFIG_FILE" > config.xcconfig
+      - name: Generate
+        run: tuist generate
       - name: Archive app
         # 빌드 및 아카이브
         run: |
@@ -77,7 +88,7 @@ jobs:
       - name: Export app
         # export 를 통해 ipa 파일 만듦
         run: |
-          xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+          tuist export ipa -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
       - name: Upload app to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with:
