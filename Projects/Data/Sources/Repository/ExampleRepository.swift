@@ -22,8 +22,8 @@ final public class DefaultExampleRepository: ExampleRepository {
         return dataSource.loadMaxim()
             .catch { error -> Fail in
                 if let moyaError = error as? MoyaError {
-                    #if DEBUG
                     let networkError = moyaError.toNetworkError()
+                    #if DEBUG
                     print(networkError.debugString)
                     #endif
                     return Fail(error: networkError)

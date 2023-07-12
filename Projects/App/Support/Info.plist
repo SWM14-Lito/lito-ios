@@ -13,10 +13,8 @@
 		<key>UISceneConfigurations</key>
 		<dict/>
 	</dict>
-	<key>Application app </key>
-	<string></string>
-	<key>Application</key>
-	<string></string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
