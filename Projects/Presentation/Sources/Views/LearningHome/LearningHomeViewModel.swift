@@ -9,7 +9,7 @@
 import SwiftUI
 
 public class LearningHomeViewModel: BaseViewModel, ObservableObject {    
-    func moveToLearningCategoryView() {
-        coordinator.push(.learningCategoryView)
+    func moveToQuestionListView() {
+        coordinator.push(.questionListView)
     }
 }

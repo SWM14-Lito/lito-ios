@@ -20,7 +20,7 @@ public struct LearningHomeView: View {
         VStack {
             Text("LearningHomeView")
             Button {
-                viewModel.moveToLearningCategoryView()
+                viewModel.moveToQuestionListView()
             } label: {
                 Text("Move to LearningCategoryView")
             }

@@ -42,6 +42,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(ProfileSettingView.self)
         case .learningHomeView:
             injector?.resolve(LearningHomeView.self)
+        case .questionListView:
+            injector?.resolve(QuestionListView.self)
         case .learningCategoryView:
             injector?.resolve(LearningCategoryView.self)
         case .prevProblemCategoryView:
