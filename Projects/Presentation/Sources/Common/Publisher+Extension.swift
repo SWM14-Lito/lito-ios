@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import Domain
 
 extension Publisher {
     
@@ -26,17 +27,16 @@ extension Publisher {
     func sinkToLoadable(_ completion: @escaping (Loadable<Output>) -> Void) -> AnyCancellable {
         return sink(receiveCompletion: { subscriptionCompletion in
             if let error = subscriptionCompletion.error {
-                completion(.failed(error))
+                switch error {
+                case .fatalError:
+                    completion(.failed(.fatalError))
+                case .retryableError:
+                    completion(.failed(.retryableError))
+                }
             }
         }, receiveValue: { value in
             completion(.loaded(value))
         })
-    }
-    
-    func extractUnderlyingError() -> Publishers.MapError<Self, Failure> {
-        mapError {
-            ($0.underlyingError as? Failure) ?? $0
-        }
     }
     
     /// Holds the downstream delivery of output until the specified time interval passed after the subscription
@@ -56,21 +56,11 @@ extension Publisher {
     }
 }
 
-private extension Error {
-    var underlyingError: Error? {
-        let nsError = self as NSError
-        if nsError.domain == NSURLErrorDomain && nsError.code == -1009 {
-            // "The Internet connection appears to be offline."
-            return self
-        }
-        return nsError.userInfo[NSUnderlyingErrorKey] as? Error
-    }
-}
-
 extension Subscribers.Completion {
-    var error: Failure? {
+    var error: ErrorVO? {
         switch self {
-        case let .failure(error): return error
+        case let .failure(error):
+            return error as? ErrorVO
         default: return nil
         }
     }

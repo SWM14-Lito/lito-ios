@@ -10,10 +10,25 @@ import Domain
 import Swinject
 
 public struct DomainAssembly: Assembly {
+    
     public func assemble(container: Container) {
-        container.register(HomeUseCase.self) { resolver in
-            let repository = resolver.resolve(HomeRepository.self)!
-            return DefaultHomeUseCase(repository: repository)
+        container.register(ExampleUseCase.self) { resolver in
+            let repository = resolver.resolve(ExampleRepository.self)!
+            return DefaultExampleUseCase(repository: repository)
         }
+        
+        container.register(LoginUseCase.self) { resolver in
+            let repository = resolver.resolve(LoginRepository.self)!
+            return DefaultLoginUseCase(repository: repository)
+        }
+        
+        container.register(ProfileSettingUseCase.self) { resolver in
+            let repository = resolver.resolve(ProfileSettingRepository.self)!
+            return DefaultProfileSettingUseCase(repository: repository)
+        }
+        
     }
+    
 }
+
+// register -> resolve
