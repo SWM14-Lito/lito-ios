@@ -26,6 +26,9 @@ jobs:
       DECRYPTED_LITO_CERT_PATH: ${{ 'Tuist/Signing/Lito.cer' }}
       DECRYPTED_LITO_P12_PATH: ${{ 'Tuist/Signing/Lito.p12' }}
       
+      # Build version
+      BRANCH_NUMBER: ${{ env.GITHUB_REF#refs/heads/release/ }}
+      
       # AppStore privateKey Path
       ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8.gpg' }}
       DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8' }}
@@ -82,14 +85,11 @@ jobs:
           echo "$XC_CONFIG_FILE" > config.xcconfig
       - name: Generate
         run: tuist generate
-      - name: Get branch number
-        id: branch
-        run: echo "::set-output name=number::$(echo ${GITHUB_REF#refs/heads/testflight/})"
+        # build version을 testflight/* 로 변경
       - name: Change build version
         run: |
             INFO_PLIST="Projects/App/Support/Info.plist"
-            TIMESTAMP=${steps.branch.outputs.number}
-            NEW_VERSION="${TIMESTAMP}"
+            NEW_VERSION="${BRANCH_NUMBER}"
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_VERSION" "${INFO_PLIST}"
       - name: Archive app
         # 빌드 및 아카이브
