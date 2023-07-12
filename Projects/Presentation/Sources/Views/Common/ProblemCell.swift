@@ -25,11 +25,21 @@ struct ProblemCell: View {
     var body: some View {
         HStack {
             Image(systemName: solvedStatus.symbolName)
-            VStack {
+            VStack(alignment: .leading) {
                 Text(title)
+                    .font(.system(size: 15))
+                    .foregroundColor(Color.black)
                 Text(category)
+                    .font(.system(size: 13))
+                    .foregroundColor(Color.gray)
             }
+            Spacer()
             Image(systemName: likedStatus.symbolName)
         }
+        .padding()
+        .overlay(
+            RoundedRectangle(cornerRadius: 30)
+                .stroke(Color.black, lineWidth: 1)
+        )
     }
 }

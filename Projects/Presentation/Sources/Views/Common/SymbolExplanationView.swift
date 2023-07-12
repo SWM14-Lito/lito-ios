@@ -21,5 +21,6 @@ struct SymbolExplanationView: View {
             Image(systemName: symbol.symbolName)
             Text(symbol.explanation)
         }
+        .font(.system(size: 12))
     }
 }

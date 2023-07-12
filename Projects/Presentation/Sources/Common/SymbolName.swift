@@ -9,6 +9,10 @@
 import Foundation
 
 class SymbolName {
+    static let learningTab = "book.closed.fill"
+    static let prevProblemTab = "books.vertical.fill"
+    static let myPageTab = "person.fill"
+    static let likedList = "heart.fill"
     static let liked = "heart.fill"
     static let unliked = "heart"
     static let solved = "checkmark.circle.fill"
