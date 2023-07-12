@@ -13,12 +13,14 @@ public struct RootTabView: View {
     private let tab1: LearningHomeView
     private let tab2: PrevProblemCategoryView
     private let tab3: MyPageView
+    private let tab1ViewModel: LearningHomeViewModel
     @State private var selection: Int = 1
     
-    public init(tab1: LearningHomeView, tab2: PrevProblemCategoryView, tab3: MyPageView) {
+    public init(tab1: LearningHomeView, tab2: PrevProblemCategoryView, tab3: MyPageView, tab1ViewModel: LearningHomeViewModel) {
         self.tab1 = tab1
         self.tab2 = tab2
         self.tab3 = tab3
+        self.tab1ViewModel = tab1ViewModel
     }
     
     public var body: some View {
@@ -52,7 +54,7 @@ public struct RootTabView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    // TODO: LearningHomeViewModel 받아와서 찜한 목록으로 이동하기 실행
+                    tab1ViewModel.moveToLikedProblemView()
                 } label: {
                     if selection == 1 {
                         Image(systemName: SymbolName.likedList)

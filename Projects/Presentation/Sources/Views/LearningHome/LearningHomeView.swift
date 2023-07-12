@@ -11,9 +11,11 @@ import SwiftUI
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
+    @StateObject private var cellViewModel: ProblemCellViewModel
     
-    public init(viewModel: LearningHomeViewModel) {
+    public init(viewModel: LearningHomeViewModel, cellViewModel: ProblemCellViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
+        self._cellViewModel = StateObject(wrappedValue: cellViewModel)
     }
     
     public var body: some View {
@@ -45,7 +47,7 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private func startLearningButtonView() -> some View {
         Button {
-            viewModel.moveToLearningCategoryView()
+            viewModel.moveToLearningView()
         } label: {
             Text("학습 시작")
                 .font(.system(size: 20))
@@ -78,15 +80,31 @@ public struct LearningHomeView: View {
             VStack(alignment: .leading) {
                 Text("풀던 문제")
                     .font(.system(size: 20, weight: .bold))
-                ProblemCell(solvedStatus: .solving, title: "제목제목제목", category: "운체운체", likedStatus: .liked)
+                ProblemCellView(solvedStatus: .solving, title: "제목제목제목", category: "운체운체", likedStatus: .liked) {
+                    cellViewModel.moveToProblemView(id: 1)
+                } likedAction: {
+                    cellViewModel.changeLikedStatus(id: 1)
+                }
             }
             .padding([.leading, .trailing], 20)
             VStack(alignment: .leading) {
                 Text("추천 문제")
                     .font(.system(size: 20, weight: .bold))
-                ProblemCell(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체", likedStatus: .liked)
-                ProblemCell(solvedStatus: .unsolved, title: "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목", category: "운체운체", likedStatus: .liked)
-                ProblemCell(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체", likedStatus: .liked)
+                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체", likedStatus: .liked) {
+                    cellViewModel.moveToProblemView(id: 2)
+                } likedAction: {
+                    cellViewModel.changeLikedStatus(id: 2)
+                }
+                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목", category: "운체운체", likedStatus: .liked) {
+                    cellViewModel.moveToProblemView(id: 3)
+                } likedAction: {
+                    cellViewModel.changeLikedStatus(id: 3)
+                }
+                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체", likedStatus: .liked) {
+                    cellViewModel.moveToProblemView(id: 4)
+                } likedAction: {
+                    cellViewModel.changeLikedStatus(id: 4)
+                }
             }
             .padding([.leading, .trailing], 20)
         }
