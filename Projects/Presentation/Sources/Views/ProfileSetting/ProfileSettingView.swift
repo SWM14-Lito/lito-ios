@@ -29,6 +29,7 @@ public struct ProfileSettingView: View {
             finishButtonView()
         }
         .padding([.leading, .trailing], 15)
+        .navigationBarHidden(true)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -103,17 +104,21 @@ public struct ProfileSettingView: View {
         }
     }
     
+    @State private var isLock = false
+    
     // 설정 완료 버튼 뷰
     @ViewBuilder
     private func finishButtonView() -> some View {
         Button {
-            viewModel.moveToLearningHomeView()
+            if !viewModel.buttonIsLocked {
+                viewModel.moveToLearningHomeView()
+            }
         } label: {
             Text("설정하기")
         }
         .buttonStyle(.bordered)
         .tint(.orange)
         .padding(.bottom, 20)
-        .disabled(viewModel.lockButton)
     }
+
 }
