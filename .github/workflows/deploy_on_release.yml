@@ -82,6 +82,14 @@ jobs:
           echo "$XC_CONFIG_FILE" > config.xcconfig
       - name: Generate
         run: tuist generate
+      - name: Install PlistBuddy
+        run: brew install libplist
+      - name: Change build version
+        run: |
+            INFO_PLIST="Projects/App/Support/Info.plist"
+            TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+            NEW_VERSION="${TIMESTAMP}"
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_VERSION" "${INFO_PLIST}"
       - name: Archive app
         # 빌드 및 아카이브
         run: |
