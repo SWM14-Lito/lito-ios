@@ -82,8 +82,6 @@ jobs:
           echo "$XC_CONFIG_FILE" > config.xcconfig
       - name: Generate
         run: tuist generate
-      - name: Install PlistBuddy
-        run: brew install libplist
       - name: Change build version
         run: |
             INFO_PLIST="Projects/App/Support/Info.plist"
