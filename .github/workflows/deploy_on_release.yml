@@ -27,8 +27,8 @@ jobs:
       DECRYPTED_LITO_P12_PATH: ${{ 'Tuist/Signing/Lito.p12' }}
       
       # AppStore privateKey Path
-      ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_${{ secrets.APPSTORE_API_KEY_ID }}.p8.gpg' }}
-      DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_${{ secrets.APPSTORE_API_KEY_ID }}.p8' }}
+      ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8.gpg' }}
+      DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8' }}
       
       CERT_SIGNING_KEY: ${{ secrets.CERTS_SIGNING_PWD }}
       
