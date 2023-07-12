@@ -25,13 +25,11 @@ public enum OAuthErrorDTO: Error {
     
     public func toVO() -> OAuthErrorVO {
         switch self {
-        case .apple(let error):
+        case .apple(_):
             // apple 에서 정의된 errorCode를 대조하여 error.localizedDescription에서 파싱하여 상황에 맞게 VO를 return?
-            let errorCode = error.localizedDescription
             return OAuthErrorVO.internalServerError
-        case .kakao(let error):
+        case .kakao(_):
             // kakao 에서 정의된 errorCode를 대조하여 error.localizedDescription에서 파싱하여 상황에 맞게 VO를 return?
-            let errorCode = error.localizedDescription
             return OAuthErrorVO.internalServerError
         }
     }
