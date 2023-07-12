@@ -26,6 +26,10 @@ jobs:
       DECRYPTED_LITO_CERT_PATH: ${{ 'Tuist/Signing/Lito.cer' }}
       DECRYPTED_LITO_P12_PATH: ${{ 'Tuist/Signing/Lito.p12' }}
       
+      # AppStore privateKey Path
+      ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8.gpg' }}
+      DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8' }}
+      
       CERT_SIGNING_KEY: ${{ secrets.CERTS_SIGNING_PWD }}
       
     steps:
@@ -85,11 +89,14 @@ jobs:
       - name: Export app
         # export 를 통해 ipa 파일 만듦
         run: |
-          tuist export ipa -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+          xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+      - name: Install private API key P8
+        run: | 
+          gpg -d -o "$DECRYPTED_APPSTORE_PRIVATE_KEY_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH"
+          mkdir -p ~/private_keys
+          cp $DECRYPTED_APPSTORE_PRIVATE_KEY_PATH ~/private_keys
       - name: Upload app to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: 'Lito.ipa'
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        env:
+          API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
+          API_ISSUER : ${{ secrets.APPSTORE_ISSUER_ID  }}
+        run: xcrun altool --output-format xml --upload-app -f App.ipa -t ios --apiKey $API_KEY --apiIssuer $API_ISSUER
