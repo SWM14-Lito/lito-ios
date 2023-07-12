@@ -1,8 +1,8 @@
-name: deploy
+name: deploy_on_testflight
 
 on:
   push:
-    branches: [ release/* , github-action-test]
+    branches: [ testflight/* ]
 jobs:
   deploy:
     runs-on: macos-latest
@@ -82,10 +82,13 @@ jobs:
           echo "$XC_CONFIG_FILE" > config.xcconfig
       - name: Generate
         run: tuist generate
+      - name: Get branch number
+        id: branch
+        run: echo "::set-output name=number::$(echo ${GITHUB_REF#refs/heads/testflight/})"
       - name: Change build version
         run: |
             INFO_PLIST="Projects/App/Support/Info.plist"
-            TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+            TIMESTAMP=${steps.branch.outputs.number}
             NEW_VERSION="${TIMESTAMP}"
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_VERSION" "${INFO_PLIST}"
       - name: Archive app
@@ -101,7 +104,7 @@ jobs:
           gpg -d -o "$DECRYPTED_APPSTORE_PRIVATE_KEY_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH"
           mkdir -p ~/private_keys
           cp $DECRYPTED_APPSTORE_PRIVATE_KEY_PATH ~/private_keys
-      - name: Upload app to TestFlight
+      - name: Upload app to AppStore
         env:
           API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
           API_ISSUER : ${{ secrets.APPSTORE_ISSUER_ID  }}
