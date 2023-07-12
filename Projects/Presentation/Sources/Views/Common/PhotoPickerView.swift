@@ -9,7 +9,7 @@
 import PhotosUI
 import SwiftUI
 
-struct PhotoPicker: View {
+struct PhotoPickerView: View {
     @State private var item: PhotosPickerItem?
     @Binding private var imageData: Data?
     
@@ -29,7 +29,7 @@ struct PhotoPicker: View {
                         .padding(.bottom, 20)
                         .padding(.top, 30)
                 } else {
-                    Image(systemName: "person.circle.fill")
+                    Image(systemName: SymbolName.defaultProfile)
                         .resizable()
                         .frame(width: 100, height: 100)
                         .clipShape(Circle())

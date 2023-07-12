@@ -20,7 +20,7 @@ public struct ProfileSettingView: View {
     
     public var body: some View {
         VStack {
-            PhotoPicker(imageData: $viewModel.imageData)
+            PhotoPickerView(imageData: $viewModel.imageData)
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
