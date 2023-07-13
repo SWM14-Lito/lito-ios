@@ -14,7 +14,7 @@ public struct LearningHomeView: View {
     @StateObject private var viewModel: LearningHomeViewModel
     private var errorView = ErrorView()
     
-    public init(viewModel: LearningHomeViewModel, cellViewModel: ProblemCellViewModel) {
+    public init(viewModel: LearningHomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.errorView.errorObject = viewModel.errorObject
     }

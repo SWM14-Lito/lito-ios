@@ -36,6 +36,17 @@ public struct DomainAssembly: Assembly {
             let repository = resolver.resolve(ProblemCellRepository.self)!
             return DefaultProblemCellUseCase(repository: repository)
         }
+        
+        container.register(LoginUseCase.self) { resolver in
+            let repository = resolver.resolve(LoginRepository.self)!
+            return DefaultLoginUseCase(repository: repository)
+        }
+        
+        container.register(ProfileSettingUseCase.self) { resolver in
+            let repository = resolver.resolve(ProfileSettingRepository.self)!
+            return DefaultProfileSettingUseCase(repository: repository)
+        }
+        
     }
     
 }

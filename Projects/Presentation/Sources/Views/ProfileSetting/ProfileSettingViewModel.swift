@@ -27,6 +27,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published var introduce: LimitedText
     @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
     @Published private(set) var errorObject = ErrorObject()
+
     
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
@@ -115,7 +116,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                     }
                 }
                 .store(in: cancelBag)
-            
         }
         // 이름, 닉네임, 소개글만 작성했을 경우
         else {

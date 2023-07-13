@@ -15,7 +15,6 @@ public struct PresentationAssembly: Assembly {
     let coordinator: Coordinator
     
     public func assemble(container: Container) {
-        
         container.register(ProblemCellViewModel.self) { resolver in
             let useCase = resolver.resolve(ProblemCellUseCase.self)!
             return ProblemCellViewModel(useCase: useCase, coordinator: coordinator)
@@ -50,12 +49,10 @@ public struct PresentationAssembly: Assembly {
         container.register(LearningHomeViewModel.self) { resolver in
             let useCase = resolver.resolve(LearningHomeUseCase.self)!
             return LearningHomeViewModel(useCase: useCase, coordinator: coordinator)
-        
         }
         container.register(LearningHomeView.self) { resolver in
             let viewModel = resolver.resolve(LearningHomeViewModel.self)!
-            let cellViewModel = resolver.resolve(ProblemCellViewModel.self)!
-            return LearningHomeView(viewModel: viewModel, cellViewModel: cellViewModel)
+            return LearningHomeView(viewModel: viewModel)
         }
         
         container.register(LearningCategoryViewModel.self) { _ in

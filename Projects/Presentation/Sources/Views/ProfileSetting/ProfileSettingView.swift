@@ -29,7 +29,6 @@ public struct ProfileSettingView: View {
             finishButtonView()
         }
         .padding([.leading, .trailing], 15)
-        .navigationBarHidden(true)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -104,8 +103,6 @@ public struct ProfileSettingView: View {
         }
     }
     
-    @State private var isLock = false
-    
     // 설정 완료 버튼 뷰
     @ViewBuilder
     private func finishButtonView() -> some View {
@@ -120,5 +117,4 @@ public struct ProfileSettingView: View {
         .tint(.orange)
         .padding(.bottom, 20)
     }
-
 }
