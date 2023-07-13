@@ -6,12 +6,20 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+import Combine
 import Domain
 
 public protocol LearningHomeDataSource {
-
+    func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
 }
 
 public class DefaultLearningHomeDataSource: LearningHomeDataSource {
+
     public init() {}
+    
+    private let moyaProvider = MoyaWrapper<LearningHomeAPI>()
+    
+    public func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error> {
+        moyaProvider.call(target: .getProfileAndProblems)
+    }
 }

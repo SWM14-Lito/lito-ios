@@ -13,6 +13,7 @@ import Combine
 
 // TODO: 이미지 크기 계산해서 압축하기
 // TODO: 글자 수 최소제한도 걸어주고 오류 메시지 표시해주기
+// TODO: 이전 뷰 스택에서 지우기
 
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     

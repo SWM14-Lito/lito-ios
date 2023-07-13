@@ -6,6 +6,8 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+import Combine
+
 public protocol LearningHomeRepository {
-    
+    func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
 }

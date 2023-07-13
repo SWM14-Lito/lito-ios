@@ -10,12 +10,12 @@ import Moya
 import Domain
 import Foundation
 
-enum ProfileAPI {
+enum ProfileSettingAPI {
     case setProfileInfo(ProfileInfoDTO)
     case setProfileImage(ProfileImageDTO)
     case setNotiAcceptance(AlarmAcceptanceDTO)
 }
-extension ProfileAPI: TargetType {
+extension ProfileSettingAPI: TargetType {
     var baseURL: URL {
         return URL(string: NetworkConfiguration.developmentServerURL as! String)!
     }
@@ -69,14 +69,5 @@ extension ProfileAPI: TargetType {
         case .setNotiAcceptance:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/x-www-form-urlencoded"]
         }
-    }
-}
-
-extension ProfileAPI {
-    
-    struct APICallHeaders {
-        
-        static let Json = ["Content-type": "application/json"]
-        
     }
 }

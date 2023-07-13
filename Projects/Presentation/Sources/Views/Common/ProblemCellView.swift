@@ -51,7 +51,7 @@ struct ProblemCellView: View {
             Button {
                 likedAction()
             } label: {
-                    Image(systemName: likedStatus.symbolName)
+                Image(systemName: likedStatus.symbolName)
             }
         }
         .padding()

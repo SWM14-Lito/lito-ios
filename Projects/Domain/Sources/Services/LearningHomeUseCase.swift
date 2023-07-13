@@ -6,10 +6,10 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import Foundation
+import Combine
 
 public protocol LearningHomeUseCase {
-
+    func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
 }
 
 public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
@@ -17,5 +17,9 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     
     public init(repository: LearningHomeRepository) {
         self.repository = repository
+    }
+    
+    public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
+        repository.getProfileAndProblems()
     }
 }
