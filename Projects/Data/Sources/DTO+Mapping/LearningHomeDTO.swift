@@ -16,12 +16,12 @@ public struct LearningHomeDTO: Decodable {
     let subject: String?
     let favorite: Bool?
 
+    // 서버와 명칭 협의 필요
     func toVO() -> LearningHomeVO {
         let userInfo = LearningHomeUserInfoVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unknown")
-        let problemInfo: LearningHomeProblemVO?
-        if let problemId = problemId,
-           let subject = subject {
-            problemInfo = LearningHomeProblemVO(problemId: problemId, subject: subject, favorite: favorite ?? false)
+        let problemInfo: ProblemCellVO?
+        if let problemId = problemId {
+            problemInfo = ProblemCellVO(problemId: problemId, solved: "풀이중", title: "문제제목", subject: subject ?? "Unknown", favorite: favorite ?? false)
         } else {
             problemInfo = nil
         }

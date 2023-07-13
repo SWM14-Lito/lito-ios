@@ -8,9 +8,9 @@
 
 public struct LearningHomeVO {
     public let userInfo: LearningHomeUserInfoVO
-    public let recommendedProblem: LearningHomeProblemVO?
+    public let recommendedProblem: ProblemCellVO?
     
-    public init(userInfo: LearningHomeUserInfoVO, recommendedProblem: LearningHomeProblemVO?) {
+    public init(userInfo: LearningHomeUserInfoVO, recommendedProblem: ProblemCellVO?) {
         self.userInfo = userInfo
         self.recommendedProblem = recommendedProblem
     }
@@ -25,17 +25,5 @@ public struct LearningHomeUserInfoVO {
         self.userId = userId
         self.profileImgUrl = profileImgUrl
         self.nickname = nickname
-    }
-}
-
-public struct LearningHomeProblemVO {
-    public let problemId: Int
-    public let subject: String
-    public let favorite: Bool
-    
-    public init(problemId: Int, subject: String, favorite: Bool) {
-        self.problemId = problemId
-        self.subject = subject
-        self.favorite = favorite
     }
 }

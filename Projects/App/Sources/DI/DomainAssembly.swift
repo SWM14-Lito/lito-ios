@@ -32,6 +32,10 @@ public struct DomainAssembly: Assembly {
             return DefaultLearningHomeUseCase(repository: repository)
         }
         
+        container.register(ProblemCellUseCase.self) { resolver in
+            let repository = resolver.resolve(ProblemCellRepository.self)!
+            return DefaultProblemCellUseCase(repository: repository)
+        }
     }
     
 }

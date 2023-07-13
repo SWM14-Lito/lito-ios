@@ -12,12 +12,10 @@ import Kingfisher
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
-    @StateObject private var cellViewModel: ProblemCellViewModel
     private var errorView = ErrorView()
     
     public init(viewModel: LearningHomeViewModel, cellViewModel: ProblemCellViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self._cellViewModel = StateObject(wrappedValue: cellViewModel)
         self.errorView.errorObject = viewModel.errorObject
     }
     
@@ -90,15 +88,11 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주는 뷰
     @ViewBuilder
     private func solvingProblemView() -> some View {
-        if let recommendProblem = viewModel.learningHomeVO?.recommendedProblem {
+        if let recommededProblem = viewModel.learningHomeVO?.recommendedProblem {
             VStack(alignment: .leading) {
                 Text("풀던 문제")
                     .font(.system(size: 20, weight: .bold))
-                ProblemCellView(solvedStatus: .solving, title: "제목입니다.", category: recommendProblem.subject, favorite: .isFavorite) {
-                    cellViewModel.moveToProblemView(id: recommendProblem.problemId)
-                } favoriteAction: {
-                    cellViewModel.changeFavoriteStatus(id: recommendProblem.problemId)
-                }
+                viewModel.getProblemCellView(problem: recommededProblem)
             }
             .padding([.leading, .trailing], 20)
         }
