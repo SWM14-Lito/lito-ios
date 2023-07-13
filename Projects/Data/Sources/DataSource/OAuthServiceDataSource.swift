@@ -150,7 +150,8 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
                     
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
     
     private func sdkErrorMapping(error: Error) -> OAuthError.kakaoDTO? {
