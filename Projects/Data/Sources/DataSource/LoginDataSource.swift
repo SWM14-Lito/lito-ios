@@ -26,10 +26,8 @@ public class DefaultLoginDataSource: LoginDataSource {
         switch OAuthProvider {
         case .apple(let appleVO):
             return moyaProvider.call(target: .apple(appleVO: appleVO))
-                .eraseToAnyPublisher()
         case .kakao(let kakaoVO):
             return moyaProvider.call(target: .kakao(kakaoVO: kakaoVO))
-                .eraseToAnyPublisher()
         }
     }
     

@@ -19,43 +19,13 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
         dataSource.postProfileInfo(profileInfoDTO: profileInfoDTO)
-            .catch { error -> Fail in
-                if let networkError = error as? NetworkErrorDTO {
-                    #if DEBUG
-                    print(networkError.debugString)
-                    #endif
-                    return Fail(error: networkError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
-            .eraseToAnyPublisher()
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
         dataSource.postProfileImage(profileImageDTO: profileImageDTO)
-            .catch { error -> Fail in
-                if let networkError = error as? NetworkErrorDTO {
-                    #if DEBUG
-                    print(networkError.debugString)
-                    #endif
-                    return Fail(error: networkError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
-            .eraseToAnyPublisher()
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
         dataSource.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
-            .catch { error -> Fail in
-                if let networkError = error as? NetworkErrorDTO {
-                    #if DEBUG
-                    print(networkError.debugString)
-                    #endif
-                    return Fail(error: networkError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
-            .eraseToAnyPublisher()
     }
 }
