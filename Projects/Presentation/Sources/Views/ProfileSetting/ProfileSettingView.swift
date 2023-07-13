@@ -7,19 +7,18 @@
 //
 
 import SwiftUI
-import PhotosUI
 
 public struct ProfileSettingView: View {
-    @ObservedObject public var viewModel: ProfileSettingViewModel
+    @StateObject public var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
     
     public init(viewModel: ProfileSettingViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         VStack {
-            setProfileImageView()
+            PhotoPicker(imageData: $viewModel.imageData)
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
@@ -47,30 +46,8 @@ public struct ProfileSettingView: View {
                 }
             }
         }
-    }
-    
-    // 프로필 이미지 설정 뷰
-    @ViewBuilder
-    private func setProfileImageView() -> some View {
-        PhotosPicker(selection: $viewModel.selectedPhoto) {
-            if let selectedPhotoData = viewModel.selectedPhotoData,
-               let image = UIImage(data: selectedPhotoData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                    .padding(.top, 30)
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                    .padding(.top, 30)
-            }
+        .onAppear {
+            viewModel.requestNotificationPermission()
         }
     }
     

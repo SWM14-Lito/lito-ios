@@ -15,15 +15,12 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
-    @Published var selectedPhotoData: Data?
-    @Published var selectedPhoto: PhotosPickerItem?
+    private var acceptAlarm: Bool = false
+    @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
     @Published var isExceedLimit: [TextFieldCategory: Bool]
-    private var succeedUploadingProfileInfo = false
-    private var succeedUploadingProfileImage = false
-    private var succeedUploadingProfileAlarmStatus = false
     @Published var uploadError: ErrorVO?
     
     enum TextFieldCategory: Hashable {
@@ -64,29 +61,19 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func initPublisher() {
-        $selectedPhoto
-            .sink { value in
-                value?.loadTransferable(type: Data.self) { result in
-                    DispatchQueue.main.async {
-                        self.selectedPhotoData = try? result.get()
-                    }
-                }
-            }
-            .store(in: cancelBag)
-        
-        username.reachLimit
+        username.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.username] = isExceed ? true : false
             }
             .store(in: cancelBag)
-        nickname.reachLimit
+        nickname.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.nickname] = isExceed ? true : false
             }
             .store(in: cancelBag)
-        introduce.reachLimit
+        introduce.reachedLimit
             .receive(on: DispatchQueue.main)
             .sink { isExceed in
                 self.isExceedLimit[.introduce] = isExceed ? true : false
@@ -95,74 +82,56 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     }
     
     func moveToLearningHomeView() {
-        if let img = selectedPhotoData {
-            postProfile(img: img)
-                .sink { _ in
-                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileImage && self.succeedUploadingProfileAlarmStatus {
+        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
+        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
+        
+        let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+        
+        if let data = imageData {
+            let profileImageDTO = ProfileImageDTO(image: UIImage(data: data)?.jpegData(compressionQuality: 0.5) ?? Data())
+            let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
+            
+            postProfileInfoPublisher
+                .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
                         self.coordinator.push(.rootTabView)
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
                     }
                 }
                 .store(in: cancelBag)
+            
         } else {
-            postProfile()
-                .sink { _ in
-                    if self.succeedUploadingProfileInfo && self.succeedUploadingProfileAlarmStatus {
+            postProfileInfoPublisher
+                .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
+                .sinkToResult { result in
+                    switch result {
+                    case .success(_):
                         self.coordinator.push(.rootTabView)
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.uploadError = errorVO
+                        }
                     }
                 }
                 .store(in: cancelBag)
         }
     }
     
-    func postProfile(img: Data? = nil) -> Future<Bool, Never> {
-        return Future<Bool, Never> { promise in
-            self.useCase.postProfileInfo(profileInfoDTO: ProfileInfoDTO(name: self.username.text, nickname: self.nickname.text, introduce: self.introduce.text))
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        print("info upload success")
-                        self.succeedUploadingProfileInfo = true
-                        promise(.success(true))
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
-                        }
-                    }
-                }
-                .store(in: self.cancelBag)
-            
-            if let img = img {
-                self.useCase.postProfileImage(profileImageDTO: ProfileImageDTO(image: img))
-                    .sinkToResult { result in
-                        switch result {
-                        case .success(_):
-                            print("image upload success")
-                            self.succeedUploadingProfileImage = true
-                            promise(.success(true))
-                        case .failure(let error):
-                            if let errorVO = error as? ErrorVO {
-                                self.uploadError = errorVO
-                            }
-                        }
-                    }
-                    .store(in: self.cancelBag)
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
+            if didAllow {
+                print("Push: 권한 허용")
+                self.acceptAlarm = true
+            } else {
+                print("Push: 권한 거부")
+                self.acceptAlarm = false
             }
-            
-            // TODO: 알람 여부 사용자에게 받는 기능 필요
-            self.useCase.postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO(getAlarm: true))
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        print("alarmAcceptance upload success")
-                        self.succeedUploadingProfileAlarmStatus = true
-                        promise(.success(true))
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.uploadError = errorVO
-                        }
-                    }
-                }
-                .store(in: self.cancelBag)
-        }
+        })
     }
 }
