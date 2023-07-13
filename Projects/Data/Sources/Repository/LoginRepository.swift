@@ -23,48 +23,18 @@ final public class DefaultLoginRepository: LoginRepository {
     
     public func appleLogin() -> AnyPublisher<OAuth.AppleVO, Error> {
         oauthDataSource.appleLogin()
-            // 1차적으로 이곳에서 oauthErrorDTO 를 핸들링
-            // 만약 catch한 error 가 추가적인 액션을 통해 해결 가능성 있는 error 라면 repository or useCase 어디서 처리 해야할까?
-            .catch({ error -> Fail in
-                if let oauthErrorDTO = error as? OAuthError.appleErrorDTO {
-                    #if DEBUG
-                    print(oauthErrorDTO.debugString)
-                    #endif
-                    return Fail(error: oauthErrorDTO.toVO())
-                }
-                return Fail(error: ErrorVO.fatalError)
-            })
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
     
     public func kakaoLogin() -> AnyPublisher<OAuth.KakaoVO, Error> {
         oauthDataSource.kakaoLogin()
-            .catch({ error -> Fail in
-                if let oauthErrorDTO = error as? OAuthError.kakaoDTO {
-                    #if DEBUG
-                    print(oauthErrorDTO.debugString)
-                    #endif
-                    return Fail(error: oauthErrorDTO.toVO())
-                }
-                return Fail(error: ErrorVO.fatalError)
-            })
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         return loginDataSource.postLoginInfo(OAuthProvider: OAuthProvider)
-            .catch { error -> Fail in
-                if let networkError = error as? NetworkErrorDTO {
-                    #if DEBUG
-                    print(networkError.debugString)
-                    #endif
-                    return Fail(error: networkError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
-            .eraseToAnyPublisher()
     }
     
 }

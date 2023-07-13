@@ -54,7 +54,11 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         if let authorizationError = error as? ASAuthorizationError {
-            appleLoginSubject.send(.failure(.authorizationError(authorizationError)))
+            let appleErrorDTO = OAuthError.appleErrorDTO.authorizationError(authorizationError)
+            #if DEBUG
+            print(appleErrorDTO.debugString)
+            #endif
+            appleLoginSubject.send(.failure(appleErrorDTO))
         } else {
             appleLoginSubject.send(.failure(.commonError(error)))
         }
@@ -85,6 +89,9 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
             UserApi.shared.loginWithKakaoTalk { (_, error) in
                 if let error = error {
                     if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                        #if DEBUG
+                        print(kakaoErrorDTO.debugString)
+                        #endif
                         return promise(.failure(kakaoErrorDTO))
                     }
                     return promise(.failure(error))
@@ -92,6 +99,9 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
                 UserApi.shared.me { (user, error) in
                     if let error = error {
                         if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                            #if DEBUG
+                            print(kakaoErrorDTO.debugString)
+                            #endif
                             return promise(.failure(kakaoErrorDTO))
                         }
                         return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
@@ -114,6 +124,9 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
             UserApi.shared.loginWithKakaoAccount { (_, error) in
                 if let error = error {
                     if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                        #if DEBUG
+                        print(kakaoErrorDTO.debugString)
+                        #endif
                         return promise(.failure(kakaoErrorDTO))
                     }
                     return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
@@ -121,6 +134,9 @@ public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, AS
                 UserApi.shared.me { (user, error) in
                     if let error = error {
                         if let kakaoErrorDTO = self.sdkErrorMapping(error: error) {
+                            #if DEBUG
+                            print(kakaoErrorDTO.debugString)
+                            #endif
                             return promise(.failure(kakaoErrorDTO))
                         }
                         return promise(.failure(OAuthError.kakaoDTO.commonError(error)))

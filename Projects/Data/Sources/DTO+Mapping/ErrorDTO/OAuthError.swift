@@ -14,6 +14,7 @@ import KakaoSDKCommon
 public enum OAuthError {
     
     public enum kakaoDTO: Error {
+        
         case clientFailureReson(ClientFailureReason, message: String?)
         case apiFailureReason(ApiFailureReason, ErrorInfo?)
         case authFailureReason(AuthFailureReason, AuthErrorInfo?)
@@ -32,9 +33,17 @@ public enum OAuthError {
             }
         }
         
-        // TODO: VO로 어떻게 바꾸는게 좋을까?
-        public func toVO() -> OAuthErrorVO {
-            return OAuthErrorVO.internalServerError
+        public func toVO() -> ErrorVO {
+            switch self {
+            case .apiFailureReason(_, _):
+                return .fatalError
+            case .authFailureReason(_, _):
+                return .fatalError
+            case .clientFailureReson(_, message: _):
+                return .retryableError
+            case .commonError(_):
+                return .fatalError
+            }
         }
         
     }
@@ -43,14 +52,28 @@ public enum OAuthError {
         case authorizationError(ASAuthorizationError)
         case commonError(Error)
         
-        // TODO: VO로 어떻게 바꾸는게 좋을까?
-        public func toVO() -> OAuthErrorVO {
-//            switch authorizationError.code {
-//            case .canceled:
-//                break
-//            case .
-//            }
-            return OAuthErrorVO.internalServerError
+        public func toVO() -> ErrorVO {
+            switch self {
+            case .authorizationError(let authorizationError):
+                switch authorizationError.code {
+                case .canceled:
+                    return .retryableError
+                case .failed:
+                    return .fatalError
+                case .invalidResponse:
+                    return .fatalError
+                case .notHandled:
+                    return .fatalError
+                case .notInteractive:
+                    return .fatalError
+                case .unknown:
+                    return .fatalError
+                @unknown default:
+                    return .fatalError
+                }
+            case .commonError(_):
+                return .retryableError
+            }
         }
         
         public var debugString: String {

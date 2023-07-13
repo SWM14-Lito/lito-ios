@@ -27,18 +27,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
     }
     
     public func appleLogin() -> AnyPublisher<LoginResultVO, Error> {
-        // 2차적으로 이곳에서 errorVO 를 핸들링?
-        // repository or useCase 에서 어떤 문제를 어떻게 핸들링할지 여전히 고민..
         repository.appleLogin()
-            .catch { error -> Fail in
-                if let oauthErrorVO = error as? OAuthErrorVO {
-                    #if DEBUG
-                    print(oauthErrorVO.debugString)
-                    #endif
-                    return Fail(error: ErrorVO.retryableError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
             .flatMap { appleVO -> AnyPublisher<LoginResultVO, Error> in
                 self.repository.postLoginInfo(OAuthProvider: OAuth.apple(appleVO))
                     .catch { error -> Fail in
@@ -56,15 +45,6 @@ public final class DefaultLoginUseCase: LoginUseCase {
     
     public func kakaoLogin() -> AnyPublisher<LoginResultVO, Error> {
         repository.kakaoLogin()
-            .catch { error -> Fail in
-                if let oauthErrorVO = error as? OAuthErrorVO {
-                    #if DEBUG
-                    print(oauthErrorVO.debugString)
-                    #endif
-                    return Fail(error: ErrorVO.retryableError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
             .flatMap { kakaoVO -> AnyPublisher<LoginResultVO, Error> in
                 self.repository.postLoginInfo(OAuthProvider: OAuth.kakao(kakaoVO))
                     .catch { error -> Fail in
