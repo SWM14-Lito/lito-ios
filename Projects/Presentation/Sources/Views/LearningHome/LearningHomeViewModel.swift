@@ -17,7 +17,6 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     @Published var learningHomeVO: LearningHomeVO?
     @Published private(set) var errorObject = ErrorObject()
     
-    
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
@@ -29,10 +28,11 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     }
     
     // 찜한 목록 화면으로 이동하기
-    func moveToLikedProblemView() {
+    func moveToFavoriteProblemView() {
         print("찜한 목록 화면으로 이동")
     }
 
+    // 프로필 정보와 문제 정보 가져오기
     func getProfileAndProblems() {
         useCase.getProfileAndProblems()
             .sinkToResult { result in

@@ -24,7 +24,7 @@ public final class ProblemCellViewModel: BaseViewModel, ObservableObject {
     }
     
     // 찜하기 or 해제하기
-    func changeLikedStatus(id: Int) {
+    func changeFavoriteStatus(id: Int) {
         print(id, "찜하기")
     }
 }

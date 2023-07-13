@@ -14,9 +14,17 @@ public struct LearningHomeDTO: Decodable {
     let nickname: String?
     let problemId: Int?
     let subject: String?
-    let favorite: Bool
+    let favorite: Bool?
 
     func toVO() -> LearningHomeVO {
-        return LearningHomeVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unknown", problemId: problemId, subject: subject, favorite: favorite)
+        let userInfo = LearningHomeUserInfoVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unknown")
+        let problemInfo: LearningHomeProblemVO?
+        if let problemId = problemId,
+           let subject = subject {
+            problemInfo = LearningHomeProblemVO(problemId: problemId, subject: subject, favorite: favorite ?? false)
+        } else {
+            problemInfo = nil
+        }
+        return LearningHomeVO(userInfo: userInfo, recommendedProblem: problemInfo)
     }
 }

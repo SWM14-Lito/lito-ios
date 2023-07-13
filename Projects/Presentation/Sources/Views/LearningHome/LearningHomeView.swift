@@ -7,24 +7,28 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
     @StateObject private var cellViewModel: ProblemCellViewModel
+    private var errorView = ErrorView()
     
     public init(viewModel: LearningHomeViewModel, cellViewModel: ProblemCellViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
         self._cellViewModel = StateObject(wrappedValue: cellViewModel)
+        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
         VStack {
+            errorView
             profileView()
             startLearningButtonView()
             Divider()
             symbolExplanationView()
-            problemListView()
+            solvingProblemView()
         }
 
     }
@@ -32,15 +36,25 @@ public struct LearningHomeView: View {
     // 프로필 이미지와 닉네임 보여주는 뷰
     @ViewBuilder
     private func profileView() -> some View {
-        VStack {
-            Image(systemName: SymbolName.defaultProfile)
-                .resizable()
-                .frame(width: 88, height: 88)
-                .clipShape(Circle())
-            Text("Kristen")
-                .font(.system(size: 13))
+        if let learningHomeVO = viewModel.learningHomeVO {
+            VStack {
+                if let urlString = learningHomeVO.userInfo.profileImgUrl,
+                   let url = URL(string: urlString) {
+                    KFImage(url)
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: SymbolName.defaultProfile)
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .clipShape(Circle())
+                }
+                Text(learningHomeVO.userInfo.nickname)
+                    .font(.system(size: 13))
+            }
+            .padding(.bottom, 18)
         }
-        .padding(.bottom, 18)
     }
     
     // 학습 시작 버튼 뷰
@@ -73,37 +87,17 @@ public struct LearningHomeView: View {
         .padding(.leading, 20)
     }
     
-    // 문제 리스트 보여주는 뷰
+    // 풀던 문제 보여주는 뷰
     @ViewBuilder
-    private func problemListView() -> some View {
-        ScrollView {
+    private func solvingProblemView() -> some View {
+        if let recommendProblem = viewModel.learningHomeVO?.recommendedProblem {
             VStack(alignment: .leading) {
                 Text("풀던 문제")
                     .font(.system(size: 20, weight: .bold))
-                ProblemCellView(solvedStatus: .solving, title: "제목제목제목", category: "운체운체", likedStatus: .liked) {
-                    cellViewModel.moveToProblemView(id: 1)
-                } likedAction: {
-                    cellViewModel.changeLikedStatus(id: 1)
-                }
-            }
-            .padding([.leading, .trailing], 20)
-            VStack(alignment: .leading) {
-                Text("추천 문제")
-                    .font(.system(size: 20, weight: .bold))
-                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체", likedStatus: .liked) {
-                    cellViewModel.moveToProblemView(id: 2)
-                } likedAction: {
-                    cellViewModel.changeLikedStatus(id: 2)
-                }
-                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목", category: "운체운체", likedStatus: .liked) {
-                    cellViewModel.moveToProblemView(id: 3)
-                } likedAction: {
-                    cellViewModel.changeLikedStatus(id: 3)
-                }
-                ProblemCellView(solvedStatus: .unsolved, title: "제목제목제목", category: "운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체운체", likedStatus: .liked) {
-                    cellViewModel.moveToProblemView(id: 4)
-                } likedAction: {
-                    cellViewModel.changeLikedStatus(id: 4)
+                ProblemCellView(solvedStatus: .solving, title: "제목입니다.", category: recommendProblem.subject, favorite: .isFavorite) {
+                    cellViewModel.moveToProblemView(id: recommendProblem.problemId)
+                } favoriteAction: {
+                    cellViewModel.changeFavoriteStatus(id: recommendProblem.problemId)
                 }
             }
             .padding([.leading, .trailing], 20)

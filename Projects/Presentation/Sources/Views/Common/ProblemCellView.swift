@@ -13,17 +13,17 @@ struct ProblemCellView: View {
     private let solvedStatus: ProblemSolvedStatus
     private let title: String
     private let category: String
-    private let likedStatus: ProblemLikedStatus
     private let buttonAction: () -> Void
-    private let likedAction: () -> Void
+    private let favoriteAction: () -> Void
+    @Binding private var favoriteStatus: ProblemFavoriteStatus
     
-    init(solvedStatus: ProblemSolvedStatus, title: String, category: String, likedStatus: ProblemLikedStatus, buttonAction: @escaping () -> Void, likedAction: @escaping () -> Void) {
+    init(solvedStatus: ProblemSolvedStatus, title: String, category: String, isFavorite: Binding<ProblemFavoriteStatus>, buttonAction: @escaping () -> Void, favoriteAction: @escaping () -> Void) {
         self.solvedStatus = solvedStatus
         self.title = title
         self.category = category
-        self.likedStatus = likedStatus
         self.buttonAction = buttonAction
-        self.likedAction = likedAction
+        self.favoriteAction = favoriteAction
+        self._favoriteStatus = isFavorite
     }
     
     var body: some View {
@@ -49,9 +49,9 @@ struct ProblemCellView: View {
             }
             
             Button {
-                likedAction()
+                favoriteAction()
             } label: {
-                Image(systemName: likedStatus.symbolName)
+                Image(systemName: favoriteStatus.symbolName)
             }
         }
         .padding()

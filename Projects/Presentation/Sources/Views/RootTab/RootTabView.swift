@@ -54,10 +54,10 @@ public struct RootTabView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    tab1ViewModel.moveToLikedProblemView()
+                    tab1ViewModel.moveToFavoriteProblemView()
                 } label: {
                     if selection == 1 {
-                        Image(systemName: SymbolName.likedList)
+                        Image(systemName: SymbolName.favoriteList)
                     } else {
                         EmptyView()
                     }
