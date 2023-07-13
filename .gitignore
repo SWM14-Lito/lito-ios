@@ -69,6 +69,9 @@ Derived/
 ### Tuist managed dependencies ###
 Tuist/Dependencies
 
+### Tuist Signing ###
+Tuist/Signing
+
 graph.png
 
 *.xcconfig
