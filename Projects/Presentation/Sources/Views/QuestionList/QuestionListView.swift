@@ -83,7 +83,7 @@ public struct QuestionListView: View {
                                 .fixedSize()
                                 .font(.title3)
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(selectedSubject == subject ? .black : .gray)
+                                .foregroundColor(selectedSubject == subject ? .orange : .gray)
                             if selectedSubject == subject {
                                 Capsule()
                                     .foregroundColor(.orange)
