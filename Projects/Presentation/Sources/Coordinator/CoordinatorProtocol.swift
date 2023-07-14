@@ -8,9 +8,11 @@
 
 import SwiftUI
 import Combine
+import Domain
 
 public protocol CoordinatorProtocol {
     func push(_ page: Page)
     func pop()
     func popToRoot()
+    func buildProblemCellView(problemCellVO: ProblemCellVO) -> ProblemCellView
 }

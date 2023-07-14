@@ -23,6 +23,7 @@ public class DefaultExampleDataSource: ExampleDataSource {
     
     public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
         return moyaProvider.call(target: .oneSlip)
+            .eraseToAnyPublisher()
     }
     
 }
