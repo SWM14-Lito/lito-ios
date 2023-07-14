@@ -25,6 +25,7 @@ public struct ProfileSettingView: View {
             setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
             setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
             setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            textErrorMessageView()
             Spacer()
             finishButtonView()
         }
@@ -100,6 +101,15 @@ public struct ProfileSettingView: View {
                 }
             }
             Divider()
+        }
+    }
+    
+    // 텍스트 입력 관련 오류 메시지 띄워주는 뷰
+    @ViewBuilder
+    private func textErrorMessageView() -> some View {
+        if let msg = viewModel.textErrorMessage {
+            Text(msg)
+                .foregroundColor(.red)
         }
     }
     
