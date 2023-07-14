@@ -27,6 +27,10 @@ public struct LearningHomeView: View {
             Divider()
             symbolExplanationView()
             solvingProblemView()
+            Spacer()
+        }
+        .onAppear {
+            viewModel.getProfileAndProblems()
         }
 
     }
@@ -34,25 +38,24 @@ public struct LearningHomeView: View {
     // 프로필 이미지와 닉네임 보여주는 뷰
     @ViewBuilder
     private func profileView() -> some View {
-        if let learningHomeVO = viewModel.learningHomeVO {
-            VStack {
-                if let urlString = learningHomeVO.userInfo.profileImgUrl,
-                   let url = URL(string: urlString) {
-                    KFImage(url)
-                        .resizable()
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: SymbolName.defaultProfile)
-                        .resizable()
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
-                }
+        VStack {
+            if let learningHomeVO = viewModel.learningHomeVO,
+               let urlString = learningHomeVO.userInfo.profileImgUrl,
+               let url = URL(string: urlString) {
+                KFImage(url)
+                    .resizable()
+                    .frame(width: 88, height: 88)
+                    .clipShape(Circle())
                 Text(learningHomeVO.userInfo.nickname)
                     .font(.system(size: 13))
+            } else {
+                Image(systemName: SymbolName.defaultProfile)
+                    .resizable()
+                    .frame(width: 88, height: 88)
+                    .clipShape(Circle())
             }
-            .padding(.bottom, 18)
         }
+        .padding(.bottom, 18)
     }
     
     // 학습 시작 버튼 뷰

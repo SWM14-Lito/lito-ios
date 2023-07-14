@@ -12,6 +12,7 @@ public struct LearningHomeDTO: Decodable {
     let userId: Int
     let profileImgUrl: String?
     let nickname: String?
+    let question: String?
     let problemId: Int?
     let subject: String?
     let favorite: Bool?
@@ -21,7 +22,7 @@ public struct LearningHomeDTO: Decodable {
         let userInfo = LearningHomeUserInfoVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unknown")
         let problemInfo: ProblemCellVO?
         if let problemId = problemId {
-            problemInfo = ProblemCellVO(problemId: problemId, solved: "풀이중", title: "문제제목", subject: subject ?? "Unknown", favorite: favorite ?? false)
+            problemInfo = ProblemCellVO(problemId: problemId, solved: "풀이중", question: question ?? "Unknown", subject: subject ?? "Unknown", favorite: favorite ?? false)
         } else {
             problemInfo = nil
         }

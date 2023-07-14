@@ -10,14 +10,14 @@
 public struct ProblemCellVO {
     public let problemId: Int
     public let solved: String
-    public let title: String
+    public let question: String
     public let subject: String
     public var favorite: Bool
     
-    public init(problemId: Int, solved: String, title: String, subject: String, favorite: Bool) {
+    public init(problemId: Int, solved: String, question: String, subject: String, favorite: Bool) {
         self.problemId = problemId
         self.solved = solved
-        self.title = title
+        self.question = question
         self.subject = subject
         self.favorite = favorite
     }

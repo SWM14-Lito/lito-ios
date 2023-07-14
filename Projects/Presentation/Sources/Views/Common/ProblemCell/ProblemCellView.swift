@@ -25,7 +25,7 @@ public struct ProblemCellView: View {
                     HStack {
                         Image(systemName: "")
                         VStack(alignment: .leading) {
-                            Text(problemCellVO.title)
+                            Text(problemCellVO.question)
                                 .font(.system(size: 15))
                                 .foregroundColor(Color.black)
                                 .multilineTextAlignment(.leading)

@@ -46,9 +46,9 @@ enum ProblemLikedStatus: Symbol {
     var symbolName: String {
         switch self {
         case .liked:
-            return SymbolName.liked
+            return SymbolName.isFavorite
         case .unliked:
-            return SymbolName.unliked
+            return SymbolName.isNotFavorite
         }
     }
 }
