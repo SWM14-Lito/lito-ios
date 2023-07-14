@@ -49,8 +49,9 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     }
     
     // 문제 셀 뷰 가져오기
-    func getProblemCellView(problem: ProblemCellVO) -> some View {
-        return AnyView(coordinator.buildSubView(subView: .problemCellView, arg: problem))
+    
+    func getProblemCellView(problem: ProblemCellVO) -> ProblemCellView {
+        return coordinator.buildSubView(subView: .problemCellView, arg: problem)
     }
     
 }
