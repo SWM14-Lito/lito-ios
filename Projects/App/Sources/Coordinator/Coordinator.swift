@@ -30,7 +30,7 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
     }
     
     @ViewBuilder
-    public func buildView(page: Page) -> some View {
+    public func buildPage(page: Page) -> some View {
         switch page {
         case .loginView:
             injector?.resolve(LoginView.self)
@@ -56,9 +56,13 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         }
     }
     
-    public func buildProblemCellView(problemCellVO: ProblemCellVO) -> ProblemCellView {
-        let viewModel = (injector?.resolve(ProblemCellViewModel.self))! as ProblemCellViewModel
-        viewModel.problemCellVO = problemCellVO
-        return ProblemCellView(viewModel: viewModel)
+    public func buildSubView<T>(subView: SubView, arg: T? = nil) -> any View {
+        switch subView {
+        case .problemCellView:
+            let viewModel = (injector?.resolve(ProblemCellViewModel.self))! as ProblemCellViewModel
+            let problemCellVO = arg as? ProblemCellVO
+            viewModel.problemCellVO = problemCellVO
+            return ProblemCellView(viewModel: viewModel)
+        }
     }
 }
