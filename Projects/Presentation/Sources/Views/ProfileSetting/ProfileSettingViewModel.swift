@@ -28,7 +28,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
     @Published private(set) var errorObject = ErrorObject()
 
-    
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
         var limit: Int {

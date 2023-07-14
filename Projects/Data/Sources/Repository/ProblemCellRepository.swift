@@ -9,7 +9,7 @@
 import Domain
 
 final public class DefaultProblemCellRepository: ProblemCellRepository {
-    let dataSource: ProblemCellDataSource
+    private let dataSource: ProblemCellDataSource
     
     public init(dataSource: ProblemCellDataSource) {
         self.dataSource = dataSource

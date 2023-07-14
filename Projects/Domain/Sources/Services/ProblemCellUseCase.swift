@@ -13,7 +13,7 @@ public protocol ProblemCellUseCase {
 }
 
 public final class DefaultProblemCellUseCase: ProblemCellUseCase {
-    let repository: ProblemCellRepository
+    private let repository: ProblemCellRepository
     
     public init(repository: ProblemCellRepository) {
         self.repository = repository

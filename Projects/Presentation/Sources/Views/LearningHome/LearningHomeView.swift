@@ -39,20 +39,24 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private func profileView() -> some View {
         VStack {
-            if let learningHomeVO = viewModel.learningHomeVO,
-               let urlString = learningHomeVO.userInfo.profileImgUrl,
-               let url = URL(string: urlString) {
-                KFImage(url)
-                    .resizable()
-                    .frame(width: 88, height: 88)
-                    .clipShape(Circle())
+            if let learningHomeVO = viewModel.learningHomeVO {
+                if let urlString = learningHomeVO.userInfo.profileImgUrl,
+                   let url = URL(string: urlString) {
+                    KFImage(url)
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: SymbolName.defaultProfile)
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .clipShape(Circle())
+                }
                 Text(learningHomeVO.userInfo.nickname)
                     .font(.system(size: 13))
             } else {
-                Image(systemName: SymbolName.defaultProfile)
-                    .resizable()
+                ProgressView()
                     .frame(width: 88, height: 88)
-                    .clipShape(Circle())
             }
         }
         .padding(.bottom, 18)

@@ -13,7 +13,7 @@ public protocol ProblemCellDataSource {
     
 }
 
-public class DefaultProblemCellDataSource: ProblemCellDataSource {
+final public class DefaultProblemCellDataSource: ProblemCellDataSource {
 
     public init() {}
     

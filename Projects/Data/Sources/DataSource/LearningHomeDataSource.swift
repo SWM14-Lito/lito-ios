@@ -13,7 +13,7 @@ public protocol LearningHomeDataSource {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
 }
 
-public class DefaultLearningHomeDataSource: LearningHomeDataSource {
+final public class DefaultLearningHomeDataSource: LearningHomeDataSource {
 
     public init() {}
     

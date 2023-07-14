@@ -12,7 +12,7 @@ import Moya
 
 final public class DefaultLearningHomeRepository: LearningHomeRepository {
     
-    let dataSource: LearningHomeDataSource
+    private let dataSource: LearningHomeDataSource
     
     public init(dataSource: LearningHomeDataSource) {
         self.dataSource = dataSource
@@ -20,16 +20,6 @@ final public class DefaultLearningHomeRepository: LearningHomeRepository {
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
         dataSource.getProfileAndProblems()
-            .catch { error -> Fail in
-                if let moyaError = error as? MoyaError {
-                    #if DEBUG
-                    let networkError = moyaError.toNetworkError()
-                    print(networkError.debugString)
-                    #endif
-                    return Fail(error: networkError)
-                }
-                return Fail(error: ErrorVO.fatalError)
-            }
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
