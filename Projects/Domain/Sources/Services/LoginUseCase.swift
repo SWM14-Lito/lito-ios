@@ -18,7 +18,7 @@ public protocol LoginUseCase {
 
 public final class DefaultLoginUseCase: LoginUseCase {
     
-    let repository: LoginRepository
+    private let repository: LoginRepository
     
     private var cancleBag = Set<AnyCancellable>()
     

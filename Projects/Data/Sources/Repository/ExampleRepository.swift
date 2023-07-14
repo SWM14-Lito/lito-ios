@@ -12,7 +12,7 @@ import Domain
 import Moya
 
 final public class DefaultExampleRepository: ExampleRepository {
-    let dataSource: ExampleDataSource
+    private let dataSource: ExampleDataSource
     
     public init(dataSource: ExampleDataSource) {
         self.dataSource = dataSource

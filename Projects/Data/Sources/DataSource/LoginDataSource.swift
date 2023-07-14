@@ -16,7 +16,7 @@ public protocol LoginDataSource {
     func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
 }
 
-public class DefaultLoginDataSource: LoginDataSource {
+final public class DefaultLoginDataSource: LoginDataSource {
     
     public init() {}
     

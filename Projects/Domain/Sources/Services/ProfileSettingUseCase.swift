@@ -15,7 +15,7 @@ public protocol ProfileSettingUseCase {
 }
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
-    let repository: ProfileSettingRepository
+    private let repository: ProfileSettingRepository
     
     public init(repository: ProfileSettingRepository) {
         self.repository = repository

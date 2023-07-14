@@ -15,7 +15,7 @@ public protocol ExampleDataSource {
     func loadMaxim() -> AnyPublisher<SlipDTO, Error>
 }
 
-public class DefaultExampleDataSource: ExampleDataSource {
+final public class DefaultExampleDataSource: ExampleDataSource {
     
     public init() {}
     

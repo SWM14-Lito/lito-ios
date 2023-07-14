@@ -7,7 +7,7 @@ public protocol ExampleUseCase {
 
 public final class DefaultExampleUseCase: ExampleUseCase {
     
-    let repository: ExampleRepository
+    private let repository: ExampleRepository
     
     public init(repository: ExampleRepository) {
         self.repository = repository
