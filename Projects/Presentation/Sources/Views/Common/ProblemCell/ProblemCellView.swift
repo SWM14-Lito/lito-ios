@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct ProblemCellView: View {
     
-    @StateObject var viewModel: ProblemCellViewModel
+    @StateObject private var viewModel: ProblemCellViewModel
     
     public init(viewModel: ProblemCellViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
