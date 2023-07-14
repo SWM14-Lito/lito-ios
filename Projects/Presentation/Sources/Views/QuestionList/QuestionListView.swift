@@ -12,7 +12,7 @@ public struct QuestionListView: View {
     
     @State private var selectedSubject: subjectInfo = .all
     @State private var selectedSolve: solveInfo = .unsolved
-    @Namespace private var animation
+    @Namespace private var subjectAnimation
     
     public init() {}
     
@@ -20,7 +20,7 @@ public struct QuestionListView: View {
         VStack {
             Divider()
             ScrollView(.horizontal) {
-                animate()
+                headSection()
             }
             .scrollIndicators(.never)
             Picker("solve", selection: $selectedSolve) {
@@ -73,7 +73,7 @@ public struct QuestionListView: View {
     }
     
     @ViewBuilder
-    private func animate() -> some View {
+    private func headSection() -> some View {
             VStack(spacing: 0) {
                 HStack {
                     ForEach(subjectInfo.allCases, id: \.self) { subject in
@@ -88,7 +88,7 @@ public struct QuestionListView: View {
                                 Capsule()
                                     .foregroundColor(.orange)
                                     .frame(height: 3)
-                                    .matchedGeometryEffect(id: "all", in: animation)
+                                    .matchedGeometryEffect(id: "all", in: subjectAnimation)
                             }
                         }
                         .onTapGesture {
@@ -102,14 +102,14 @@ public struct QuestionListView: View {
             }
     }
     
-    enum subjectInfo: String, CaseIterable {
+    private enum subjectInfo: String, CaseIterable {
         case all = "전체"
         case operationSystem = "운영체제"
         case network = "네트워크"
         case database = "데이터베이스"
         case structure = "자료구조"
     }
-    enum solveInfo: String, CaseIterable {
+    private enum solveInfo: String, CaseIterable {
         case unsolved = "풀지 않음"
         case solved = "풀이 완료"
     }
