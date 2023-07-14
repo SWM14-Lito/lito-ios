@@ -1,10 +1,9 @@
-////
-////  Receivable.swift
-////  Presentation
-////
-////  Created by Lee Myeonghwan on 2023/07/04.
-////  Copyright © 2023 com.lito. All rights reserved.
-////
+//
+//  Receivable.swift
+//  Presentation
+//
+//  Created by Lee Myeonghwan on 2023/07/04.
+//  Copyright © 2023 com.lito. All rights reserved.///
 
 import Foundation
 import SwiftUI

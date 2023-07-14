@@ -9,6 +9,7 @@
 import SwiftUI
 import Presentation
 import KakaoSDKAuth
+import Domain
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
     @Published public var path = NavigationPath()
@@ -51,5 +52,11 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         case .rootTabView:
             injector?.resolve(RootTabView.self)
         }
+    }
+    
+    public func buildProblemCellView(problemCellVO: ProblemCellVO) -> ProblemCellView {
+        let viewModel = (injector?.resolve(ProblemCellViewModel.self))! as ProblemCellViewModel
+        viewModel.problemCellVO = problemCellVO
+        return ProblemCellView(viewModel: viewModel)
     }
 }

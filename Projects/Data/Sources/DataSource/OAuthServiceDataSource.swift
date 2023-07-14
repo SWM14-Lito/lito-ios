@@ -20,7 +20,7 @@ public protocol OAuthServiceDataSource {
     
 }
 
-public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, ASAuthorizationControllerDelegate {
+final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, ASAuthorizationControllerDelegate {
     
     public override init() {}
     

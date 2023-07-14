@@ -15,10 +15,10 @@ public protocol ProfileSettingDataSource {
     func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
 }
 
-public class DefaultProfileSettingDataSource: ProfileSettingDataSource {
+final public class DefaultProfileSettingDataSource: ProfileSettingDataSource {
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<ProfileAPI>()
+    private let moyaProvider = MoyaWrapper<ProfileSettingAPI>()
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
         moyaProvider.call(target: .setProfileInfo(profileInfoDTO))

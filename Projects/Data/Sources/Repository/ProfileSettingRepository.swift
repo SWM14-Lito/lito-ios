@@ -11,7 +11,7 @@ import Combine
 
 final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
-    let dataSource: ProfileSettingDataSource
+    private let dataSource: ProfileSettingDataSource
     
     public init(dataSource: ProfileSettingDataSource) {
         self.dataSource = dataSource
