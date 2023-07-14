@@ -14,8 +14,10 @@ protocol Explanation {
     var explanation: String { get }
 }
 
-enum ProblemSolvedStatus: Symbol, Explanation {
-    case solved, unsolved, solving
+enum ProblemSolvedStatus: String, Symbol, Explanation {
+    case solved = "풀이완료"
+    case unsolved = "풀지않음"
+    case solving = "풀이중"
     
     var symbolName: String {
         switch self {
@@ -29,26 +31,28 @@ enum ProblemSolvedStatus: Symbol, Explanation {
     }
     
     var explanation: String {
-        switch self {
-        case .solved:
-            return "풀이완료"
-        case .unsolved:
-            return "풀지않음"
-        case .solving:
-            return "풀이중"
-        }
+        return rawValue
     }
 }
 
-enum ProblemLikedStatus: Symbol {
-    case liked, unliked
+enum ProblemFavoriteStatus: Symbol {
+    case isFavorite
+    case isNotFavorite
     
     var symbolName: String {
         switch self {
-        case .liked:
+        case .isFavorite:
             return SymbolName.isFavorite
-        case .unliked:
+        case .isNotFavorite:
             return SymbolName.isNotFavorite
+        }
+    }
+    
+    init(isFavorite: Bool) {
+        if isFavorite {
+            self = .isFavorite
+        } else {
+            self = .isNotFavorite
         }
     }
 }

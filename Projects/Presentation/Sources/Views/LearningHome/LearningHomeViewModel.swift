@@ -39,6 +39,11 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
                 switch result {
                 case .success(let learningHomeVO):
                     self.learningHomeVO = learningHomeVO
+                    if let recommendedProblem = learningHomeVO.recommendedProblem {
+                        print("aaa")
+                    } else {
+                        print("nil")
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -50,6 +55,7 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     
     // 문제 셀 뷰 가져오기
     func getProblemCellView(problem: ProblemCellVO) -> ProblemCellView {
+        print("aaa")
         return coordinator.buildProblemCellView(problemCellVO: problem)
     }
 }

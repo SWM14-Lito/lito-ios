@@ -23,7 +23,7 @@ public struct ProblemCellView: View {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
                     HStack {
-                        Image(systemName: "")
+                        Image(systemName: ProblemSolvedStatus(rawValue: problemCellVO.solved)!.symbolName)
                         VStack(alignment: .leading) {
                             Text(problemCellVO.question)
                                 .font(.system(size: 15))
@@ -42,7 +42,7 @@ public struct ProblemCellView: View {
                 Button {
                     viewModel.changeFavoriteStatus(id: problemCellVO.problemId)
                 } label: {
-                    Image(systemName: "")
+                    Image(systemName: ProblemFavoriteStatus(isFavorite: problemCellVO.favorite).symbolName)
                 }
             }
             .padding()

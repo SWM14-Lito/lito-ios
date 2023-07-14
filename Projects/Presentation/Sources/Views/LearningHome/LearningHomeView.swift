@@ -91,11 +91,12 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주는 뷰
     @ViewBuilder
     private func solvingProblemView() -> some View {
-        if let recommededProblem = viewModel.learningHomeVO?.recommendedProblem {
+        if let learningHomeVO = viewModel.learningHomeVO,
+           let recommendedProblem = learningHomeVO.recommendedProblem {
             VStack(alignment: .leading) {
                 Text("풀던 문제")
                     .font(.system(size: 20, weight: .bold))
-                viewModel.getProblemCellView(problem: recommededProblem)
+                viewModel.getProblemCellView(problem: recommendedProblem)
             }
             .padding([.leading, .trailing], 20)
         }

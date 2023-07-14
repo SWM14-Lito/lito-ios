@@ -6,7 +6,6 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-// 명칭 서버와 협의 필요
 public struct ProblemCellVO {
     public let problemId: Int
     public let solved: String
