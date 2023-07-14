@@ -14,5 +14,5 @@ public protocol CoordinatorProtocol {
     func push(_ page: Page)
     func pop()
     func popToRoot()
-    func buildProblemCellView(problemCellVO: ProblemCellVO) -> ProblemCellView
+    func buildSubView<T>(subView: SubView, arg: T?) -> any View
 }

@@ -55,6 +55,10 @@ public struct PresentationAssembly: Assembly {
             return LearningHomeView(viewModel: viewModel)
         }
         
+        container.register(QuestionListView.self) { _ in
+            return QuestionListView()
+        }
+        
         container.register(LearningCategoryViewModel.self) { _ in
             return LearningCategoryViewModel(coordinator: coordinator)
         }

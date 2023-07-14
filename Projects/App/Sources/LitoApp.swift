@@ -25,9 +25,9 @@ struct LitoApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                coordinator.buildView(page: .loginView)
+                coordinator.buildPage(page: .loginView)
                     .navigationDestination(for: Page.self) { page in
-                        coordinator.buildView(page: page)
+                        coordinator.buildPage(page: page)
                     }
             }
         }
