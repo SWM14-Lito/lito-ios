@@ -48,6 +48,7 @@ public struct LoginView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     @ViewBuilder private func loginFeedbackView() -> some View {

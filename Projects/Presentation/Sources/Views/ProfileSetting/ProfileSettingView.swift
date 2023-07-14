@@ -29,6 +29,7 @@ public struct ProfileSettingView: View {
             Spacer()
             finishButtonView()
         }
+        .navigationBarBackButtonHidden(true)
         .padding([.leading, .trailing], 15)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {

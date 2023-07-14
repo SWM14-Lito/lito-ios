@@ -112,6 +112,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
@@ -129,6 +130,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {

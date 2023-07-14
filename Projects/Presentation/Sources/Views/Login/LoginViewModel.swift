@@ -31,8 +31,10 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 case .success(let loginResultVO):
                     switch loginResultVO {
                     case .registered:
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .unregistered:
+                        self.coordinator.pop()
                         self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):
@@ -57,8 +59,10 @@ final public class LoginViewModel: BaseViewModel, ObservableObject {
                 case .success(let loginResultVO):
                     switch loginResultVO {
                     case .registered:
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .unregistered:
+                        self.coordinator.pop()
                         self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):
