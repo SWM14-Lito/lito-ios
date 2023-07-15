@@ -12,16 +12,14 @@ import Kingfisher
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
-    private var errorView = ErrorView()
-    
+
     public init(viewModel: LearningHomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
         VStack {
-            errorView
+            errorView()
             profileView()
             startLearningButtonView()
             Divider()
@@ -35,28 +33,37 @@ public struct LearningHomeView: View {
 
     }
     
+    // API 에러 보여주는 뷰
+    @ViewBuilder
+    private func errorView() -> some View {
+        ErrorView(errorObject: viewModel.errorObject)
+    }
+    
     // 프로필 이미지와 닉네임 보여주는 뷰
     @ViewBuilder
     private func profileView() -> some View {
         VStack {
             if let learningHomeVO = viewModel.learningHomeVO {
-                if let urlString = learningHomeVO.userInfo.profileImgUrl,
-                   let url = URL(string: urlString) {
-                    KFImage(url)
-                        .resizable()
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: SymbolName.defaultProfile)
-                        .resizable()
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
+                VStack {
+                    if let urlString = learningHomeVO.userInfo.profileImgUrl,
+                       let url = URL(string: urlString) {
+                        KFImage(url)
+                            .resizable()
+                            .frame(width: 88, height: 88)
+                            .clipShape(Circle())
+                    } else {
+                        Image(systemName: SymbolName.defaultProfile)
+                            .resizable()
+                            .frame(width: 88, height: 88)
+                            .clipShape(Circle())
+                    }
+                    Text(learningHomeVO.userInfo.nickname)
+                        .font(.system(size: 12))
                 }
-                Text(learningHomeVO.userInfo.nickname)
-                    .font(.system(size: 13))
+                .frame(height: 115)
             } else {
                 ProgressView()
-                    .frame(width: 88, height: 88)
+                    .frame(height: 115)
             }
         }
         .padding(.bottom, 18)
@@ -95,14 +102,18 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주는 뷰
     @ViewBuilder
     private func solvingProblemView() -> some View {
-        if let learningHomeVO = viewModel.learningHomeVO,
-           let recommendedProblem = learningHomeVO.recommendedProblem {
-            VStack(alignment: .leading) {
-                Text("풀던 문제")
-                    .font(.system(size: 20, weight: .bold))
-                viewModel.getProblemCellView(problem: recommendedProblem)
+        if let learningHomeVO = viewModel.learningHomeVO {
+            if let recommendedProblem = learningHomeVO.recommendedProblem {
+                VStack(alignment: .leading) {
+                    Text("풀던 문제")
+                        .font(.system(size: 20, weight: .bold))
+                    viewModel.getProblemCellView(problem: recommendedProblem)
+                }
+                .padding([.leading, .trailing], 20)
             }
-            .padding([.leading, .trailing], 20)
+        } else {
+            Spacer()
+            ProgressView()
         }
     }
 }

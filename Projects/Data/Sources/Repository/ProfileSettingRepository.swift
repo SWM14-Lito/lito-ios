@@ -23,7 +23,7 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        let compressedImage = compress(data: profileImageDTO.image, limit: 10000000)
+        let compressedImage = compress(data: profileImageDTO.image, limit: 500000)
         return dataSource.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
     }
     

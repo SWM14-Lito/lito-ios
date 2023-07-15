@@ -14,6 +14,10 @@ struct ErrorView: View {
 //    let error: ErrorVO
     @ObservedObject var errorObject: ErrorObject = ErrorObject()
     
+    public init(errorObject: ErrorObject) {
+        self.errorObject = errorObject
+    }
+    
     public init() {}
     
     // retryable Error: 로깅 + viewModel의 메소드 재실행

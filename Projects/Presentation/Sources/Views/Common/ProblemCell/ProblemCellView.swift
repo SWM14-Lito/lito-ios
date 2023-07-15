@@ -23,7 +23,7 @@ public struct ProblemCellView: View {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
                     HStack {
-                        Image(systemName: ProblemSolvedStatus(rawValue: problemCellVO.solved)!.symbolName)
+                        Image(systemName: ProblemSolvedStatus(rawValue: problemCellVO.solved)?.symbolName ??  SymbolName.unknown)
                         VStack(alignment: .leading) {
                             Text(problemCellVO.question)
                                 .font(.system(size: 15))

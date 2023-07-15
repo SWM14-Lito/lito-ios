@@ -11,20 +11,18 @@ import SwiftUI
 public struct ProfileSettingView: View {
     @StateObject private var viewModel: ProfileSettingViewModel
     @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
-    private var errorView = ErrorView()
     
     public init(viewModel: ProfileSettingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
         VStack {
-            errorView
+            errorView()
             PhotoPickerView(imageData: $viewModel.imageData)
-            setProfileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
-            setProfileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
-            setProfileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            profileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
+            profileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
+            profileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
             textErrorMessageView()
             Spacer()
             finishButtonView()
@@ -55,6 +53,12 @@ public struct ProfileSettingView: View {
         }
     }
     
+    // API 에러 보여주는 뷰
+    @ViewBuilder
+    private func errorView() -> some View {
+        ErrorView(errorObject: viewModel.errorObject)
+    }
+    
     // 이름 보여주는 뷰 (소셜 로그인 화면에서 넘겨받기)
     @ViewBuilder
     private func nameView(text: String?) -> some View {
@@ -75,7 +79,7 @@ public struct ProfileSettingView: View {
     
     // 프로필 관련 텍스트 입력 뷰 (fieldCategory로 선택 가능)
     @ViewBuilder
-    private func setProfileTextFieldView(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
+    private func profileTextFieldView(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)

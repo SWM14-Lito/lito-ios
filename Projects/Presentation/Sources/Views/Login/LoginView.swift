@@ -14,15 +14,12 @@ public struct LoginView: View {
     
     @ObservedObject private(set) var viewModel: LoginViewModel
     
-    private var errorView = ErrorView()
-    
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
-        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
-        errorView
+        errorView()
         VStack {
             Text("로그인")
                 .font(.title)
@@ -49,6 +46,10 @@ public struct LoginView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+    }
+    
+    @ViewBuilder private func errorView() -> some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
     
     @ViewBuilder private func loginFeedbackView() -> some View {
