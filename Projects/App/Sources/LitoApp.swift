@@ -35,6 +35,6 @@ struct LitoApp: App {
     }
     
     private func initView() {
-        coordinator.push(.loginView)
+        coordinator.push(.profileSettingView)
     }
 }

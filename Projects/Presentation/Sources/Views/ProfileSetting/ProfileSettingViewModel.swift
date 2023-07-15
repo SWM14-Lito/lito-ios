@@ -11,9 +11,6 @@ import PhotosUI
 import Domain
 import Combine
 
-// TODO: 이미지 크기 계산해서 압축하기
-// TODO: 이전 뷰 스택에서 지우기
-
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     private let cancelBag = CancelBag()
@@ -104,7 +101,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         
         // 프로필 이미지도 설정했을 경우
         if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: UIImage(data: data)?.jpegData(compressionQuality: 0.5) ?? Data())
+            let profileImageDTO = ProfileImageDTO(image: data)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
             postProfileInfoPublisher
@@ -160,7 +157,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         }
     }
 
-    
     // 알람 받을건지 여부 확인하기
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
