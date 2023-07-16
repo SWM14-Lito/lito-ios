@@ -23,22 +23,10 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        let compressedImage = compress(data: profileImageDTO.image, limit: 500000)
-        return dataSource.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
+        return dataSource.postProfileImage(profileImageDTO: profileImageDTO)
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
         dataSource.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
-    }
-    
-    // 이미지 압축하기는 Data 영역에 Repository에서 처리
-    // 하지만 압축을 위해서는 UIImage 함수가 필요한데, 이를 위해 Repository에서 UIKit을 Import 하는게 과연 맞는지?
-    // 이럴 경우는 프레젠테이션 영역에서 처리해야할지?
-    private func compress(data: Data, limit: Int) -> Data {
-        var compressionQuality: CGFloat = 1.0
-        if data.count > limit {
-            compressionQuality = CGFloat(limit) / CGFloat(data.count)
-        }
-        return UIImage(data: data)?.jpegData(compressionQuality: compressionQuality) ?? Data()
     }
 }

@@ -24,7 +24,8 @@ public struct DomainAssembly: Assembly {
         
         container.register(ProfileSettingUseCase.self) { resolver in
             let repository = resolver.resolve(ProfileSettingRepository.self)!
-            return DefaultProfileSettingUseCase(repository: repository)
+            let imageHelper = resolver.resolve(ImageHelper.self)!
+            return DefaultProfileSettingUseCase(repository: repository, imageHelper: imageHelper)
         }
         
         container.register(LearningHomeUseCase.self) { resolver in
@@ -40,11 +41,6 @@ public struct DomainAssembly: Assembly {
         container.register(LoginUseCase.self) { resolver in
             let repository = resolver.resolve(LoginRepository.self)!
             return DefaultLoginUseCase(repository: repository)
-        }
-        
-        container.register(ProfileSettingUseCase.self) { resolver in
-            let repository = resolver.resolve(ProfileSettingRepository.self)!
-            return DefaultProfileSettingUseCase(repository: repository)
         }
         
     }

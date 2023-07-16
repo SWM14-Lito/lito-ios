@@ -16,9 +16,11 @@ public protocol ProfileSettingUseCase {
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     private let repository: ProfileSettingRepository
+    private let imageHelper: ImageHelper
     
-    public init(repository: ProfileSettingRepository) {
+    public init(repository: ProfileSettingRepository, imageHelper: ImageHelper) {
         self.repository = repository
+        self.imageHelper = imageHelper
     }
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
@@ -26,7 +28,8 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        return repository.postProfileImage(profileImageDTO: profileImageDTO)
+        let compressedImage = imageHelper.compress(data: profileImageDTO.image, limit: 500000)
+        return repository.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {

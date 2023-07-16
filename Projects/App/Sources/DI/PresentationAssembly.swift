@@ -91,6 +91,10 @@ public struct PresentationAssembly: Assembly {
             return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3, tab1ViewModel: tab1ViewModel)
         }
         
+        container.register(ImageHelper.self) { _ in
+            return DefaultImageHelper()
+        }
+        
     }
     
 }
