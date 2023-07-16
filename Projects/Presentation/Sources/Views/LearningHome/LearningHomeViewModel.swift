@@ -12,10 +12,8 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     
-    private let cancelBag = CancelBag()
     private let useCase: LearningHomeUseCase
     @Published var learningHomeVO: LearningHomeVO?
-    @Published private(set) var errorObject = ErrorObject()
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase

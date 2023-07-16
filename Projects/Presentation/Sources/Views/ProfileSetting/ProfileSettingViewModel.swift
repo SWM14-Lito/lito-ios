@@ -13,7 +13,6 @@ import Combine
 
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
-    private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
     private(set) var buttonIsLocked: Bool = false
@@ -23,7 +22,6 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published var introduce: LimitedText
     @Published var textErrorMessage: String?
     @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
-    @Published private(set) var errorObject = ErrorObject()
 
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
