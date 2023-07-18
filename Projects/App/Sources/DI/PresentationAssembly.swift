@@ -15,10 +15,6 @@ public struct PresentationAssembly: Assembly {
     let coordinator: Coordinator
     
     public func assemble(container: Container) {
-        container.register(ProblemCellViewModel.self) { resolver in
-            let useCase = resolver.resolve(ProblemCellUseCase.self)!
-            return ProblemCellViewModel(useCase: useCase, coordinator: coordinator)
-        }
         container.register(ExampleViewModel.self) { resolver in
             let useCase = resolver.resolve(ExampleUseCase.self)!
             return ExampleViewModel(exampleUseCase: useCase)

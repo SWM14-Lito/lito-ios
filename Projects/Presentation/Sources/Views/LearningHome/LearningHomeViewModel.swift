@@ -10,8 +10,7 @@ import SwiftUI
 import Domain
 import Combine
 
-public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
-    
+public final class LearningHomeViewModel: BaseViewModel, ProblemCellHandling, ObservableObject {
     private let useCase: LearningHomeUseCase
     @Published var learningHomeVO: LearningHomeVO?
     
@@ -46,9 +45,12 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
             .store(in: cancelBag)
     }
     
-    // 문제 셀 뷰 가져오기
-    func getProblemCellView(problem: ProblemCellVO) -> ProblemCellView {
-        return coordinator.buildSubView(subView: .problemCellView, arg: problem)
+    public func moveToProblemView(id: Int) {
+        // TODO: coordinator.push
     }
     
+    public func changeFavoriteStatus(id: Int) {
+        learningHomeVO?.recommendedProblem?.favorite.toggle()
+        // TODO: API 통신
+    }
 }

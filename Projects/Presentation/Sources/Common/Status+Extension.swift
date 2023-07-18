@@ -38,4 +38,12 @@ extension ProblemFavoriteStatus: Symbol {
             return SymbolName.unknown
         }
     }
+    
+    mutating func toggle() {
+        if self == .favorite {
+            self = .notFavorite
+        } else if self == .notFavorite {
+            self = .favorite
+        }
+    }
 }

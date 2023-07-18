@@ -55,14 +55,4 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(RootTabView.self)
         }
     }
-    
-    public func buildSubView<T, V>(subView: SubView, arg: T? = nil) -> V {
-        switch subView {
-        case .problemCellView:
-            let viewModel = (injector?.resolve(ProblemCellViewModel.self))! as ProblemCellViewModel
-            let problemCellVO = arg as? ProblemCellVO
-            viewModel.problemCellVO = problemCellVO
-            return ProblemCellView(viewModel: viewModel) as! V
-        }
-    }
 }

@@ -14,5 +14,4 @@ public protocol CoordinatorProtocol {
     func push(_ page: Page)
     func pop()
     func popToRoot()
-    func buildSubView<T, V>(subView: SubView, arg: T?) -> V
 }

@@ -83,7 +83,7 @@ public struct LearningHomeView: View {
                 VStack(alignment: .leading) {
                     Text("풀던 문제")
                         .font(.system(size: 20, weight: .bold))
-                    viewModel.getProblemCellView(problem: recommendedProblem)
+                    ProblemCellView(problemCellVO: recommendedProblem, viewModel: viewModel)
                 }
                 .padding([.leading, .trailing], 20)
             }

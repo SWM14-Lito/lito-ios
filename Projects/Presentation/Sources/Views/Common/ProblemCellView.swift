@@ -9,16 +9,22 @@
 import SwiftUI
 import Domain
 
+public protocol ProblemCellHandling {
+    func moveToProblemView(id: Int)
+    func changeFavoriteStatus(id: Int)
+}
+
 public struct ProblemCellView: View {
     
-    @StateObject private var viewModel: ProblemCellViewModel
+    private let problemCellVO: ProblemCellVO
+    private let viewModel: ProblemCellHandling
     
-    public init(viewModel: ProblemCellViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+    public init(problemCellVO: ProblemCellVO, viewModel: ProblemCellHandling) {
+        self.problemCellVO = problemCellVO
+        self.viewModel = viewModel
     }
     
     public var body: some View {
-        if let problemCellVO = viewModel.problemCellVO {
             ZStack(alignment: .trailing) {
                 Button {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
@@ -51,6 +57,6 @@ public struct ProblemCellView: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.black, lineWidth: 1)
             )
-        }
+        
     }
 }
