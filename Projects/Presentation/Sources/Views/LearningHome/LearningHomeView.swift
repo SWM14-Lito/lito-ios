@@ -23,7 +23,6 @@ public struct LearningHomeView: View {
             profileView()
             startLearningButtonView()
             Divider()
-            symbolExplanationView()
             solvingProblemView()
             Spacer()
         }
@@ -84,19 +83,6 @@ public struct LearningHomeView: View {
         .tint(.orange)
         .cornerRadius(35)
         .padding(.bottom, 20)
-    }
-    
-    // 각 아이콘에 대한 설명 나타내는 뷰
-    @ViewBuilder
-    private func symbolExplanationView() -> some View {
-        HStack {
-            SymbolExplanationView(symbol: ProblemSolvedStatus.unsolved)
-            SymbolExplanationView(symbol: ProblemSolvedStatus.solving)
-            SymbolExplanationView(symbol: ProblemSolvedStatus.solved)
-            Spacer()
-        }
-        .padding(.bottom, 20)
-        .padding(.leading, 20)
     }
     
     // 풀던 문제 보여주는 뷰

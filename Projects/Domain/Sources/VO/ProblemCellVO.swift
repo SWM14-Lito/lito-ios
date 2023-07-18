@@ -8,12 +8,12 @@
 
 public struct ProblemCellVO {
     public let problemId: Int
-    public let solved: String
+    public let solved: ProblemSolvedStatus
     public let question: String
     public let subject: String
-    public var favorite: Bool
+    public var favorite: ProblemFavoriteStatus
     
-    public init(problemId: Int, solved: String, question: String, subject: String, favorite: Bool) {
+    public init(problemId: Int, solved: ProblemSolvedStatus, question: String, subject: String, favorite: ProblemFavoriteStatus) {
         self.problemId = problemId
         self.solved = solved
         self.question = question

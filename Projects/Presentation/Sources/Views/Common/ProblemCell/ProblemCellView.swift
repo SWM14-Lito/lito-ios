@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Domain
 
 public struct ProblemCellView: View {
     
@@ -23,7 +24,7 @@ public struct ProblemCellView: View {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
                     HStack {
-                        Image(systemName: ProblemSolvedStatus(rawValue: problemCellVO.solved)?.symbolName ??  SymbolName.unknown)
+                        Image(systemName: problemCellVO.solved.symbolName)
                         VStack(alignment: .leading) {
                             Text(problemCellVO.question)
                                 .font(.system(size: 15))
@@ -42,7 +43,7 @@ public struct ProblemCellView: View {
                 Button {
                     viewModel.changeFavoriteStatus(id: problemCellVO.problemId)
                 } label: {
-                    Image(systemName: ProblemFavoriteStatus(isFavorite: problemCellVO.favorite).symbolName)
+                    Image(systemName: problemCellVO.favorite.symbolName)
                 }
             }
             .padding()

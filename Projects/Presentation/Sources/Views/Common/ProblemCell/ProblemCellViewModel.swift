@@ -26,7 +26,11 @@ public final class ProblemCellViewModel: BaseViewModel, ObservableObject {
     
     // 찜하기 or 해제하기
     func changeFavoriteStatus(id: Int) {
-        problemCellVO?.favorite.toggle()
+        if problemCellVO?.favorite == .favorite {
+            problemCellVO?.favorite = .notFavorite
+        } else if problemCellVO?.favorite == .notFavorite {
+            problemCellVO?.favorite = .favorite
+        }
         print(id, "찜하기")
     }
 }
