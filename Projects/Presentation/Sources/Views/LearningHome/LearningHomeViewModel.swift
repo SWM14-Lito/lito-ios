@@ -10,7 +10,7 @@ import SwiftUI
 import Domain
 import Combine
 
-public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
+public final class LearningHomeViewModel: BaseViewModel {
     
     private let cancelBag = CancelBag()
     private let useCase: LearningHomeUseCase

@@ -9,7 +9,7 @@
 import Domain
 import Foundation
 
-public final class ProblemCellViewModel: BaseViewModel, ObservableObject {
+public final class ProblemCellViewModel: BaseViewModel {
     
     private let useCase: ProblemCellUseCase
     @Published public var problemCellVO: ProblemCellVO?
