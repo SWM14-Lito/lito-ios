@@ -8,6 +8,6 @@
 
 import SwiftUI
 
-public class MyPageViewModel: BaseViewModel, ObservableObject {
+public class MyPageViewModel: BaseViewModel {
 
 }

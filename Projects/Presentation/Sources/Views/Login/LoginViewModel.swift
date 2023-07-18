@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import Domain
 
-final public class LoginViewModel: BaseViewModel, ObservableObject {
+final public class LoginViewModel: BaseViewModel {
     
     @Published private(set) var errorObject = ErrorObject()
     @Published private(set) var loginFeedback: Feedbackable

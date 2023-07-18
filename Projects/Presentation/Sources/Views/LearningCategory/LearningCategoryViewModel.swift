@@ -8,6 +8,6 @@
 
 import SwiftUI
 
-public class LearningCategoryViewModel: BaseViewModel, ObservableObject {
+public class LearningCategoryViewModel: BaseViewModel {
 
 }
