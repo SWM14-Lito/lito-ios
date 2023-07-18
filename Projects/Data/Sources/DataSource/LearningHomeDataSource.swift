@@ -17,9 +17,9 @@ final public class DefaultLearningHomeDataSource: LearningHomeDataSource {
 
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<LearningHomeAPI>()
+    private let moyaProvider = MoyaWrapper<ProblemAPI>()
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error> {
-        moyaProvider.call(target: .getProfileAndProblems)
+        moyaProvider.call(target: .learningHome)
     }
 }

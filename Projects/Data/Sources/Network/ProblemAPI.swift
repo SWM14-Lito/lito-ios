@@ -10,38 +10,38 @@ import Moya
 import Domain
 import Foundation
 
-enum LearningHomeAPI {
-    case getProfileAndProblems
+enum ProblemAPI {
+    case learningHome
 }
-extension LearningHomeAPI: TargetType {
+extension ProblemAPI: TargetType {
     var baseURL: URL {
         return URL(string: NetworkConfiguration.developmentServerURL as! String)!
     }
     
     var path: String {
         switch self {
-        case .getProfileAndProblems:
+        case .learningHome:
             return "/api/problems/users"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getProfileAndProblems:
+        case .learningHome:
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .getProfileAndProblems:
+        case .learningHome:
             return .requestPlain
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .getProfileAndProblems:
+        case .learningHome:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
         }
     }

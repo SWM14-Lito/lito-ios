@@ -17,5 +17,5 @@ final public class DefaultProblemCellDataSource: ProblemCellDataSource {
 
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<LearningHomeAPI>()
+    private let moyaProvider = MoyaWrapper<ProblemAPI>()
 }
