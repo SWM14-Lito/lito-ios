@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 
 public struct LearningHomeView: View {
     
@@ -44,18 +43,9 @@ public struct LearningHomeView: View {
         VStack {
             if let learningHomeVO = viewModel.learningHomeVO {
                 VStack {
-                    if let urlString = learningHomeVO.userInfo.profileImgUrl,
-                       let url = URL(string: urlString) {
-                        KFImage(url)
-                            .resizable()
-                            .frame(width: 88, height: 88)
-                            .clipShape(Circle())
-                    } else {
-                        Image(systemName: SymbolName.defaultProfile)
-                            .resizable()
-                            .frame(width: 88, height: 88)
-                            .clipShape(Circle())
-                    }
+                    UrlImageView(urlString: learningHomeVO.userInfo.profileImgUrl)
+                        .frame(width: 88, height: 88)
+                        .clipShape(Circle())
                     Text(learningHomeVO.userInfo.nickname)
                         .font(.system(size: 12))
                 }
