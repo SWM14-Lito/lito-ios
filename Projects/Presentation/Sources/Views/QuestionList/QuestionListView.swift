@@ -10,11 +10,12 @@ import SwiftUI
 
 public struct QuestionListView: View {
     
-    @State private var selectedSubject: subjectInfo = .all
-    @State private var selectedSolve: solveInfo = .unsolved
+    @StateObject private var viewModel: QuestionListViewModel
     @Namespace private var subjectAnimation
     
-    public init() {}
+    public init(viewModel: QuestionListViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     public var body: some View {
         VStack {
@@ -23,35 +24,6 @@ public struct QuestionListView: View {
                 headSection()
             }
             .scrollIndicators(.never)
-            Picker("solve", selection: $selectedSolve) {
-                ForEach(solveInfo.allCases, id: \.self) {
-                    Text($0.rawValue)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding()
-            Divider()
-            HStack(spacing: 0) {
-                HStack {
-                    Image(systemName: "book.fill")
-                        .foregroundColor(.orange)
-                    Text("풀이중")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                HStack {
-                    Image(systemName: "book.closed.fill")
-                        .foregroundColor(.orange)
-                    Text("풀지않음")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.orange)
-                    Text("풀이완료")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            .padding()
             ScrollView {
                 Text("test")
                 Text("test")
@@ -76,15 +48,15 @@ public struct QuestionListView: View {
     private func headSection() -> some View {
             VStack(spacing: 0) {
                 HStack {
-                    ForEach(subjectInfo.allCases, id: \.self) { subject in
+                    ForEach(QuestionListViewModel.SubjectInfo.allCases, id: \.self) { subject in
                         VStack {
                             Text(subject.rawValue)
                                 .lineLimit(1)
                                 .fixedSize()
                                 .font(.title3)
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(selectedSubject == subject ? .orange : .gray)
-                            if selectedSubject == subject {
+                                .foregroundColor(viewModel.selectedSubject == subject ? .orange : .gray)
+                            if viewModel.selectedSubject == subject {
                                 Capsule()
                                     .foregroundColor(.orange)
                                     .frame(height: 3)
@@ -93,25 +65,13 @@ public struct QuestionListView: View {
                         }
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                self.selectedSubject = subject
+                                viewModel.selectedSubject = subject
                             }
                         }
                     }.padding(.leading, 10)
                 }
                 Divider()
             }
-    }
-    
-    private enum subjectInfo: String, CaseIterable {
-        case all = "전체"
-        case operationSystem = "운영체제"
-        case network = "네트워크"
-        case database = "데이터베이스"
-        case structure = "자료구조"
-    }
-    private enum solveInfo: String, CaseIterable {
-        case unsolved = "풀지 않음"
-        case solved = "풀이 완료"
     }
     
 }

@@ -55,8 +55,14 @@ public struct PresentationAssembly: Assembly {
             return LearningHomeView(viewModel: viewModel)
         }
         
-        container.register(QuestionListView.self) { _ in
-            return QuestionListView()
+        container.register(QuestionListViewModel.self) { resolver in
+            let useCase = resolver.resolve(LearningHomeUseCase.self)!
+            return QuestionListViewModel(useCase: useCase, coordinator: coordinator)
+        }
+        
+        container.register(QuestionListView.self) { resolver in
+            let viewModel = resolver.resolve(QuestionListViewModel.self)!
+            return QuestionListView(viewModel: viewModel)
         }
         
         container.register(LearningCategoryViewModel.self) { _ in
