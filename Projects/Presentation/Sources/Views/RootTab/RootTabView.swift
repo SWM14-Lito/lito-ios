@@ -58,6 +58,7 @@ public struct RootTabView: View {
                 } label: {
                     if selection == 1 {
                         Image(systemName: SymbolName.favoriteList)
+                        Image(systemName: SymbolName.notiList)
                     } else {
                         EmptyView()
                     }

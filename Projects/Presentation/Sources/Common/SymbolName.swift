@@ -20,4 +20,5 @@ class SymbolName {
     static let unsolved = "book.closed.fill"
     static let solving = "book.fill"
     static let defaultProfile = "person.circle.fill"
+    static let notiList = "bell.fill"
 }
