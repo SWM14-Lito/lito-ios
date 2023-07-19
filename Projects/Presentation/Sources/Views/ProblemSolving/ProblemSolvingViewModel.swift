@@ -7,13 +7,23 @@
 //
 
 import Domain
+import SwiftUI
 
 public class ProblemSolvingViewModel: BaseViewModel {
     private let useCase: ProblemSolvingUseCase
+    private var problemId: Int?
+    @Published var problemDetailVO: ProblemDetailVO?
     
     public init(useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }
     
+    func getProblemInfo() {
+        
+    }
+    
+    func setProblemId(id: Int) {
+        problemId = id
+    }
 }

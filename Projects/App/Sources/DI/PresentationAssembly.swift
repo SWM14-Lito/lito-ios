@@ -104,8 +104,6 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(MyPageViewModel.self)!
             return MyPageView(viewModel: viewModel)
         }
-
-        
     }
     
 }

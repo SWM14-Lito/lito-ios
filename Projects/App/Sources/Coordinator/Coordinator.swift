@@ -53,6 +53,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(LearningHomeView.self)
         case .problemListView:
             injector?.resolve(ProblemListView.self)
+        case .problemSolvingView(let id):
+            buildProblemSolvingPage(id: id)
         case .pedigreeListView:
             injector?.resolve(PedigreeListView.self)
         case .myPageView:
@@ -60,5 +62,11 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         case .rootTabView:
             injector?.resolve(RootTabView.self)
         }
+    }
+    
+    private func buildProblemSolvingPage(id: Int) -> ProblemSolvingView? {
+        let view = injector?.resolve(ProblemSolvingView.self)
+        view?.setProblemId(id: id)
+        return view
     }
 }

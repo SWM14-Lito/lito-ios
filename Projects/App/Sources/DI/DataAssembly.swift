@@ -54,7 +54,7 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(LearningHomeDataSource.self)!
             return DefaultLearningHomeRepository(dataSource: dataSource)
         }
-        //ProblemSolving
+        // ProblemSolving
         container.register(ProblemSolvingDataSource.self) { _ in
             return DefaultProblemSolvingDataSource()
         }

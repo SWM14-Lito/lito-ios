@@ -48,7 +48,7 @@ public final class LearningHomeViewModel: BaseViewModel {
 extension LearningHomeViewModel: ProblemCellHandling {
     
     public func moveToProblemView(id: Int) {
-        // TODO: coordinator.push
+        coordinator.push(.problemSolvingView(id: id))
     }
     
     public func changeFavoriteStatus(id: Int) {

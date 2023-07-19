@@ -11,12 +11,19 @@ import SwiftUI
 public struct ProblemSolvingView: View {
     
     @StateObject private var viewModel: ProblemSolvingViewModel
-
+    
     public init(viewModel: ProblemSolvingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            .onAppear {
+                viewModel.getProblemInfo()
+            }
+    }
+    
+    public func setProblemId(id: Int) {
+        viewModel.setProblemId(id: id)
     }
 }

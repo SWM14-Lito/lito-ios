@@ -10,7 +10,7 @@ public protocol ProblemSolvingUseCase {
 
 }
 
-public final class DefaultProblemSolvingUseCase : ProblemSolvingUseCase {
+public final class DefaultProblemSolvingUseCase: ProblemSolvingUseCase {
     private let repository: ProblemSolvingRepository
     
     public init(repository: ProblemSolvingRepository) {
