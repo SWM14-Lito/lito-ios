@@ -21,7 +21,7 @@ public struct ProblemListView: View {
         VStack {
             Divider()
             ScrollView(.horizontal) {
-                headSection()
+                headSection
             }
             .scrollIndicators(.never)
             ScrollView {
@@ -45,33 +45,45 @@ public struct ProblemListView: View {
     }
     
     @ViewBuilder
-    private func headSection() -> some View {
-            VStack(spacing: 0) {
-                HStack {
-                    ForEach(ProblemListViewModel.SubjectInfo.allCases, id: \.self) { subject in
-                        VStack {
-                            Text(subject.rawValue)
-                                .lineLimit(1)
-                                .fixedSize()
-                                .font(.title3)
-                                .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(viewModel.selectedSubject == subject ? .orange : .gray)
-                            if viewModel.selectedSubject == subject {
-                                Capsule()
-                                    .foregroundColor(.orange)
-                                    .frame(height: 3)
-                                    .matchedGeometryEffect(id: "all", in: subjectAnimation)
-                            }
+    private var headSection: some View {
+        VStack(spacing: 0) {
+            HStack {
+                ForEach(ProblemListViewModel.SubjectInfo.allCases, id: \.self) { subject in
+                    VStack {
+                        Text(subject.rawValue)
+                            .lineLimit(1)
+                            .fixedSize()
+                            .font(.title3)
+                            .frame(maxWidth: .infinity, minHeight: 30)
+                            .foregroundColor(viewModel.selectedSubject == subject ? .orange : .gray)
+                        if viewModel.selectedSubject == subject {
+                            Capsule()
+                                .foregroundColor(.orange)
+                                .frame(height: 3)
+                                .matchedGeometryEffect(id: "all", in: subjectAnimation)
                         }
-                        .onTapGesture {
-                            withAnimation(.easeInOut) {
-                                viewModel.selectedSubject = subject
-                            }
+                    }
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            viewModel.selectedSubject = subject
                         }
-                    }.padding(.leading, 10)
-                }
-                Divider()
+                    }
+                }.padding(.leading, 10)
             }
+            Divider()
+        }
     }
     
+    @ViewBuilder
+    private func filteringView() -> some View {
+        VStack {
+            Button("필터") {
+                // open filtering modal
+            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+        }
+    }
 }
