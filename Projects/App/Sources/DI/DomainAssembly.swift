@@ -12,6 +12,7 @@ import Swinject
 public struct DomainAssembly: Assembly {
     
     public func assemble(container: Container) {
+        // ------------------------ Common ------------------------
         container.register(ExampleUseCase.self) { resolver in
             let repository = resolver.resolve(ExampleRepository.self)!
             return DefaultExampleUseCase(repository: repository)
@@ -28,18 +29,20 @@ public struct DomainAssembly: Assembly {
             return DefaultProfileSettingUseCase(repository: repository, imageHelper: imageHelper)
         }
         
+        // ------------------------ First Tab ------------------------
         container.register(LearningHomeUseCase.self) { resolver in
             let repository = resolver.resolve(LearningHomeRepository.self)!
             return DefaultLearningHomeUseCase(repository: repository)
         }
-        
-        container.register(LoginUseCase.self) { resolver in
-            let repository = resolver.resolve(LoginRepository.self)!
-            return DefaultLoginUseCase(repository: repository)
+        container.register(ProblemSolvingUseCase.self) { resolver in
+            let repository = resolver.resolve(ProblemSolvingRepository.self)!
+            return DefaultProblemSolvingUseCase(repository: repository)
         }
+        
+        // ------------------------ Second Tab ------------------------
+        
+        // ------------------------ Third Tab ------------------------
         
     }
     
 }
-
-// register -> resolve
