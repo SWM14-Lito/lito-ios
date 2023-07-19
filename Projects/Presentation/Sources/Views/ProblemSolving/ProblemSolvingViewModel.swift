@@ -16,10 +16,15 @@ public class ProblemSolvingViewModel: BaseViewModel {
     @Published var answerWithoutKeyword: String?
     @Published var input: String = ""
     @Published var focused: Bool = false
+    @Published var isCorrect: Bool = true
     
     public init(useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
+    }
+    
+    public func setProblemId(id: Int) {
+        self.problemId = id
     }
     
     func getProblemInfo() {
@@ -40,6 +45,7 @@ public class ProblemSolvingViewModel: BaseViewModel {
     }
     
     func showAnswer() {
+        isCorrect = true
         print("정답 보여주기")
     }
     
@@ -47,8 +53,12 @@ public class ProblemSolvingViewModel: BaseViewModel {
         problemDetailVO?.favorite.toggle()
     }
     
-    public func setProblemId(id: Int) {
-        self.problemId = id
+    func handleInput() {
+        if input == problemDetailVO?.keyword {
+            showAnswer()
+        } else {
+            isCorrect = false
+        }
     }
     
     private func showKeyboard() {

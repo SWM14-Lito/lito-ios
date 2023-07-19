@@ -25,6 +25,7 @@ public struct ProblemSolvingView: View {
                     answer
                     textField
                     showAnswerButton
+                    wrongMessage
                     Spacer()
                 }
                 .toolbar {
@@ -71,6 +72,9 @@ public struct ProblemSolvingView: View {
             .focused($focused)
             .multilineTextAlignment(.center)
             .padding(.bottom)
+            .onSubmit {
+                viewModel.handleInput()
+            }
     }
     
     @ViewBuilder
@@ -79,6 +83,15 @@ public struct ProblemSolvingView: View {
             viewModel.showAnswer()
         } label: {
             Text("정답 보기")
+                .padding(.bottom)
+        }
+    }
+    
+    @ViewBuilder
+    private var wrongMessage: some View {
+        if !viewModel.isCorrect {
+            Text("틀렸습니다.")
+                .foregroundColor(.red)
         }
     }
 }
