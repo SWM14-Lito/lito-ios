@@ -22,9 +22,9 @@ extension LoginAPI: TargetType {
     var path: String {
         switch self {
         case .apple:
-            return "/api/auth/apple/login"
+            return "/api/v1/auth/apple/login"
         case .kakao:
-            return "/api/auth/kakao/login"
+            return "/api/v1/auth/kakao/login"
         }
     }
     

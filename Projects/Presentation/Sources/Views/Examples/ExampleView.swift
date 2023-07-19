@@ -53,7 +53,7 @@ private extension ExampleView {
     }
     
     func failedView(_ error: ErrorVO) -> some View {
-        ErrorView()
+        ErrorView(errorObject: ErrorObject())
     }
     
     func loadedView(_ slip: SlipVO) -> some View {

@@ -11,13 +11,8 @@ import PhotosUI
 import Domain
 import Combine
 
-// TODO: 이미지 크기 계산해서 압축하기
-// TODO: 글자 수 최소제한도 걸어주고 오류 메시지 표시해주기
-// TODO: 이전 뷰 스택에서 지우기
-
 public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
-    private let cancelBag = CancelBag()
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
     private(set) var buttonIsLocked: Bool = false
@@ -25,8 +20,8 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     @Published var username: LimitedText
     @Published var nickname: LimitedText
     @Published var introduce: LimitedText
+    @Published var textErrorMessage: String?
     @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
-    @Published private(set) var errorObject = ErrorObject()
 
     enum TextFieldCategory: Hashable {
         case username, nickname, introduce
@@ -52,6 +47,9 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         }
         var placeHolder: String {
             return title + "을 입력해주세요."
+        }
+        var errorMessage: String {
+            return title + "을 입력하지 않으셨습니다."
         }
     }
     
@@ -89,6 +87,9 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
     func moveToLearningHomeView() {
+        
+        guard checkAllTextAreFilled() else { return }
+        
         buttonIsLocked = true
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
@@ -98,7 +99,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         
         // 프로필 이미지도 설정했을 경우
         if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: UIImage(data: data)?.jpegData(compressionQuality: 0.5) ?? Data())
+            let profileImageDTO = ProfileImageDTO(image: data)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
             postProfileInfoPublisher
@@ -106,6 +107,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
@@ -123,6 +125,7 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
@@ -135,6 +138,23 @@ public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
         }
     }
     
+    // 글자 입력 관련하여 안채워진게 있는지 확인하기
+    func checkAllTextAreFilled() -> Bool {
+        if username.text.isEmpty {
+            textErrorMessage = TextFieldCategory.username.errorMessage
+            return false
+        } else if nickname.text.isEmpty {
+            textErrorMessage = TextFieldCategory.nickname.errorMessage
+            return false
+        } else if introduce.text.isEmpty {
+            textErrorMessage = TextFieldCategory.introduce.errorMessage
+            return false
+        } else {
+            textErrorMessage = nil
+            return true
+        }
+    }
+
     // 알람 받을건지 여부 확인하기
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in

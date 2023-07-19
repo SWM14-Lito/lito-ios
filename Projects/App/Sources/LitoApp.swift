@@ -20,16 +20,21 @@ struct LitoApp: App {
                            PresentationAssembly(coordinator: coordinator)
                           ])
         coordinator.injector = injector
+        initView()
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                coordinator.buildPage(page: .loginView)
+                EmptyView()
                     .navigationDestination(for: Page.self) { page in
                         coordinator.buildPage(page: page)
                     }
             }
         }
+    }
+    
+    private func initView() {
+        coordinator.push(.loginView)
     }
 }

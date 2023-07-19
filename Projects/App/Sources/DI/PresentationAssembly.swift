@@ -15,10 +15,6 @@ public struct PresentationAssembly: Assembly {
     let coordinator: Coordinator
     
     public func assemble(container: Container) {
-        container.register(ProblemCellViewModel.self) { resolver in
-            let useCase = resolver.resolve(ProblemCellUseCase.self)!
-            return ProblemCellViewModel(useCase: useCase, coordinator: coordinator)
-        }
         container.register(ExampleViewModel.self) { resolver in
             let useCase = resolver.resolve(ExampleUseCase.self)!
             return ExampleViewModel(exampleUseCase: useCase)
@@ -89,6 +85,10 @@ public struct PresentationAssembly: Assembly {
             let tab3 = resolver.resolve(MyPageView.self)!
             let tab1ViewModel = resolver.resolve(LearningHomeViewModel.self)!
             return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3, tab1ViewModel: tab1ViewModel)
+        }
+        
+        container.register(ImageHelper.self) { _ in
+            return DefaultImageHelper()
         }
         
     }

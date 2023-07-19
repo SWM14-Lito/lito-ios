@@ -8,7 +8,7 @@
 
 public struct LearningHomeVO {
     public let userInfo: LearningHomeUserInfoVO
-    public let recommendedProblem: ProblemCellVO?
+    public var recommendedProblem: ProblemCellVO? // favorite 값이 바뀔 수 있기 때문에 var로 선언
     
     public init(userInfo: LearningHomeUserInfoVO, recommendedProblem: ProblemCellVO?) {
         self.userInfo = userInfo

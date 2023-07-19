@@ -8,6 +8,7 @@
 
 import Domain
 import Combine
+import UIKit
 
 final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
@@ -22,7 +23,7 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        dataSource.postProfileImage(profileImageDTO: profileImageDTO)
+        return dataSource.postProfileImage(profileImageDTO: profileImageDTO)
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
