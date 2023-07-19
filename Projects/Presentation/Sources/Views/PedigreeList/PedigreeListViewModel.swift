@@ -1,5 +1,5 @@
 //
-//  LearningCategoryViewModel.swift
+//  PrevProblemViewModel.swift
 //  Presentation
 //
 //  Created by 김동락 on 2023/07/03.
@@ -8,6 +8,6 @@
 
 import SwiftUI
 
-public class LearningCategoryViewModel: BaseViewModel {
+public class PedigreeListViewModel: BaseViewModel {
 
 }

@@ -14,15 +14,12 @@ public struct LoginView: View {
     
     @ObservedObject private(set) var viewModel: LoginViewModel
     
-    private var errorView = ErrorView()
-    
     public init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
-        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
-        errorView
+        errorView()
         VStack {
             Text("로그인")
                 .font(.title)
@@ -42,23 +39,14 @@ public struct LoginView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 })
-                .padding(20)
-
-                loginFeedbackView()
-                
+                .padding(20)                
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
-    @ViewBuilder private func loginFeedbackView() -> some View {
-        switch viewModel.loginFeedback {
-        case .idle:
-            EmptyView()
-        case .feedback(let text):
-            Text(text)
-        case .failed(_):
-            ErrorView()
-        }
+    @ViewBuilder private func errorView() -> some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }
 

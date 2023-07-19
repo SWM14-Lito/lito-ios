@@ -12,15 +12,10 @@ import Domain
 
 final public class LoginViewModel: BaseViewModel {
     
-    @Published private(set) var errorObject = ErrorObject()
-    @Published private(set) var loginFeedback: Feedbackable
-    
     private let useCase: LoginUseCase
-    private let cancelBag = CancelBag()
-    
+
     public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase, loginFeedback: Feedbackable = .idle) {
         self.useCase = useCase
-        self.loginFeedback = loginFeedback
         super.init(coordinator: coordinator)
     }
     
@@ -31,8 +26,10 @@ final public class LoginViewModel: BaseViewModel {
                 case .success(let loginResultVO):
                     switch loginResultVO {
                     case .registered:
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .unregistered:
+                        self.coordinator.pop()
                         self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):
@@ -57,8 +54,10 @@ final public class LoginViewModel: BaseViewModel {
                 case .success(let loginResultVO):
                     switch loginResultVO {
                     case .registered:
+                        self.coordinator.pop()
                         self.coordinator.push(.rootTabView)
                     case .unregistered:
+                        self.coordinator.pop()
                         self.coordinator.push(.profileSettingView)
                     }
                 case .failure(let error):

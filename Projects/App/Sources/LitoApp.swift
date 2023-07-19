@@ -14,22 +14,27 @@ struct LitoApp: App {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
-        coordinator = Coordinator()
+        coordinator = Coordinator(.loginView)
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
                            PresentationAssembly(coordinator: coordinator)
                           ])
         coordinator.injector = injector
+        initView()
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                coordinator.buildPage(page: .questionListView)
+                coordinator.buildInitialPage()
                     .navigationDestination(for: Page.self) { page in
                         coordinator.buildPage(page: page)
                     }
             }
         }
+    }
+    
+    private func initView() {
+        coordinator.push(.loginView)
     }
 }

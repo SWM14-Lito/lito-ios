@@ -11,11 +11,8 @@ import Domain
 import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
-    
-    private let cancelBag = CancelBag()
     private let useCase: LearningHomeUseCase
     @Published var learningHomeVO: LearningHomeVO?
-    @Published private(set) var errorObject = ErrorObject()
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -24,7 +21,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     
     // 학습 화면으로 이동하기
     func moveToLearningView() {
-        coordinator.push(.learningCategoryView)
+        coordinator.push(.problemListView)
     }
     
     // 찜한 목록 화면으로 이동하기
@@ -47,11 +44,15 @@ public final class LearningHomeViewModel: BaseViewModel {
             }
             .store(in: cancelBag)
     }
+}
+extension LearningHomeViewModel: ProblemCellHandling {
     
-    // 문제 셀 뷰 가져오기
-    
-    func getProblemCellView(problem: ProblemCellVO) -> ProblemCellView {
-        return coordinator.buildSubView(subView: .problemCellView, arg: problem)
+    public func moveToProblemView(id: Int) {
+        // TODO: coordinator.push
     }
     
+    public func changeFavoriteStatus(id: Int) {
+        learningHomeVO?.recommendedProblem?.favorite.toggle()
+        // TODO: API 통신
+    }
 }

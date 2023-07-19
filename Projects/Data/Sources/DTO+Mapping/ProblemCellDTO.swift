@@ -16,6 +16,6 @@ public struct ProblemCellDTO {
     let favorite: Bool?
     
     func toVO() -> ProblemCellVO? {
-        return ProblemCellVO(problemId: problemId ?? 0, solved: solved  ?? "풀지않음", question: question ?? "Unknown", subject: subject ?? "Unknown", favorite: favorite ?? false)
+        return ProblemCellVO(problemId: problemId ?? 0, solved: ProblemSolvedStatus(rawValue: solved), question: question ?? "Unknown", subject: subject ?? "Unknown", favorite: ProblemFavoriteStatus(isFavorite: favorite))
     }
 }

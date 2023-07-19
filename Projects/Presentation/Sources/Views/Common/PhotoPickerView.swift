@@ -20,23 +20,13 @@ struct PhotoPickerView: View {
     var body: some View {
         VStack {
             PhotosPicker(selection: $item, matching: .images) {
-                if let imageData = imageData, let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        .foregroundColor(.gray)
-                        .padding(.bottom, 20)
-                        .padding(.top, 30)
-                } else {
-                    Image(systemName: SymbolName.defaultProfile)
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        .foregroundColor(.gray)
-                        .padding(.bottom, 20)
-                        .padding(.top, 30)
-                }
+                pickerThumbnailImage
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 20)
+                    .padding(.top, 30)
             }
         }
         .onChange(of: item) { _ in
@@ -45,6 +35,14 @@ struct PhotoPickerView: View {
                     imageData = data
                 }
             }
+        }
+    }
+    
+    private var pickerThumbnailImage: Image {
+        if let imageData = imageData, let uiImage = UIImage(data: imageData) {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image(systemName: SymbolName.defaultProfile)
         }
     }
 }

@@ -7,25 +7,21 @@
 //
 
 import SwiftUI
-import Kingfisher
 
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
-    private var errorView = ErrorView()
-    
+
     public init(viewModel: LearningHomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self.errorView.errorObject = viewModel.errorObject
     }
     
     public var body: some View {
         VStack {
-            errorView
+            errorView()
             profileView()
             startLearningButtonView()
             Divider()
-            symbolExplanationView()
             solvingProblemView()
             Spacer()
         }
@@ -35,28 +31,28 @@ public struct LearningHomeView: View {
 
     }
     
+    // API 에러 보여주는 뷰
+    @ViewBuilder
+    private func errorView() -> some View {
+        ErrorView(errorObject: viewModel.errorObject)
+    }
+    
     // 프로필 이미지와 닉네임 보여주는 뷰
     @ViewBuilder
     private func profileView() -> some View {
         VStack {
             if let learningHomeVO = viewModel.learningHomeVO {
-                if let urlString = learningHomeVO.userInfo.profileImgUrl,
-                   let url = URL(string: urlString) {
-                    KFImage(url)
-                        .resizable()
+                VStack {
+                    UrlImageView(urlString: learningHomeVO.userInfo.profileImgUrl)
                         .frame(width: 88, height: 88)
                         .clipShape(Circle())
-                } else {
-                    Image(systemName: SymbolName.defaultProfile)
-                        .resizable()
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
+                    Text(learningHomeVO.userInfo.nickname)
+                        .font(.system(size: 12))
                 }
-                Text(learningHomeVO.userInfo.nickname)
-                    .font(.system(size: 13))
+                .frame(height: 115)
             } else {
                 ProgressView()
-                    .frame(width: 88, height: 88)
+                    .frame(height: 115)
             }
         }
         .padding(.bottom, 18)
@@ -67,7 +63,7 @@ public struct LearningHomeView: View {
     private func startLearningButtonView() -> some View {
         Button {
             viewModel.moveToLearningView()
-        } label: {
+        } label: { 
             Text("학습 시작")
                 .font(.system(size: 20))
                 .padding([.leading, .trailing], 70)
@@ -79,30 +75,21 @@ public struct LearningHomeView: View {
         .padding(.bottom, 20)
     }
     
-    // 각 아이콘에 대한 설명 나타내는 뷰
-    @ViewBuilder
-    private func symbolExplanationView() -> some View {
-        HStack {
-            SymbolExplanationView(symbol: ProblemSolvedStatus.unsolved)
-            SymbolExplanationView(symbol: ProblemSolvedStatus.solving)
-            SymbolExplanationView(symbol: ProblemSolvedStatus.solved)
-            Spacer()
-        }
-        .padding(.bottom, 20)
-        .padding(.leading, 20)
-    }
-    
     // 풀던 문제 보여주는 뷰
     @ViewBuilder
     private func solvingProblemView() -> some View {
-        if let learningHomeVO = viewModel.learningHomeVO,
-           let recommendedProblem = learningHomeVO.recommendedProblem {
-            VStack(alignment: .leading) {
-                Text("풀던 문제")
-                    .font(.system(size: 20, weight: .bold))
-                viewModel.getProblemCellView(problem: recommendedProblem)
+        if let learningHomeVO = viewModel.learningHomeVO {
+            if let recommendedProblem = learningHomeVO.recommendedProblem {
+                VStack(alignment: .leading) {
+                    Text("풀던 문제")
+                        .font(.system(size: 20, weight: .bold))
+                    ProblemCellView(problemCellVO: recommendedProblem, viewModel: viewModel)
+                }
+                .padding([.leading, .trailing], 20)
             }
-            .padding([.leading, .trailing], 20)
+        } else {
+            Spacer()
+            ProgressView()
         }
     }
 }

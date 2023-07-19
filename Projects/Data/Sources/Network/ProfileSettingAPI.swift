@@ -23,11 +23,11 @@ extension ProfileSettingAPI: TargetType {
     var path: String {
         switch self {
         case .setProfileInfo:
-            return "/api/users"
+            return "/api/v1/users"
         case .setProfileImage:
-            return "/api/users/files"
+            return "/api/v1/users/files"
         case .setNotiAcceptance:
-            return "/api/users/notification"
+            return "/api/v1/users/notifications"
         }
     }
     

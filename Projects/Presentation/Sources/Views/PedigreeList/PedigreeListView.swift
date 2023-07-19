@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-public struct PrevProblemCategoryView: View {
+public struct PedigreeListView: View {
     
-    @ObservedObject private(set) var viewModel: PrevProblemCategoryViewModel
+    @ObservedObject private(set) var viewModel: PedigreeListViewModel
     
-    public init(viewModel: PrevProblemCategoryViewModel) {
+    public init(viewModel: PedigreeListViewModel) {
         self.viewModel = viewModel
     }
     

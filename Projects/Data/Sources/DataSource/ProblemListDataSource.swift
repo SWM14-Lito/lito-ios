@@ -9,11 +9,11 @@
 import Combine
 import Domain
 
-public protocol QuestionListDataSource {
+public protocol ProblemListDataSource {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
 }
 
-final public class DefaultQuestionListDataSource: QuestionListDataSource {
+final public class DefaultProblemListDataSource: ProblemListDataSource {
 
     public init() {}
     

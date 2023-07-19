@@ -12,7 +12,7 @@ import KakaoSDKAuth
 public enum Page: Hashable {
     case loginView, profileSettingView
     case rootTabView
-    case learningHomeView, learningCategoryView, questionListView
-    case prevProblemCategoryView
+    case learningHomeView, problemListView
+    case pedigreeListView
     case myPageView
 }

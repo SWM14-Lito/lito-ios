@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-public struct QuestionListView: View {
+public struct ProblemListView: View {
     
-    @StateObject private var viewModel: QuestionListViewModel
+    @StateObject private var viewModel: ProblemListViewModel
     @Namespace private var subjectAnimation
     
-    public init(viewModel: QuestionListViewModel) {
+    public init(viewModel: ProblemListViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -30,7 +30,7 @@ public struct QuestionListView: View {
                 Text("test")
             }
             Spacer()
-        }.navigationTitle("학습")
+        }.navigationTitle(viewModel.selectedSubject.rawValue)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -48,7 +48,7 @@ public struct QuestionListView: View {
     private func headSection() -> some View {
             VStack(spacing: 0) {
                 HStack {
-                    ForEach(QuestionListViewModel.SubjectInfo.allCases, id: \.self) { subject in
+                    ForEach(ProblemListViewModel.SubjectInfo.allCases, id: \.self) { subject in
                         VStack {
                             Text(subject.rawValue)
                                 .lineLimit(1)

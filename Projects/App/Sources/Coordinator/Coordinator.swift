@@ -12,10 +12,18 @@ import KakaoSDKAuth
 import Domain
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
-    @Published public var path = NavigationPath()
+    @Published public var path: NavigationPath
+    private let initialPage: Page
     var injector: Injector?
     
-    public init() {}
+    public init(_ initialPage: Page) {
+        self.initialPage = initialPage
+        self.path = NavigationPath([initialPage])
+    }
+    
+    public func buildInitialPage() -> some View {
+        return buildPage(page: initialPage)
+    }
     
     public func push(_ page: Page) {
         path.append(page)
@@ -43,26 +51,14 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(ProfileSettingView.self)
         case .learningHomeView:
             injector?.resolve(LearningHomeView.self)
-        case .questionListView:
-            injector?.resolve(QuestionListView.self)
-        case .learningCategoryView:
-            injector?.resolve(LearningCategoryView.self)
-        case .prevProblemCategoryView:
-            injector?.resolve(PrevProblemCategoryView.self)
+        case .problemListView:
+            injector?.resolve(ProblemListView.self)
+        case .pedigreeListView:
+            injector?.resolve(PedigreeListView.self)
         case .myPageView:
             injector?.resolve(MyPageView.self)
         case .rootTabView:
             injector?.resolve(RootTabView.self)
-        }
-    }
-    
-    public func buildSubView<T, V>(subView: SubView, arg: T? = nil) -> V {
-        switch subView {
-        case .problemCellView:
-            let viewModel = (injector?.resolve(ProblemCellViewModel.self))! as ProblemCellViewModel
-            let problemCellVO = arg as? ProblemCellVO
-            viewModel.problemCellVO = problemCellVO
-            return ProblemCellView(viewModel: viewModel) as! V
         }
     }
 }

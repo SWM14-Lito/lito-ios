@@ -21,7 +21,7 @@ extension ProblemAPI: TargetType {
     var path: String {
         switch self {
         case .learningHome:
-            return "/api/problems/users"
+            return "/api/v1/problems/users"
         }
     }
     

@@ -11,12 +11,12 @@ import SwiftUI
 public struct RootTabView: View {
     
     private let tab1: LearningHomeView
-    private let tab2: PrevProblemCategoryView
+    private let tab2: PedigreeListView
     private let tab3: MyPageView
     private let tab1ViewModel: LearningHomeViewModel
     @State private var selection: Int = 1
     
-    public init(tab1: LearningHomeView, tab2: PrevProblemCategoryView, tab3: MyPageView, tab1ViewModel: LearningHomeViewModel) {
+    public init(tab1: LearningHomeView, tab2: PedigreeListView, tab3: MyPageView, tab1ViewModel: LearningHomeViewModel) {
         self.tab1 = tab1
         self.tab2 = tab2
         self.tab3 = tab3
@@ -58,6 +58,7 @@ public struct RootTabView: View {
                 } label: {
                     if selection == 1 {
                         Image(systemName: SymbolName.favoriteList)
+                        Image(systemName: SymbolName.notiList)
                     } else {
                         EmptyView()
                     }
