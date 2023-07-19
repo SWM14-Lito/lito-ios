@@ -13,8 +13,9 @@ public struct ProblemDetailDTO {
     public let question: String?
     public let answer: String?
     public let keyword: String?
+    public let favorite: Bool?
     
-    func toVO() -> ProblemDetailDTO {
-        return ProblemDetailDTO(question: question ?? "Unknown", answer: answer ?? "Unknown", keyword: "Unknown")
+    func toVO() -> ProblemDetailVO {
+        return ProblemDetailVO(question: question ?? "Unknown", answer: answer ?? "Unknown", keyword: "Unknown", favorite: ProblemFavoriteStatus(isFavorite: favorite))
     }
 }

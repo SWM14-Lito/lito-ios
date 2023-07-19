@@ -14,13 +14,12 @@ struct LitoApp: App {
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
-        coordinator = Coordinator(.loginView)
+        coordinator = Coordinator(.problemSolvingView(id: 0))
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
                            PresentationAssembly(coordinator: coordinator)
                           ])
         coordinator.injector = injector
-        initView()
     }
     
     var body: some Scene {
@@ -32,9 +31,5 @@ struct LitoApp: App {
                     }
             }
         }
-    }
-    
-    private func initView() {
-        coordinator.push(.loginView)
     }
 }

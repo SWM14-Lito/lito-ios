@@ -64,9 +64,12 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         }
     }
     
+    // 파라미터 넘겨줘야 하는 화면 전환 시 해당 방법 사용
+    // injector에서 View가 아닌 ViewModel을 꺼내 쓰는 것이 좀 걸리지만, 다른 방법이 생각이 나지 않음
+    // (View 꺼내서 view.viewmodel.setProblemId 방식은 StateObject 관련 런타임 오류 발생)
     private func buildProblemSolvingPage(id: Int) -> ProblemSolvingView? {
-        let view = injector?.resolve(ProblemSolvingView.self)
-        view?.setProblemId(id: id)
-        return view
+        let viewModel = injector?.resolve(ProblemSolvingViewModel.self)
+        viewModel?.setProblemId(id: id)
+        return ProblemSolvingView(viewModel: viewModel!)
     }
 }
