@@ -8,6 +8,6 @@
 
 import SwiftUI
 
-public class PrevProblemCategoryViewModel: BaseViewModel, ObservableObject {
+public class PedigreeListViewModel: BaseViewModel {
 
 }

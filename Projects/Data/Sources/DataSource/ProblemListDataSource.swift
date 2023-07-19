@@ -1,19 +1,19 @@
 //
-//  LearningHomeDataSource.swift
+//  QuestionDataSource.swift
 //  Data
 //
-//  Created by 김동락 on 2023/07/11.
+//  Created by Lee Myeonghwan on 2023/07/14.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
 import Combine
 import Domain
 
-public protocol LearningHomeDataSource {
+public protocol ProblemListDataSource {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
 }
 
-final public class DefaultLearningHomeDataSource: LearningHomeDataSource {
+final public class DefaultProblemListDataSource: ProblemListDataSource {
 
     public init() {}
     

@@ -51,24 +51,22 @@ public struct PresentationAssembly: Assembly {
             return LearningHomeView(viewModel: viewModel)
         }
         
-        container.register(QuestionListView.self) { _ in
-            return QuestionListView()
+        container.register(ProblemListViewModel.self) { resolver in
+            let useCase = resolver.resolve(LearningHomeUseCase.self)!
+            return ProblemListViewModel(useCase: useCase, coordinator: coordinator)
         }
         
-        container.register(LearningCategoryViewModel.self) { _ in
-            return LearningCategoryViewModel(coordinator: coordinator)
-        }
-        container.register(LearningCategoryView.self) { resolver in
-            let viewModel = resolver.resolve(LearningCategoryViewModel.self)!
-            return LearningCategoryView(viewModel: viewModel)
+        container.register(ProblemListView.self) { resolver in
+            let viewModel = resolver.resolve(ProblemListViewModel.self)!
+            return ProblemListView(viewModel: viewModel)
         }
         
-        container.register(PrevProblemCategoryViewModel.self) { _ in
-            return PrevProblemCategoryViewModel(coordinator: coordinator)
+        container.register(PedigreeListViewModel.self) { _ in
+            return PedigreeListViewModel(coordinator: coordinator)
         }
-        container.register(PrevProblemCategoryView.self) { resolver in
-            let viewModel = resolver.resolve(PrevProblemCategoryViewModel.self)!
-            return PrevProblemCategoryView(viewModel: viewModel)
+        container.register(PedigreeListView.self) { resolver in
+            let viewModel = resolver.resolve(PedigreeListViewModel.self)!
+            return PedigreeListView(viewModel: viewModel)
         }
     
         container.register(MyPageViewModel.self) { _ in
@@ -81,7 +79,7 @@ public struct PresentationAssembly: Assembly {
         
         container.register(RootTabView.self) { resolver in
             let tab1 = resolver.resolve(LearningHomeView.self)!
-            let tab2 = resolver.resolve(PrevProblemCategoryView.self)!
+            let tab2 = resolver.resolve(PedigreeListView.self)!
             let tab3 = resolver.resolve(MyPageView.self)!
             let tab1ViewModel = resolver.resolve(LearningHomeViewModel.self)!
             return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3, tab1ViewModel: tab1ViewModel)

@@ -10,7 +10,7 @@ import SwiftUI
 import Domain
 import Combine
 
-public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
+public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
     @Published var learningHomeVO: LearningHomeVO?
     
@@ -21,7 +21,7 @@ public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     
     // 학습 화면으로 이동하기
     func moveToLearningView() {
-        coordinator.push(.learningCategoryView)
+        coordinator.push(.problemListView)
     }
     
     // 찜한 목록 화면으로 이동하기

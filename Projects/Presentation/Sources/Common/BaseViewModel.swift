@@ -10,7 +10,8 @@ import SwiftUI
 
 // BaseViewModel에는 ViewModel 들이 공통적으로 가지고 있어야하는 것들 정의
 // 모든 ViewModel은 BaseViewModel을 상속
-public class BaseViewModel {
+
+public class BaseViewModel: ObservableObject {
     @Published private(set) var errorObject = ErrorObject()
     let coordinator: CoordinatorProtocol
     let cancelBag = CancelBag()

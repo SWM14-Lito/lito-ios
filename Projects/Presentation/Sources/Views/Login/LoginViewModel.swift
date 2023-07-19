@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import Domain
 
-final public class LoginViewModel: BaseViewModel, ObservableObject {
+final public class LoginViewModel: BaseViewModel {
     
     private let useCase: LoginUseCase
 

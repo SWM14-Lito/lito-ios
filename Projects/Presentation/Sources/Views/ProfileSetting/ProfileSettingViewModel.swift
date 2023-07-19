@@ -11,7 +11,7 @@ import PhotosUI
 import Domain
 import Combine
 
-public class ProfileSettingViewModel: BaseViewModel, ObservableObject {
+public class ProfileSettingViewModel: BaseViewModel {
     
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
