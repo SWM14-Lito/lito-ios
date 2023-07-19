@@ -27,7 +27,7 @@ extension ProfileSettingAPI: TargetType {
         case .setProfileImage:
             return "/api/v1/users/files"
         case .setNotiAcceptance:
-            return "/api/v1/users/notification"
+            return "/api/v1/users/notifications"
         }
     }
     

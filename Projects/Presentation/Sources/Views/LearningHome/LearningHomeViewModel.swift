@@ -10,7 +10,7 @@ import SwiftUI
 import Domain
 import Combine
 
-public final class LearningHomeViewModel: BaseViewModel, ProblemCellHandling, ObservableObject {
+public final class LearningHomeViewModel: BaseViewModel, ObservableObject {
     private let useCase: LearningHomeUseCase
     @Published var learningHomeVO: LearningHomeVO?
     
@@ -44,6 +44,8 @@ public final class LearningHomeViewModel: BaseViewModel, ProblemCellHandling, Ob
             }
             .store(in: cancelBag)
     }
+}
+extension LearningHomeViewModel: ProblemCellHandling {
     
     public func moveToProblemView(id: Int) {
         // TODO: coordinator.push

@@ -63,7 +63,7 @@ public struct LearningHomeView: View {
     private func startLearningButtonView() -> some View {
         Button {
             viewModel.moveToLearningView()
-        } label: {
+        } label: { 
             Text("학습 시작")
                 .font(.system(size: 20))
                 .padding([.leading, .trailing], 70)

@@ -12,12 +12,10 @@ import Domain
 
 final public class LoginViewModel: BaseViewModel, ObservableObject {
     
-    @Published private(set) var loginFeedback: Feedbackable
     private let useCase: LoginUseCase
 
     public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase, loginFeedback: Feedbackable = .idle) {
         self.useCase = useCase
-        self.loginFeedback = loginFeedback
         super.init(coordinator: coordinator)
     }
     

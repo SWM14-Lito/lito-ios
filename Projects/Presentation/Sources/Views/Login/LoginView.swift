@@ -39,10 +39,7 @@ public struct LoginView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 })
-                .padding(20)
-
-                loginFeedbackView()
-                
+                .padding(20)                
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -50,17 +47,6 @@ public struct LoginView: View {
     
     @ViewBuilder private func errorView() -> some View {
         ErrorView(errorObject: viewModel.errorObject)
-    }
-    
-    @ViewBuilder private func loginFeedbackView() -> some View {
-        switch viewModel.loginFeedback {
-        case .idle:
-            EmptyView()
-        case .feedback(let text):
-            Text(text)
-        case .failed(_):
-            ErrorView()
-        }
     }
 }
 
