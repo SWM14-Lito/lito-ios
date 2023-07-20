@@ -68,7 +68,7 @@ public struct ProblemSolvingView: View {
     
     @ViewBuilder
     private var textField: some View {
-        TextField("", text: $viewModel.input)
+        TextField("정답을 입력해주세요", text: $viewModel.input)
             .focused($focused)
             .multilineTextAlignment(.center)
             .padding(.bottom)

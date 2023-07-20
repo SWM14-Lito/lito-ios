@@ -23,10 +23,12 @@ public class ProblemSolvingViewModel: BaseViewModel {
         super.init(coordinator: coordinator)
     }
     
+    // 이전 화면에서 id 파라미터를 넘겨받기 위해 사용
     public func setProblemId(id: Int) {
         self.problemId = id
     }
     
+    // API 통신해서 문제 세부 정보 가져오기
     func getProblemInfo() {
         useCase.getProblemInfo()
             .sinkToResult { result in
@@ -44,27 +46,35 @@ public class ProblemSolvingViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
+    // 정답이 나오는 상태로 화면을 변경
     func showAnswer() {
         isCorrect = true
-        print("정답 보여주기")
+        useCase.showAnswer()
     }
     
+    // 문제 찜하기 선택 및 해제
     func toggleFavorite() {
         problemDetailVO?.favorite.toggle()
+        useCase.toggleFavorite()
     }
     
+    // 사용자가 키보드 엔터 눌렀을 때 정답 여부에 따라 다음 상태로 이동하기
     func handleInput() {
         if input == problemDetailVO?.keyword {
             showAnswer()
+            useCase.correct()
         } else {
             isCorrect = false
+            useCase.wrong()
         }
     }
     
+    // 키보드 보여주기
     private func showKeyboard() {
         focused = true
     }
     
+    // 문제에 대한 답변에서 키워드 부분은 숨기기
     private func hideKeyword() {
         guard let problemDetailVO = problemDetailVO else { return }
         let wordLength = problemDetailVO.keyword.count
