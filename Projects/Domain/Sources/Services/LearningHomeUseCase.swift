@@ -7,6 +7,7 @@
 //
 
 import Combine
+import Foundation
 
 public protocol LearningHomeUseCase {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
@@ -20,6 +21,8 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     }
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
-        repository.getProfileAndProblems()
+        // repository.getProfileAndProblems()
+        
+        MockData.getMockData(data: MockData.learningHomeVO)
     }
 }

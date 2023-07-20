@@ -58,11 +58,23 @@ public struct RootTabView: View {
                 } label: {
                     if selection == 1 {
                         Image(systemName: SymbolName.favoriteList)
+                    } else {
+                        EmptyView()
+                    }
+                }
+
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    tab1ViewModel.moveToNotiView()
+                } label: {
+                    if selection == 1 {
                         Image(systemName: SymbolName.notiList)
                     } else {
                         EmptyView()
                     }
                 }
+
             }
         }
     }

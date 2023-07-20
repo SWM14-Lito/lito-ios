@@ -28,6 +28,11 @@ public final class LearningHomeViewModel: BaseViewModel {
     func moveToFavoriteProblemView() {
         print("찜한 목록 화면으로 이동")
     }
+    
+    // 알림 목록 화면으로 이동하기
+    func moveToNotiView() {
+        print("알림 목록 화면으로 이동")
+    }
 
     // 프로필 정보와 문제 정보 가져오기
     func getProfileAndProblems() {
