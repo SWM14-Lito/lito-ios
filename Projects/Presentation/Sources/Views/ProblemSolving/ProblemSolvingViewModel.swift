@@ -16,7 +16,13 @@ public class ProblemSolvingViewModel: BaseViewModel {
     @Published var answerWithoutKeyword: String?
     @Published var input: String = ""
     @Published var focused: Bool = false
-    @Published var isCorrect: Bool = true
+    @Published var isWrong: Bool = false
+    @Published var solvingState: SolvingState = .notSolved
+    
+    enum SolvingState {
+        case solved
+        case notSolved
+    }
     
     public init(useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -48,7 +54,8 @@ public class ProblemSolvingViewModel: BaseViewModel {
     
     // 정답이 나오는 상태로 화면을 변경
     func showAnswer() {
-        isCorrect = true
+        isWrong = false
+        solvingState = .solved
         useCase.showAnswer()
     }
     
@@ -64,9 +71,14 @@ public class ProblemSolvingViewModel: BaseViewModel {
             showAnswer()
             useCase.correct()
         } else {
-            isCorrect = false
+            isWrong = true
             useCase.wrong()
         }
+    }
+    
+    // ChatGPT 화면 모달로 보여주기
+    func showChatGPT() {
+        
     }
     
     // 키보드 보여주기

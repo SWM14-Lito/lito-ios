@@ -14,8 +14,19 @@ public struct ProblemDetailDTO {
     public let answer: String?
     public let keyword: String?
     public let favorite: Bool?
+    public let faqs: [ProblemFAQDTO]?
     
     func toVO() -> ProblemDetailVO {
-        return ProblemDetailVO(question: question ?? "Unknown", answer: answer ?? "Unknown", keyword: "Unknown", favorite: ProblemFavoriteStatus(isFavorite: favorite))
+        let faqVO = faqs?.map({ $0.toVO() })
+        return ProblemDetailVO(question: question ?? "Unknown", answer: answer ?? "Unknown", keyword: "Unknown", favorite: ProblemFavoriteStatus(isFavorite: favorite), faqs: faqVO)
+    }
+}
+
+public struct ProblemFAQDTO {
+    public let question: String?
+    public let answer: String?
+    
+    func toVO() -> ProblemFAQVO {
+        return ProblemFAQVO(question: question ?? "Unknown", answer: answer ?? "Unknown")
     }
 }

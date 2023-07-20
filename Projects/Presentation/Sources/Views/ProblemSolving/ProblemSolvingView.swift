@@ -20,12 +20,18 @@ public struct ProblemSolvingView: View {
     public var body: some View {
         VStack {
             if let problemDetailVO = viewModel.problemDetailVO {
-                VStack {
+                ScrollView {
                     question
-                    answer
-                    textField
-                    showAnswerButton
-                    wrongMessage
+                    if viewModel.solvingState == .notSolved {
+                        answer(text: viewModel.answerWithoutKeyword ?? "")
+                        textField
+                        showAnswerButton
+                        wrongMessage
+                    } else {
+                        answer(text: problemDetailVO.answer)
+                        showChatGPTButton
+                        listOfFAQ
+                    }
                     Spacer()
                 }
                 .toolbar {
@@ -59,11 +65,9 @@ public struct ProblemSolvingView: View {
     }
     
     @ViewBuilder
-    private var answer: some View {
-        if let answerWithoutKeyword = viewModel.answerWithoutKeyword {
-            Text(answerWithoutKeyword)
-                .padding(.bottom)
-        }
+    private func answer(text: String) -> some View {
+        Text(text)
+            .padding(.bottom)
     }
     
     @ViewBuilder
@@ -89,9 +93,36 @@ public struct ProblemSolvingView: View {
     
     @ViewBuilder
     private var wrongMessage: some View {
-        if !viewModel.isCorrect {
+        if viewModel.isWrong {
             Text("틀렸습니다.")
                 .foregroundColor(.red)
+        }
+    }
+    
+    @ViewBuilder
+    private var showChatGPTButton: some View {
+        Button {
+            viewModel.showChatGPT()
+        } label: {
+            Text("Chat GPT")
+                .padding(.bottom)
+        }
+    }
+    
+    @ViewBuilder
+    private var listOfFAQ: some View {
+        if let problemDetailVO = viewModel.problemDetailVO,
+           let faqs = problemDetailVO.faqs {
+            VStack(alignment: .leading) {
+                Text("FAQ")
+                Divider()
+                
+                ForEach(faqs, id: \.self) { faq in
+                    Text("Q) " + faq.question)
+                    Text("A) " + faq.answer)
+                        .padding(.bottom)
+                }
+            }
         }
     }
 }

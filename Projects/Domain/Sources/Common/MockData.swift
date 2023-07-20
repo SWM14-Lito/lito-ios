@@ -14,7 +14,17 @@ public final class MockData {
         question: "문맥 전환 (Context Switching)이 무엇인가?",
         answer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정.",
         keyword: "PCB",
-        favorite: .favorite
+        favorite: .favorite,
+        faqs: [
+            ProblemFAQVO(
+                question: "CPU란 무엇인가요?",
+                answer: "CPU란 중앙 처리 장치 또는 CPU는 컴퓨터 시스템을 통제하고 프로그램의 연산을 실행 · 처리하는 가장 핵심적인 컴퓨터의 제어 장치, 혹은 그 기능을 내장한 칩입니다."
+            ),
+            ProblemFAQVO(
+                question: "레지스터란 무엇인가요?",
+                answer: "프로세서 레지스터 또는 단순히 레지스터는 컴퓨터의 프로세서 내에서 자료를 보관하는 아주 빠른 기억 장소입니다. 일반적으로 현재 계산을 수행중인 값을 저장하는 데 사용됩니다."
+            )
+        ]
     )
     
     static let learningHomeUserInfoVO = LearningHomeUserInfoVO(
