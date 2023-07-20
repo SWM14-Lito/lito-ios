@@ -21,4 +21,5 @@ class SymbolName {
     static let solving = "book.fill"
     static let defaultProfile = "person.circle.fill"
     static let notiList = "bell.fill"
+    static let arrowtriangleDown = "arrowtriangle.down.fill"
 }
