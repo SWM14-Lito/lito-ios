@@ -120,7 +120,6 @@ public struct ProblemListView: View {
     private struct filteringModal: View {
         
         @StateObject private var viewModel: ProblemListViewModel
-        @State private var isApply = false
         
         public init(viewModel: ProblemListViewModel) {
             self._viewModel = StateObject(wrappedValue: viewModel)
