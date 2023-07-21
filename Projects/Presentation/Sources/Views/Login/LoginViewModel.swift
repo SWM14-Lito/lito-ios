@@ -14,7 +14,7 @@ final public class LoginViewModel: BaseViewModel {
     
     private let useCase: LoginUseCase
 
-    public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase, loginFeedback: Feedbackable = .idle) {
+    public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }
@@ -27,10 +27,10 @@ final public class LoginViewModel: BaseViewModel {
                     switch loginResultVO {
                     case .registered:
                         self.coordinator.pop()
-                        self.coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabScene)
                     case .unregistered:
                         self.coordinator.pop()
-                        self.coordinator.push(.profileSettingView)
+                        self.coordinator.push(.profileSettingScene)
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
@@ -55,10 +55,10 @@ final public class LoginViewModel: BaseViewModel {
                     switch loginResultVO {
                     case .registered:
                         self.coordinator.pop()
-                        self.coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabScene)
                     case .unregistered:
                         self.coordinator.pop()
-                        self.coordinator.push(.profileSettingView)
+                        self.coordinator.push(.profileSettingScene)
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {

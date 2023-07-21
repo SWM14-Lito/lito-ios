@@ -19,10 +19,10 @@ final public class DefaultExampleDataSource: ExampleDataSource {
     
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<APIService>()
+    private let moyaProvider = MoyaWrapper<ExampleAPI>()
     
     public func loadMaxim() -> AnyPublisher<SlipDTO, Error> {
-        return moyaProvider.call(target: .oneSlip)
+        moyaProvider.call(target: .oneSlip)
     }
     
 }

@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 public protocol ProblemSolvingUseCase {
-    func getProblemInfo() -> AnyPublisher<ProblemDetailVO, Error>
+//    func getProblemInfo() -> AnyPublisher<ProblemDetailVO, Error>
     func showAnswer()
     func toggleFavorite()
     func correct()
@@ -25,9 +25,9 @@ public final class DefaultProblemSolvingUseCase: ProblemSolvingUseCase {
         self.repository = repository
     }
     
-    public func getProblemInfo() -> AnyPublisher<ProblemDetailVO, Error> {
-        MockData.getMockData(data: MockData.problemDetailVO)
-    }
+//    public func getProblemInfo() -> AnyPublisher<ProblemDetailVO, Error> {
+//
+//    }
     
     public func showAnswer() {
         

@@ -21,7 +21,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     
     // 학습 화면으로 이동하기
     func moveToLearningView() {
-        coordinator.push(.problemListView)
+        coordinator.push(.problemListScene)
     }
     
     // 찜한 목록 화면으로 이동하기
@@ -53,7 +53,7 @@ public final class LearningHomeViewModel: BaseViewModel {
 extension LearningHomeViewModel: ProblemCellHandling {
     
     public func moveToProblemView(id: Int) {
-        coordinator.push(.problemSolvingView(id: id))
+        coordinator.push(.problemSolvingScene(id: id))
     }
     
     public func changeFavoriteStatus(id: Int) {

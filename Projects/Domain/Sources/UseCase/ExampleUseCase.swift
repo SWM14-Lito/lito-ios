@@ -14,7 +14,7 @@ public final class DefaultExampleUseCase: ExampleUseCase {
     }
     
     public func load() -> AnyPublisher<SlipVO, Error> {
-        return repository.loadSlip()
+        repository.loadSlip()
     }
 }
 
@@ -24,7 +24,7 @@ public final class StubExampleUseCase: ExampleUseCase {
     public init() {}
     
     public func load() -> AnyPublisher<SlipVO, Error> {
-        return Just(SlipVO.mock)
+        Just(SlipVO.mock)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }

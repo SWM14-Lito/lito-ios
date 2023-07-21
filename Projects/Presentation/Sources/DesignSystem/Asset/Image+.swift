@@ -10,7 +10,7 @@ import SwiftUI
 
 public extension Image {
 
-    init(_ assetName: Asset) {
+    init(_ assetName: ImageName) {
         self.init(assetName.rawValue, bundle: Bundle.module)
     }
 }
