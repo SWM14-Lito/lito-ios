@@ -40,3 +40,7 @@ public struct LearningHomeUserInfoDTO {
         return LearningHomeUserInfoVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unkown")
     }
 }
+
+#if DEBUG
+extension LearningHomeDTO: Encodable {}
+#endif

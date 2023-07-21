@@ -32,20 +32,20 @@ public class ProblemSolvingViewModel: BaseViewModel {
 
     // API 통신해서 문제 세부 정보 가져오기
     func getProblemInfo() {
-        useCase.getProblemInfo()
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemDetailVO):
-                    self.problemDetailVO = problemDetailVO
-                    self.hideKeyword()
-                    self.showKeyboard()
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
-            .store(in: cancelBag)
+//        useCase.getProblemInfo()
+//            .sinkToResult { result in
+//                switch result {
+//                case .success(let problemDetailVO):
+//                    self.problemDetailVO = problemDetailVO
+//                    self.hideKeyword()
+//                    self.showKeyboard()
+//                case .failure(let error):
+//                    if let errorVO = error as? ErrorVO {
+//                        self.errorObject.error  = errorVO
+//                    }
+//                }
+//            }
+//            .store(in: cancelBag)
     }
     
     // 정답이 나오는 상태로 화면을 변경

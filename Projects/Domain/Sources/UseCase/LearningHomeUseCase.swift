@@ -21,8 +21,6 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     }
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
-        // repository.getProfileAndProblems()
-        
-        MockData.getMockData(data: MockData.learningHomeVO)
+         repository.getProfileAndProblems()
     }
 }

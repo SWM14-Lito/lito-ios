@@ -14,6 +14,27 @@ import CombineMoya
 
 class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     
+    init(endpointClosure: @escaping MoyaProvider<Provider>.EndpointClosure = MoyaProvider.defaultEndpointMapping, requestClosure: @escaping MoyaProvider<Provider>.RequestClosure = MoyaProvider<Provider>.defaultRequestMapping, stubClosure: @escaping MoyaProvider<Provider>.StubClosure = MoyaProvider.neverStub, callbackQueue: DispatchQueue? = nil, session: Session = MoyaProvider<Target>.defaultAlamofireSession(), plugins: [PluginType] = [], trackInflights: Bool = false, forTest: Bool = false) {
+        
+        let customEndpointClosure: MoyaProvider<Provider>.EndpointClosure
+        let customStubClosure: MoyaProvider<Provider>.StubClosure
+        
+        if forTest {
+            customEndpointClosure = { (target: Provider) -> Endpoint in
+                return Endpoint(url: URL(target: target).absoluteString,
+                                sampleResponseClosure: { .networkResponse(200, target.sampleData) },
+                                method: target.method,
+                                task: target.task,
+                                httpHeaderFields: target.headers)}
+            customStubClosure = MoyaProvider.immediatelyStub
+        } else {
+            customEndpointClosure = endpointClosure
+            customStubClosure = stubClosure
+        }
+        
+        super.init(endpointClosure: customEndpointClosure, requestClosure: requestClosure, stubClosure: customStubClosure, callbackQueue: callbackQueue, session: session, plugins: plugins, trackInflights: trackInflights)
+    }
+    
     func call<Value>(target: Provider) -> AnyPublisher<Value, Error> where Value: Decodable {
         return self.requestPublisher(target)
             .map(Value.self)
@@ -24,7 +45,7 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
                 #endif
                 return Fail(error: networkErrorDTO.toVO())
             })
-            .eraseToAnyPublisher()
+                .eraseToAnyPublisher()
     }
     
     func call(target: Provider) -> AnyPublisher<Void, Error> {
@@ -36,16 +57,15 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
                 #endif
                 return Fail(error: networkErrorDTO.toVO())
             })
-            .flatMap({ response -> AnyPublisher<Void, Error> in
-                if (200..<300).contains(response.statusCode) {
-                    return Just(()).setFailureType(to: Error.self)
-                        .eraseToAnyPublisher()
-                } else {
-                    return Fail(error: ErrorVO.fatalError)
-                        .eraseToAnyPublisher()
-                }
-            })
-            .eraseToAnyPublisher()
+                .flatMap({ response -> AnyPublisher<Void, Error> in
+                    if (200..<300).contains(response.statusCode) {
+                        return Just(()).setFailureType(to: Error.self)
+                            .eraseToAnyPublisher()
+                    } else {
+                        return Fail(error: ErrorVO.fatalError)
+                            .eraseToAnyPublisher()
+                    }
+                })
+                    .eraseToAnyPublisher()
     }
-    
 }
