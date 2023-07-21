@@ -20,7 +20,6 @@ struct LitoApp: App {
                            PresentationAssembly(coordinator: coordinator)
                           ])
         coordinator.injector = injector
-        initView()
     }
     
     var body: some Scene {
@@ -32,9 +31,5 @@ struct LitoApp: App {
                     }
             }
         }
-    }
-    
-    private func initView() {
-        coordinator.push(.loginView)
     }
 }
