@@ -11,7 +11,7 @@ import SwiftUI
 
 public class ProblemSolvingViewModel: BaseViewModel {
     private let useCase: ProblemSolvingUseCase
-    private var problemId: Int?
+    private var problemId: Int
     @Published var problemDetailVO: ProblemDetailVO?
     @Published var answerWithoutKeyword: String?
     @Published var input: String = ""
@@ -24,16 +24,12 @@ public class ProblemSolvingViewModel: BaseViewModel {
         case notSolved
     }
     
-    public init(useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
+    public init(problemId: Int, useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
+        self.problemId = problemId
         super.init(coordinator: coordinator)
     }
-    
-    // 이전 화면에서 id 파라미터를 넘겨받기 위해 사용
-    public func setProblemId(id: Int) {
-        self.problemId = id
-    }
-    
+
     // API 통신해서 문제 세부 정보 가져오기
     func getProblemInfo() {
         useCase.getProblemInfo()

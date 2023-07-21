@@ -77,13 +77,13 @@ public struct PresentationAssembly: Assembly {
             return ProblemListView(viewModel: viewModel)
         }
         // ProblemSolving
-        container.register(ProblemSolvingViewModel.self) { resolver in
+        container.register(ProblemSolvingViewModel.self) { (resolver, id: Int) in
             let useCase = resolver.resolve(ProblemSolvingUseCase.self)!
-            return ProblemSolvingViewModel(useCase: useCase, coordinator: coordinator)
+            return ProblemSolvingViewModel(problemId: id, useCase: useCase, coordinator: coordinator)
         }
         
-        container.register(ProblemSolvingView.self) { resolver in
-            let viewModel = resolver.resolve(ProblemSolvingViewModel.self)!
+        container.register(ProblemSolvingView.self) { (resolver, id: Int) in
+            let viewModel = resolver.resolve(ProblemSolvingViewModel.self, argument: id)!
             return ProblemSolvingView(viewModel: viewModel)
         }
         // ------------------------ Second Tab ------------------------
