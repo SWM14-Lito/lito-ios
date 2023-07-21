@@ -14,7 +14,7 @@ import SwiftUI
 // @StateObject private var keyboardHandler = KeyboardHandler()
 // .padding(.bottom, keyboardHandler.keyboardHeight)
 
-final class KeyboardHandler: ObservableObject {
+final class KeyboardHelper: ObservableObject {
     @Published private(set) var keyboardHeight: CGFloat = 0
     
     private var cancellable: AnyCancellable?

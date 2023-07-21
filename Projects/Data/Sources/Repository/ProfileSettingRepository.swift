@@ -23,7 +23,7 @@ final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        return dataSource.postProfileImage(profileImageDTO: profileImageDTO)
+        dataSource.postProfileImage(profileImageDTO: profileImageDTO)
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Asset: String {
+public enum ImageName: String {
     
     case btnKakaologin
     

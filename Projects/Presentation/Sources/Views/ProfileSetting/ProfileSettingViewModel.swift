@@ -108,7 +108,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                     switch result {
                     case .success(_):
                         self.coordinator.pop()
-                        self.coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabScene)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.errorObject.error  = errorVO
@@ -126,7 +126,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                     switch result {
                     case .success(_):
                         self.coordinator.pop()
-                        self.coordinator.push(.rootTabView)
+                        self.coordinator.push(.rootTabScene)
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.errorObject.error  = errorVO

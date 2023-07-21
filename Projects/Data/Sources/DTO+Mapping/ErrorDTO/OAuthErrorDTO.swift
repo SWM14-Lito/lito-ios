@@ -11,9 +11,9 @@ import Domain
 import AuthenticationServices
 import KakaoSDKCommon
 
-public enum OAuthError {
+public enum OAuthErrorDTO {
     
-    public enum kakaoDTO: Error {
+    public enum kakao: Error {
         
         case clientFailureReson(ClientFailureReason, message: String?)
         case apiFailureReason(ApiFailureReason, ErrorInfo?)
@@ -48,7 +48,7 @@ public enum OAuthError {
         
     }
     
-    public enum appleErrorDTO: Error {
+    public enum appleError: Error {
         case authorizationError(ASAuthorizationError)
         case commonError(Error)
         

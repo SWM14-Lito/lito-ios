@@ -9,10 +9,10 @@
 import Foundation
 import Moya
 
-enum APIService {
+enum ExampleAPI {
     case oneSlip
 }
-extension APIService: TargetType {
+extension ExampleAPI: TargetType {
     var baseURL: URL {
         switch self {
         case .oneSlip:
@@ -44,13 +44,13 @@ extension APIService: TargetType {
     var headers: [String: String]? {
         switch self {
         case .oneSlip:
-            return APIService.APICallHeaders.Json
+            return ExampleAPI.APICallHeaders.Json
         }
     }
     
 }
 
-extension APIService {
+extension ExampleAPI {
     
     struct APICallHeaders {
         

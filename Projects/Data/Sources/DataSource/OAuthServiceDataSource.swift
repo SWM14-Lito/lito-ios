@@ -24,7 +24,7 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
     
     public override init() {}
     
-    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, OAuthError.appleErrorDTO>, Never>()
+    private let appleLoginSubject = PassthroughSubject<Result<OAuth.AppleDTO, OAuthErrorDTO.appleError>, Never>()
     
     private var appleLoginPublisher: AnyPublisher<OAuth.AppleDTO, Error> {
         appleLoginSubject
@@ -54,7 +54,7 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
     
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         if let authorizationError = error as? ASAuthorizationError {
-            let appleErrorDTO = OAuthError.appleErrorDTO.authorizationError(authorizationError)
+            let appleErrorDTO = OAuthErrorDTO.appleError.authorizationError(authorizationError)
             #if DEBUG
             print(appleErrorDTO.debugString)
             #endif
@@ -104,7 +104,7 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
                             #endif
                             return promise(.failure(kakaoErrorDTO))
                         }
-                        return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
+                        return promise(.failure(OAuthErrorDTO.kakao.commonError(error)))
                     }
                     
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
@@ -129,7 +129,7 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
                         #endif
                         return promise(.failure(kakaoErrorDTO))
                     }
-                    return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
+                    return promise(.failure(OAuthErrorDTO.kakao.commonError(error)))
                 }
                 UserApi.shared.me { (user, error) in
                     if let error = error {
@@ -139,7 +139,7 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
                             #endif
                             return promise(.failure(kakaoErrorDTO))
                         }
-                        return promise(.failure(OAuthError.kakaoDTO.commonError(error)))
+                        return promise(.failure(OAuthErrorDTO.kakao.commonError(error)))
                     }
                     if let userInfo = user?.kakaoAccount, let userId = user?.id {
                         let userIdentifier = String(userId)
@@ -154,25 +154,25 @@ final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSour
         .eraseToAnyPublisher()
     }
     
-    private func sdkErrorMapping(error: Error) -> OAuthError.kakaoDTO? {
+    private func sdkErrorMapping(error: Error) -> OAuthErrorDTO.kakao? {
         guard let sdkError = error as? SdkError else { return nil }
         if sdkError.isClientFailed {
             let clientError = sdkError.getClientError()
             let clientFailureReason = clientError.reason
             let clientFailureMessage = clientError.message
-            return OAuthError.kakaoDTO.clientFailureReson(clientFailureReason, message: clientFailureMessage)
+            return OAuthErrorDTO.kakao.clientFailureReson(clientFailureReason, message: clientFailureMessage)
         }
         if sdkError.isApiFailed {
             let apiError = sdkError.getApiError()
             let apiFailureReason = apiError.reason
             let apiFailureInfo = apiError.info
-            return OAuthError.kakaoDTO.apiFailureReason(apiFailureReason, apiFailureInfo)
+            return OAuthErrorDTO.kakao.apiFailureReason(apiFailureReason, apiFailureInfo)
         }
         if sdkError.isAuthFailed {
             let authError = sdkError.getAuthError()
             let authFailureReason = authError.reason
             let authFailureInfo = authError.info
-            return OAuthError.kakaoDTO.authFailureReason(authFailureReason, authFailureInfo)
+            return OAuthErrorDTO.kakao.authFailureReason(authFailureReason, authFailureInfo)
         }
         return nil
     }

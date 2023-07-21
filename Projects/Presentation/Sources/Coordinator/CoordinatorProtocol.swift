@@ -11,7 +11,7 @@ import Combine
 import Domain
 
 public protocol CoordinatorProtocol {
-    func push(_ page: Page)
+    func push(_ scene: AppScene)
     func pop()
     func popToRoot()
 }

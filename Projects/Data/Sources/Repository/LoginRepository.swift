@@ -34,7 +34,7 @@ final public class DefaultLoginRepository: LoginRepository {
     }
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
-        return loginDataSource.postLoginInfo(OAuthProvider: OAuthProvider)
+        loginDataSource.postLoginInfo(OAuthProvider: OAuthProvider)
     }
     
 }

@@ -19,7 +19,7 @@ final public class DefaultExampleRepository: ExampleRepository {
     }
     
     public func loadSlip() -> AnyPublisher<SlipVO, Error> {
-        return dataSource.loadMaxim()
+        dataSource.loadMaxim()
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }

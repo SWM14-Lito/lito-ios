@@ -24,7 +24,7 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     }
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
-        return repository.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        repository.postProfileInfo(profileInfoDTO: profileInfoDTO)
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
@@ -33,6 +33,6 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
-        return repository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+        repository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
     }
 }
