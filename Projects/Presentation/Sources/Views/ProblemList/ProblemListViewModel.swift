@@ -13,10 +13,11 @@ final public class ProblemListViewModel: BaseViewModel {
 
     private let useCase: LearningHomeUseCase
     @Published var selectedSubject: SubjectInfo = .all
-    @Published var showSheet = false
-    @Published var selectedFilter: problemListFilter = .all
-    @Published var selectedFilters: [problemListFilter] = []
-    public var prevFilter: problemListFilter = .all
+    @Published var showFilterSheet = false
+    @Published var selectedFilter: ProblemListFilter = .all
+    @Published var selectedFilters: [ProblemListFilter] = []
+    public var prevFilter: ProblemListFilter = .all
+    @State private var isApply = false
 
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -31,7 +32,7 @@ final public class ProblemListViewModel: BaseViewModel {
         case structure = "자료구조"
     }
     
-    public enum problemListFilter: String, CaseIterable {
+    public enum ProblemListFilter: String, CaseIterable {
         case all = "전체"
         case unsolved = "풀지않음"
         case solved = "풀이완료"
@@ -39,6 +40,31 @@ final public class ProblemListViewModel: BaseViewModel {
     
     public func storePrevFilter() {
         prevFilter = selectedFilter
+    }
+    
+    public func removeFilter(_ filter: ProblemListFilter) {
+        if let index = selectedFilters.firstIndex(of: filter) {
+            selectedFilters.remove(at: index)
+        }
+    }
+    public func selectFilter(_ filter: ProblemListFilter) {
+        if selectedFilter == filter {
+            selectedFilter = .all
+        } else {
+            selectedFilter = filter
+        }
+    }
+    public func applyFilter() {
+        isApply = true
+        selectedFilters = [selectedFilter]
+        showFilterSheet = false
+    }
+    public func cancelSelectedFilter() {
+        if !isApply {
+            selectedFilter = prevFilter
+        } else {
+            isApply = false
+        }
     }
 
 }

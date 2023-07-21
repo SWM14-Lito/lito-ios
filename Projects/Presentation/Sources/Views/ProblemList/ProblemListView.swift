@@ -82,7 +82,7 @@ public struct ProblemListView: View {
             VStack {
                 HStack {
                     Button {
-                        viewModel.showSheet = true
+                        viewModel.showFilterSheet = true
                     } label: {
                         HStack {
                             Text("필터")
@@ -94,7 +94,7 @@ public struct ProblemListView: View {
                         RoundedRectangle(cornerRadius: 10   )
                             .stroke(Color.gray, lineWidth: 1)
                     )
-                    .sheet(isPresented: $viewModel.showSheet) {
+                    .sheet(isPresented: $viewModel.showFilterSheet) {
                         filteringModal(viewModel: viewModel)
                             .presentationDetents([.medium])
                             .presentationDragIndicator(.visible)
@@ -104,9 +104,7 @@ public struct ProblemListView: View {
                     ForEach(viewModel.selectedFilters, id: \.self) { filter in
                         if filter != .all {
                             Button(filter.rawValue) {
-                                if let index = viewModel.selectedFilters.firstIndex(of: filter) {
-                                    viewModel.selectedFilters.remove(at: index)
-                                }
+                                viewModel.removeFilter(filter)
                             }
                             .font(.caption)
                             .buttonStyle(.borderedProminent)
@@ -134,13 +132,9 @@ public struct ProblemListView: View {
                     Text("풀이 여부")
                         .font(.title2)
                     HStack {
-                        ForEach(ProblemListViewModel.problemListFilter.allCases, id: \.self) { filter in
+                        ForEach(ProblemListViewModel.ProblemListFilter.allCases, id: \.self) { filter in
                             Button(filter.rawValue) {
-                                if viewModel.selectedFilter == filter {
-                                    viewModel.selectedFilter = .all
-                                } else {
-                                    viewModel.selectedFilter = filter
-                                }
+                                viewModel.selectFilter(filter)
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(viewModel.selectedFilter == filter ? .orange : .gray)
@@ -157,9 +151,7 @@ public struct ProblemListView: View {
                     .font(.title2)
                     Spacer()
                     Button("적용하기") {
-                        isApply = true
-                        viewModel.selectedFilters = [viewModel.selectedFilter]
-                        viewModel.showSheet = false
+                        viewModel.applyFilter()
                     }
                     .buttonStyle(.bordered)
                     .font(.title2)
@@ -171,9 +163,7 @@ public struct ProblemListView: View {
                 viewModel.storePrevFilter()
             }
             .onDisappear {
-                if !isApply {
-                    viewModel.selectedFilter = viewModel.prevFilter
-                }
+                viewModel.cancelSelectedFilter()
             }
         }
     }
