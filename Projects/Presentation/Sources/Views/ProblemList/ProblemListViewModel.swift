@@ -38,6 +38,10 @@ final public class ProblemListViewModel: BaseViewModel {
         case solved = "풀이완료"
     }
     
+    public func filterSheetToggle() {
+        showFilterSheet.toggle()
+    }
+    
     public func storePrevFilter() {
         prevFilter = selectedFilter
     }

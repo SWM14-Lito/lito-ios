@@ -82,7 +82,7 @@ public struct ProblemListView: View {
             VStack {
                 HStack {
                     Button {
-                        viewModel.showFilterSheet = true
+                        viewModel.filterSheetToggle()
                     } label: {
                         HStack {
                             Text("필터")
