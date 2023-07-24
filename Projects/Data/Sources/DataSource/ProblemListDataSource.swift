@@ -10,7 +10,7 @@ import Combine
 import Domain
 
 public protocol ProblemListDataSource {
-    func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
+    func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemsDTO, Error>
 }
 
 final public class DefaultProblemListDataSource: ProblemListDataSource {
@@ -19,7 +19,7 @@ final public class DefaultProblemListDataSource: ProblemListDataSource {
     
     private let moyaProvider = MoyaWrapper<ProblemAPI>()
     
-    public func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error> {
-        moyaProvider.call(target: .learningHome)
+    public func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemsDTO, Error> {
+        moyaProvider.call(target: .problemList(problemsQueryDTO))
     }
 }

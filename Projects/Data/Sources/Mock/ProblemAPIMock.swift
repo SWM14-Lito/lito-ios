@@ -20,6 +20,8 @@ extension ProblemAPI {
             } else {
                 return Data()
             }
+        case .problemList:
+            return Data()
         }
     }
     

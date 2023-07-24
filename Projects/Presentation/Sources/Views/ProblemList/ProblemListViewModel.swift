@@ -11,7 +11,7 @@ import Domain
 
 final public class ProblemListViewModel: BaseViewModel {
 
-    private let useCase: LearningHomeUseCase
+    private let useCase: ProblemListUseCase
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
     @Published var selectedFilter: ProblemListFilter = .all
@@ -19,9 +19,23 @@ final public class ProblemListViewModel: BaseViewModel {
     public var prevFilter: ProblemListFilter = .all
     @State private var isApply = false
 
-    public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
+    }
+    
+    public func getProblemList() {
+        let problemsQueryDTO = ProblemsQueryDTO()
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemCellVO):
+                    print(problemCellVO)
+                case .failure:
+                    break
+                }
+            })
+            .store(in: cancelBag)
     }
 
     public enum SubjectInfo: String, CaseIterable {

@@ -40,6 +40,9 @@ public struct ProblemListView: View {
                     })
                 }
             }
+            .onAppear {
+                viewModel.getProblemList()
+            }
     }
     
     @ViewBuilder
