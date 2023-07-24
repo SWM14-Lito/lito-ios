@@ -41,12 +41,12 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private func profileView() -> some View {
         VStack {
-            if let learningHomeVO = viewModel.learningHomeVO {
+            if let userInfo = viewModel.userInfo {
                 VStack {
-                    UrlImageView(urlString: learningHomeVO.userInfo.profileImgUrl)
+                    UrlImageView(urlString: userInfo.profileImgUrl)
                         .frame(width: 88, height: 88)
                         .clipShape(Circle())
-                    Text(learningHomeVO.userInfo.nickname)
+                    Text(userInfo.nickname)
                         .font(.system(size: 12))
                 }
                 .frame(height: 115)
@@ -78,15 +78,13 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주는 뷰
     @ViewBuilder
     private func solvingProblemView() -> some View {
-        if let learningHomeVO = viewModel.learningHomeVO {
-            if let recommendedProblem = learningHomeVO.recommendedProblem {
-                VStack(alignment: .leading) {
-                    Text("풀던 문제")
-                        .font(.system(size: 20, weight: .bold))
-                    ProblemCellView(problemCellVO: recommendedProblem, viewModel: viewModel)
-                }
-                .padding([.leading, .trailing], 20)
+        if viewModel.solvingProblem != nil {
+            VStack(alignment: .leading) {
+                Text("풀던 문제")
+                    .font(.system(size: 20, weight: .bold))
+                ProblemCellView(problemCellVO: $viewModel.solvingProblem, viewModel: viewModel)
             }
+            .padding([.leading, .trailing], 20)
         } else {
             Spacer()
             ProgressView()

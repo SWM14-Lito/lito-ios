@@ -16,15 +16,16 @@ public protocol ProblemCellHandling {
 
 public struct ProblemCellView: View {
     
-    private let problemCellVO: ProblemCellVO
+    @Binding private var problemCellVO: ProblemCellVO?
     private let viewModel: ProblemCellHandling
     
-    public init(problemCellVO: ProblemCellVO, viewModel: ProblemCellHandling) {
-        self.problemCellVO = problemCellVO
+    public init(problemCellVO: Binding<ProblemCellVO?>, viewModel: ProblemCellHandling) {
+        self._problemCellVO = problemCellVO
         self.viewModel = viewModel
     }
     
     public var body: some View {
+        if let problemCellVO = problemCellVO {
             ZStack(alignment: .trailing) {
                 Button {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
@@ -57,6 +58,7 @@ public struct ProblemCellView: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.black, lineWidth: 1)
             )
+        }
         
     }
 }
