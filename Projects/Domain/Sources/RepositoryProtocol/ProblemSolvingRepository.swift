@@ -6,6 +6,8 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+import Combine
+
 public protocol ProblemSolvingRepository {
-    
+    func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
 }

@@ -7,6 +7,7 @@
 //
 
 import Domain
+import Combine
 
 final public class DefaultProblemSolvingRepository: ProblemSolvingRepository {
     
@@ -14,5 +15,11 @@ final public class DefaultProblemSolvingRepository: ProblemSolvingRepository {
     
     public init(dataSource: ProblemSolvingDataSource) {
         self.dataSource = dataSource
+    }
+    
+    public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error> {
+        dataSource.getProblemDetail(id: id)
+            .map { $0.toVO() }
+            .eraseToAnyPublisher()
     }
 }

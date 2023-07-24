@@ -10,11 +10,15 @@ import Combine
 import Domain
 
 public protocol ProblemSolvingDataSource {
-
+    func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error>
 }
 
 final public class DefaultProblemSolvingDataSource: ProblemSolvingDataSource {
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<ProfileSettingAPI>()
+    private let moyaProvider = MoyaWrapper<ProblemAPI>()
+    
+    public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error> {
+        moyaProvider.call(target: .problemDetail(id: id))
+    }
 }

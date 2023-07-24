@@ -31,21 +31,21 @@ public class ProblemSolvingViewModel: BaseViewModel {
     }
 
     // API 통신해서 문제 세부 정보 가져오기
-    func getProblemInfo() {
-//        useCase.getProblemInfo()
-//            .sinkToResult { result in
-//                switch result {
-//                case .success(let problemDetailVO):
-//                    self.problemDetailVO = problemDetailVO
-//                    self.hideKeyword()
-//                    self.showKeyboard()
-//                case .failure(let error):
-//                    if let errorVO = error as? ErrorVO {
-//                        self.errorObject.error  = errorVO
-//                    }
-//                }
-//            }
-//            .store(in: cancelBag)
+    func getProblemDetail() {
+        useCase.getProblemDetail(id: problemId)
+            .sinkToResult { result in
+                switch result {
+                case .success(let problemDetailVO):
+                    self.problemDetailVO = problemDetailVO
+                    self.hideKeyword()
+                    self.showKeyboard()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
     // 정답이 나오는 상태로 화면을 변경
@@ -63,7 +63,7 @@ public class ProblemSolvingViewModel: BaseViewModel {
     
     // 사용자가 키보드 엔터 눌렀을 때 정답 여부에 따라 다음 상태로 이동하기
     func handleInput() {
-        if input == problemDetailVO?.keyword {
+        if input == problemDetailVO?.problemKeyword {
             showAnswer()
             useCase.correct()
         } else {
@@ -85,7 +85,7 @@ public class ProblemSolvingViewModel: BaseViewModel {
     // 문제에 대한 답변에서 키워드 부분은 숨기기
     private func hideKeyword() {
         guard let problemDetailVO = problemDetailVO else { return }
-        let wordLength = problemDetailVO.keyword.count
-        answerWithoutKeyword = problemDetailVO.answer.replacingOccurrences(of: problemDetailVO.keyword, with: String(repeating: " _ ", count: wordLength))
+        let wordLength = problemDetailVO.problemKeyword.count
+        answerWithoutKeyword = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: String(repeating: " _ ", count: wordLength))
     }
 }

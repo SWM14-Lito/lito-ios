@@ -19,6 +19,7 @@ public struct ProblemSolvingView: View {
     
     public var body: some View {
         VStack {
+            errorMessage
             if let problemDetailVO = viewModel.problemDetailVO {
                 ScrollView {
                     question
@@ -28,7 +29,7 @@ public struct ProblemSolvingView: View {
                         showAnswerButton
                         wrongMessage
                     } else {
-                        answer(text: problemDetailVO.answer)
+                        answer(text: problemDetailVO.problemAnswer)
                         showChatGPTButton
                         listOfFAQ
                     }
@@ -49,7 +50,7 @@ public struct ProblemSolvingView: View {
         }
         .padding([.leading, .trailing])
         .onAppear {
-            viewModel.getProblemInfo()
+            viewModel.getProblemDetail()
         }
         .onChange(of: viewModel.focused) {
             focused = $0
@@ -59,7 +60,7 @@ public struct ProblemSolvingView: View {
     @ViewBuilder
     private var question: some View {
         if let problemDetailVO = viewModel.problemDetailVO {
-            Text(problemDetailVO.question)
+            Text(problemDetailVO.problemQuestion)
                 .padding(.bottom)
         }
     }
@@ -118,11 +119,17 @@ public struct ProblemSolvingView: View {
                 Divider()
                 
                 ForEach(faqs, id: \.self) { faq in
-                    Text("Q) " + faq.question)
-                    Text("A) " + faq.answer)
+                    Text("Q) " + faq.faqQuestion)
+                    Text("A) " + faq.faqAnswer)
                         .padding(.bottom)
                 }
             }
         }
+    }
+    
+    // API 에러 보여주는 뷰
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }

@@ -7,27 +7,29 @@
 //
 
 public struct ProblemDetailVO {
-    public let question: String
-    public let answer: String
-    public let keyword: String
+    public let problemId: Int
+    public let problemQuestion: String
+    public let problemAnswer: String
+    public let problemKeyword: String
     public var favorite: ProblemFavoriteStatus
     public let faqs: [ProblemFAQVO]?
     
-    public init(question: String, answer: String, keyword: String, favorite: ProblemFavoriteStatus, faqs: [ProblemFAQVO]?) {
-        self.question = question
-        self.answer = answer
-        self.keyword = keyword
+    public init(problemId: Int, problemQuestion: String, problemAnswer: String, problemKeyword: String, favorite: ProblemFavoriteStatus, faqs: [ProblemFAQVO]?) {
+        self.problemId = problemId
+        self.problemQuestion = problemQuestion
+        self.problemAnswer = problemAnswer
+        self.problemKeyword = problemKeyword
         self.favorite = favorite
         self.faqs = faqs
     }
 }
 
 public struct ProblemFAQVO: Hashable {
-    public let question: String
-    public let answer: String
+    public let faqQuestion: String
+    public let faqAnswer: String
     
-    public init(question: String, answer: String) {
-        self.question = question
-        self.answer = answer
+    public init(faqQuestion: String, faqAnswer: String) {
+        self.faqQuestion = faqQuestion
+        self.faqAnswer = faqAnswer
     }
 }

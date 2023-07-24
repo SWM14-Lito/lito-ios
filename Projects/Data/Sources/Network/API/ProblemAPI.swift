@@ -12,6 +12,7 @@ import Foundation
 
 enum ProblemAPI {
     case learningHome
+    case problemDetail(id: Int)
 }
 extension ProblemAPI: TargetType {
     var baseURL: URL {
@@ -22,12 +23,14 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return "/api/v1/problems/users"
+        case .problemDetail:
+            return "/api/v1/problems/1"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .learningHome:
+        case .learningHome, .problemDetail:
             return .get
         }
     }
@@ -36,12 +39,16 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return .requestPlain
+        case .problemDetail(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .learningHome:
+        case .learningHome, .problemDetail:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
         }
     }
