@@ -11,6 +11,7 @@ import Domain
 
 public protocol ProblemSolvingDataSource {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error>
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
 }
 
 final public class DefaultProblemSolvingDataSource: ProblemSolvingDataSource {
@@ -20,5 +21,9 @@ final public class DefaultProblemSolvingDataSource: ProblemSolvingDataSource {
     
     public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error> {
         moyaProvider.call(target: .problemDetail(id: id))
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        moyaProvider.call(target: .favoriteToggle(id: id))
     }
 }

@@ -22,4 +22,8 @@ final public class DefaultProblemSolvingRepository: ProblemSolvingRepository {
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        dataSource.toggleProblemFavorite(id: id)
+    }
 }

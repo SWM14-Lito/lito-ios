@@ -57,8 +57,18 @@ public class ProblemSolvingViewModel: BaseViewModel {
     
     // 문제 찜하기 선택 및 해제
     func toggleFavorite() {
-        problemDetailVO?.favorite.toggle()
-        useCase.toggleFavorite()
+        useCase.toggleProblemFavorite(id: problemId)
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    self.problemDetailVO?.favorite.toggle()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
     // 사용자가 키보드 엔터 눌렀을 때 정답 여부에 따라 다음 상태로 이동하기

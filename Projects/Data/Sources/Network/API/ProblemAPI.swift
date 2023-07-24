@@ -13,6 +13,7 @@ import Foundation
 enum ProblemAPI {
     case learningHome
     case problemDetail(id: Int)
+    case favoriteToggle(id: Int)
 }
 extension ProblemAPI: TargetType {
     var baseURL: URL {
@@ -25,6 +26,8 @@ extension ProblemAPI: TargetType {
             return "/api/v1/problems/users"
         case .problemDetail:
             return "/api/v1/problems/1"
+        case .favoriteToggle:
+            return "/api/v1/problems/1/favorites"
         }
     }
     
@@ -32,6 +35,8 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome, .problemDetail:
             return .get
+        case .favoriteToggle:
+            return .patch
         }
     }
     
@@ -43,12 +48,16 @@ extension ProblemAPI: TargetType {
             return .requestParameters(parameters: [
                 "id": id
             ], encoding: URLEncoding.queryString)
+        case .favoriteToggle(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .learningHome, .problemDetail:
+        case .learningHome, .problemDetail, .favoriteToggle:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
         }
     }

@@ -11,8 +11,8 @@ import Foundation
 
 public protocol ProblemSolvingUseCase {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func showAnswer()
-    func toggleFavorite()
     func correct()
     func wrong()
 }
@@ -29,11 +29,11 @@ public final class DefaultProblemSolvingUseCase: ProblemSolvingUseCase {
         repository.getProblemDetail(id: id)
     }
     
-    public func showAnswer() {
-        
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        repository.toggleProblemFavorite(id: id)
     }
     
-    public func toggleFavorite() {
+    public func showAnswer() {
         
     }
     

@@ -11,6 +11,7 @@ import Foundation
 
 public protocol LearningHomeUseCase {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
 }
 
 public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
@@ -22,5 +23,9 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
          repository.getProfileAndProblems()
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        repository.toggleProblemFavorite(id: id)
     }
 }

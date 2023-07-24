@@ -59,7 +59,17 @@ extension LearningHomeViewModel: ProblemCellHandling {
     }
     
     public func changeFavoriteStatus(id: Int) {
-        solvingProblem?.favorite.toggle()
-        // TODO: API 통신
+        useCase.toggleProblemFavorite(id: id)
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    self.solvingProblem?.favorite.toggle()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
 }
