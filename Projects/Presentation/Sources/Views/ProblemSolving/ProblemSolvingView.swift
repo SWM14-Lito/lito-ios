@@ -57,6 +57,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // 문제 질문
     @ViewBuilder
     private var question: some View {
         if let problemDetailVO = viewModel.problemDetailVO {
@@ -65,12 +66,14 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // 문제 답변
     @ViewBuilder
     private func answer(text: String) -> some View {
         Text(text)
             .padding(.bottom)
     }
     
+    // 답변 입력칸
     @ViewBuilder
     private var textField: some View {
         TextField("정답을 입력해주세요", text: $viewModel.input)
@@ -82,6 +85,7 @@ public struct ProblemSolvingView: View {
             }
     }
     
+    // 정답 보기 버튼
     @ViewBuilder
     private var showAnswerButton: some View {
         Button {
@@ -92,6 +96,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // 틀렸을 때 띄워주는 메시지
     @ViewBuilder
     private var wrongMessage: some View {
         if viewModel.isWrong {
@@ -100,6 +105,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // ChatGPT 버튼
     @ViewBuilder
     private var showChatGPTButton: some View {
         Button {
@@ -110,6 +116,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // FAQ 목록
     @ViewBuilder
     private var listOfFAQ: some View {
         if let problemDetailVO = viewModel.problemDetailVO,
@@ -127,7 +134,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
-    // API 에러 보여주는 뷰
+    // API 에러 발생시 알려줌
     @ViewBuilder
     private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)

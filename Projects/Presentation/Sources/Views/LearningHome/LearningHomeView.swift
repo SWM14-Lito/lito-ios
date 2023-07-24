@@ -18,11 +18,11 @@ public struct LearningHomeView: View {
     
     public var body: some View {
         VStack {
-            errorView()
-            profileView()
-            startLearningButtonView()
+            errorMessage
+            profile
+            startLearningButton
             Divider()
-            solvingProblemView()
+            solvingProblem
             Spacer()
         }
         .onAppear {
@@ -31,15 +31,15 @@ public struct LearningHomeView: View {
 
     }
     
-    // API 에러 보여주는 뷰
+    // API 에러 발생시 알려줌
     @ViewBuilder
-    private func errorView() -> some View {
+    private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
-    // 프로필 이미지와 닉네임 보여주는 뷰
+    // 프로필 이미지와 닉네임 보여주기
     @ViewBuilder
-    private func profileView() -> some View {
+    private var profile: some View {
         VStack {
             if let userInfo = viewModel.userInfo {
                 VStack {
@@ -58,9 +58,9 @@ public struct LearningHomeView: View {
         .padding(.bottom, 18)
     }
     
-    // 학습 시작 버튼 뷰
+    // 학습 시작 버튼
     @ViewBuilder
-    private func startLearningButtonView() -> some View {
+    private var startLearningButton: some View {
         Button {
             viewModel.moveToLearningView()
         } label: { 
@@ -75,9 +75,9 @@ public struct LearningHomeView: View {
         .padding(.bottom, 20)
     }
     
-    // 풀던 문제 보여주는 뷰
+    // 풀던 문제 보여주기
     @ViewBuilder
-    private func solvingProblemView() -> some View {
+    private var solvingProblem: some View {
         if viewModel.solvingProblem != nil {
             VStack(alignment: .leading) {
                 Text("풀던 문제")

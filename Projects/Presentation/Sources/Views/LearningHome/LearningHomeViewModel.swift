@@ -53,11 +53,12 @@ public final class LearningHomeViewModel: BaseViewModel {
     }
 }
 extension LearningHomeViewModel: ProblemCellHandling {
-    
+    // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
         coordinator.push(.problemSolvingScene(id: id))
     }
     
+    // 찜하기 or 찜해제하기
     public func changeFavoriteStatus(id: Int) {
         useCase.toggleProblemFavorite(id: id)
             .sinkToResult { result in
