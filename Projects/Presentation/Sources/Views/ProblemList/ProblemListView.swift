@@ -22,11 +22,7 @@ public struct ProblemListView: View {
             Divider()
             headSection
             filteringView
-            ScrollView {
-                Text("test")
-                Text("test")
-                Text("test")
-            }
+            problemList
             Spacer()
         }.navigationTitle(viewModel.selectedSubject.rawValue)
             .navigationBarTitleDisplayMode(.large)
@@ -39,9 +35,6 @@ public struct ProblemListView: View {
                             .foregroundColor(.orange)
                     })
                 }
-            }
-            .onAppear {
-                viewModel.getProblemList()
             }
     }
     
@@ -98,7 +91,7 @@ public struct ProblemListView: View {
                             .stroke(Color.gray, lineWidth: 1)
                     )
                     .sheet(isPresented: $viewModel.showFilterSheet) {
-                        filteringModal(viewModel: viewModel)
+                        filteringModal
                             .presentationDetents([.medium])
                             .presentationDragIndicator(.visible)
                             .frame(alignment: .topTrailing)
@@ -120,53 +113,63 @@ public struct ProblemListView: View {
         }.scrollIndicators(.never)
     }
     
-    private struct filteringModal: View {
+    @ViewBuilder
+    private var filteringModal: some View {
         
-        @StateObject private var viewModel: ProblemListViewModel
-        
-        public init(viewModel: ProblemListViewModel) {
-            self._viewModel = StateObject(wrappedValue: viewModel)
-        }
-        
-        public var body: some View {
-            VStack(alignment: .leading) {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("풀이 여부")
-                        .font(.title2)
-                    HStack {
-                        ForEach(ProblemListViewModel.ProblemListFilter.allCases, id: \.self) { filter in
-                            Button(filter.rawValue) {
-                                viewModel.selectFilter(filter)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(viewModel.selectedFilter == filter ? .orange : .gray)
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("풀이 여부")
+                    .font(.title2)
+                HStack {
+                    ForEach(ProblemListViewModel.ProblemListFilter.allCases, id: \.self) { filter in
+                        Button(filter.rawValue) {
+                            viewModel.selectFilter(filter)
                         }
+                        .buttonStyle(.borderedProminent)
+                        .tint(viewModel.selectedFilter == filter ? .orange : .gray)
                     }
                 }
+            }
+            Spacer()
+            HStack(alignment: .center) {
                 Spacer()
-                HStack(alignment: .center) {
-                    Spacer()
-                    Button("초기화") {
-                        viewModel.selectedFilter = .all
-                    }
-                    .buttonStyle(.bordered)
-                    .font(.title2)
-                    Spacer()
-                    Button("적용하기") {
-                        viewModel.applyFilter()
-                    }
-                    .buttonStyle(.bordered)
-                    .font(.title2)
-                    Spacer()
+                Button("초기화") {
+                    viewModel.selectedFilter = .all
+                }
+                .buttonStyle(.bordered)
+                .font(.title2)
+                Spacer()
+                Button("적용하기") {
+                    viewModel.applyFilter()
+                }
+                .buttonStyle(.bordered)
+                .font(.title2)
+                Spacer()
+            }
+        }
+        .padding(20)
+        .onAppear {
+            viewModel.storePrevFilter()
+        }
+        .onDisappear {
+            viewModel.cancelSelectedFilter()
+        }
+    }
+    
+    @ViewBuilder
+    private var problemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.problemCellList, id: \.problemId) { problemCellVO in
+                    ProblemCellView(problemCellVO: problemCellVO, viewModel: viewModel)
+                        .onAppear {
+                            viewModel.getProblemList(problemId: problemCellVO.problemId)
+                        }
                 }
             }
-            .padding(20)
-            .onAppear {
-                viewModel.storePrevFilter()
-            }
-            .onDisappear {
-                viewModel.cancelSelectedFilter()
-            }
+        }
+        .onAppear {
+            viewModel.getProblemList()
         }
     }
     

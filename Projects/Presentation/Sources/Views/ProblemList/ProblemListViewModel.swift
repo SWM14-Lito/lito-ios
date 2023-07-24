@@ -12,6 +12,8 @@ import Domain
 final public class ProblemListViewModel: BaseViewModel {
 
     private let useCase: ProblemListUseCase
+    private var lastProblemId: Int?
+    @Published var problemCellList: [ProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
     @Published var selectedFilter: ProblemListFilter = .all
@@ -24,13 +26,19 @@ final public class ProblemListViewModel: BaseViewModel {
         super.init(coordinator: coordinator)
     }
     
-    public func getProblemList() {
-        let problemsQueryDTO = ProblemsQueryDTO()
+    public func getProblemList(problemId: Int? = nil) {
+        if !problemCellList.isEmpty {
+            guard problemId == problemCellList.last?.problemId else { return }
+        }
+        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
                 switch result {
-                case .success(let problemCellVO):
-                    print(problemCellVO)
+                case .success(let problemsCellVO):
+                    problemsCellVO?.forEach({ problemCellVO in
+                        self.lastProblemId = problemCellVO.problemId
+                        self.problemCellList.append(problemCellVO)
+                    })
                 case .failure:
                     break
                 }
@@ -85,4 +93,18 @@ final public class ProblemListViewModel: BaseViewModel {
         }
     }
 
+}
+
+extension ProblemListViewModel: ProblemCellHandling {
+    
+    public func moveToProblemView(id: Int) {
+        coordinator.push(.problemSolvingScene(id: id))
+    }
+    
+    public func changeFavoriteStatus(id: Int) {
+        let index = problemCellList.firstIndex(where: { $0.problemId == id})!
+        problemCellList[index].favorite.toggle()
+        // TODO: API 통신
+    }
+    
 }

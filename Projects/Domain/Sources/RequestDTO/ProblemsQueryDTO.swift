@@ -9,13 +9,13 @@
 import Foundation
 
 public struct ProblemsQueryDTO {
-    public let lastProblemId: String?
+    public let lastProblemId: Int?
     public let subjectId: String?
     public let problemStatus: String?
     public let query: String?
     public let size: String?
     
-    public init(lastProblemId: String? = nil, subjectId: String? = nil, problemStatus: String? = nil, query: String? = nil, size: String? = nil) {
+    public init(lastProblemId: Int? = nil, subjectId: String? = nil, problemStatus: String? = nil, query: String? = nil, size: String? = nil) {
         self.lastProblemId = lastProblemId
         self.subjectId = subjectId
         self.problemStatus = problemStatus
