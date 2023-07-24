@@ -46,10 +46,10 @@ extension ProblemAPI: TargetType {
             if let lastProblemId = problemsQueryDTO.lastProblemId {
                 parameters["lastProblemId"] = lastProblemId
             }
-            if let subjectId = problemsQueryDTO.subjectId {
+            if let subjectId = problemsQueryDTO.subjectId, subjectId != 0 {
                 parameters["subjectId"] = subjectId
             }
-            if let problemStatus = problemsQueryDTO.problemStatus {
+            if let problemStatus = problemsQueryDTO.problemStatus, problemStatus != 0 {
                 parameters["problemStatus"] = problemStatus
             }
             if let query = problemsQueryDTO.query {

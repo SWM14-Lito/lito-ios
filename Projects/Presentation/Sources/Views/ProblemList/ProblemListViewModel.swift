@@ -17,9 +17,10 @@ final public class ProblemListViewModel: BaseViewModel {
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
     @Published var selectedFilter: ProblemListFilter = .all
+    // TODO: 이후에 필터 view를 general 하게 사용하기 위한 변수
     @Published var selectedFilters: [ProblemListFilter] = []
     public var prevFilter: ProblemListFilter = .all
-    @State private var isApply = false
+    private var isApply = false
 
     public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -30,7 +31,7 @@ final public class ProblemListViewModel: BaseViewModel {
         if !problemCellList.isEmpty {
             guard problemId == problemCellList.last?.problemId else { return }
         }
-        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId)
+        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId, subjectId: selectedSubject.number, problemStatus: selectedFilters.first?.number)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
                 switch result {
@@ -46,6 +47,19 @@ final public class ProblemListViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
+    private func resetProblemCellList() {
+        problemCellList.removeAll()
+        lastProblemId = nil
+    }
+    
+    public func changeSubject(subject: SubjectInfo) {
+        if selectedSubject != subject {
+            selectedSubject = subject
+            resetProblemCellList()
+            getProblemList()
+        }
+    }
+    
     public func filterSheetToggle() {
         showFilterSheet.toggle()
     }
@@ -57,7 +71,10 @@ final public class ProblemListViewModel: BaseViewModel {
     public func removeFilter(_ filter: ProblemListFilter) {
         if let index = selectedFilters.firstIndex(of: filter) {
             selectedFilters.remove(at: index)
+            selectedFilter = .all
         }
+        resetProblemCellList()
+        getProblemList()
     }
     public func selectFilter(_ filter: ProblemListFilter) {
         if selectedFilter == filter {
@@ -68,8 +85,12 @@ final public class ProblemListViewModel: BaseViewModel {
     }
     public func applyFilter() {
         isApply = true
-        selectedFilters = [selectedFilter]
         showFilterSheet = false
+        if selectedFilter != prevFilter {
+            selectedFilters = [selectedFilter]
+            resetProblemCellList()
+            getProblemList()
+        }
     }
     public func cancelSelectedFilter() {
         if !isApply {

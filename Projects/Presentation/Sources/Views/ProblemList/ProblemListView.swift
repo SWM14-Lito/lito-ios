@@ -60,7 +60,7 @@ public struct ProblemListView: View {
                         }
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                viewModel.selectedSubject = subject
+                                viewModel.changeSubject(subject: subject)
                             }
                         }
                     }.padding(.leading, 10)
