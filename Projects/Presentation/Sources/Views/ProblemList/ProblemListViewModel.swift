@@ -45,20 +45,6 @@ final public class ProblemListViewModel: BaseViewModel {
             })
             .store(in: cancelBag)
     }
-
-    public enum SubjectInfo: String, CaseIterable {
-        case all = "전체"
-        case operationSystem = "운영체제"
-        case network = "네트워크"
-        case database = "데이터베이스"
-        case structure = "자료구조"
-    }
-    
-    public enum ProblemListFilter: String, CaseIterable {
-        case all = "전체"
-        case unsolved = "풀지않음"
-        case solved = "풀이완료"
-    }
     
     public func filterSheetToggle() {
         showFilterSheet.toggle()

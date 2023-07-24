@@ -24,7 +24,7 @@ public struct ProblemListView: View {
             filteringView
             problemList
             Spacer()
-        }.navigationTitle(viewModel.selectedSubject.rawValue)
+        }.navigationTitle(viewModel.selectedSubject.name)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -43,9 +43,9 @@ public struct ProblemListView: View {
         ScrollView(.horizontal) {
             VStack(spacing: 0) {
                 HStack {
-                    ForEach(ProblemListViewModel.SubjectInfo.allCases, id: \.self) { subject in
+                    ForEach(SubjectInfo.allCases, id: \.self) { subject in
                         VStack {
-                            Text(subject.rawValue)
+                            Text(subject.name)
                                 .lineLimit(1)
                                 .fixedSize()
                                 .font(.title3)
@@ -99,7 +99,7 @@ public struct ProblemListView: View {
                     // 동적으로 선택된 필터 박스 생성.
                     ForEach(viewModel.selectedFilters, id: \.self) { filter in
                         if filter != .all {
-                            Button(filter.rawValue) {
+                            Button(filter.name) {
                                 viewModel.removeFilter(filter)
                             }
                             .font(.caption)
@@ -121,8 +121,8 @@ public struct ProblemListView: View {
                 Text("풀이 여부")
                     .font(.title2)
                 HStack {
-                    ForEach(ProblemListViewModel.ProblemListFilter.allCases, id: \.self) { filter in
-                        Button(filter.rawValue) {
+                    ForEach(ProblemListFilter.allCases, id: \.self) { filter in
+                        Button(filter.name) {
                             viewModel.selectFilter(filter)
                         }
                         .buttonStyle(.borderedProminent)
@@ -167,6 +167,7 @@ public struct ProblemListView: View {
                         }
                 }
             }
+            .padding(20)
         }
         .onAppear {
             viewModel.getProblemList()
