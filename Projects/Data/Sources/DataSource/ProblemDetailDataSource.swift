@@ -9,12 +9,12 @@
 import Combine
 import Domain
 
-public protocol ProblemSolvingDataSource {
+public protocol ProblemDetailDataSource {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
 }
 
-final public class DefaultProblemSolvingDataSource: ProblemSolvingDataSource {
+final public class DefaultProblemDetailDataSource: ProblemDetailDataSource {
     public init() {}
     
     private let moyaProvider = MoyaWrapper<ProblemAPI>()

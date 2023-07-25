@@ -55,12 +55,12 @@ public struct DataAssembly: Assembly {
             return DefaultLearningHomeRepository(dataSource: dataSource)
         }
         // ProblemSolving
-        container.register(ProblemSolvingDataSource.self) { _ in
-            return DefaultProblemSolvingDataSource()
+        container.register(ProblemDetailDataSource.self) { _ in
+            return DefaultProblemDetailDataSource()
         }
-        container.register(ProblemSolvingRepository.self) { resolver in
-            let dataSource = resolver.resolve(ProblemSolvingDataSource.self)!
-            return DefaultProblemSolvingRepository(dataSource: dataSource)
+        container.register(ProblemDetailRepository.self) { resolver in
+            let dataSource = resolver.resolve(ProblemDetailDataSource.self)!
+            return DefaultProblemDetailRepository(dataSource: dataSource)
         }
         
         // ------------------------ Second Tab ------------------------

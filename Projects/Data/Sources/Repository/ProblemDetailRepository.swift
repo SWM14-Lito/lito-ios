@@ -9,11 +9,11 @@
 import Domain
 import Combine
 
-final public class DefaultProblemSolvingRepository: ProblemSolvingRepository {
+final public class DefaultProblemDetailRepository: ProblemDetailRepository {
     
-    private let dataSource: ProblemSolvingDataSource
+    private let dataSource: ProblemDetailDataSource
     
-    public init(dataSource: ProblemSolvingDataSource) {
+    public init(dataSource: ProblemDetailDataSource) {
         self.dataSource = dataSource
     }
     

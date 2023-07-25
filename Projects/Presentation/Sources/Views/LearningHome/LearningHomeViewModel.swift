@@ -30,6 +30,11 @@ public final class LearningHomeViewModel: BaseViewModel {
         print("찜한 목록 화면으로 이동")
     }
     
+    // 풀던 문제 화면으로 이동하기
+    func moveToSolvingProblemView() {
+        print("풀던 문제 화면으로 이동")
+    }
+    
     // 알림 목록 화면으로 이동하기
     func moveToNotiView() {
         print("알림 목록 화면으로 이동")

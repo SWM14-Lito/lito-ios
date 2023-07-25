@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-public struct ProblemSolvingView: View {
+public struct ProblemDetailView: View {
     
-    @StateObject private var viewModel: ProblemSolvingViewModel
+    @StateObject private var viewModel: ProblemDetailViewModel
     @FocusState private var focused: Bool
     
-    public init(viewModel: ProblemSolvingViewModel) {
+    public init(viewModel: ProblemDetailViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     

@@ -9,8 +9,8 @@
 import Domain
 import SwiftUI
 
-public class ProblemSolvingViewModel: BaseViewModel {
-    private let useCase: ProblemSolvingUseCase
+public class ProblemDetailViewModel: BaseViewModel {
+    private let useCase: ProblemDetailUseCase
     private var problemId: Int
     @Published var problemDetailVO: ProblemDetailVO?
     @Published var answerWithoutKeyword: String?
@@ -24,7 +24,7 @@ public class ProblemSolvingViewModel: BaseViewModel {
         case notSolved
     }
     
-    public init(problemId: Int, useCase: ProblemSolvingUseCase, coordinator: CoordinatorProtocol) {
+    public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         self.problemId = problemId
         super.init(coordinator: coordinator)

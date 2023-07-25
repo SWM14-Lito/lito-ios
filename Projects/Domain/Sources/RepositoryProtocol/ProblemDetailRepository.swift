@@ -8,7 +8,7 @@
 
 import Combine
 
-public protocol ProblemSolvingRepository {
+public protocol ProblemDetailRepository {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
 }

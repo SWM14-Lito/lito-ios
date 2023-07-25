@@ -9,7 +9,7 @@
 import Combine
 import Foundation
 
-public protocol ProblemSolvingUseCase {
+public protocol ProblemDetailUseCase {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func showAnswer()
@@ -17,11 +17,11 @@ public protocol ProblemSolvingUseCase {
     func wrong()
 }
 
-public final class DefaultProblemSolvingUseCase: ProblemSolvingUseCase {
+public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
     
-    private let repository: ProblemSolvingRepository
+    private let repository: ProblemDetailRepository
     
-    public init(repository: ProblemSolvingRepository) {
+    public init(repository: ProblemDetailRepository) {
         self.repository = repository
     }
     

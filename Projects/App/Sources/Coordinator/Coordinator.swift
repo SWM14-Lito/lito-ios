@@ -54,7 +54,7 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         case .problemListScene:
             injector?.resolve(ProblemListView.self)
         case .problemSolvingScene(let id):
-            injector?.resolve(ProblemSolvingView.self, argument: id)
+            injector?.resolve(ProblemDetailView.self, argument: id)
         case .pedigreeListScene:
             injector?.resolve(PedigreeListView.self)
         case .myPageScene:

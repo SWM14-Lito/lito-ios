@@ -80,8 +80,16 @@ public struct LearningHomeView: View {
     private var solvingProblem: some View {
         if viewModel.solvingProblem != nil {
             VStack(alignment: .leading) {
-                Text("풀던 문제")
-                    .font(.system(size: 20, weight: .bold))
+                HStack {
+                    Text("풀던 문제")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Button {
+                        viewModel.moveToSolvingProblemView()
+                    } label: {
+                        Text("전체 보기")
+                    }
+                }
                 ProblemCellView(problemCellVO: $viewModel.solvingProblem, problemCellHandling: viewModel)
             }
             .padding([.leading, .trailing], 20)
