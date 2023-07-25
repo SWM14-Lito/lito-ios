@@ -30,7 +30,7 @@ public enum SubjectInfo: String, CaseIterable {
         }
     }
     
-    public var number: Int {
+    public var query: Int {
         switch self {
         case .all:
             return 0
