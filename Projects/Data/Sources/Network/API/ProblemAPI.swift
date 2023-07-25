@@ -17,6 +17,8 @@ enum ProblemAPI {
     case favoriteProblemList(FavoriteProblemsQueryDTO)
     case problemDetail(id: Int)
     case favoriteToggle(id: Int)
+    case enterProblem(id: Int)
+    case submitAnswer(id: Int, answer: String)
 }
 extension ProblemAPI: TargetType {
     var baseURL: URL {
@@ -37,6 +39,10 @@ extension ProblemAPI: TargetType {
             return "/api/v1/problems/1"
         case .favoriteToggle:
             return "/api/v1/problems/1/favorites"
+        case .enterProblem:
+            return "/api/v1/problems/1"
+        case .submitAnswer:
+            return "/api/v1/problems/1/users"
         }
     }
     
@@ -53,6 +59,10 @@ extension ProblemAPI: TargetType {
         case .favoriteProblemList:
             return .get
         case .favoriteToggle:
+            return .patch
+        case .enterProblem:
+            return .post
+        case .submitAnswer:
             return .patch
         }
     }
@@ -111,6 +121,20 @@ extension ProblemAPI: TargetType {
             return .requestParameters(parameters: [
                 "id": id
             ], encoding: URLEncoding.queryString)
+        case .enterProblem(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
+        case .submitAnswer(let id, let keyword):
+            return .requestCompositeParameters(
+                bodyParameters: [
+                    "keyword": keyword
+                ],
+                bodyEncoding: JSONEncoding.default,
+                urlParameters: [
+                    "id": id
+                ]
+            )
         }
     }
     
@@ -118,6 +142,10 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome, .problemList, .solvingProblemList, .favoriteProblemList, .problemDetail, .favoriteToggle:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
+        case .enterProblem:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/x-www-form-urlencoded"]
+        case .submitAnswer:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json;charset=UTF-8"]
         }
     }
 }
