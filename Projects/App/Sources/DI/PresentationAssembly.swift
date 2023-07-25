@@ -76,7 +76,27 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(ProblemListViewModel.self)!
             return ProblemListView(viewModel: viewModel)
         }
-        // ProblemSolving
+        // SolvingProblemList
+        container.register(SolvingProblemListViewModel.self) { resolver in
+            let useCase = resolver.resolve(SolvingProblemListUseCase.self)!
+            return SolvingProblemListViewModel(useCase: useCase, coordinator: coordinator)
+        }
+        
+        container.register(SolvingProblemListView.self) { resolver in
+            let viewModel = resolver.resolve(SolvingProblemListViewModel.self)!
+            return SolvingProblemListView(viewModel: viewModel)
+        }
+        // FavoriteProblemList
+        container.register(FavoriteProblemListViewModel.self) { resolver in
+            let useCase = resolver.resolve(FavoriteProblemListUseCase.self)!
+            return FavoriteProblemListViewModel(useCase: useCase, coordinator: coordinator)
+        }
+        
+        container.register(FavoriteProblemListView.self) { resolver in
+            let viewModel = resolver.resolve(FavoriteProblemListViewModel.self)!
+            return FavoriteProblemListView(viewModel: viewModel)
+        }
+        // ProblemDetail
         container.register(ProblemDetailViewModel.self) { (resolver, id: Int) in
             let useCase = resolver.resolve(ProblemDetailUseCase.self)!
             return ProblemDetailViewModel(problemId: id, useCase: useCase, coordinator: coordinator)

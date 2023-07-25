@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SolvingProblemListView: View {
+public struct SolvingProblemListView: View {
     @StateObject private var viewModel: SolvingProblemListViewModel
     
     public init(viewModel: SolvingProblemListViewModel) {

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FavoriteProblemListView: View {
+public struct FavoriteProblemListView: View {
     @StateObject private var viewModel: FavoriteProblemListViewModel
     
     public init(viewModel: FavoriteProblemListViewModel) {
@@ -19,4 +19,3 @@ struct FavoriteProblemListView: View {
         Text("FavoriteProblemListView")
     }
 }
-

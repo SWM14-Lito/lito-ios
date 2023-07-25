@@ -12,7 +12,7 @@ import KakaoSDKAuth
 public enum AppScene: Hashable {
     case loginScene, profileSettingScene
     case rootTabScene
-    case learningHomeScene, problemListScene, problemSolvingScene(id: Int)
+    case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int)
     case pedigreeListScene
     case myPageScene
 }
