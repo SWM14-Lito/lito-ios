@@ -9,11 +9,11 @@
 import Combine
 import Domain
 
-public protocol SolvingProblemDataSource {
+public protocol SolvingProblemListDataSource {
 
 }
 
-final public class DefaultSolvingProblemDataSource: SolvingProblemDataSource {
+final public class DefaultSolvingProblemListDataSource: SolvingProblemListDataSource {
     public init() {}
     
     private let moyaProvider = MoyaWrapper<ProblemAPI>()

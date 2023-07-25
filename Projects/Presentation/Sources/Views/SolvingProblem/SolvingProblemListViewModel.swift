@@ -10,10 +10,10 @@ import SwiftUI
 import Domain
 import Combine
 
-public final class SolvingProblemViewModel: BaseViewModel {
-    private let useCase: SolvingProblemUseCase
+public final class SolvingProblemListViewModel: BaseViewModel {
+    private let useCase: SolvingProblemListUseCase
 
-    public init(useCase: SolvingProblemUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }

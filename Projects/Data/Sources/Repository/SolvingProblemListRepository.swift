@@ -10,11 +10,11 @@ import Domain
 import Combine
 import UIKit
 
-final public class DefaultSolvingProblemRepository: SolvingProblemRepository {
+final public class DefaultSolvingProblemListRepository: SolvingProblemListRepository {
     
-    private let dataSource: SolvingProblemDataSource
+    private let dataSource: SolvingProblemListDataSource
     
-    public init(dataSource: SolvingProblemDataSource) {
+    public init(dataSource: SolvingProblemListDataSource) {
         self.dataSource = dataSource
     }
 

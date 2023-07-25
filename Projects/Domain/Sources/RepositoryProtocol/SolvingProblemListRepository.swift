@@ -8,6 +8,6 @@
 
 import Combine
 
-public protocol SolvingProblemRepository {
+public protocol SolvingProblemListRepository {
 
 }

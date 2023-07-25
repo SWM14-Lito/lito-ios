@@ -9,14 +9,14 @@
 import Combine
 import Foundation
 
-public protocol SolvingProblemUseCase {
+public protocol SolvingProblemListUseCase {
 
 }
 
-public final class DefaultSolvingProblemUseCase: SolvingProblemUseCase {
-    private let repository: SolvingProblemRepository
+public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
+    private let repository: SolvingProblemListRepository
     
-    public init(repository: SolvingProblemRepository) {
+    public init(repository: SolvingProblemListRepository) {
         self.repository = repository
     }
 }
