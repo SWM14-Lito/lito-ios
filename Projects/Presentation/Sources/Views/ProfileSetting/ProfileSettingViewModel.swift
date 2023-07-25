@@ -86,11 +86,9 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
-    func moveToLearningHomeView() {
+    private func moveToLearningHomeView() {
         
         guard checkAllTextAreFilled() else { return }
-        
-        requestNotificationPermission()
         
         buttonIsLocked = true
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
@@ -158,12 +156,15 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
 
     // 알람 받을건지 여부 확인하기
-    private func requestNotificationPermission() {
+    func requestNotiAndMoveToLearningHomeView() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
             if didAllow {
                 self.acceptAlarm = true
             } else {
                 self.acceptAlarm = false
+            }
+            DispatchQueue.main.async {
+                self.moveToLearningHomeView()
             }
         })
     }

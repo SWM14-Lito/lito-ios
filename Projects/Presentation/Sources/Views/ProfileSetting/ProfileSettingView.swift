@@ -102,7 +102,7 @@ public struct ProfileSettingView: View {
     private var finishButton: some View {
         Button {
             if !viewModel.buttonIsLocked {
-                viewModel.moveToLearningHomeView()
+                viewModel.requestNotiAndMoveToLearningHomeView()
             }
         } label: {
             Text("설정하기")
