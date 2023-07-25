@@ -48,9 +48,6 @@ public struct ProfileSettingView: View {
                 }
             }
         }
-        .onAppear {
-            viewModel.requestNotificationPermission()
-        }
     }
     
     // API 에러 발생시 알려줌

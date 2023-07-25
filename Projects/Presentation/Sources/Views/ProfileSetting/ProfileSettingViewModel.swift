@@ -90,6 +90,8 @@ public class ProfileSettingViewModel: BaseViewModel {
         
         guard checkAllTextAreFilled() else { return }
         
+        requestNotificationPermission()
+        
         buttonIsLocked = true
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
@@ -156,7 +158,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
 
     // 알람 받을건지 여부 확인하기
-    func requestNotificationPermission() {
+    private func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
             if didAllow {
                 self.acceptAlarm = true

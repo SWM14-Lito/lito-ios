@@ -27,7 +27,7 @@ final public class LoginViewModel: BaseViewModel {
                     switch loginResultVO {
                     case .registered:
                         self.coordinator.pop()
-                        self.coordinator.push(.rootTabScene)
+                        self.coordinator.push(.profileSettingScene)
                     case .unregistered:
                         self.coordinator.pop()
                         self.coordinator.push(.profileSettingScene)
