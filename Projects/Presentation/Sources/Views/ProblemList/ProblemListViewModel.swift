@@ -31,7 +31,7 @@ final public class ProblemListViewModel: BaseViewModel {
         if !problemCellList.isEmpty {
             guard problemId == problemCellList.last?.problemId else { return }
         }
-        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId, subjectId: selectedSubject.number, problemStatus: selectedFilters.first?.number)
+        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId, subjectId: selectedSubject.number, problemStatus: selectedFilters.first?.query)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
                 switch result {

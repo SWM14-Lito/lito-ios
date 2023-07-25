@@ -22,7 +22,7 @@ public struct LearningHomeDTO: Decodable {
         let problemInfo: ProblemCellVO?
         
         if let problemId = problemId {
-            problemInfo = ProblemCellDTO(problemId: problemId, solved: "풀이중", question: question, subject: subject, favorite: favorite).toVO()
+            problemInfo = ProblemCellDTO(problemId: problemId, subjectName: subject, question: question, problemStatus: "풀이중", favorite: favorite).toVO()
         } else {
             problemInfo = nil
         }

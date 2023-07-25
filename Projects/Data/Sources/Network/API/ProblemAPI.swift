@@ -49,7 +49,7 @@ extension ProblemAPI: TargetType {
             if let subjectId = problemsQueryDTO.subjectId, subjectId != 0 {
                 parameters["subjectId"] = subjectId
             }
-            if let problemStatus = problemsQueryDTO.problemStatus, problemStatus != 0 {
+            if let problemStatus = problemsQueryDTO.problemStatus, problemStatus != "" {
                 parameters["problemStatus"] = problemStatus
             }
             if let query = problemsQueryDTO.query {

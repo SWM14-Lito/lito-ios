@@ -24,14 +24,14 @@ public enum ProblemListFilter: CaseIterable {
         }
     }
     
-    public var number: Int {
+    public var query: String {
         switch self {
         case .all:
-            return 0
+            return ""
         case .unsolved:
-            return 1
+            return "PROCESS"
         case .solved:
-            return 2
+            return "COMPLETE"
         }
     }
     

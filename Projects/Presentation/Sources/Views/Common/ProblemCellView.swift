@@ -30,13 +30,13 @@ public struct ProblemCellView: View {
                     viewModel.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
                     HStack {
-                        Image(systemName: problemCellVO.solved.symbolName)
+                        Image(systemName: problemCellVO.problemStatus.symbolName)
                         VStack(alignment: .leading) {
                             Text(problemCellVO.question)
                                 .font(.system(size: 15))
                                 .foregroundColor(Color.black)
                                 .multilineTextAlignment(.leading)
-                            Text(problemCellVO.subject)
+                            Text(problemCellVO.subjectName)
                                 .font(.system(size: 13))
                                 .foregroundColor(Color.gray)
                                 .multilineTextAlignment(.leading)

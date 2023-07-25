@@ -160,7 +160,7 @@ public struct ProblemListView: View {
     private var problemList: some View {
         ScrollView {
             LazyVStack {
-                ForEach(viewModel.problemCellList, id: \.problemId) { problemCellVO in
+                ForEach(viewModel.problemCellList, id: \.self) { problemCellVO in
                     ProblemCellView(problemCellVO: problemCellVO, viewModel: viewModel)
                         .onAppear {
                             viewModel.getProblemList(problemId: problemCellVO.problemId)
