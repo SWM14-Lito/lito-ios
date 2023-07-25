@@ -8,17 +8,18 @@
 
 import SwiftUI
 
-public struct ProblemSolvingView: View {
+public struct ProblemDetailView: View {
     
-    @StateObject private var viewModel: ProblemSolvingViewModel
+    @StateObject private var viewModel: ProblemDetailViewModel
     @FocusState private var focused: Bool
     
-    public init(viewModel: ProblemSolvingViewModel) {
+    public init(viewModel: ProblemDetailViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         VStack {
+            errorMessage
             if let problemDetailVO = viewModel.problemDetailVO {
                 ScrollView {
                     question
@@ -28,7 +29,7 @@ public struct ProblemSolvingView: View {
                         showAnswerButton
                         wrongMessage
                     } else {
-                        answer(text: problemDetailVO.answer)
+                        answer(text: problemDetailVO.problemAnswer)
                         showChatGPTButton
                         listOfFAQ
                     }
@@ -49,27 +50,30 @@ public struct ProblemSolvingView: View {
         }
         .padding([.leading, .trailing])
         .onAppear {
-            viewModel.getProblemInfo()
+            viewModel.getProblemDetail()
         }
         .onChange(of: viewModel.focused) {
             focused = $0
         }
     }
     
+    // 문제 질문
     @ViewBuilder
     private var question: some View {
         if let problemDetailVO = viewModel.problemDetailVO {
-            Text(problemDetailVO.question)
+            Text(problemDetailVO.problemQuestion)
                 .padding(.bottom)
         }
     }
     
+    // 문제 답변
     @ViewBuilder
     private func answer(text: String) -> some View {
         Text(text)
             .padding(.bottom)
     }
     
+    // 답변 입력칸
     @ViewBuilder
     private var textField: some View {
         TextField("정답을 입력해주세요", text: $viewModel.input)
@@ -81,6 +85,7 @@ public struct ProblemSolvingView: View {
             }
     }
     
+    // 정답 보기 버튼
     @ViewBuilder
     private var showAnswerButton: some View {
         Button {
@@ -91,6 +96,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // 틀렸을 때 띄워주는 메시지
     @ViewBuilder
     private var wrongMessage: some View {
         if viewModel.isWrong {
@@ -99,6 +105,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // ChatGPT 버튼
     @ViewBuilder
     private var showChatGPTButton: some View {
         Button {
@@ -109,6 +116,7 @@ public struct ProblemSolvingView: View {
         }
     }
     
+    // FAQ 목록
     @ViewBuilder
     private var listOfFAQ: some View {
         if let problemDetailVO = viewModel.problemDetailVO,
@@ -118,11 +126,17 @@ public struct ProblemSolvingView: View {
                 Divider()
                 
                 ForEach(faqs, id: \.self) { faq in
-                    Text("Q) " + faq.question)
-                    Text("A) " + faq.answer)
+                    Text("Q) " + faq.faqQuestion)
+                    Text("A) " + faq.faqAnswer)
                         .padding(.bottom)
                 }
             }
         }
+    }
+    
+    // API 에러 발생시 알려줌
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }

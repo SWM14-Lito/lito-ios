@@ -23,4 +23,8 @@ final public class DefaultLearningHomeRepository: LearningHomeRepository {
             .map { $0.toVO() }
             .eraseToAnyPublisher()
     }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        dataSource.toggleProblemFavorite(id: id)
+    }
 }

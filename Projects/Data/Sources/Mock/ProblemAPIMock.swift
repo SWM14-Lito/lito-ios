@@ -20,7 +20,7 @@ extension ProblemAPI {
             } else {
                 return Data()
             }
-        case .problemList:
+        default:
             return Data()
         }
     }

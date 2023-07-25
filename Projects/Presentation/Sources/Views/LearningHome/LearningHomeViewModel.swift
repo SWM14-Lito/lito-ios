@@ -12,7 +12,8 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
-    @Published var learningHomeVO: LearningHomeVO?
+    @Published var solvingProblem: ProblemCellVO?
+    @Published var userInfo: LearningHomeUserInfoVO?
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -29,6 +30,11 @@ public final class LearningHomeViewModel: BaseViewModel {
         print("찜한 목록 화면으로 이동")
     }
     
+    // 풀던 문제 화면으로 이동하기
+    func moveToSolvingProblemView() {
+        print("풀던 문제 화면으로 이동")
+    }
+    
     // 알림 목록 화면으로 이동하기
     func moveToNotiView() {
         print("알림 목록 화면으로 이동")
@@ -40,7 +46,8 @@ public final class LearningHomeViewModel: BaseViewModel {
             .sinkToResult { result in
                 switch result {
                 case .success(let learningHomeVO):
-                    self.learningHomeVO = learningHomeVO
+                    self.solvingProblem = learningHomeVO.solvingProblem
+                    self.userInfo = learningHomeVO.userInfo
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -51,13 +58,24 @@ public final class LearningHomeViewModel: BaseViewModel {
     }
 }
 extension LearningHomeViewModel: ProblemCellHandling {
-    
+    // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
         coordinator.push(.problemSolvingScene(id: id))
     }
     
+    // 찜하기 or 찜해제하기
     public func changeFavoriteStatus(id: Int) {
-        learningHomeVO?.recommendedProblem?.favorite.toggle()
-        // TODO: API 통신
+        useCase.toggleProblemFavorite(id: id)
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    self.solvingProblem?.favorite.toggle()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
 }

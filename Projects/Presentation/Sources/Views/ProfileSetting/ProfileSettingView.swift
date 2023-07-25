@@ -18,14 +18,14 @@ public struct ProfileSettingView: View {
     
     public var body: some View {
         VStack {
-            errorView()
+            errorMessage
             PhotoPickerView(imageData: $viewModel.imageData)
-            profileTextFieldView(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
-            profileTextFieldView(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
-            profileTextFieldView(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
-            textErrorMessageView()
+            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
+            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
+            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            textErrorMessage
             Spacer()
-            finishButtonView()
+            finishButton
         }
         .navigationBarBackButtonHidden(true)
         .padding([.leading, .trailing], 15)
@@ -53,33 +53,15 @@ public struct ProfileSettingView: View {
         }
     }
     
-    // API 에러 보여주는 뷰
+    // API 에러 발생시 알려줌
     @ViewBuilder
-    private func errorView() -> some View {
+    private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
-    // 이름 보여주는 뷰 (소셜 로그인 화면에서 넘겨받기)
+    // 프로필 관련 텍스트 입력 (fieldCategory로 선택 가능 - 이름, 닉네임, 소개글)
     @ViewBuilder
-    private func nameView(text: String?) -> some View {
-        VStack {
-            Text("이름")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 10))
-                .padding(.bottom, 2)
-            if let text {
-                Text(text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 15))
-                    .foregroundColor(.gray)
-            }
-            Divider()
-        }
-    }
-    
-    // 프로필 관련 텍스트 입력 뷰 (fieldCategory로 선택 가능)
-    @ViewBuilder
-    private func profileTextFieldView(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
+    private func profileTextField(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
         
         let curLength = String(limitedText.wrappedValue.text.count)
         let maxLength = String(limitedText.wrappedValue.limit)
@@ -109,18 +91,18 @@ public struct ProfileSettingView: View {
         }
     }
     
-    // 텍스트 입력 관련 오류 메시지 띄워주는 뷰
+    // 텍스트 입력 관련 오류 메시지 띄워줌
     @ViewBuilder
-    private func textErrorMessageView() -> some View {
+    private var textErrorMessage: some View {
         if let msg = viewModel.textErrorMessage {
             Text(msg)
                 .foregroundColor(.red)
         }
     }
     
-    // 설정 완료 버튼 뷰
+    // 설정 완료 버튼
     @ViewBuilder
-    private func finishButtonView() -> some View {
+    private var finishButton: some View {
         Button {
             if !viewModel.buttonIsLocked {
                 viewModel.moveToLearningHomeView()
