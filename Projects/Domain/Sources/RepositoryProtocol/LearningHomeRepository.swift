@@ -10,4 +10,5 @@ import Combine
 
 public protocol LearningHomeRepository {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
 }

@@ -77,14 +77,14 @@ public struct PresentationAssembly: Assembly {
             return ProblemListView(viewModel: viewModel)
         }
         // ProblemSolving
-        container.register(ProblemSolvingViewModel.self) { (resolver, id: Int) in
-            let useCase = resolver.resolve(ProblemSolvingUseCase.self)!
-            return ProblemSolvingViewModel(problemId: id, useCase: useCase, coordinator: coordinator)
+        container.register(ProblemDetailViewModel.self) { (resolver, id: Int) in
+            let useCase = resolver.resolve(ProblemDetailUseCase.self)!
+            return ProblemDetailViewModel(problemId: id, useCase: useCase, coordinator: coordinator)
         }
         
-        container.register(ProblemSolvingView.self) { (resolver, id: Int) in
-            let viewModel = resolver.resolve(ProblemSolvingViewModel.self, argument: id)!
-            return ProblemSolvingView(viewModel: viewModel)
+        container.register(ProblemDetailView.self) { (resolver, id: Int) in
+            let viewModel = resolver.resolve(ProblemDetailViewModel.self, argument: id)!
+            return ProblemDetailView(viewModel: viewModel)
         }
         // ------------------------ Second Tab ------------------------
         // PedigreeList

@@ -20,6 +20,8 @@ extension ProblemAPI {
             } else {
                 return Data()
             }
+        default:
+            return Data()
         }
     }
     

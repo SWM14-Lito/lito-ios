@@ -12,6 +12,8 @@ import Foundation
 
 enum ProblemAPI {
     case learningHome
+    case problemDetail(id: Int)
+    case favoriteToggle(id: Int)
 }
 extension ProblemAPI: TargetType {
     var baseURL: URL {
@@ -22,13 +24,19 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return "/api/v1/problems/users"
+        case .problemDetail:
+            return "/api/v1/problems/1"
+        case .favoriteToggle:
+            return "/api/v1/problems/1/favorites"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .learningHome:
+        case .learningHome, .problemDetail:
             return .get
+        case .favoriteToggle:
+            return .patch
         }
     }
     
@@ -36,12 +44,20 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return .requestPlain
+        case .problemDetail(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
+        case .favoriteToggle(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .learningHome:
+        case .learningHome, .problemDetail, .favoriteToggle:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
         }
     }

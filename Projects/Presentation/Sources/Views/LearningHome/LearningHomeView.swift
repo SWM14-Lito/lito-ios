@@ -18,11 +18,11 @@ public struct LearningHomeView: View {
     
     public var body: some View {
         VStack {
-            errorView()
-            profileView()
-            startLearningButtonView()
+            errorMessage
+            profile
+            startLearningButton
             Divider()
-            solvingProblemView()
+            solvingProblem
             Spacer()
         }
         .onAppear {
@@ -31,22 +31,22 @@ public struct LearningHomeView: View {
 
     }
     
-    // API 에러 보여주는 뷰
+    // API 에러 발생시 알려줌
     @ViewBuilder
-    private func errorView() -> some View {
+    private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
-    // 프로필 이미지와 닉네임 보여주는 뷰
+    // 프로필 이미지와 닉네임 보여주기
     @ViewBuilder
-    private func profileView() -> some View {
+    private var profile: some View {
         VStack {
-            if let learningHomeVO = viewModel.learningHomeVO {
+            if let userInfo = viewModel.userInfo {
                 VStack {
-                    UrlImageView(urlString: learningHomeVO.userInfo.profileImgUrl)
+                    UrlImageView(urlString: userInfo.profileImgUrl)
                         .frame(width: 88, height: 88)
                         .clipShape(Circle())
-                    Text(learningHomeVO.userInfo.nickname)
+                    Text(userInfo.nickname)
                         .font(.system(size: 12))
                 }
                 .frame(height: 115)
@@ -58,9 +58,9 @@ public struct LearningHomeView: View {
         .padding(.bottom, 18)
     }
     
-    // 학습 시작 버튼 뷰
+    // 학습 시작 버튼
     @ViewBuilder
-    private func startLearningButtonView() -> some View {
+    private var startLearningButton: some View {
         Button {
             viewModel.moveToLearningView()
         } label: { 
@@ -75,18 +75,24 @@ public struct LearningHomeView: View {
         .padding(.bottom, 20)
     }
     
-    // 풀던 문제 보여주는 뷰
+    // 풀던 문제 보여주기
     @ViewBuilder
-    private func solvingProblemView() -> some View {
-        if let learningHomeVO = viewModel.learningHomeVO {
-            if let recommendedProblem = learningHomeVO.recommendedProblem {
-                VStack(alignment: .leading) {
+    private var solvingProblem: some View {
+        if viewModel.solvingProblem != nil {
+            VStack(alignment: .leading) {
+                HStack {
                     Text("풀던 문제")
                         .font(.system(size: 20, weight: .bold))
-                    ProblemCellView(problemCellVO: recommendedProblem, viewModel: viewModel)
+                    Spacer()
+                    Button {
+                        viewModel.moveToSolvingProblemView()
+                    } label: {
+                        Text("전체 보기")
+                    }
                 }
-                .padding([.leading, .trailing], 20)
+                ProblemCellView(problemCellVO: $viewModel.solvingProblem, problemCellHandling: viewModel)
             }
+            .padding([.leading, .trailing], 20)
         } else {
             Spacer()
             ProgressView()

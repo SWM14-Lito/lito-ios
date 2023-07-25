@@ -34,9 +34,9 @@ public struct DomainAssembly: Assembly {
             let repository = resolver.resolve(LearningHomeRepository.self)!
             return DefaultLearningHomeUseCase(repository: repository)
         }
-        container.register(ProblemSolvingUseCase.self) { resolver in
-            let repository = resolver.resolve(ProblemSolvingRepository.self)!
-            return DefaultProblemSolvingUseCase(repository: repository)
+        container.register(ProblemDetailUseCase.self) { resolver in
+            let repository = resolver.resolve(ProblemDetailRepository.self)!
+            return DefaultProblemDetailUseCase(repository: repository)
         }
         
         // ------------------------ Second Tab ------------------------

@@ -16,18 +16,19 @@ public protocol ProblemCellHandling {
 
 public struct ProblemCellView: View {
     
-    private let problemCellVO: ProblemCellVO
-    private let viewModel: ProblemCellHandling
+    @Binding private var problemCellVO: ProblemCellVO?
+    private let problemCellHandling: ProblemCellHandling
     
-    public init(problemCellVO: ProblemCellVO, viewModel: ProblemCellHandling) {
-        self.problemCellVO = problemCellVO
-        self.viewModel = viewModel
+    public init(problemCellVO: Binding<ProblemCellVO?>, problemCellHandling: ProblemCellHandling) {
+        self._problemCellVO = problemCellVO
+        self.problemCellHandling = problemCellHandling
     }
     
     public var body: some View {
+        if let problemCellVO = problemCellVO {
             ZStack(alignment: .trailing) {
                 Button {
-                    viewModel.moveToProblemView(id: problemCellVO.problemId)
+                    problemCellHandling.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
                     HStack {
                         Image(systemName: problemCellVO.solved.symbolName)
@@ -47,7 +48,7 @@ public struct ProblemCellView: View {
                 }
                 
                 Button {
-                    viewModel.changeFavoriteStatus(id: problemCellVO.problemId)
+                    problemCellHandling.changeFavoriteStatus(id: problemCellVO.problemId)
                 } label: {
                     Image(systemName: problemCellVO.favorite.symbolName)
                 }
@@ -57,6 +58,7 @@ public struct ProblemCellView: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color.black, lineWidth: 1)
             )
+        }
         
     }
 }

@@ -27,7 +27,7 @@ public struct LearningHomeDTO: Decodable {
             problemInfo = nil
         }
         
-        return LearningHomeVO(userInfo: userInfo, recommendedProblem: problemInfo)
+        return LearningHomeVO(userInfo: userInfo, solvingProblem: problemInfo)
     }
 }
 
