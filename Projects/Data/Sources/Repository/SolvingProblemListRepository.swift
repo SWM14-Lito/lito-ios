@@ -17,5 +17,10 @@ final public class DefaultSolvingProblemListRepository: SolvingProblemListReposi
     public init(dataSource: SolvingProblemListDataSource) {
         self.dataSource = dataSource
     }
-
+    
+    public func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<[SolvingProblemCellVO]?, Error> {
+        dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .map { $0.toSolvingProblemCellVO() }
+            .eraseToAnyPublisher()
+    }
 }
