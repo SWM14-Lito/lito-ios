@@ -12,9 +12,9 @@ import Foundation
 public protocol ProblemDetailUseCase {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
+    func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error>
+    func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error>
     func showAnswer()
-    func correct()
-    func wrong()
 }
 
 public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
@@ -33,19 +33,16 @@ public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
         repository.toggleProblemFavorite(id: id)
     }
     
+    public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
+        repository.startSolvingProblem(id: id)
+    }
+    
+    public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
+        repository.submitAnswer(id: id, keyword: keyword)
+    }
+    
     public func showAnswer() {
         
     }
-    
-    public func handleInput() {
-        
-    }
-    
-    public func correct() {
-        
-    }
-    
-    public func wrong() {
-        
-    }
+
 }

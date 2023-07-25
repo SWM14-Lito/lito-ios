@@ -50,6 +50,7 @@ public struct ProblemDetailView: View {
         }
         .padding([.leading, .trailing])
         .onAppear {
+            viewModel.startSolvingProblem()
             viewModel.getProblemDetail()
         }
         .onChange(of: viewModel.focused) {
@@ -81,7 +82,7 @@ public struct ProblemDetailView: View {
             .multilineTextAlignment(.center)
             .padding(.bottom)
             .onSubmit {
-                viewModel.handleInput()
+                viewModel.submitAnswer()
             }
     }
     

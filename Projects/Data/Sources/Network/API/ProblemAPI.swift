@@ -18,7 +18,7 @@ enum ProblemAPI {
     case problemDetail(id: Int)
     case favoriteToggle(id: Int)
     case enterProblem(id: Int)
-    case submitAnswer(id: Int, answer: String)
+    case submitAnswer(id: Int, keyword: String)
 }
 extension ProblemAPI: TargetType {
     var baseURL: URL {
