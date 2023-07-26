@@ -28,12 +28,12 @@ public struct DataAssembly: Assembly {
             return DefaultOAuthServiceDataSource()
         }
         // Login
-        container.register(LoginDataSource.self) { _ in
-            return DefaultLoginDataSource()
+        container.register(AuthDataSource.self) { _ in
+            return DefaultAuthDataSource()
         }
         container.register(LoginRepository.self) { resolver in
             let oauthDataSource = resolver.resolve(OAuthServiceDataSource.self)!
-            let loginDataSource = resolver.resolve(LoginDataSource.self)!
+            let loginDataSource = resolver.resolve(AuthDataSource.self)!
             return DefaultLoginRepository(oauthDataSource: oauthDataSource, loginDataSource: loginDataSource)
         }
         // ProfileSetting

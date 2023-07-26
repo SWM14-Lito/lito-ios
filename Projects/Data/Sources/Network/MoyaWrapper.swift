@@ -14,10 +14,17 @@ import CombineMoya
 
 class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     
-    init(endpointClosure: @escaping MoyaProvider<Provider>.EndpointClosure = MoyaProvider.defaultEndpointMapping, requestClosure: @escaping MoyaProvider<Provider>.RequestClosure = MoyaProvider<Provider>.defaultRequestMapping, stubClosure: @escaping MoyaProvider<Provider>.StubClosure = MoyaProvider.neverStub, callbackQueue: DispatchQueue? = nil, session: Session = MoyaProvider<Target>.defaultAlamofireSession(), plugins: [PluginType] = [], trackInflights: Bool = false, forTest: Bool = false) {
+    init(endpointClosure: @escaping MoyaProvider<Provider>.EndpointClosure = MoyaProvider.defaultEndpointMapping, requestClosure: @escaping MoyaProvider<Provider>.RequestClosure = MoyaProvider<Provider>.defaultRequestMapping, stubClosure: @escaping MoyaProvider<Provider>.StubClosure = MoyaProvider.neverStub, callbackQueue: DispatchQueue? = nil, session: Session = MoyaProvider<Target>.defaultAlamofireSession(), plugins: [PluginType] = [], trackInflights: Bool = false, authorizationNeeded: Bool = true, forTest: Bool = false) {
         
         let customEndpointClosure: MoyaProvider<Provider>.EndpointClosure
         let customStubClosure: MoyaProvider<Provider>.StubClosure
+        let customSession: Session
+        
+        if !authorizationNeeded {
+            customSession = MoyaProvider<Target>.defaultAlamofireSession()
+        } else {
+            customSession = Session(interceptor: AuthInterceptor.shared)
+        }
         
         if forTest {
             customEndpointClosure = { (target: Provider) -> Endpoint in
@@ -32,7 +39,7 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
             customStubClosure = stubClosure
         }
         
-        super.init(endpointClosure: customEndpointClosure, requestClosure: requestClosure, stubClosure: customStubClosure, callbackQueue: callbackQueue, session: session, plugins: plugins, trackInflights: trackInflights)
+        super.init(endpointClosure: customEndpointClosure, requestClosure: requestClosure, stubClosure: customStubClosure, callbackQueue: callbackQueue, session: customSession, plugins: plugins, trackInflights: trackInflights)
     }
     
     func call<Value>(target: Provider) -> AnyPublisher<Value, Error> where Value: Decodable {

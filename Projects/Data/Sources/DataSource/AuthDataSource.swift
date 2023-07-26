@@ -12,23 +12,28 @@ import CombineMoya
 import Moya
 import Domain
 
-public protocol LoginDataSource {
+public protocol AuthDataSource {
     func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
+    func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error>
 }
 
-final public class DefaultLoginDataSource: LoginDataSource {
+final public class DefaultAuthDataSource: AuthDataSource {
     
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<LoginAPI>()
+    private let moyaProvider = MoyaWrapper<AuthAPI>()
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         switch OAuthProvider {
         case .apple(let appleVO):
-            return moyaProvider.call(target: .apple(appleVO: appleVO))
+            return moyaProvider.call(target: .appleLogin(appleVO: appleVO))
         case .kakao(let kakaoVO):
-            return moyaProvider.call(target: .kakao(kakaoVO: kakaoVO))
+            return moyaProvider.call(target: .kakaoLogin(kakaoVO: kakaoVO))
         }
+    }
+    
+    public func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error> {
+        return moyaProvider.call(target: .reissueToken)
     }
     
 }

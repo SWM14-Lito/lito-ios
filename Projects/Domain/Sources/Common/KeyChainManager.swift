@@ -17,7 +17,7 @@ final public class KeyChainManager {
         
     }
 
-    static func create(key: Keys, token: String) {
+    static public func create(key: Keys, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue,
