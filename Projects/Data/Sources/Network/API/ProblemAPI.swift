@@ -81,9 +81,9 @@ extension ProblemAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .learningHome, .problemDetail, .favoriteToggle:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
+            return [:]
         case .problemList:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
+            return [:]
         }
     }
 }
