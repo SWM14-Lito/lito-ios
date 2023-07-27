@@ -40,6 +40,8 @@ final public class LoginViewModel: BaseViewModel {
                         case .retryableError:
                             self.errorObject.error = errorVO
                             self.errorObject.retryAction = self.appleLogin
+                        case .tokenExpired:
+                            break
                         }
                     }
                 }
@@ -68,6 +70,8 @@ final public class LoginViewModel: BaseViewModel {
                         case .retryableError:
                             self.errorObject.error = errorVO
                             self.errorObject.retryAction = self.appleLogin
+                        case .tokenExpired:
+                            break
                         }
                     }
                 }

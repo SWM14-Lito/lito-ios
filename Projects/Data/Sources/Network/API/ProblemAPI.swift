@@ -86,4 +86,8 @@ extension ProblemAPI: TargetType {
             return [:]
         }
     }
+    
+    var validationType: ValidationType {
+        return .successCodes
+    }
 }

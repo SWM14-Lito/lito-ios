@@ -70,4 +70,8 @@ extension ProfileSettingAPI: TargetType {
             return ["Content-type": "application/x-www-form-urlencoded"]
         }
     }
+    
+    var validationType: ValidationType {
+        return .successCodes
+    }
 }

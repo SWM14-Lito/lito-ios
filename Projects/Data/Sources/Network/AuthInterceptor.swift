@@ -36,12 +36,9 @@ final class AuthInterceptor: RequestInterceptor {
         case "logout":
             urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
             urlRequest.headers.add(name: "REFRESH_TOKEN", value: NetworkConfiguration.refreashToken)
-        case "reissue":
-            urlRequest.headers.add(.authorization(NetworkConfiguration.refreashToken))
         default:
             urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
         }
-        print(urlRequest.headers)
         completion(.success(urlRequest))
     }
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
@@ -53,18 +50,19 @@ final class AuthInterceptor: RequestInterceptor {
         postTokenReissue()
             .sink { result in
                 switch result {
-                case .failure(let error):
-                    completion(.doNotRetryWithError(error))
+                case .failure:
+                    let httpUrlResponse = HTTPURLResponse(url: URL(string: AuthAPI.reissueToken.path)!, statusCode: 401, httpVersion: nil, headerFields: nil)
+                    let response = Response(statusCode: 401, data: Data(), response: httpUrlResponse)
+                    completion(.doNotRetryWithError(MoyaError.statusCode(response)))
                     return
                 case .finished:
                     break
                 }
             } receiveValue: { tokenReissueDTO in
-                print("token reissued")
                 KeyChainManager.create(key: .accessToken, token: tokenReissueDTO.accessToken)
                 KeyChainManager.create(key: .accessToken, token: tokenReissueDTO.refreashToken)
+                completion(.retry)
             }
             .store(in: &cancleBag)
-        completion(.retry)
     }
 }

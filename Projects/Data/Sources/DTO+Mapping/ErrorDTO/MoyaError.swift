@@ -34,6 +34,11 @@ extension MoyaError {
             return NetworkErrorDTO.serverError(response)
             // Underlying Error
         case .underlying(let error, let response):
+            if response?.statusCode == 401, let httpUrlResponse = response?.response {
+                if httpUrlResponse.url?.lastPathComponent == "reissue" {
+                    return NetworkErrorDTO.tokenExpired
+                }
+            }
             return NetworkErrorDTO.underlyingError(error, response)
         }
     }

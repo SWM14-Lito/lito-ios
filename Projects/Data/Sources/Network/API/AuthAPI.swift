@@ -55,10 +55,14 @@ extension AuthAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .reissueToken:
-            return ["Content-type": "application/x-www-form-urlencoded"]
+            return ["Authorization": NetworkConfiguration.refreashToken, "Content-type": "application/x-www-form-urlencoded"]
         default:
             return AuthAPI.APICallHeaders.Json
         }
+    }
+    
+    var validationType: ValidationType {
+        return .successCodes
     }
 }
 
