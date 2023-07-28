@@ -11,4 +11,26 @@ import SwiftUI
 
 public class ChatGPTViewModel: BaseViewModel {
     
+    @Published var input: String = ""
+    @Published var dialogue = [DialogueUnitVO]()
+    
+    func sendQuestion() {
+        dialogue.append(
+            DialogueUnitVO(text: input, dialogueType: .fromUser)
+        )
+        input = ""
+        // TODO: 서버로 질문 보내기
+    }
+    
+    func getAnswer() {
+        // TODO: 서버에서 대답 받아오기
+        let answer = "--- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 --- ChatGPT 대답 ---"
+        dialogue.append(
+            DialogueUnitVO(text: answer, dialogueType: .fromChatGPT)
+        )
+    }
+    
+    func dismissSheet() {
+        coordinator.dismissSheet()
+    }
 }
