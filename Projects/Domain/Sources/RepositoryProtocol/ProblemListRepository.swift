@@ -9,5 +9,5 @@
 import Combine
 
 public protocol ProblemListRepository {
-    func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<[ProblemCellVO]?, Error>
+    func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error>
 }

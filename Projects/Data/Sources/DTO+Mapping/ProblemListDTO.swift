@@ -10,10 +10,12 @@ import Foundation
 
 import Domain
 
-public struct ProblemsDTO: Decodable {
+public struct ProblemListDTO: Decodable {
     let problems: [ProblemCellDTO]?
+    let total: Int
     
-    func toVO() -> [ProblemCellVO]? {
-        return problems?.map { $0.toVO() }
+    func toVO() -> ProblemListVO {
+        let problems = problems?.map { $0.toVO() }
+        return ProblemListVO(problemsCellVO: problems, total: total)
     }
 }
