@@ -23,4 +23,8 @@ public class BaseViewModel: ObservableObject {
     func back() {
         coordinator.pop()
     }
+    
+    func popToRoot() {
+        coordinator.popToRoot()
+    }
 }

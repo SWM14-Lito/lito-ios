@@ -18,7 +18,7 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
     
     public init(_ initialScene: AppScene) {
         self.initialScene = initialScene
-        self.path = NavigationPath([initialScene])
+        self.path = NavigationPath()
     }
     
     public func buildInitialScene() -> some View {
@@ -36,7 +36,7 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
     public func popToRoot() {
         path.removeLast(path.count)
     }
-    
+
     @ViewBuilder
     public func buildScene(scene: AppScene) -> some View {
         switch scene {

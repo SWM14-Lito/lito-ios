@@ -40,8 +40,12 @@ final public class ProblemListViewModel: BaseViewModel {
                         self.lastProblemId = problemCellVO.problemId
                         self.problemCellList.append(problemCellVO)
                     })
-                case .failure:
-                    break
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        if case .tokenExpired = errorVO {
+                            self.popToRoot()
+                        }
+                    }
                 }
             })
             .store(in: cancelBag)
