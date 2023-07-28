@@ -55,7 +55,7 @@ extension AuthAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .reissueToken:
-            return ["Authorization": NetworkConfiguration.refreashToken, "Content-type": "application/x-www-form-urlencoded"]
+            return ["Authorization": "Bearer \(NetworkConfiguration.refreashToken)", "Content-type": "application/x-www-form-urlencoded"]
         default:
             return AuthAPI.APICallHeaders.Json
         }

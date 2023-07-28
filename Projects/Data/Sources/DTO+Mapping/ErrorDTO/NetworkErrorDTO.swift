@@ -122,7 +122,9 @@ public enum NetworkErrorDTO: Error {
             let serverErrorMessage = try JSONDecoder().decode(ServerErrorMessage.self, from: response.data)
             return serverErrorMessage
         } catch {
-            print("🫠Failed to decode serverErrorMessage\n🧐Reason: \(error))")
+            print("🫠Failed to decode serverErrorMessage\n")
+            print("⭐️plain response is below")
+            print(String(data: response.data, encoding: .utf8) ?? "no response")
             return nil
         }
     }

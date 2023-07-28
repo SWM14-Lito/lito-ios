@@ -60,7 +60,7 @@ final class AuthInterceptor: RequestInterceptor {
                 }
             } receiveValue: { tokenReissueDTO in
                 KeyChainManager.create(key: .accessToken, token: tokenReissueDTO.accessToken)
-                KeyChainManager.create(key: .accessToken, token: tokenReissueDTO.refreashToken)
+                KeyChainManager.create(key: .refreshToken, token: tokenReissueDTO.refreshToken)
                 completion(.retry)
             }
             .store(in: &cancleBag)

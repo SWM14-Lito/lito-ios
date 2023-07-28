@@ -10,5 +10,5 @@ import Foundation
 
 public struct TokenReissueDTO: Decodable {
     let accessToken: String
-    let refreashToken: String
+    let refreshToken: String
 }
