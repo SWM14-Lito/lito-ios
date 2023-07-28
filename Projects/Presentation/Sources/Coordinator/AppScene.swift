@@ -9,10 +9,14 @@
 import SwiftUI
 import KakaoSDKAuth
 
-public enum AppScene: Hashable {
+public enum AppScene: Hashable, Identifiable {
     case loginScene, profileSettingScene
     case rootTabScene
-    case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int)
+    case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int), chatGPTScene
     case pedigreeListScene
     case myPageScene
+    
+    public var id: Self {
+        return self
+    }
 }
