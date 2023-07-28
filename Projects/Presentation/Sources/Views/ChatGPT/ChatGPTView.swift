@@ -31,6 +31,7 @@ public struct ChatGPTView: View {
         .interactiveDismissDisabled()
     }
     
+    // 모달 닫는 버튼
     @ViewBuilder
     private var closeButton: some View {
         HStack {
@@ -44,6 +45,7 @@ public struct ChatGPTView: View {
         }
     }
     
+    // 대화 보여주기
     @ViewBuilder
     private var dialogueList: some View {
         ScrollView {
@@ -61,6 +63,7 @@ public struct ChatGPTView: View {
         .padding(.top)
     }
     
+    // 질문 입력하기
     @ViewBuilder
     private var questionTextfield: some View {
         HStack {
@@ -80,6 +83,7 @@ public struct ChatGPTView: View {
         }
     }
     
+    // ChatGPT 또는 User 중 누가 입력했는지에 따라 셀 구분
     @ViewBuilder
     private func dialogueCell(cellType: DialogueType, text: String) -> some View {
         HStack {
@@ -92,6 +96,7 @@ public struct ChatGPTView: View {
         .padding([.leading, .trailing])
     }
     
+    // ChatGPT가 대답해준 내용을 나타내는 셀
     @ViewBuilder
     private func chatGPTDialogueCell(_ text: String) -> some View {
         Text(text)
@@ -103,6 +108,7 @@ public struct ChatGPTView: View {
         Spacer()
     }
     
+    // 유저가 물어본 내용을 나타내는 셀
     @ViewBuilder
     private func userDialogueCell(_ text: String) -> some View {
         Spacer()
