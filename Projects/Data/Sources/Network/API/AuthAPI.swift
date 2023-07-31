@@ -48,7 +48,7 @@ extension AuthAPI: TargetType {
     }
     
     var headers: [String: String]? {
-            return LoginAPI.APICallHeaders.Json
+            return AuthAPI.APICallHeaders.Json
     }
 }
 

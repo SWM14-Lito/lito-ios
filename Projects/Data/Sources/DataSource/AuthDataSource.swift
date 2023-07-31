@@ -17,14 +17,14 @@ final public class DefaultAuthDataSource: AuthDataSource {
     
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<LoginAPI>()
+    private let moyaProvider = MoyaWrapper<AuthAPI>()
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         switch OAuthProvider {
         case .apple(let appleVO):
-            return moyaProvider.call(target: .apple(appleVO: appleVO))
+            return moyaProvider.call(target: .appleLogin(appleVO: appleVO))
         case .kakao(let kakaoVO):
-            return moyaProvider.call(target: .kakao(kakaoVO: kakaoVO))
+            return moyaProvider.call(target: .kakaoLogin(kakaoVO: kakaoVO))
         }
     }
     
