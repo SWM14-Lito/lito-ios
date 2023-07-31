@@ -73,7 +73,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // ChatGPT 화면 모달로 보여주기
     func showChatGPT() {
-        
+        coordinator.present(sheet: .chattingScene)
     }
     
     // 문제 풀기 시작한다는거 서버에 알려주기

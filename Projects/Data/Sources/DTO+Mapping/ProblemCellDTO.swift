@@ -54,6 +54,4 @@ public struct ProblemCellDTO: Decodable {
             problemCellVO: problemCellVO
         )
     }
-    
-    
 }

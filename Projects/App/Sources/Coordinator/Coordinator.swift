@@ -13,6 +13,7 @@ import Domain
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
     @Published public var path: NavigationPath
+    @Published public var sheet: AppScene?
     private let initialScene: AppScene
     var injector: Injector?
     
@@ -35,6 +36,14 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
     
     public func popToRoot() {
         path.removeLast(path.count)
+    }
+    
+    public func present(sheet: AppScene) {
+        self.sheet = sheet
+    }
+    
+    public func dismissSheet() {
+        self.sheet = nil
     }
     
     @ViewBuilder
@@ -65,6 +74,15 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(MyPageView.self)
         case .rootTabScene:
             injector?.resolve(RootTabView.self)
+        case .chattingScene:
+            injector?.resolve(ChattingView.self)
+        }
+    }
+    
+    @ViewBuilder
+    public func buildSheet(scene: AppScene) -> some View {
+        NavigationStack {
+            buildScene(scene: scene)
         }
     }
 }
