@@ -51,7 +51,6 @@ final class AuthInterceptor: RequestInterceptor {
             .sink { result in
                 switch result {
                 case .failure(let error):
-                    print("postTokenReissue Error: \(error)")
                     let httpUrlResponse = HTTPURLResponse(url: URL(string: AuthAPI.reissueToken.path)!, statusCode: 401, httpVersion: nil, headerFields: nil)
                     let response = Response(statusCode: 401, data: Data(), response: httpUrlResponse)
                     completion(.doNotRetryWithError(MoyaError.underlying(error, response)))

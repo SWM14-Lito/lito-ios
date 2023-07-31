@@ -41,12 +41,11 @@ final public class ProblemListViewModel: BaseViewModel {
                         self.problemCellList.append(problemCellVO)
                     })
                 case .failure(let error):
-                    print("error arrived")
-                    print("error: \(error.localizedDescription)")
                     if let errorVO = error as? ErrorVO {
-                        print(errorVO)
                         if case .tokenExpired = errorVO {
-                            self.popToRoot()
+                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                                self.popToRoot()
+                            }
                         }
                     }
                 }

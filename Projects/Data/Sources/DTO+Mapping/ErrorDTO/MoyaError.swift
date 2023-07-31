@@ -37,26 +37,16 @@ extension MoyaError {
             // 토큰 재발급 실패
             if response?.statusCode == 401, let httpUrlResponse = response?.response {
                 if httpUrlResponse.url?.lastPathComponent == "reissue" {
-                    print("moyaError -> networkError: Token Expired")
                     return NetworkErrorDTO.tokenExpired
                 }
             }
-            // 토큰 재발급 실패 ->     retry error
+            // 토큰 재발급 실패 -> retry error
             if let afError = error.asAFError, afError.isRequestRetryError {
-                if case .requestRetryFailed(let retryError, _) = afError {
-                    if let networkErrorDTO = retryError as? NetworkErrorDTO {
-                        if case .tokenExpired = networkErrorDTO {
-                            print("afError token Expired")
-                            return NetworkErrorDTO.tokenExpired
-                        }
+                if case .requestRetryFailed = afError {
+                    if response?.statusCode == 401 {
+                        return NetworkErrorDTO.tokenExpired
                     }
                 }
-//                if response?.statusCode == 401, let httpUrlResponse = response?.response {
-//                    if httpUrlResponse.url?.lastPathComponent == "reissue" {
-//                        print("moyaError -> networkError: Token Expired")
-//                        return NetworkErrorDTO.tokenExpired
-//                    }
-//                }
             }
             return NetworkErrorDTO.underlyingError(error, response)
         }
