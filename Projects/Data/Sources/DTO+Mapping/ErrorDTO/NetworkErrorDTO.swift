@@ -28,7 +28,6 @@ public enum NetworkErrorDTO: Error {
             let serverErrorMessage = convertServerErrorMessage(response: response)
             return "⛑️ Server Error \(response.description)\n" + (serverErrorMessage?.description ?? "")
         case .underlyingError(let error, let response):
-            print("----underlying----")
             if let response = response {
                 let serverErrorMessage = convertServerErrorMessage(response: response)
                 return "⛑️ UnderlyingError \(error.localizedDescription)\n" + (serverErrorMessage?.description ?? "")
