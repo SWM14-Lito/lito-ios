@@ -16,6 +16,7 @@ extension Publisher {
         return sink(receiveCompletion: { completion in
             switch completion {
             case let .failure(error):
+                print("sinkToResult Error: \(error.localizedDescription)")
                 result(.failure(error))
             default: break
             }
