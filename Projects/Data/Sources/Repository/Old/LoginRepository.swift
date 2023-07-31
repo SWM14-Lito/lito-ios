@@ -13,10 +13,10 @@ import Moya
 
 final public class DefaultLoginRepository: LoginRepository {
     
-    private let oauthDataSource: OAuthServiceDataSource
+    private let oauthDataSource: OAuthDataSource
     private let loginDataSource: LoginDataSource
     
-    public init(oauthDataSource: OAuthServiceDataSource, loginDataSource: LoginDataSource) {
+    public init(oauthDataSource: OAuthDataSource, loginDataSource: LoginDataSource) {
         self.oauthDataSource = oauthDataSource
         self.loginDataSource = loginDataSource
     }

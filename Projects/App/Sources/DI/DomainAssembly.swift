@@ -19,35 +19,37 @@ public struct DomainAssembly: Assembly {
         }
         
         container.register(LoginUseCase.self) { resolver in
-            let repository = resolver.resolve(LoginRepository.self)!
-            return DefaultLoginUseCase(repository: repository)
+            let oauthRepository = resolver.resolve(OAuthRepository.self)!
+            let authRepository = resolver.resolve(AuthRepository.self)!
+            return DefaultLoginUseCase(oauthRepository: oauthRepository, authRepository: authRepository)
         }
         
         container.register(ProfileSettingUseCase.self) { resolver in
-            let repository = resolver.resolve(ProfileSettingRepository.self)!
+            let userRepository = resolver.resolve(UserRepository.self)!
+            let fileRepository = resolver.resolve(FileRepository.self)!
             let imageHelper = resolver.resolve(ImageHelper.self)!
-            return DefaultProfileSettingUseCase(repository: repository, imageHelper: imageHelper)
+            return DefaultProfileSettingUseCase(userRepository: userRepository, fileRepository: fileRepository, imageHelper: imageHelper)
         }
         
         // ------------------------ First Tab ------------------------
         container.register(LearningHomeUseCase.self) { resolver in
-            let repository = resolver.resolve(LearningHomeRepository.self)!
+            let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultLearningHomeUseCase(repository: repository)
         }
         container.register(ProblemDetailUseCase.self) { resolver in
-            let repository = resolver.resolve(ProblemDetailRepository.self)!
+            let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultProblemDetailUseCase(repository: repository)
         }
         container.register(ProblemListUseCase.self) { resolver in
-            let repository = resolver.resolve(ProblemListRepository.self)!
+            let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultProblemListUseCase(repository: repository)
         }
         container.register(SolvingProblemListUseCase.self) { resolver in
-            let repository = resolver.resolve(SolvingProblemListRepository.self)!
+            let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultSolvingProblemListUseCase(repository: repository)
         }
         container.register(FavoriteProblemListUseCase.self) { resolver in
-            let repository = resolver.resolve(FavoriteProblemListRepository.self)!
+            let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultFavoriteProblemListUseCase(repository: repository)
         }
         

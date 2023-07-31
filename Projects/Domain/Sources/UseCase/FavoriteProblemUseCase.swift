@@ -14,9 +14,9 @@ public protocol FavoriteProblemListUseCase {
 }
 
 public final class DefaultFavoriteProblemListUseCase: FavoriteProblemListUseCase {
-    private let repository: FavoriteProblemListRepository
+    private let repository: ProblemRepository
     
-    public init(repository: FavoriteProblemListRepository) {
+    public init(repository: ProblemRepository) {
         self.repository = repository
     }
     

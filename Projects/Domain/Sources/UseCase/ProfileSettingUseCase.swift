@@ -15,24 +15,26 @@ public protocol ProfileSettingUseCase {
 }
 
 public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
-    private let repository: ProfileSettingRepository
+    private let userRepository: UserRepository
+    private let fileRepository: FileRepository
     private let imageHelper: ImageHelper
     
-    public init(repository: ProfileSettingRepository, imageHelper: ImageHelper) {
-        self.repository = repository
+    public init(userRepository: UserRepository, fileRepository: FileRepository, imageHelper: ImageHelper) {
+        self.userRepository = userRepository
+        self.fileRepository = fileRepository
         self.imageHelper = imageHelper
     }
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
-        repository.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        userRepository.postProfileInfo(profileInfoDTO: profileInfoDTO)
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
         let compressedImage = imageHelper.compress(data: profileImageDTO.image, limit: 500000)
-        return repository.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
+        return fileRepository.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
-        repository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+        userRepository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
     }
 }

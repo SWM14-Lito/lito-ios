@@ -13,14 +13,14 @@ import AuthenticationServices
 import KakaoSDKCommon
 import KakaoSDKUser
 
-public protocol OAuthServiceDataSource {
+public protocol OAuthDataSource {
     
     func appleLogin() -> AnyPublisher<OAuth.AppleDTO, Error>
     func kakaoLogin() -> AnyPublisher<OAuth.KakaoDTO, Error>
     
 }
 
-final public class DefaultOAuthServiceDataSource: NSObject, OAuthServiceDataSource, ASAuthorizationControllerDelegate {
+final public class DefaultOAuthDataSource: NSObject, OAuthDataSource, ASAuthorizationControllerDelegate {
     
     public override init() {}
     

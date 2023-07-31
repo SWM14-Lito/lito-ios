@@ -8,7 +8,6 @@
 
 import Domain
 import Combine
-import UIKit
 
 final public class DefaultProfileSettingRepository: ProfileSettingRepository {
     
