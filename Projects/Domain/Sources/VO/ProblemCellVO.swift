@@ -6,18 +6,19 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-public struct ProblemCellVO {
+public struct ProblemCellVO: Hashable {
+    
     public let problemId: Int
-    public let solved: ProblemSolvedStatus
+    public let subjectName: String
     public let question: String
-    public let subject: String
+    public let problemStatus: ProblemSolvedStatus
     public var favorite: ProblemFavoriteStatus
     
-    public init(problemId: Int, solved: ProblemSolvedStatus, question: String, subject: String, favorite: ProblemFavoriteStatus) {
+    public init(problemId: Int, subjectName: String, question: String, problemStatus: ProblemSolvedStatus, favorite: ProblemFavoriteStatus) {
         self.problemId = problemId
-        self.solved = solved
+        self.subjectName = subjectName
         self.question = question
-        self.subject = subject
+        self.problemStatus = problemStatus
         self.favorite = favorite
     }
 }

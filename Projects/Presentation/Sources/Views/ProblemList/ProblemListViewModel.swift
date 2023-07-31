@@ -11,34 +11,119 @@ import Domain
 
 final public class ProblemListViewModel: BaseViewModel {
 
-    private let useCase: LearningHomeUseCase
+    private let useCase: ProblemListUseCase
+    private var lastProblemId: Int?
+    private var problemPage = 0
+    private var problemSize = 10
+    private var problemTotalSize: Int?
+    @Published var problemCellList: [ProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
-    @Published var showSheet = false
-    @Published var selectedFilter: problemListFilter = .all
-    @Published var selectedFilters: [problemListFilter] = []
-    public var prevFilter: problemListFilter = .all
+    @Published var showFilterSheet = false
+    @Published var selectedFilter: ProblemListFilter = .all
+    // TODO: 이후에 필터 view를 general 하게 사용하기 위한 변수
+    @Published var selectedFilters: [ProblemListFilter] = []
+    public var prevFilter: ProblemListFilter = .all
+    private var isApply = false
 
-    public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }
-
-    public enum SubjectInfo: String, CaseIterable {
-        case all = "전체"
-        case operationSystem = "운영체제"
-        case network = "네트워크"
-        case database = "데이터베이스"
-        case structure = "자료구조"
+    
+    public func getProblemList(problemId: Int? = nil) {
+        if !problemCellList.isEmpty {
+            guard problemId == problemCellList.last?.problemId else { return }
+        }
+        if let totalSize = problemTotalSize, problemPage >= totalSize {
+            return
+        }
+        let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        problemsCellVO.forEach({ problemCellVO in
+                            self.lastProblemId = problemCellVO.problemId
+                            self.problemCellList.append(problemCellVO)
+                        })
+                        self.problemPage += self.problemSize
+                    }
+                    self.problemTotalSize = problemsListVO.total
+                case .failure:
+                    break
+                }
+            })
+            .store(in: cancelBag)
     }
     
-    public enum problemListFilter: String, CaseIterable {
-        case all = "전체"
-        case unsolved = "풀지않음"
-        case solved = "풀이완료"
+    private func resetProblemCellList() {
+        problemCellList.removeAll()
+        lastProblemId = nil
+        problemPage = 0
+        problemTotalSize = nil
+    }
+    
+    public func changeSubject(subject: SubjectInfo) {
+        if selectedSubject != subject {
+            selectedSubject = subject
+            resetProblemCellList()
+            getProblemList()
+        }
+    }
+    
+    public func filterSheetToggle() {
+        showFilterSheet.toggle()
     }
     
     public func storePrevFilter() {
         prevFilter = selectedFilter
     }
+    
+    public func removeFilter(_ filter: ProblemListFilter) {
+        if let index = selectedFilters.firstIndex(of: filter) {
+            selectedFilters.remove(at: index)
+            selectedFilter = .all
+        }
+        resetProblemCellList()
+        getProblemList()
+    }
+    public func selectFilter(_ filter: ProblemListFilter) {
+        if selectedFilter == filter {
+            selectedFilter = .all
+        } else {
+            selectedFilter = filter
+        }
+    }
+    public func applyFilter() {
+        isApply = true
+        showFilterSheet = false
+        if selectedFilter != prevFilter {
+            selectedFilters = [selectedFilter]
+            resetProblemCellList()
+            getProblemList()
+        }
+    }
+    public func cancelSelectedFilter() {
+        if !isApply {
+            selectedFilter = prevFilter
+        } else {
+            isApply = false
+        }
+    }
 
+}
+
+extension ProblemListViewModel: ProblemCellHandling {
+    
+    public func moveToProblemView(id: Int) {
+        coordinator.push(.problemSolvingScene(id: id))
+    }
+    
+    public func changeFavoriteStatus(id: Int) {
+        let index = problemCellList.firstIndex(where: { $0.problemId == id})!
+        problemCellList[index].favorite.toggle()
+        // TODO: API 통신
+    }
+    
 }

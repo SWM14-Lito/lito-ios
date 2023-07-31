@@ -12,6 +12,7 @@ import Foundation
 
 enum ProblemAPI {
     case learningHome
+    case problemList(ProblemsQueryDTO)
     case problemDetail(id: Int)
     case favoriteToggle(id: Int)
 }
@@ -24,6 +25,8 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return "/api/v1/problems/users"
+        case .problemList:
+            return "/api/v1/problems"
         case .problemDetail:
             return "/api/v1/problems/1"
         case .favoriteToggle:
@@ -35,6 +38,8 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome, .problemDetail:
             return .get
+        case .problemList:
+            return .get
         case .favoriteToggle:
             return .patch
         }
@@ -44,6 +49,20 @@ extension ProblemAPI: TargetType {
         switch self {
         case .learningHome:
             return .requestPlain
+        case .problemList(let problemsQueryDTO):
+            var parameters: [String: Any] = [:]
+            if let subjectId = problemsQueryDTO.subjectId, subjectId != 0 {
+                parameters["subjectId"] = subjectId
+            }
+            if let problemStatus = problemsQueryDTO.problemStatus, problemStatus != "" {
+                parameters["problemStatus"] = problemStatus
+            }
+            if let query = problemsQueryDTO.query {
+                parameters["query"] = query
+            }
+            parameters["page"] = problemsQueryDTO.page
+            parameters["size"] = problemsQueryDTO.size
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .problemDetail(let id):
             return .requestParameters(parameters: [
                 "id": id
@@ -58,6 +77,8 @@ extension ProblemAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .learningHome, .problemDetail, .favoriteToggle:
+            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
+        case .problemList:
             return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
         }
     }

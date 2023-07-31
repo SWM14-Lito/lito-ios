@@ -8,14 +8,14 @@
 
 import Domain
 
-public struct ProblemCellDTO {
+public struct ProblemCellDTO: Decodable {
     let problemId: Int?
-    let solved: String?
+    let subjectName: String?
     let question: String?
-    let subject: String?
+    let problemStatus: String?
     let favorite: Bool?
     
-    func toVO() -> ProblemCellVO? {
-        return ProblemCellVO(problemId: problemId ?? 0, solved: ProblemSolvedStatus(rawValue: solved), question: question ?? "Unknown", subject: subject ?? "Unknown", favorite: ProblemFavoriteStatus(isFavorite: favorite))
+    func toVO() -> ProblemCellVO {
+        return ProblemCellVO(problemId: problemId ?? 0, subjectName: subjectName ?? "Unknown", question: question ?? "Unknown", problemStatus: ProblemSolvedStatus(rawValue: problemStatus), favorite: ProblemFavoriteStatus(isFavorite: favorite))
     }
 }

@@ -68,7 +68,7 @@ public struct PresentationAssembly: Assembly {
         }
         // ProblemList
         container.register(ProblemListViewModel.self) { resolver in
-            let useCase = resolver.resolve(LearningHomeUseCase.self)!
+            let useCase = resolver.resolve(ProblemListUseCase.self)!
             return ProblemListViewModel(useCase: useCase, coordinator: coordinator)
         }
         

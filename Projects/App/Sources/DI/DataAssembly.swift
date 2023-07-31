@@ -62,6 +62,14 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(ProblemDetailDataSource.self)!
             return DefaultProblemDetailRepository(dataSource: dataSource)
         }
+        // ProblemList
+        container.register(ProblemListDataSource.self) { _ in
+            return DefaultProblemListDataSource()
+        }
+        container.register(ProblemListRepository.self) { resolver in
+            let dataSource = resolver.resolve(ProblemListDataSource.self)!
+            return DefaultProblemListRepository(dataSource: dataSource)
+        }
         
         // ------------------------ Second Tab ------------------------
         

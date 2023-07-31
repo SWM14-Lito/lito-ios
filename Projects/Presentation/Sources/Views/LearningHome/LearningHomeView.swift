@@ -78,7 +78,7 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주기
     @ViewBuilder
     private var solvingProblem: some View {
-        if viewModel.solvingProblem != nil {
+        if let problemCellVO = $viewModel.solvingProblem.wrappedValue {
             VStack(alignment: .leading) {
                 HStack {
                     Text("풀던 문제")
@@ -90,7 +90,9 @@ public struct LearningHomeView: View {
                         Text("전체 보기")
                     }
                 }
-                ProblemCellView(problemCellVO: $viewModel.solvingProblem, problemCellHandling: viewModel)
+                
+                ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
+                
             }
             .padding([.leading, .trailing], 20)
         } else {

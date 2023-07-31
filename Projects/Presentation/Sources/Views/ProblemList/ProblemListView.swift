@@ -22,13 +22,9 @@ public struct ProblemListView: View {
             Divider()
             headSection
             filteringView
-            ScrollView {
-                Text("test")
-                Text("test")
-                Text("test")
-            }
+            problemList
             Spacer()
-        }.navigationTitle(viewModel.selectedSubject.rawValue)
+        }.navigationTitle(viewModel.selectedSubject.name)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -47,9 +43,9 @@ public struct ProblemListView: View {
         ScrollView(.horizontal) {
             VStack(spacing: 0) {
                 HStack {
-                    ForEach(ProblemListViewModel.SubjectInfo.allCases, id: \.self) { subject in
+                    ForEach(SubjectInfo.allCases, id: \.self) { subject in
                         VStack {
-                            Text(subject.rawValue)
+                            Text(subject.name)
                                 .lineLimit(1)
                                 .fixedSize()
                                 .font(.title3)
@@ -64,7 +60,7 @@ public struct ProblemListView: View {
                         }
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                viewModel.selectedSubject = subject
+                                viewModel.changeSubject(subject: subject)
                             }
                         }
                     }.padding(.leading, 10)
@@ -82,7 +78,7 @@ public struct ProblemListView: View {
             VStack {
                 HStack {
                     Button {
-                        viewModel.showSheet = true
+                        viewModel.filterSheetToggle()
                     } label: {
                         HStack {
                             Text("필터")
@@ -94,8 +90,8 @@ public struct ProblemListView: View {
                         RoundedRectangle(cornerRadius: 10   )
                             .stroke(Color.gray, lineWidth: 1)
                     )
-                    .sheet(isPresented: $viewModel.showSheet) {
-                        filteringModal(viewModel: viewModel)
+                    .sheet(isPresented: $viewModel.showFilterSheet) {
+                        filteringModal
                             .presentationDetents([.medium])
                             .presentationDragIndicator(.visible)
                             .frame(alignment: .topTrailing)
@@ -103,10 +99,8 @@ public struct ProblemListView: View {
                     // 동적으로 선택된 필터 박스 생성.
                     ForEach(viewModel.selectedFilters, id: \.self) { filter in
                         if filter != .all {
-                            Button(filter.rawValue) {
-                                if let index = viewModel.selectedFilters.firstIndex(of: filter) {
-                                    viewModel.selectedFilters.remove(at: index)
-                                }
+                            Button(filter.name) {
+                                viewModel.removeFilter(filter)
                             }
                             .font(.caption)
                             .buttonStyle(.borderedProminent)
@@ -119,62 +113,64 @@ public struct ProblemListView: View {
         }.scrollIndicators(.never)
     }
     
-    private struct filteringModal: View {
+    @ViewBuilder
+    private var filteringModal: some View {
         
-        @StateObject private var viewModel: ProblemListViewModel
-        @State private var isApply = false
-        
-        public init(viewModel: ProblemListViewModel) {
-            self._viewModel = StateObject(wrappedValue: viewModel)
-        }
-        
-        public var body: some View {
-            VStack(alignment: .leading) {
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("풀이 여부")
-                        .font(.title2)
-                    HStack {
-                        ForEach(ProblemListViewModel.problemListFilter.allCases, id: \.self) { filter in
-                            Button(filter.rawValue) {
-                                if viewModel.selectedFilter == filter {
-                                    viewModel.selectedFilter = .all
-                                } else {
-                                    viewModel.selectedFilter = filter
-                                }
-                            }
-                            .buttonStyle(.borderedProminent)
-                            .tint(viewModel.selectedFilter == filter ? .orange : .gray)
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("풀이 여부")
+                    .font(.title2)
+                HStack {
+                    ForEach(ProblemListFilter.allCases, id: \.self) { filter in
+                        Button(filter.name) {
+                            viewModel.selectFilter(filter)
                         }
+                        .buttonStyle(.borderedProminent)
+                        .tint(viewModel.selectedFilter == filter ? .orange : .gray)
                     }
                 }
+            }
+            Spacer()
+            HStack(alignment: .center) {
                 Spacer()
-                HStack(alignment: .center) {
-                    Spacer()
-                    Button("초기화") {
-                        viewModel.selectedFilter = .all
-                    }
-                    .buttonStyle(.bordered)
-                    .font(.title2)
-                    Spacer()
-                    Button("적용하기") {
-                        isApply = true
-                        viewModel.selectedFilters = [viewModel.selectedFilter]
-                        viewModel.showSheet = false
-                    }
-                    .buttonStyle(.bordered)
-                    .font(.title2)
-                    Spacer()
+                Button("초기화") {
+                    viewModel.selectedFilter = .all
+                }
+                .buttonStyle(.bordered)
+                .font(.title2)
+                Spacer()
+                Button("적용하기") {
+                    viewModel.applyFilter()
+                }
+                .buttonStyle(.bordered)
+                .font(.title2)
+                Spacer()
+            }
+        }
+        .padding(20)
+        .onAppear {
+            viewModel.storePrevFilter()
+        }
+        .onDisappear {
+            viewModel.cancelSelectedFilter()
+        }
+    }
+    
+    @ViewBuilder
+    private var problemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                        .onAppear {
+                            viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                        }
                 }
             }
             .padding(20)
-            .onAppear {
-                viewModel.storePrevFilter()
-            }
-            .onDisappear {
-                if !isApply {
-                    viewModel.selectedFilter = viewModel.prevFilter
-                }
-            }
+        }
+        .onAppear {
+            viewModel.getProblemList()
         }
     }
     

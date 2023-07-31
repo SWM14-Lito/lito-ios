@@ -38,6 +38,10 @@ public struct DomainAssembly: Assembly {
             let repository = resolver.resolve(ProblemDetailRepository.self)!
             return DefaultProblemDetailUseCase(repository: repository)
         }
+        container.register(ProblemListUseCase.self) { resolver in
+            let repository = resolver.resolve(ProblemListRepository.self)!
+            return DefaultProblemListUseCase(repository: repository)
+        }
         
         // ------------------------ Second Tab ------------------------
         
