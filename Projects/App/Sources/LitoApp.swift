@@ -29,6 +29,9 @@ struct LitoApp: App {
                     .navigationDestination(for: AppScene.self) { scene in
                         coordinator.buildScene(scene: scene)
                     }
+                    .sheet(item: $coordinator.sheet) { scene in
+                        coordinator.buildScene(scene: scene)
+                    }
             }
         }
     }

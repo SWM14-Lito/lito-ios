@@ -27,12 +27,12 @@ public final class LearningHomeViewModel: BaseViewModel {
     
     // 찜한 목록 화면으로 이동하기
     func moveToFavoriteProblemView() {
-        print("찜한 목록 화면으로 이동")
+        coordinator.push(.favoriteProblemListScene)
     }
     
     // 풀던 문제 화면으로 이동하기
     func moveToSolvingProblemView() {
-        print("풀던 문제 화면으로 이동")
+        coordinator.push(.solvingProblemListScene)
     }
     
     // 알림 목록 화면으로 이동하기
@@ -60,7 +60,7 @@ public final class LearningHomeViewModel: BaseViewModel {
 extension LearningHomeViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
-        coordinator.push(.problemSolvingScene(id: id))
+        coordinator.push(.problemDetailScene(id: id))
     }
     
     // 찜하기 or 찜해제하기

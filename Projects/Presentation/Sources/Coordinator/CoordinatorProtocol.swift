@@ -14,4 +14,6 @@ public protocol CoordinatorProtocol {
     func push(_ scene: AppScene)
     func pop()
     func popToRoot()
+    func present(sheet: AppScene)
+    func dismissSheet()
 }

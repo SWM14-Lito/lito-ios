@@ -26,4 +26,14 @@ final public class DefaultProblemDetailRepository: ProblemDetailRepository {
     public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
         dataSource.toggleProblemFavorite(id: id)
     }
+    
+    public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
+        dataSource.startSolvingProblem(id: id)
+    }
+    
+    public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
+        dataSource.submitAnswer(id: id, keyword: keyword)
+            .map { $0.toVO() }
+            .eraseToAnyPublisher()
+    }
 }

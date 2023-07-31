@@ -8,7 +8,6 @@
 
 import Domain
 import Combine
-import UIKit
 
 final public class DefaultSolvingProblemListRepository: SolvingProblemListRepository {
     
@@ -17,5 +16,10 @@ final public class DefaultSolvingProblemListRepository: SolvingProblemListReposi
     public init(dataSource: SolvingProblemListDataSource) {
         self.dataSource = dataSource
     }
-
+    
+    public func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error> {
+        dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .map { $0.toSolvingProblemListVO() }
+            .eraseToAnyPublisher()
+    }
 }

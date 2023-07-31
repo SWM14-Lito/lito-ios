@@ -13,6 +13,9 @@ final public class ProblemListViewModel: BaseViewModel {
 
     private let useCase: ProblemListUseCase
     private var lastProblemId: Int?
+    private var problemPage = 0
+    private var problemSize = 10
+    private var problemTotalSize: Int?
     @Published var problemCellList: [ProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
@@ -31,15 +34,22 @@ final public class ProblemListViewModel: BaseViewModel {
         if !problemCellList.isEmpty {
             guard problemId == problemCellList.last?.problemId else { return }
         }
-        let problemsQueryDTO = ProblemsQueryDTO(lastProblemId: lastProblemId, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query)
+        if let totalSize = problemTotalSize, problemPage >= totalSize {
+            return
+        }
+        let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
                 switch result {
-                case .success(let problemsCellVO):
-                    problemsCellVO?.forEach({ problemCellVO in
-                        self.lastProblemId = problemCellVO.problemId
-                        self.problemCellList.append(problemCellVO)
-                    })
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        problemsCellVO.forEach({ problemCellVO in
+                            self.lastProblemId = problemCellVO.problemId
+                            self.problemCellList.append(problemCellVO)
+                        })
+                        self.problemPage += self.problemSize
+                    }
+                    self.problemTotalSize = problemsListVO.total
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         if case .tokenExpired = errorVO {
@@ -56,6 +66,8 @@ final public class ProblemListViewModel: BaseViewModel {
     private func resetProblemCellList() {
         problemCellList.removeAll()
         lastProblemId = nil
+        problemPage = 0
+        problemTotalSize = nil
     }
     
     public func changeSubject(subject: SubjectInfo) {
@@ -111,7 +123,7 @@ final public class ProblemListViewModel: BaseViewModel {
 extension ProblemListViewModel: ProblemCellHandling {
     
     public func moveToProblemView(id: Int) {
-        coordinator.push(.problemSolvingScene(id: id))
+        coordinator.push(.problemDetailScene(id: id))
     }
     
     public func changeFavoriteStatus(id: Int) {

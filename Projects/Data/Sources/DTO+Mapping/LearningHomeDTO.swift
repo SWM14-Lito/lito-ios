@@ -18,16 +18,31 @@ public struct LearningHomeDTO: Decodable {
     let favorite: Bool?
 
     func toVO() -> LearningHomeVO {
-        let userInfo = LearningHomeUserInfoDTO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname).toVO()
+        let userInfo = LearningHomeUserInfoDTO(
+            userId: userId,
+            profileImgUrl: profileImgUrl,
+            nickname: nickname
+        ).toVO()
         let problemInfo: ProblemCellVO?
         
         if let problemId = problemId {
-            problemInfo = ProblemCellDTO(problemId: problemId, subjectName: subject, question: question, problemStatus: "풀이중", favorite: favorite).toVO()
+            problemInfo = ProblemCellDTO(
+                problemUserId: nil,
+                favoriteId: nil,
+                problemId: problemId,
+                subjectName: subject,
+                question: question,
+                problemStatus: "풀이중",
+                favorite: favorite
+            ).toProblemCellVO()
         } else {
             problemInfo = nil
         }
         
-        return LearningHomeVO(userInfo: userInfo, solvingProblem: problemInfo)
+        return LearningHomeVO(
+            userInfo: userInfo,
+            solvingProblem: problemInfo
+        )
     }
 }
 
@@ -37,7 +52,11 @@ public struct LearningHomeUserInfoDTO {
     let nickname: String?
     
     func toVO() -> LearningHomeUserInfoVO {
-        return LearningHomeUserInfoVO(userId: userId, profileImgUrl: profileImgUrl, nickname: nickname ?? "Unkown")
+        return LearningHomeUserInfoVO(
+            userId: userId,
+            profileImgUrl: profileImgUrl,
+            nickname: nickname ?? "Unkown"
+        )
     }
 }
 

@@ -71,20 +71,44 @@ public class ProblemDetailViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    // 사용자가 키보드 엔터 눌렀을 때 정답 여부에 따라 다음 상태로 이동하기
-    func handleInput() {
-        if input == problemDetailVO?.problemKeyword {
-            showAnswer()
-            useCase.correct()
-        } else {
-            isWrong = true
-            useCase.wrong()
-        }
-    }
-    
     // ChatGPT 화면 모달로 보여주기
     func showChatGPT() {
-        
+        coordinator.present(sheet: .chattingScene)
+    }
+    
+    // 문제 풀기 시작한다는거 서버에 알려주기
+    func startSolvingProblem() {
+        useCase.startSolvingProblem(id: problemId)
+            .sinkToResult { result in
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
+    }
+    
+    // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
+    func submitAnswer() {
+        useCase.submitAnswer(id: problemId, keyword: input)
+            .sinkToResult { result in
+                switch result {
+                case .success(let problemSolvedVO):
+                    self.isWrong = problemSolvedVO.solved ? false : true
+                    if problemSolvedVO.solved {
+                        self.showAnswer()
+                    }
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
     // 키보드 보여주기

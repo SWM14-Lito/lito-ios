@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 public protocol SolvingProblemListUseCase {
-
+    func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error>
 }
 
 public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
@@ -18,5 +18,9 @@ public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
     
     public init(repository: SolvingProblemListRepository) {
         self.repository = repository
+    }
+    
+    public func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error> {
+        repository.getProblemList(problemsQueryDTO: problemsQueryDTO)
     }
 }
