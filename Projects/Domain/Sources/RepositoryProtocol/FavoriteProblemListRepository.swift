@@ -9,5 +9,5 @@
 import Combine
 
 public protocol FavoriteProblemListRepository {
-    func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<[FavoriteProblemCellVO]?, Error>
+    func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error>
 }

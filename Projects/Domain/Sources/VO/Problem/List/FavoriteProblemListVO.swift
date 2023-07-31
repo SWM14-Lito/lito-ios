@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+public struct FavoriteProblemListVO {
+    
+    public let problemsCellVO: [FavoriteProblemCellVO]?
+    public let total: Int
+    
+    public init(problemsCellVO: [FavoriteProblemCellVO]? = nil, total: Int) {
+        self.problemsCellVO = problemsCellVO
+        self.total = total
+    }
+}

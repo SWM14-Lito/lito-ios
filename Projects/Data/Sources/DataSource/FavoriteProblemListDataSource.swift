@@ -10,7 +10,7 @@ import Combine
 import Domain
 
 public protocol FavoriteProblemListDataSource {
-    func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<ProblemsDTO, Error>
+    func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
 }
 
 final public class DefaultFavoriteProblemListDataSource: FavoriteProblemListDataSource {
@@ -18,7 +18,7 @@ final public class DefaultFavoriteProblemListDataSource: FavoriteProblemListData
     
     private let moyaProvider = MoyaWrapper<ProblemAPI>()
     
-    public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<ProblemsDTO, Error> {
+    public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error> {
         moyaProvider.call(target: .favoriteProblemList(problemsQueryDTO))
     }
 }

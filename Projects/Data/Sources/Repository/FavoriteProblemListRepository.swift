@@ -18,9 +18,9 @@ final public class DefaultFavoriteProblemListRepository: FavoriteProblemListRepo
         self.dataSource = dataSource
     }
     
-    public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<[FavoriteProblemCellVO]?, Error> {
+    public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error> {
         dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .map { $0.toFavoriteProblemCellVO() }
+            .map { $0.toFavoriteProblemListVO() }
             .eraseToAnyPublisher()
     }
 }
