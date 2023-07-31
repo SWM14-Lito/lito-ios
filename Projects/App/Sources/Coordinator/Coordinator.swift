@@ -74,8 +74,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(MyPageView.self)
         case .rootTabScene:
             injector?.resolve(RootTabView.self)
-        case .chatGPTScene:
-            injector?.resolve(ChatGPTView.self)
+        case .chattingScene:
+            injector?.resolve(ChattingView.self)
         }
     }
     

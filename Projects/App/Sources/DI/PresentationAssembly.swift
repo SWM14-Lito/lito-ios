@@ -107,13 +107,13 @@ public struct PresentationAssembly: Assembly {
             return ProblemDetailView(viewModel: viewModel)
         }
         // ChatGPT (UseCase 연결 필요)
-        container.register(ChatGPTViewModel.self) { _ in
-            return ChatGPTViewModel(coordinator: coordinator)
+        container.register(ChattingViewModel.self) { _ in
+            return ChattingViewModel(coordinator: coordinator)
         }
         
-        container.register(ChatGPTView.self) { resolver in
-            let viewModel = resolver.resolve(ChatGPTViewModel.self)!
-            return ChatGPTView(viewModel: viewModel)
+        container.register(ChattingView.self) { resolver in
+            let viewModel = resolver.resolve(ChattingViewModel.self)!
+            return ChattingView(viewModel: viewModel)
         }
         // ------------------------ Second Tab ------------------------
         // PedigreeList

@@ -9,7 +9,7 @@
 import Domain
 import SwiftUI
 
-public class ChatGPTViewModel: BaseViewModel {
+public class ChattingViewModel: BaseViewModel {
     
     @Published var input: String = ""
     @Published var dialogue = [DialogueUnitVO]()

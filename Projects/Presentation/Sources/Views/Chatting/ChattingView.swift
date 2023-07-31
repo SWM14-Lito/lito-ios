@@ -9,12 +9,12 @@
 import SwiftUI
 import Domain
 
-public struct ChatGPTView: View {
+public struct ChattingView: View {
     
-    @StateObject private var viewModel: ChatGPTViewModel
+    @StateObject private var viewModel: ChattingViewModel
     @FocusState private var focused: Bool
     
-    public init(viewModel: ChatGPTViewModel) {
+    public init(viewModel: ChattingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
