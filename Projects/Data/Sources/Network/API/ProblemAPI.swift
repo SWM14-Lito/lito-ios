@@ -73,9 +73,6 @@ extension ProblemAPI: TargetType {
             return .requestPlain
         case .problemList(let problemsQueryDTO):
             var parameters: [String: Any] = [:]
-            if let lastProblemId = problemsQueryDTO.lastProblemId {
-                parameters["lastProblemId"] = lastProblemId
-            }
             if let subjectId = problemsQueryDTO.subjectId, subjectId != 0 {
                 parameters["subjectId"] = subjectId
             }
@@ -85,9 +82,8 @@ extension ProblemAPI: TargetType {
             if let query = problemsQueryDTO.query {
                 parameters["query"] = query
             }
-            if let size = problemsQueryDTO.size {
-                parameters["size"] = size
-            }
+            parameters["page"] = problemsQueryDTO.page
+            parameters["size"] = problemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .solvingProblemList(let solvingProblemsQueryDTO):
             var parameters: [String: Any] = [:]
