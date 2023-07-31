@@ -42,6 +42,14 @@ public struct DomainAssembly: Assembly {
             let repository = resolver.resolve(ProblemListRepository.self)!
             return DefaultProblemListUseCase(repository: repository)
         }
+        container.register(SolvingProblemListUseCase.self) { resolver in
+            let repository = resolver.resolve(SolvingProblemListRepository.self)!
+            return DefaultSolvingProblemListUseCase(repository: repository)
+        }
+        container.register(FavoriteProblemListUseCase.self) { resolver in
+            let repository = resolver.resolve(FavoriteProblemListRepository.self)!
+            return DefaultFavoriteProblemListUseCase(repository: repository)
+        }
         
         // ------------------------ Second Tab ------------------------
         

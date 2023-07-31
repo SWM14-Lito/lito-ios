@@ -19,7 +19,7 @@ final public class DefaultProblemListRepository: ProblemListRepository {
     
     public func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {
         dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .map { $0.toVO() }
+            .map { $0.toProblemListVO() }
             .eraseToAnyPublisher()
     }
     

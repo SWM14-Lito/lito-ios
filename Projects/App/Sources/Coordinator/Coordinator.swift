@@ -13,6 +13,7 @@ import Domain
 
 public class Coordinator: ObservableObject, CoordinatorProtocol {
     @Published public var path: NavigationPath
+    @Published public var sheet: AppScene?
     private let initialScene: AppScene
     var injector: Injector?
     
@@ -37,6 +38,14 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         path.removeLast(path.count)
     }
     
+    public func present(sheet: AppScene) {
+        self.sheet = sheet
+    }
+    
+    public func dismissSheet() {
+        self.sheet = nil
+    }
+    
     @ViewBuilder
     public func buildScene(scene: AppScene) -> some View {
         switch scene {
@@ -53,14 +62,27 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(LearningHomeView.self)
         case .problemListScene:
             injector?.resolve(ProblemListView.self)
-        case .problemSolvingScene(let id):
+        case .problemDetailScene(let id):
             injector?.resolve(ProblemDetailView.self, argument: id)
         case .pedigreeListScene:
             injector?.resolve(PedigreeListView.self)
+        case .solvingProblemListScene:
+            injector?.resolve(SolvingProblemListView.self)
+        case .favoriteProblemListScene:
+            injector?.resolve(FavoriteProblemListView.self)
         case .myPageScene:
             injector?.resolve(MyPageView.self)
         case .rootTabScene:
             injector?.resolve(RootTabView.self)
+        case .chattingScene:
+            injector?.resolve(ChattingView.self)
+        }
+    }
+    
+    @ViewBuilder
+    public func buildSheet(scene: AppScene) -> some View {
+        NavigationStack {
+            buildScene(scene: scene)
         }
     }
 }

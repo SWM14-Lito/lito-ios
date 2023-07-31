@@ -70,6 +70,22 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(ProblemListDataSource.self)!
             return DefaultProblemListRepository(dataSource: dataSource)
         }
+        // SolvingProblemList
+        container.register(SolvingProblemListDataSource.self) { _ in
+            return DefaultSolvingProblemListDataSource()
+        }
+        container.register(SolvingProblemListRepository.self) { resolver in
+            let dataSource = resolver.resolve(SolvingProblemListDataSource.self)!
+            return DefaultSolvingProblemListRepository(dataSource: dataSource)
+        }
+        // FavoriteProblemList
+        container.register(FavoriteProblemListDataSource.self) { _ in
+            return DefaultFavoriteProblemListDataSource()
+        }
+        container.register(FavoriteProblemListRepository.self) { resolver in
+            let dataSource = resolver.resolve(FavoriteProblemListDataSource.self)!
+            return DefaultFavoriteProblemListRepository(dataSource: dataSource)
+        }
         
         // ------------------------ Second Tab ------------------------
         

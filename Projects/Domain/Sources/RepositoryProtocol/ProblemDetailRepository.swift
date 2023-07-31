@@ -11,4 +11,6 @@ import Combine
 public protocol ProblemDetailRepository {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
+    func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error>
+    func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error>
 }

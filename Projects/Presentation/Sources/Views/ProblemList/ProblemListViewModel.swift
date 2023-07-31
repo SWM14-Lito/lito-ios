@@ -117,7 +117,7 @@ final public class ProblemListViewModel: BaseViewModel {
 extension ProblemListViewModel: ProblemCellHandling {
     
     public func moveToProblemView(id: Int) {
-        coordinator.push(.problemSolvingScene(id: id))
+        coordinator.push(.problemDetailScene(id: id))
     }
     
     public func changeFavoriteStatus(id: Int) {
