@@ -9,7 +9,8 @@
 import Combine
 
 public protocol ProblemSearchUseCase {
-
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
+    func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error>
 }
 
 public final class DefaultProblemSearchUseCase: ProblemSearchUseCase {
@@ -17,5 +18,13 @@ public final class DefaultProblemSearchUseCase: ProblemSearchUseCase {
     
     public init(repository: ProblemRepository) {
         self.repository = repository
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        repository.toggleProblemFavorite(id: id)
+    }
+    
+    public func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {
+        repository.getProblemList(problemsQueryDTO: problemsQueryDTO)
     }
 }

@@ -13,6 +13,7 @@ import Foundation
 enum ProblemAPI {
     case learningHome
     case problemList(ProblemsQueryDTO)
+    case searchedProblemList(SearchedProblemsQueryDTO)
     case solvingProblemList(SolvingProblemsQueryDTO)
     case favoriteProblemList(FavoriteProblemsQueryDTO)
     case problemDetail(id: Int)
@@ -30,6 +31,8 @@ extension ProblemAPI: TargetType {
         case .learningHome:
             return "/api/v1/problems/users"
         case .problemList:
+            return "/api/v1/problems"
+        case .searchedProblemList:
             return "/api/v1/problems"
         case .solvingProblemList:
             return "/api/v1/problems/process-status"
@@ -53,6 +56,8 @@ extension ProblemAPI: TargetType {
         case .problemDetail:
             return .get
         case .problemList:
+            return .get
+        case .searchedProblemList:
             return .get
         case .solvingProblemList:
             return .get
@@ -84,6 +89,12 @@ extension ProblemAPI: TargetType {
             }
             parameters["page"] = problemsQueryDTO.page
             parameters["size"] = problemsQueryDTO.size
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .searchedProblemList(let searchedProblemsQueryDTO):
+            var parameters: [String: Any] = [:]
+            parameters["query"] = searchedProblemsQueryDTO.query
+            parameters["page"] = searchedProblemsQueryDTO.page
+            parameters["size"] = searchedProblemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .solvingProblemList(let solvingProblemsQueryDTO):
             var parameters: [String: Any] = [:]
@@ -136,7 +147,7 @@ extension ProblemAPI: TargetType {
     
     var headers: [String: String]? {
         switch self {
-        case .learningHome, .problemList, .solvingProblemList, .favoriteProblemList, .problemDetail, .favoriteToggle:
+        case .learningHome, .problemList, .searchedProblemList, .solvingProblemList, .favoriteProblemList, .problemDetail, .favoriteToggle:
             return nil
         case .enterProblem:
             return ["Content-type": "application/x-www-form-urlencoded"]

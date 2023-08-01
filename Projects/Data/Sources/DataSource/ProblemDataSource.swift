@@ -13,6 +13,7 @@ public protocol ProblemDataSource {
     func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
     func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
     func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
+    func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
     func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error>
@@ -35,6 +36,10 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     
     public func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error> {
         moyaProvider.call(target: .problemList(problemsQueryDTO))
+    }
+    
+    public func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error> {
+        moyaProvider.call(target: .searchedProblemList(problemsQueryDTO))
     }
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeDTO, Error> {

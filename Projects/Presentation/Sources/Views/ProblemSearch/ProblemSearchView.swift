@@ -17,6 +17,58 @@ public struct ProblemSearchView: View {
     }
     
     public var body: some View {
-        Text("ProblemSearchView")
+        searchBox
+        Spacer()
+        searchResult
+        Spacer()
+    }
+    
+    // 검색어 입력 박스
+    @ViewBuilder
+    private var searchBox: some View {
+        TextField("원하는 문제의 제목을 검색해보세요.", text: $viewModel.searchKeyword)
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(.gray)
+            )
+            .padding()
+            .onSubmit {
+                viewModel.resetProblemCellList()
+                viewModel.getProblemList()
+            }
+    }
+    
+    // 검색 결과 (상태에 따라 각각 다른 뷰 보여주기)
+    @ViewBuilder
+    private var searchResult: some View {
+        switch viewModel.getSearchState() {
+        case .notStart:
+            EmptyView()
+        case .waiting:
+            ProgressView()
+        case .finish:
+            if viewModel.problemCellList.isEmpty {
+                Text("검색 결과가 없습니다.")
+            } else {
+                problemList
+            }
+        }
+    }
+    
+    // 문제 리스트
+    @ViewBuilder
+    private var problemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                        .onAppear {
+                            viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                        }
+                }
+            }
+            .padding(20)
+        }
     }
 }
