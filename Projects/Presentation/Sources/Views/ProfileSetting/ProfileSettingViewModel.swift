@@ -146,9 +146,6 @@ public class ProfileSettingViewModel: BaseViewModel {
         } else if nickname.text.isEmpty {
             textErrorMessage = TextFieldCategory.nickname.errorMessage
             return false
-        } else if introduce.text.isEmpty {
-            textErrorMessage = TextFieldCategory.introduce.errorMessage
-            return false
         } else {
             textErrorMessage = nil
             return true
