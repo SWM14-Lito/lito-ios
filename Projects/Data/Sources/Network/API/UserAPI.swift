@@ -56,8 +56,6 @@ extension UserAPI: TargetType {
         switch self {
         case .setProfileInfo:
             return ["Content-type": "application/json;charset=UTF-8"]
-        case .setProfileImage:
-            return ["Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
         case .setNotiAcceptance:
             return ["Content-type": "application/x-www-form-urlencoded"]
         }

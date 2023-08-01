@@ -13,6 +13,7 @@ import Domain
 enum AuthAPI {
     case appleLogin(appleVO: OAuth.AppleVO)
     case kakaoLogin(kakaoVO: OAuth.KakaoVO)
+    case reissueToken
 }
 extension AuthAPI: TargetType {
     var baseURL: URL {
