@@ -43,7 +43,7 @@ extension FileAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .setProfileImage:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
+            return ["Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
         }
     }
 }

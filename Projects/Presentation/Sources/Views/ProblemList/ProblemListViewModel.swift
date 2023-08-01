@@ -50,8 +50,14 @@ final public class ProblemListViewModel: BaseViewModel {
                         self.problemPage += 1
                     }
                     self.problemTotalSize = problemsListVO.total
-                case .failure:
-                    break
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        if case .tokenExpired = errorVO {
+                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                                self.popToRoot()
+                            }
+                        }
+                    }
                 }
             })
             .store(in: cancelBag)

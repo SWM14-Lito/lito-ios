@@ -34,6 +34,20 @@ extension MoyaError {
             return NetworkErrorDTO.serverError(response)
             // Underlying Error
         case .underlying(let error, let response):
+            // 토큰 재발급 실패
+            if response?.statusCode == 401, let httpUrlResponse = response?.response {
+                if httpUrlResponse.url?.lastPathComponent == "reissue" {
+                    return NetworkErrorDTO.tokenExpired
+                }
+            }
+            // 토큰 재발급 실패 -> retry error
+            if let afError = error.asAFError, afError.isRequestRetryError {
+                if case .requestRetryFailed = afError {
+                    if response?.statusCode == 401 {
+                        return NetworkErrorDTO.tokenExpired
+                    }
+                }
+            }
             return NetworkErrorDTO.underlyingError(error, response)
         }
     }

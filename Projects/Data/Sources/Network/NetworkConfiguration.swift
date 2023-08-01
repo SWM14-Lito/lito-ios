@@ -11,7 +11,10 @@ import Domain
 
 enum NetworkConfiguration {
     static let developmentServerURL = Bundle.main.infoDictionary?["DEVELOPMENT_SERVER_URL"] ?? ""
-    static var authorization: String {
+    static var accessToken: String {
         return KeyChainManager.read(key: .accessToken) ?? ""
+    }
+    static var refreashToken: String {
+        return KeyChainManager.read(key: .refreshToken) ?? ""
     }
 }

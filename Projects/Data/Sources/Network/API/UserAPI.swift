@@ -55,9 +55,13 @@ extension UserAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .setProfileInfo:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json;charset=UTF-8"]
+            return ["Content-type": "application/json;charset=UTF-8"]
         case .setNotiAcceptance:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/x-www-form-urlencoded"]
+            return ["Content-type": "application/x-www-form-urlencoded"]
         }
+    }
+    
+    var validationType: ValidationType {
+        return .successCodes
     }
 }

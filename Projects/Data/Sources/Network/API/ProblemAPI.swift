@@ -137,11 +137,15 @@ extension ProblemAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .learningHome, .problemList, .solvingProblemList, .favoriteProblemList, .problemDetail, .favoriteToggle:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)"]
+            return nil
         case .enterProblem:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/x-www-form-urlencoded"]
+            return ["Content-type": "application/x-www-form-urlencoded"]
         case .submitAnswer:
-            return ["Authorization": "Bearer \(NetworkConfiguration.authorization)", "Content-type": "application/json;charset=UTF-8"]
+            return ["Content-type": "application/json;charset=UTF-8"]
         }
+    }
+    
+    var validationType: ValidationType {
+        return .successCodes
     }
 }

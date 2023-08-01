@@ -16,6 +16,7 @@ public enum NetworkErrorDTO: Error {
     case clientError(Error)
     case serverError(Response)
     case underlyingError(Error, Response?)
+    case tokenExpired
     
     public var debugString: String {
         switch self {
@@ -32,6 +33,8 @@ public enum NetworkErrorDTO: Error {
                 return "⛑️ UnderlyingError \(error.localizedDescription)\n" + (serverErrorMessage?.description ?? "")
             }
             return "⛑️ UnderlyingError \(error.localizedDescription)"
+        case .tokenExpired:
+            return "⛑️ Token Expired"
         }
     }
     
@@ -54,6 +57,8 @@ public enum NetworkErrorDTO: Error {
             return .fatalError
         case .underlyingError(_, _):
             return .fatalError
+        case .tokenExpired:
+            return .tokenExpired
         }
     }
     
@@ -117,7 +122,9 @@ public enum NetworkErrorDTO: Error {
             let serverErrorMessage = try JSONDecoder().decode(ServerErrorMessage.self, from: response.data)
             return serverErrorMessage
         } catch {
-            print("🫠Failed to decode serverErrorMessage\n🧐Reason: \(error))")
+            print("🫠Failed to decode serverErrorMessage\n")
+            print("⭐️plain response is below")
+            print(String(data: response.data, encoding: .utf8) ?? "no response")
             return nil
         }
     }
