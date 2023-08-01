@@ -78,23 +78,26 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주기
     @ViewBuilder
     private var solvingProblem: some View {
-        if let problemCellVO = $viewModel.solvingProblem.wrappedValue {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("풀던 문제")
-                        .font(.system(size: 20, weight: .bold))
-                    Spacer()
-                    Button {
-                        viewModel.moveToSolvingProblemView()
-                    } label: {
-                        Text("전체 보기")
+        if viewModel.isGotRequest {
+            if viewModel.solvingProblem != nil {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("풀던 문제")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Button {
+                            viewModel.moveToSolvingProblemView()
+                        } label: {
+                            Text("전체 보기")
+                        }
                     }
+                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 }
-                
-                ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
-                
+                .padding([.leading, .trailing], 20)
+            } else {
+                Text("진행중인 문제가 없습니다.")
+                    .padding()
             }
-            .padding([.leading, .trailing], 20)
         } else {
             Spacer()
             ProgressView()
