@@ -19,9 +19,9 @@ public protocol ProblemDetailUseCase {
 
 public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
     
-    private let repository: ProblemDetailRepository
+    private let repository: ProblemRepository
     
-    public init(repository: ProblemDetailRepository) {
+    public init(repository: ProblemRepository) {
         self.repository = repository
     }
     

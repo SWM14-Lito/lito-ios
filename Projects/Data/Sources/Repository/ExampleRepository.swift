@@ -7,9 +7,7 @@
 //
 
 import Combine
-import Foundation
 import Domain
-import Moya
 
 final public class DefaultExampleRepository: ExampleRepository {
     private let dataSource: ExampleDataSource

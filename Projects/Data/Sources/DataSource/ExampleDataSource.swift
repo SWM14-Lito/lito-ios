@@ -6,10 +6,7 @@
 //  Copyright © 2023 Lito. All rights reserved.
 //
 
-import Foundation
 import Combine
-import CombineMoya
-import Moya
 
 public protocol ExampleDataSource {
     func loadMaxim() -> AnyPublisher<SlipDTO, Error>

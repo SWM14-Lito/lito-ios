@@ -1,15 +1,12 @@
 //
-//  LoginDataSource.swift
+//  AuthDataSource.swift
 //  Data
 //
-//  Created by Lee Myeonghwan on 2023/07/07.
+//  Created by 김동락 on 2023/07/31.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import Foundation
 import Combine
-import CombineMoya
-import Moya
 import Domain
 
 public protocol AuthDataSource {

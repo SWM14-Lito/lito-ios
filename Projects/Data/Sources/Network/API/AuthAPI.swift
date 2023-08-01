@@ -1,8 +1,8 @@
 //
-//  OAuthLoginAPI.swift
+//  AuthAPI.swift
 //  Data
 //
-//  Created by Lee Myeonghwan on 2023/07/07.
+//  Created by 김동락 on 2023/07/31.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
@@ -13,7 +13,6 @@ import Domain
 enum AuthAPI {
     case appleLogin(appleVO: OAuth.AppleVO)
     case kakaoLogin(kakaoVO: OAuth.KakaoVO)
-    case reissueToken
 }
 extension AuthAPI: TargetType {
     var baseURL: URL {
@@ -53,12 +52,7 @@ extension AuthAPI: TargetType {
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .reissueToken:
-            return ["Authorization": "Bearer \(NetworkConfiguration.refreashToken)", "Content-type": "application/x-www-form-urlencoded"]
-        default:
             return AuthAPI.APICallHeaders.Json
-        }
     }
     
     var validationType: ValidationType {

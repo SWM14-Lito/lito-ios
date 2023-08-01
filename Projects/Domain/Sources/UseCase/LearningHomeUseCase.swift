@@ -15,9 +15,9 @@ public protocol LearningHomeUseCase {
 }
 
 public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
-    private let repository: LearningHomeRepository
+    private let repository: ProblemRepository
     
-    public init(repository: LearningHomeRepository) {
+    public init(repository: ProblemRepository) {
         self.repository = repository
     }
     

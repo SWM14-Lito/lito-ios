@@ -1,31 +1,27 @@
 //
-//  ProfileSettingDataSource.swift
+//  UserDataSource.swift
 //  Data
 //
-//  Created by 김동락 on 2023/07/07.
+//  Created by 김동락 on 2023/07/31.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
 import Combine
 import Domain
 
-public protocol ProfileSettingDataSource {
+public protocol UserDataSource {
     func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
-    func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error>
     func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
 }
 
-final public class DefaultProfileSettingDataSource: ProfileSettingDataSource {
+final public class DefaultUserDataSource: UserDataSource {
+    
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<ProfileSettingAPI>()
+    private let moyaProvider = MoyaWrapper<UserAPI>()
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
         moyaProvider.call(target: .setProfileInfo(profileInfoDTO))
-    }
-    
-    public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        moyaProvider.call(target: .setProfileImage(profileImageDTO))
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {

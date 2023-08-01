@@ -14,7 +14,6 @@ import Foundation
 public struct DataAssembly: Assembly {
     
     public func assemble(container: Container) {
-        // ------------------------ Common ------------------------
         // Example
         container.register(ExampleDataSource.self) { _ in
             return DefaultExampleDataSource()
@@ -23,73 +22,46 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(ExampleDataSource.self)!
             return DefaultExampleRepository(dataSource: dataSource)
         }
-        // OAuthService
-        container.register(OAuthServiceDataSource.self) { _ in
-            return DefaultOAuthServiceDataSource()
+        // Problem
+        container.register(ProblemDataSource.self) { _ in
+            return DefaultProblemDataSource()
         }
-        // Login
+        container.register(ProblemRepository.self) { resolver in
+            let dataSource = resolver.resolve(ProblemDataSource.self)!
+            return DefaultProblemRepository(dataSource: dataSource)
+        }
+        // File
+        container.register(FileDataSource.self) { _ in
+            return DefaultFileDataSource()
+        }
+        container.register(FileRepository.self) { resolver in
+            let dataSource = resolver.resolve(FileDataSource.self)!
+            return DefaultFileRepository(dataSource: dataSource)
+        }
+        // User
+        container.register(UserDataSource.self) { _ in
+            return DefaultUserDataSource()
+        }
+        container.register(UserRepository.self) { resolver in
+            let dataSource = resolver.resolve(UserDataSource.self)!
+            return DefaultUserRepository(dataSource: dataSource)
+        }
+        // OAuth
+        container.register(OAuthDataSource.self) { _ in
+            return DefaultOAuthDataSource()
+        }
+        container.register(OAuthRepository.self) { resolver in
+            let dataSource = resolver.resolve(OAuthDataSource.self)!
+            return DefaultOAuthRepository(dataSource: dataSource)
+        }
+        // Auth
         container.register(AuthDataSource.self) { _ in
             return DefaultAuthDataSource()
         }
-        container.register(LoginRepository.self) { resolver in
-            let oauthDataSource = resolver.resolve(OAuthServiceDataSource.self)!
-            let loginDataSource = resolver.resolve(AuthDataSource.self)!
-            return DefaultLoginRepository(oauthDataSource: oauthDataSource, loginDataSource: loginDataSource)
+        container.register(AuthRepository.self) { resolver in
+            let dataSource = resolver.resolve(AuthDataSource.self)!
+            return DefaultAuthRepository(dataSource: dataSource)
         }
-        // ProfileSetting
-        container.register(ProfileSettingDataSource.self) { _ in
-            return DefaultProfileSettingDataSource()
-        }
-        container.register(ProfileSettingRepository.self) { resolver in
-            let dataSource = resolver.resolve(ProfileSettingDataSource.self)!
-            return DefaultProfileSettingRepository(dataSource: dataSource)
-        }
-        
-        // ------------------------ First Tab ------------------------
-        // LearningHome
-        container.register(LearningHomeDataSource.self) { _ in
-            return DefaultLearningHomeDataSource()
-        }
-        container.register(LearningHomeRepository.self) { resolver in
-            let dataSource = resolver.resolve(LearningHomeDataSource.self)!
-            return DefaultLearningHomeRepository(dataSource: dataSource)
-        }
-        // ProblemSolving
-        container.register(ProblemDetailDataSource.self) { _ in
-            return DefaultProblemDetailDataSource()
-        }
-        container.register(ProblemDetailRepository.self) { resolver in
-            let dataSource = resolver.resolve(ProblemDetailDataSource.self)!
-            return DefaultProblemDetailRepository(dataSource: dataSource)
-        }
-        // ProblemList
-        container.register(ProblemListDataSource.self) { _ in
-            return DefaultProblemListDataSource()
-        }
-        container.register(ProblemListRepository.self) { resolver in
-            let dataSource = resolver.resolve(ProblemListDataSource.self)!
-            return DefaultProblemListRepository(dataSource: dataSource)
-        }
-        // SolvingProblemList
-        container.register(SolvingProblemListDataSource.self) { _ in
-            return DefaultSolvingProblemListDataSource()
-        }
-        container.register(SolvingProblemListRepository.self) { resolver in
-            let dataSource = resolver.resolve(SolvingProblemListDataSource.self)!
-            return DefaultSolvingProblemListRepository(dataSource: dataSource)
-        }
-        // FavoriteProblemList
-        container.register(FavoriteProblemListDataSource.self) { _ in
-            return DefaultFavoriteProblemListDataSource()
-        }
-        container.register(FavoriteProblemListRepository.self) { resolver in
-            let dataSource = resolver.resolve(FavoriteProblemListDataSource.self)!
-            return DefaultFavoriteProblemListRepository(dataSource: dataSource)
-        }
-        
-        // ------------------------ Second Tab ------------------------
-        
-        // ------------------------ Third Tab ------------------------
     }
     
 }
