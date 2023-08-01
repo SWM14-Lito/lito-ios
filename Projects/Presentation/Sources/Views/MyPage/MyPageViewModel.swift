@@ -9,5 +9,9 @@
 import SwiftUI
 
 public class MyPageViewModel: BaseViewModel {
-
+    @Published var imageData: Data?
+    @Published var point: String = "0"
+    @Published var nickName: String = "Unknown"
+    @Published var introduce: String = "Unknown"
+    @Published var alarmStatus: Bool = true
 }

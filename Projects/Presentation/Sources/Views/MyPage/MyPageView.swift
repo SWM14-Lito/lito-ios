@@ -17,6 +17,55 @@ public struct MyPageView: View {
     }
     
     public var body: some View {
-        Text("MyPageView")
+        VStack {
+            Divider()
+            PhotoPickerView(imageData: $viewModel.imageData)
+            HStack {
+                Text("내 포인트: ")
+                Text(viewModel.point)
+                Spacer()
+                Button("충전하기") {
+                    // 충전 페이지로 이동
+                }
+            }
+            .padding(20)
+            List {
+                ForEach(MyPageList.allCases, id: \.self) { content in
+                    HStack {
+                        switch content {
+                        case .name:
+                            Text(content.rawValue)
+                            Spacer()
+                            Text("김동락")
+                            EmptyView()
+                        case .alarm:
+                            Toggle("알림받기", isOn: $viewModel.alarmStatus)
+                        default:
+                            Text(content.rawValue)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                        }
+                    }
+                    
+                }
+                HStack {
+                    Spacer()
+                    Button("로그아웃") {
+                        // 로그아웃
+                    }
+                    Spacer()
+                }
+                HStack {
+                    Spacer()
+                    Button("회원탈퇴") {
+                        // 회원탈퇴
+                    }
+                    Spacer()
+                }
+            }
+            .listStyle(.grouped)
+            Spacer()
+        }.navigationTitle("마이페이지")
+            .navigationBarTitleDisplayMode(.large)
     }
 }
