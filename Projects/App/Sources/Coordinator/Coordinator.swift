@@ -76,6 +76,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(RootTabView.self)
         case .chattingScene:
             injector?.resolve(ChattingView.self)
+        case .problemSearchScene:
+            injector?.resolve(ProblemSearchView.self)
         }
     }
     

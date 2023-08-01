@@ -117,6 +117,9 @@ final public class ProblemListViewModel: BaseViewModel {
             isApply = false
         }
     }
+    public func moveToProblemSearchScene() {
+        coordinator.push(.problemSearchScene)
+    }
 
 }
 
