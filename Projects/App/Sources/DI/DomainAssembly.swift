@@ -57,6 +57,11 @@ public struct DomainAssembly: Assembly {
         
         // ------------------------ Third Tab ------------------------
         
+        container.register(MyPageUseCase.self) { resolver in
+            let repository = resolver.resolve(AuthRepository.self)!
+            return DefaultMyPageUseCase(repository: repository)
+        }
+        
     }
     
 }

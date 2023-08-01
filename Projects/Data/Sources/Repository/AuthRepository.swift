@@ -20,4 +20,8 @@ final public class DefaultAuthRepository: AuthRepository {
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         dataSource.postLoginInfo(OAuthProvider: OAuthProvider)
     }
+    
+    public func postLogout() -> AnyPublisher<Void, Error> {
+        dataSource.postLogout()
+    }
 }

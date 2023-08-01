@@ -126,8 +126,9 @@ public struct PresentationAssembly: Assembly {
         }
         // ------------------------ Third Tab ------------------------
         // MyPage
-        container.register(MyPageViewModel.self) { _ in
-            return MyPageViewModel(coordinator: coordinator)
+        container.register(MyPageViewModel.self) { resolver in
+            let useCase = resolver.resolve(MyPageUseCase.self)!
+            return MyPageViewModel(useCase: useCase, coordinator: coordinator)
         }
         container.register(MyPageView.self) { resolver in
             let viewModel = resolver.resolve(MyPageViewModel.self)!

@@ -13,6 +13,7 @@ import Domain
 enum AuthAPI {
     case appleLogin(appleVO: OAuth.AppleVO)
     case kakaoLogin(kakaoVO: OAuth.KakaoVO)
+    case logout
     case reissueToken
 }
 extension AuthAPI: TargetType {
@@ -28,6 +29,8 @@ extension AuthAPI: TargetType {
             return "/api/v1/auth/kakao/login"
         case .reissueToken:
             return "/api/v1/auth/reissue"
+        case .logout:
+            return "/api/v1/auth/logout"
         }
     }
     
@@ -47,13 +50,18 @@ extension AuthAPI: TargetType {
                 parameters: ["oauthId": kakaoVO.userIdentifier,
                              "email": kakaoVO.userEmail
                             ], encoding: JSONEncoding.default)
-        case .reissueToken:
+        case .reissueToken, .logout:
             return .requestPlain
         }
     }
     
     var headers: [String: String]? {
+        switch self {
+        case .logout:
+            return ["Content-Type": "application/x-www-form-urlencoded"]
+        default:
             return AuthAPI.APICallHeaders.Json
+        }
     }
     
     var validationType: ValidationType {
