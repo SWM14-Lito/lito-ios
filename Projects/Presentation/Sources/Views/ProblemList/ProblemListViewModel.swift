@@ -34,7 +34,7 @@ final public class ProblemListViewModel: BaseViewModel {
         if !problemCellList.isEmpty {
             guard problemId == problemCellList.last?.problemId else { return }
         }
-        if let totalSize = problemTotalSize, problemPage >= totalSize {
+        if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
         }
         let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
@@ -47,7 +47,7 @@ final public class ProblemListViewModel: BaseViewModel {
                             self.lastProblemId = problemCellVO.problemId
                             self.problemCellList.append(problemCellVO)
                         })
-                        self.problemPage += self.problemSize
+                        self.problemPage += 1
                     }
                     self.problemTotalSize = problemsListVO.total
                 case .failure:
