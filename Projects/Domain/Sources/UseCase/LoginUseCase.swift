@@ -18,18 +18,20 @@ public protocol LoginUseCase {
 
 public final class DefaultLoginUseCase: LoginUseCase {
     
-    private let repository: LoginRepository
+    private let oauthRepository: OAuthRepository
+    private let authRepository: AuthRepository
     
     private var cancleBag = Set<AnyCancellable>()
     
-    public init(repository: LoginRepository) {
-        self.repository = repository
+    public init(oauthRepository: OAuthRepository, authRepository: AuthRepository) {
+        self.oauthRepository = oauthRepository
+        self.authRepository = authRepository
     }
     
     public func appleLogin() -> AnyPublisher<LoginResultVO, Error> {
-        repository.appleLogin()
+        oauthRepository.appleLogin()
             .flatMap { appleVO -> AnyPublisher<LoginResultVO, Error> in
-                self.repository.postLoginInfo(OAuthProvider: OAuth.apple(appleVO))
+                self.authRepository.postLoginInfo(OAuthProvider: OAuth.apple(appleVO))
                     .catch { error -> Fail in
                         return Fail(error: error)
                     }
@@ -44,9 +46,9 @@ public final class DefaultLoginUseCase: LoginUseCase {
     }
     
     public func kakaoLogin() -> AnyPublisher<LoginResultVO, Error> {
-        repository.kakaoLogin()
+        oauthRepository.kakaoLogin()
             .flatMap { kakaoVO -> AnyPublisher<LoginResultVO, Error> in
-                self.repository.postLoginInfo(OAuthProvider: OAuth.kakao(kakaoVO))
+                self.authRepository.postLoginInfo(OAuthProvider: OAuth.kakao(kakaoVO))
                     .catch { error -> Fail in
                         return Fail(error: error)
                     }

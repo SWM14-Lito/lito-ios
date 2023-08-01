@@ -1,33 +1,30 @@
 //
-//  LoginDataSource.swift
+//  AuthDataSource.swift
 //  Data
 //
-//  Created by Lee Myeonghwan on 2023/07/07.
+//  Created by 김동락 on 2023/07/31.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import Foundation
 import Combine
-import CombineMoya
-import Moya
 import Domain
 
-public protocol LoginDataSource {
+public protocol AuthDataSource {
     func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
 }
 
-final public class DefaultLoginDataSource: LoginDataSource {
+final public class DefaultAuthDataSource: AuthDataSource {
     
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<LoginAPI>()
+    private let moyaProvider = MoyaWrapper<AuthAPI>()
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         switch OAuthProvider {
         case .apple(let appleVO):
-            return moyaProvider.call(target: .apple(appleVO: appleVO))
+            return moyaProvider.call(target: .appleLogin(appleVO: appleVO))
         case .kakao(let kakaoVO):
-            return moyaProvider.call(target: .kakao(kakaoVO: kakaoVO))
+            return moyaProvider.call(target: .kakaoLogin(kakaoVO: kakaoVO))
         }
     }
     
