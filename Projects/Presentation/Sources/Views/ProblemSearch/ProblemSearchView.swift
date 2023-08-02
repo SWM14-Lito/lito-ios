@@ -17,10 +17,13 @@ public struct ProblemSearchView: View {
     }
     
     public var body: some View {
-        searchBox
-        Spacer()
-        searchResult
-        Spacer()
+        VStack {
+            errorMessage
+            searchBox
+            Spacer()
+            searchResult
+            Spacer()
+        }
     }
     
     // 검색어 입력 박스
@@ -70,5 +73,11 @@ public struct ProblemSearchView: View {
             }
             .padding(20)
         }
+    }
+    
+    // API 에러 발생시 알려줌
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }

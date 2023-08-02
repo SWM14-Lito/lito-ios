@@ -24,7 +24,7 @@ public protocol ProblemDataSource {
 final public class DefaultProblemDataSource: ProblemDataSource {
     public init() {}
     
-    private let moyaProvider = MoyaWrapper<ProblemAPI>()
+    private let moyaProvider = MoyaWrapper<ProblemAPI>(forTest: true)
     
     public func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error> {
         moyaProvider.call(target: .solvingProblemList(problemsQueryDTO))

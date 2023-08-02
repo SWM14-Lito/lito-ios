@@ -29,3 +29,7 @@ public struct ProblemListDTO: Decodable {
         return FavoriteProblemListVO(problemsCellVO: problems, total: total)
     }
 }
+
+#if DEBUG
+extension ProblemListDTO: Encodable {}
+#endif

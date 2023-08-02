@@ -38,7 +38,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     
     // 알림 목록 화면으로 이동하기
     func moveToNotiView() {
-        coordinator.push(.solvingProblemListScene)
+
     }
 
     // 프로필 정보와 문제 정보 가져오기

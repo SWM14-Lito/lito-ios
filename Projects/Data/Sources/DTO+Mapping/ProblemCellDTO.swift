@@ -8,17 +8,6 @@
 
 import Domain
 
-
-struct VO {
-    let problemUserId: Int?
-    let favoriteId: Int?
-    let problemId: Int?
-    let subjectName: String
-    let question: String
-    let problemStatus: String
-    let favorite: Bool
-}
-
 public struct ProblemCellDTO: Decodable {
     let problemUserId: Int?
     let favoriteId: Int?
@@ -58,3 +47,7 @@ public struct ProblemCellDTO: Decodable {
         )
     }
 }
+
+#if DEBUG
+extension ProblemCellDTO: Encodable {}
+#endif

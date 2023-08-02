@@ -16,7 +16,11 @@ public struct SolvingProblemListView: View {
     }
     
     public var body: some View {
-        problemList
+        VStack {
+            errorMessage
+            problemList
+        }
+            .navigationTitle("풀던 문제")
     }
     
     // 문제 리스트
@@ -33,5 +37,14 @@ public struct SolvingProblemListView: View {
             }
             .padding(20)
         }
+        .onAppear {
+            viewModel.getProblemList()
+        }
+    }
+    
+    // API 에러 발생시 알려줌
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }
