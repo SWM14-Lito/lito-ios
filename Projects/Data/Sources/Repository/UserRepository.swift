@@ -24,4 +24,11 @@ final public class DefaultUserRepository: UserRepository {
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
         dataSource.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
     }
+    
+    public func getUserInfo() -> AnyPublisher<UserInfoVO, Error> {
+        dataSource.getUserInfo()
+            .map { $0.toVO() }
+            .eraseToAnyPublisher()
+    }
+    
 }

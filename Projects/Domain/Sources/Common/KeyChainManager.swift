@@ -11,13 +11,13 @@ import Security
 
 final public class KeyChainManager {
     
-    public enum Keys: String {
+    public enum UserKeys: String, CaseIterable {
+        case userId
         case accessToken
         case refreshToken
-        
     }
 
-    static public func create(key: Keys, token: String) {
+    static public func create(key: UserKeys, token: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue,
@@ -29,7 +29,20 @@ final public class KeyChainManager {
         assert(status == noErr, "failed to save Token")
     }
     
-    static public func read(key: Keys) -> String? {
+    static public func create(key: UserKeys, token: Int) {
+        let tokenStr = String(token)
+        let query: NSDictionary = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key.rawValue,
+            kSecValueData: tokenStr.data(using: .utf8, allowLossyConversion: false) as Any
+        ]
+        SecItemDelete(query)
+
+        let status = SecItemAdd(query, nil)
+        assert(status == noErr, "failed to save Token")
+    }
+    
+    static public func read(key: UserKeys) -> String? {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue,
@@ -51,12 +64,24 @@ final public class KeyChainManager {
         }
     }
     
-    static public func delete(key: Keys) {
+    static public func delete(key: UserKeys) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue
         ]
         let status = SecItemDelete(query)
         assert(status == noErr, "failed to delete the value, status code = \(status)")
+    }
+    
+    static public func deleteUserInfo() {
+        UserKeys.allCases.forEach { key in
+            let query: NSDictionary = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrAccount: key.rawValue
+            ]
+            let status = SecItemDelete(query)
+            assert(status == noErr, "failed to delete the value, status code = \(status)")
+        }
+       
     }
 }
