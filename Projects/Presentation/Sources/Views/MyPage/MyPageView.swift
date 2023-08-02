@@ -57,7 +57,7 @@ public struct MyPageView: View {
             HStack {
                 Spacer()
                 Button("로그아웃") {
-                    // 로그아웃
+                    viewModel.postLogout()
                 }
                 Spacer()
             }

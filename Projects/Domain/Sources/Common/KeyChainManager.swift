@@ -51,7 +51,7 @@ final public class KeyChainManager {
         }
     }
     
-    static func delete(key: Keys) {
+    static public func delete(key: Keys) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue

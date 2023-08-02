@@ -35,7 +35,7 @@ final class AuthInterceptor: RequestInterceptor {
             break
         case "logout":
             urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
-            urlRequest.headers.add(name: "REFRESH_TOKEN", value: NetworkConfiguration.refreashToken)
+            urlRequest.headers.add(name: "Refresh-Token", value: NetworkConfiguration.refreashToken)
         default:
             urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
         }

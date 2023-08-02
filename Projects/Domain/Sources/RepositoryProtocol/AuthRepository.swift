@@ -10,4 +10,5 @@ import Combine
 
 public protocol AuthRepository {
     func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
+    func postLogout() -> AnyPublisher<Void, Error>
 }

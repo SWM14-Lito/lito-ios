@@ -12,6 +12,7 @@ import Domain
 public protocol AuthDataSource {
     func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
     func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error>
+    func postLogout() -> AnyPublisher<Void, Error>
 }
 
 final public class DefaultAuthDataSource: AuthDataSource {
@@ -31,6 +32,10 @@ final public class DefaultAuthDataSource: AuthDataSource {
     
     public func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error> {
         return moyaProvider.call(target: .reissueToken)
+    }
+    
+    public func postLogout() -> AnyPublisher<Void, Error> {
+        return moyaProvider.call(target: .logout)
     }
     
 }
