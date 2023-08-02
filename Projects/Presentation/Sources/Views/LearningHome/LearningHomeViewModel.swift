@@ -12,8 +12,8 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
-    @Published private(set) var isGotRequest: Bool = false
-    @Published var solvingProblem: ProblemCellVO?
+    @Published private(set) var isGotResponse: Bool = false
+    @Published var solvingProblem: DefaultProblemCellVO?
     @Published var userInfo: LearningHomeUserInfoVO?
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
@@ -54,7 +54,7 @@ public final class LearningHomeViewModel: BaseViewModel {
                         self.errorObject.error  = errorVO
                     }
                 }
-                self.isGotRequest = true
+                self.isGotResponse = true
             }
             .store(in: cancelBag)
     }

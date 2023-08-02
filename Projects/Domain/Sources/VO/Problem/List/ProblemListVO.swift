@@ -10,10 +10,10 @@ import Foundation
 
 public struct ProblemListVO {
     
-    public let problemsCellVO: [ProblemCellVO]?
+    public let problemsCellVO: [DefaultProblemCellVO]?
     public let total: Int
     
-    public init(problemsCellVO: [ProblemCellVO]? = nil, total: Int) {
+    public init(problemsCellVO: [DefaultProblemCellVO]? = nil, total: Int) {
         self.problemsCellVO = problemsCellVO
         self.total = total
     }

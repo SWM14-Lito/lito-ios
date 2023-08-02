@@ -98,12 +98,11 @@ extension ProblemAPI: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .solvingProblemList(let solvingProblemsQueryDTO):
             var parameters: [String: Any] = [:]
-            if let lastProblemId = solvingProblemsQueryDTO.lastProblemUserId {
-                parameters["lastProblemUserId"] = lastProblemId
+            if let lastProblemUserId = solvingProblemsQueryDTO.lastProblemUserId {
+                parameters["lastProblemUserId"] = lastProblemUserId
             }
-            if let size = solvingProblemsQueryDTO.size {
-                parameters["size"] = size
-            }
+            parameters["page"] = solvingProblemsQueryDTO.page
+            parameters["size"] = solvingProblemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .favoriteProblemList(let favoriteProblemsQueryDTO):
             var parameters: [String: Any] = [:]
@@ -116,9 +115,8 @@ extension ProblemAPI: TargetType {
             if let problemStatus = favoriteProblemsQueryDTO.problemStatus, problemStatus != "" {
                 parameters["problemStatus"] = problemStatus
             }
-            if let size = favoriteProblemsQueryDTO.size {
-                parameters["size"] = size
-            }
+            parameters["page"] = favoriteProblemsQueryDTO.page
+            parameters["size"] = favoriteProblemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .problemDetail(let id):
             return .requestParameters(parameters: [

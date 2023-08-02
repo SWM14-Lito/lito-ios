@@ -14,9 +14,9 @@ public class ProblemSearchViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
-    private var searchState: SearchState = .notStart
+    @Published private(set) var searchState: SearchState = .notStart
     @Published var searchKeyword: String = ""
-    @Published var problemCellList: [ProblemCellVO] = []
+    @Published var problemCellList: [DefaultProblemCellVO] = []
     
     public enum SearchState {
         case notStart
@@ -65,11 +65,6 @@ public class ProblemSearchViewModel: BaseViewModel {
                 self.searchState = .finish
             })
             .store(in: cancelBag)
-    }
-    
-    // 검색 상태 반환하기
-    public func getSearchState() -> SearchState {
-        return searchState
     }
 }
 

@@ -6,7 +6,7 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-public struct ProblemCellVO: Hashable {
+public struct DefaultProblemCellVO: Hashable, ProblemCell {
     
     public let problemId: Int
     public let subjectName: String

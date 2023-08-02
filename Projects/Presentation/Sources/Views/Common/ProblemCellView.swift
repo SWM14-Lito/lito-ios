@@ -14,12 +14,12 @@ public protocol ProblemCellHandling {
     func changeFavoriteStatus(id: Int)
 }
 
-public struct ProblemCellView: View {
+public struct ProblemCellView<T: ProblemCell>: View {
     
-    @Binding private var problemCellVO: ProblemCellVO
+    @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
     
-    public init(problemCellVO: Binding<ProblemCellVO>, problemCellHandling: ProblemCellHandling) {
+    public init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
         self._problemCellVO = problemCellVO
         self.problemCellHandling = problemCellHandling
     }

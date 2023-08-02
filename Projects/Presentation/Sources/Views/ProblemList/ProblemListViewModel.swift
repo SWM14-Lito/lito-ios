@@ -15,7 +15,7 @@ final public class ProblemListViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
-    @Published var problemCellList: [ProblemCellVO] = []
+    @Published var problemCellList: [DefaultProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
     @Published var selectedFilter: ProblemListFilter = .all

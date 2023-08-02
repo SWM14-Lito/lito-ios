@@ -42,7 +42,7 @@ public struct ProblemSearchView: View {
     // 검색 결과 (상태에 따라 각각 다른 뷰 보여주기)
     @ViewBuilder
     private var searchResult: some View {
-        switch viewModel.getSearchState() {
+        switch viewModel.searchState {
         case .notStart:
             EmptyView()
         case .waiting:

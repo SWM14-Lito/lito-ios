@@ -78,7 +78,7 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주기
     @ViewBuilder
     private var solvingProblem: some View {
-        if viewModel.isGotRequest {
+        if viewModel.isGotResponse {
             if viewModel.solvingProblem != nil {
                 VStack(alignment: .leading) {
                     HStack {
