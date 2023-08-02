@@ -17,12 +17,7 @@ final public class ProblemListViewModel: BaseViewModel {
     private var problemTotalSize: Int?
     @Published var problemCellList: [DefaultProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
-    @Published var showFilterSheet = false
-    @Published var selectedFilter: ProblemListFilter = .all
-    // TODO: 이후에 필터 view를 general 하게 사용하기 위한 변수
     @Published var selectedFilters: [ProblemListFilter] = []
-    public var prevFilter: ProblemListFilter = .all
-    private var isApply = false
 
     public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -61,12 +56,6 @@ final public class ProblemListViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    private func resetProblemCellList() {
-        problemCellList.removeAll()
-        problemPage = 0
-        problemTotalSize = nil
-    }
-    
     public func changeSubject(subject: SubjectInfo) {
         if selectedSubject != subject {
             selectedSubject = subject
@@ -75,49 +64,22 @@ final public class ProblemListViewModel: BaseViewModel {
         }
     }
     
-    public func filterSheetToggle() {
-        showFilterSheet.toggle()
-    }
-    
-    public func storePrevFilter() {
-        prevFilter = selectedFilter
-    }
-    
-    public func removeFilter(_ filter: ProblemListFilter) {
-        if let index = selectedFilters.firstIndex(of: filter) {
-            selectedFilters.remove(at: index)
-            selectedFilter = .all
-        }
-        resetProblemCellList()
-        getProblemList()
-    }
-    public func selectFilter(_ filter: ProblemListFilter) {
-        if selectedFilter == filter {
-            selectedFilter = .all
-        } else {
-            selectedFilter = filter
-        }
-    }
-    public func applyFilter() {
-        isApply = true
-        showFilterSheet = false
-        if selectedFilter != prevFilter {
-            selectedFilters = [selectedFilter]
-            resetProblemCellList()
-            getProblemList()
-        }
-    }
-    public func cancelSelectedFilter() {
-        if !isApply {
-            selectedFilter = prevFilter
-        } else {
-            isApply = false
-        }
-    }
     public func moveToProblemSearchScene() {
         coordinator.push(.problemSearchScene)
     }
 
+}
+
+extension ProblemListViewModel: FilterHandling {
+    func resetProblemCellList() {
+        problemCellList.removeAll()
+        problemPage = 0
+        problemTotalSize = nil
+    }
+    
+    func getProblemList() {
+        getProblemList(problemId: nil)
+    }
 }
 
 extension ProblemListViewModel: ProblemCellHandling {
@@ -127,9 +89,19 @@ extension ProblemListViewModel: ProblemCellHandling {
     }
     
     public func changeFavoriteStatus(id: Int) {
-        let index = problemCellList.firstIndex(where: { $0.problemId == id})!
-        problemCellList[index].favorite.toggle()
-        // TODO: API 통신
+        useCase.toggleProblemFavorite(id: id)
+            .receive(on: DispatchQueue.main)
+            .sinkToResult { result in
+                switch result {
+                case .success(_):
+                    let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
+                    self.problemCellList[index].favorite.toggle()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
-    
 }

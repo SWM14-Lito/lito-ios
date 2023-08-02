@@ -8,10 +8,17 @@
 
 import Foundation
 
-public enum ProblemListFilter: CaseIterable {
+public enum ProblemListFilter: FilterComponent {
+    
+    typealias T = Self
+    
     case all
     case unsolved
     case solved
+    
+    static var defaultValue: ProblemListFilter {
+        return .all
+    }
     
     public var name: String {
         switch self {

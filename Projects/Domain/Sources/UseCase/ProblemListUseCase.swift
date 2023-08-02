@@ -9,6 +9,7 @@
 import Combine
 
 public protocol ProblemListUseCase {
+    func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error>
 }
 
@@ -18,6 +19,10 @@ public final class DefaultProblemListUseCase: ProblemListUseCase {
     
     public init(repository: ProblemRepository) {
         self.repository = repository
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        repository.toggleProblemFavorite(id: id)
     }
     
     public func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {

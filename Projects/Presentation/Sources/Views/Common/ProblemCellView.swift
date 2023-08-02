@@ -9,22 +9,22 @@
 import SwiftUI
 import Domain
 
-public protocol ProblemCellHandling {
+protocol ProblemCellHandling {
     func moveToProblemView(id: Int)
     func changeFavoriteStatus(id: Int)
 }
 
-public struct ProblemCellView<T: ProblemCell>: View {
+struct ProblemCellView<T: ProblemCell>: View {
     
     @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
     
-    public init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
+    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
         self._problemCellVO = problemCellVO
         self.problemCellHandling = problemCellHandling
     }
     
-    public var body: some View {
+    var body: some View {
             ZStack(alignment: .trailing) {
                 Button {
                     problemCellHandling.moveToProblemView(id: problemCellVO.problemId)
