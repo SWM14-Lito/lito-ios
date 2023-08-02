@@ -67,23 +67,23 @@ final public class ProblemListViewModel: BaseViewModel {
     public func moveToProblemSearchScene() {
         coordinator.push(.problemSearchScene)
     }
-
-}
-
-extension ProblemListViewModel: FilterHandling {
-    func resetProblemCellList() {
+    
+    private func resetProblemCellList() {
         problemCellList.removeAll()
         problemPage = 0
         problemTotalSize = nil
     }
-    
-    func getProblemList() {
+
+}
+
+extension ProblemListViewModel: FilterHandling {
+    func updateProblem() {
+        resetProblemCellList()
         getProblemList(problemId: nil)
     }
 }
 
 extension ProblemListViewModel: ProblemCellHandling {
-    
     public func moveToProblemView(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
     }

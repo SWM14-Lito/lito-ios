@@ -67,18 +67,19 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
             getProblemList()
         }
     }
-}
-
-extension FavoriteProblemListViewModel: FilterHandling {
-    // 필터 업데이터되면 기존 문제 목록은 초기화하기
-    func resetProblemCellList() {
+    
+    // 기존 문제 목록 초기화하기
+    private func resetProblemCellList() {
         problemCellList.removeAll()
         problemPage = 0
         problemTotalSize = nil
     }
-    
+}
+
+extension FavoriteProblemListViewModel: FilterHandling {
     // 필터 업데이트되면 문제 목록 다시 받아오기
-    func getProblemList() {
+    func updateProblem() {
+        resetProblemCellList()
         getProblemList(problemFavoriteId: nil)
     }
 }

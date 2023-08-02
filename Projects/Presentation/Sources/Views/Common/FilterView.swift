@@ -12,14 +12,12 @@ protocol FilterComponent: CaseIterable, Hashable {
     associatedtype T
 
     var name: String { get }
-    var query: String { get }
     static var allCases: [Self] { get }
     static var defaultValue: Self { get }
 }
 
 protocol FilterHandling {
-    func resetProblemCellList()
-    func getProblemList()
+    func updateProblem()
 }
 
 struct FilterView<T: FilterComponent>: View {
@@ -37,15 +35,18 @@ struct FilterView<T: FilterComponent>: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            VStack {
-                HStack {
-                    filteringButton
-                    filteredBoxes
+        VStack {
+            ScrollView(.horizontal) {
+                VStack {
+                    HStack {
+                        filteringButton
+                        filteredBoxes
+                    }
                 }
-            }
-            .padding(.leading)
-        }.scrollIndicators(.never)
+                .padding(.leading)
+            }.scrollIndicators(.never)
+            Divider()
+        }
     }
     
     // 필터링 버튼
@@ -149,8 +150,7 @@ extension FilterView {
             selectedFilters.remove(at: index)
             selectedFilter = T.defaultValue
         }
-        filterHandling.resetProblemCellList()
-        filterHandling.getProblemList()
+        filterHandling.updateProblem()
     }
     
     // 필터 선택하기
@@ -168,8 +168,7 @@ extension FilterView {
         showFilterSheet = false
         if selectedFilter != prevFilter {
             selectedFilters = [selectedFilter]
-            filterHandling.resetProblemCellList()
-            filterHandling.getProblemList()
+            filterHandling.updateProblem()
         }
     }
 

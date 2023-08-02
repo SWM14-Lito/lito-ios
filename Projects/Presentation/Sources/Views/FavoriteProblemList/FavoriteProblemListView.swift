@@ -19,7 +19,7 @@ public struct FavoriteProblemListView: View {
     public var body: some View {
         VStack {
             Divider()
-            headSection
+            headFilter
             filter
             problemList
             Spacer()
@@ -27,47 +27,16 @@ public struct FavoriteProblemListView: View {
             .navigationBarTitleDisplayMode(.large)
     }
     
+    // 과목 필터링
+    @ViewBuilder
+    private var headFilter: some View {
+        HeadSectionView(selectedSubject: $viewModel.selectedSubject, filterHandling: viewModel)
+    }
+    
     // 필터링
     @ViewBuilder
     private var filter: some View {
-        VStack {
-            FilterView(selectedFilters: $viewModel.selectedFilters, filterHandling: viewModel)
-            Divider()
-        }
-    }
-    
-    // 과목 선택 헤더
-    @ViewBuilder
-    private var headSection: some View {
-        ScrollView(.horizontal) {
-            VStack(spacing: 0) {
-                HStack {
-                    ForEach(SubjectInfo.allCases, id: \.self) { subject in
-                        VStack {
-                            Text(subject.name)
-                                .lineLimit(1)
-                                .fixedSize()
-                                .font(.title3)
-                                .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(viewModel.selectedSubject == subject ? .orange : .gray)
-                            if viewModel.selectedSubject == subject {
-                                Capsule()
-                                    .foregroundColor(.orange)
-                                    .frame(height: 3)
-                                    .matchedGeometryEffect(id: "all", in: subjectAnimation)
-                            }
-                        }
-                        .onTapGesture {
-                            withAnimation(.easeInOut) {
-                                viewModel.changeSubject(subject: subject)
-                            }
-                        }
-                    }.padding(.leading, 10)
-                }
-                Divider()
-            }
-        }
-        .scrollIndicators(.never)
+        FilterView(selectedFilters: $viewModel.selectedFilters, filterHandling: viewModel)
     }
     
     // 찜한 문제 리스트
