@@ -16,6 +16,22 @@ public struct SolvingProblemListView: View {
     }
     
     public var body: some View {
-        Text("SolvingProblemListView")
+        problemList
+    }
+    
+    // 문제 리스트
+    @ViewBuilder
+    private var problemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                        .onAppear {
+                            viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
+                        }
+                }
+            }
+            .padding(20)
+        }
     }
 }
