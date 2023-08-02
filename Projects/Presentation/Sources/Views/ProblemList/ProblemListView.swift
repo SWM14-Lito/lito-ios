@@ -29,7 +29,7 @@ public struct ProblemListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        // Add your button action here
+                        viewModel.moveToProblemSearchScene()
                     }, label: {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.orange)

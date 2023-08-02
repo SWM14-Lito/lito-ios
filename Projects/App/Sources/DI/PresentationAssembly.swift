@@ -115,6 +115,15 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(ChattingViewModel.self)!
             return ChattingView(viewModel: viewModel)
         }
+        // ProblemSearch
+        container.register(ProblemSearchViewModel.self) { resolver in
+            let useCase = resolver.resolve(ProblemSearchUseCase.self)!
+            return ProblemSearchViewModel(useCase: useCase, coordinator: coordinator)
+        }
+        container.register(ProblemSearchView.self) { resolver in
+            let viewModel = resolver.resolve(ProblemSearchViewModel.self)!
+            return ProblemSearchView(viewModel: viewModel)
+        }
         // ------------------------ Second Tab ------------------------
         // PedigreeList
         container.register(PedigreeListViewModel.self) { _ in

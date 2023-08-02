@@ -14,8 +14,45 @@ extension ProblemAPI {
     var sampleData: Data {
         switch self {
         case .learningHome:
-            let learningHomeDTO = LearningHomeDTO(userId: 1, profileImgUrl: nil, nickname: "테스트", question: "테스트", problemId: 1, subject: "테스트", favorite: false)
-            if let data = try? JSONEncoder().encode(learningHomeDTO) {
+            let dto = LearningHomeDTO(
+                userId: 1,
+                profileImgUrl: nil,
+                nickname: "테스트",
+                question: "테스트",
+                problemId: 1,
+                subject: "테스트",
+                favorite: false
+            )
+            if let data = try? JSONEncoder().encode(dto) {
+                return data
+            } else {
+                return Data()
+            }
+        case .problemList, .solvingProblemList, .favoriteProblemList, .searchedProblemList:
+            let dto = ProblemListDTO(
+                problems: [
+                    ProblemCellDTO(
+                        problemUserId: 1,
+                        favoriteId: 1,
+                        problemId: 1,
+                        subjectName: "테스트",
+                        question: "테스트",
+                        problemStatus: "풀이완료",
+                        favorite: false
+                    ),
+                    ProblemCellDTO(
+                        problemUserId: 2,
+                        favoriteId: 2,
+                        problemId: 2,
+                        subjectName: "테스트",
+                        question: "테스트",
+                        problemStatus: "풀이중",
+                        favorite: true
+                    )
+                ],
+                total: 2
+            )
+            if let data = try? JSONEncoder().encode(dto) {
                 return data
             } else {
                 return Data()
@@ -24,7 +61,6 @@ extension ProblemAPI {
             return Data()
         }
     }
-    
 }
 
 #endif

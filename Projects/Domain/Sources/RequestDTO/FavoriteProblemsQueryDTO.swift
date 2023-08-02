@@ -10,12 +10,14 @@ public struct FavoriteProblemsQueryDTO {
     public let lastFavoriteId: Int?
     public let subjectId: Int?
     public let problemStatus: String?
-    public let size: String?
+    public let page: Int
+    public let size: Int
     
-    public init(lastFavoriteId: Int? = nil, subjectId: Int? = nil, problemStatus: String? = nil, size: String? = nil) {
+    public init(lastFavoriteId: Int?, subjectId: Int?, problemStatus: String?, page: Int, size: Int) {
         self.lastFavoriteId = lastFavoriteId
         self.subjectId = subjectId
         self.problemStatus = problemStatus
+        self.page = page
         self.size = size
     }
 }

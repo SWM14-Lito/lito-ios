@@ -16,6 +16,35 @@ public struct SolvingProblemListView: View {
     }
     
     public var body: some View {
-        Text("SolvingProblemListView")
+        VStack {
+            errorMessage
+            problemList
+        }
+            .navigationTitle("풀던 문제")
+    }
+    
+    // 문제 리스트
+    @ViewBuilder
+    private var problemList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                        .onAppear {
+                            viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
+                        }
+                }
+            }
+            .padding(20)
+        }
+        .onAppear {
+            viewModel.getProblemList()
+        }
+    }
+    
+    // API 에러 발생시 알려줌
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
     }
 }

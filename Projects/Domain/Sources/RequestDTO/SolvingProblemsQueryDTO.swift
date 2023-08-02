@@ -8,10 +8,12 @@
 
 public struct SolvingProblemsQueryDTO {
     public let lastProblemUserId: Int?
-    public let size: String?
+    public let page: Int
+    public let size: Int
     
-    public init(lastProblemUserId: Int? = nil, size: String? = nil) {
+    public init(lastProblemUserId: Int?, page: Int, size: Int) {
         self.lastProblemUserId = lastProblemUserId
+        self.page = page
         self.size = size
     }
 }

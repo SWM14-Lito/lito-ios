@@ -12,11 +12,10 @@ import Domain
 final public class ProblemListViewModel: BaseViewModel {
 
     private let useCase: ProblemListUseCase
-    private var lastProblemId: Int?
+    private let problemSize = 10
     private var problemPage = 0
-    private var problemSize = 10
     private var problemTotalSize: Int?
-    @Published var problemCellList: [ProblemCellVO] = []
+    @Published var problemCellList: [DefaultProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var showFilterSheet = false
     @Published var selectedFilter: ProblemListFilter = .all
@@ -44,7 +43,6 @@ final public class ProblemListViewModel: BaseViewModel {
                 case .success(let problemsListVO):
                     if let problemsCellVO = problemsListVO.problemsCellVO {
                         problemsCellVO.forEach({ problemCellVO in
-                            self.lastProblemId = problemCellVO.problemId
                             self.problemCellList.append(problemCellVO)
                         })
                         self.problemPage += 1
@@ -65,7 +63,6 @@ final public class ProblemListViewModel: BaseViewModel {
     
     private func resetProblemCellList() {
         problemCellList.removeAll()
-        lastProblemId = nil
         problemPage = 0
         problemTotalSize = nil
     }
@@ -116,6 +113,9 @@ final public class ProblemListViewModel: BaseViewModel {
         } else {
             isApply = false
         }
+    }
+    public func moveToProblemSearchScene() {
+        coordinator.push(.problemSearchScene)
     }
 
 }

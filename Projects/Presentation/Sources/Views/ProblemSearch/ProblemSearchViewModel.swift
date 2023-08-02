@@ -1,37 +1,51 @@
 //
-//  SolvingProblemViewModel.swift
+//  ProblemSearchViewModel.swift
 //  Presentation
 //
-//  Created by 김동락 on 2023/07/25.
+//  Created by 김동락 on 2023/08/01.
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import SwiftUI
 import Domain
-import Combine
+import SwiftUI
 
-public final class SolvingProblemListViewModel: BaseViewModel {
-    private let useCase: SolvingProblemListUseCase
+public class ProblemSearchViewModel: BaseViewModel {
+    private let useCase: ProblemSearchUseCase
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
-    @Published private(set) var isGotResponse: Bool = false
-    @Published var problemCellList: [SolvingProblemCellVO] = []
-
-    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol) {
+    @Published private(set) var searchState: SearchState = .notStart
+    @Published var searchKeyword: String = ""
+    @Published var problemCellList: [DefaultProblemCellVO] = []
+    
+    public enum SearchState {
+        case notStart
+        case waiting
+        case finish
+    }
+    
+    public init(useCase: ProblemSearchUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }
+    
+    // 검색 다시 했을 때 초기화해주기
+    public func resetProblemCellList() {
+        searchState = .waiting
+        problemCellList.removeAll()
+        problemPage = 0
+        problemTotalSize = nil
+    }
 
     // 문제 받아오기 (무한 스크롤)
-    public func getProblemList(problemUserId: Int? = nil) {
+    public func getProblemList(problemId: Int? = nil) {
         if !problemCellList.isEmpty {
-            guard problemUserId == problemCellList.last?.problemUserId else { return }
+            guard problemId == problemCellList.last?.problemId else { return }
         }
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
         }
-        let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: problemUserId, page: problemPage, size: problemSize)
+        let problemsQueryDTO = SearchedProblemsQueryDTO(query: searchKeyword, page: problemPage, size: problemSize)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
                 switch result {
@@ -48,13 +62,13 @@ public final class SolvingProblemListViewModel: BaseViewModel {
                         self.errorObject.error  = errorVO
                     }
                 }
-                self.isGotResponse = true
+                self.searchState = .finish
             })
             .store(in: cancelBag)
     }
 }
 
-extension SolvingProblemListViewModel: ProblemCellHandling {
+extension ProblemSearchViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
         coordinator.push(.problemDetailScene(id: id))

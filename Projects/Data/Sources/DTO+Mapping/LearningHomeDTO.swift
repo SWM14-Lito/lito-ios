@@ -23,7 +23,7 @@ public struct LearningHomeDTO: Decodable {
             profileImgUrl: profileImgUrl,
             nickname: nickname
         ).toVO()
-        let problemInfo: ProblemCellVO?
+        let problemInfo: DefaultProblemCellVO?
         
         if let problemId = problemId {
             problemInfo = ProblemCellDTO(

@@ -48,6 +48,12 @@ final public class DefaultProblemRepository: ProblemRepository {
             .eraseToAnyPublisher()
     }
     
+    public func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {
+        dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .map { $0.toProblemListVO() }
+            .eraseToAnyPublisher()
+    }
+    
     public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error> {
         dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .map { $0.toFavoriteProblemListVO() }

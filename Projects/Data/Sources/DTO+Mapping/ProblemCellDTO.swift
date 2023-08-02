@@ -17,8 +17,8 @@ public struct ProblemCellDTO: Decodable {
     let problemStatus: String?
     let favorite: Bool?
     
-    func toProblemCellVO() -> ProblemCellVO {
-        return ProblemCellVO(
+    func toProblemCellVO() -> DefaultProblemCellVO {
+        return DefaultProblemCellVO(
             problemId: problemId ?? 0,
             subjectName: subjectName ?? "Unknown",
             question: question ?? "Unknown",
@@ -28,30 +28,26 @@ public struct ProblemCellDTO: Decodable {
     }
     
     func toSolvingProblemCellVO() -> SolvingProblemCellVO {
-        let problemCellVO = ProblemCellVO(
+        return SolvingProblemCellVO(
+            problemUserId: problemUserId ?? 0,
             problemId: problemId ?? 0,
             subjectName: subjectName ?? "Unknown",
             question: question ?? "Unknown",
-            problemStatus: ProblemSolvedStatus.solving,
             favorite: ProblemFavoriteStatus(isFavorite: favorite)
-        )
-        return SolvingProblemCellVO(
-            problemUserId: problemUserId ?? 0,
-            problemCellVO: problemCellVO
         )
     }
     
     func toFavoriteProblemCellVO() -> FavoriteProblemCellVO {
-        let problemCellVO = ProblemCellVO(
+        return FavoriteProblemCellVO(
+            favoriteId: favoriteId ?? 0,
             problemId: problemId ?? 0,
             subjectName: subjectName ?? "Unknown",
             question: question ?? "Unknown",
-            problemStatus: ProblemSolvedStatus(rawValue: problemStatus),
-            favorite: ProblemFavoriteStatus.favorite
-        )
-        return FavoriteProblemCellVO(
-            favoriteId: favoriteId ?? 0,
-            problemCellVO: problemCellVO
+            problemStatus: ProblemSolvedStatus(rawValue: problemStatus)
         )
     }
 }
+
+#if DEBUG
+extension ProblemCellDTO: Encodable {}
+#endif

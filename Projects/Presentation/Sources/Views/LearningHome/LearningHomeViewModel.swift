@@ -12,7 +12,8 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
-    @Published var solvingProblem: ProblemCellVO?
+    @Published private(set) var isGotResponse: Bool = false
+    @Published var solvingProblem: DefaultProblemCellVO?
     @Published var userInfo: LearningHomeUserInfoVO?
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
@@ -37,7 +38,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     
     // 알림 목록 화면으로 이동하기
     func moveToNotiView() {
-        print("알림 목록 화면으로 이동")
+
     }
 
     // 프로필 정보와 문제 정보 가져오기
@@ -53,6 +54,7 @@ public final class LearningHomeViewModel: BaseViewModel {
                         self.errorObject.error  = errorVO
                     }
                 }
+                self.isGotResponse = true
             }
             .store(in: cancelBag)
     }
