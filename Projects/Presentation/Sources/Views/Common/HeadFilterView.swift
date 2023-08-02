@@ -8,14 +8,15 @@
 
 import SwiftUI
 
-struct HeadSectionView<T: FilterComponent>: View {
+// 헤더쪽에 있는 필터
+struct HeadFilterView<T: FilterComponent>: View {
     
-    @Binding var selectedSubject: T
+    @Binding var selectedFilter: T
     @Namespace private var subjectAnimation
     private let filterHandling: FilterHandling
     
-    init(selectedSubject: Binding<T>, filterHandling: FilterHandling) {
-        self._selectedSubject = selectedSubject
+    init(selectedFilter: Binding<T>, filterHandling: FilterHandling) {
+        self._selectedFilter = selectedFilter
         self.filterHandling = filterHandling
     }
     
@@ -23,15 +24,15 @@ struct HeadSectionView<T: FilterComponent>: View {
         ScrollView(.horizontal) {
             VStack(spacing: 0) {
                 HStack {
-                    ForEach(T.allCases, id: \.self) { subject in
+                    ForEach(T.allCases, id: \.self) { filter in
                         VStack {
-                            Text(subject.name)
+                            Text(filter.name)
                                 .lineLimit(1)
                                 .fixedSize()
                                 .font(.title3)
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(selectedSubject == subject ? .orange : .gray)
-                            if selectedSubject == subject {
+                                .foregroundColor(selectedFilter == filter ? .orange : .gray)
+                            if selectedFilter == filter {
                                 Capsule()
                                     .foregroundColor(.orange)
                                     .frame(height: 3)
@@ -40,7 +41,7 @@ struct HeadSectionView<T: FilterComponent>: View {
                         }
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                changeSubject(subject: subject)
+                                changeFilter(filter: filter)
                                 filterHandling.updateProblem()
                             }
                         }
@@ -53,10 +54,11 @@ struct HeadSectionView<T: FilterComponent>: View {
     }
 }
 
-extension HeadSectionView {
-    private func changeSubject(subject: T) {
-        if selectedSubject != subject {
-            selectedSubject = subject
+extension HeadFilterView {
+    // 필터 선택하기
+    private func changeFilter(filter: T) {
+        if selectedFilter != filter {
+            selectedFilter = filter
         }
     }
 }

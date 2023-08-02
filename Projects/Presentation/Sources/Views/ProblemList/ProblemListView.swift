@@ -40,15 +40,14 @@ public struct ProblemListView: View {
     
     @ViewBuilder
     private var headFilter: some View {
-        HeadSectionView(selectedSubject: $viewModel.selectedSubject, filterHandling: viewModel)
+        HeadFilterView(selectedFilter: $viewModel.selectedSubject, filterHandling: viewModel)
     }
     
     @ViewBuilder
     private var filter: some View {
         FilterView(selectedFilters: $viewModel.selectedFilters, filterHandling: viewModel)
     }
-    
-    
+
     @ViewBuilder
     private var problemList: some View {
         ScrollView {

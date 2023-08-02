@@ -9,6 +9,7 @@
 import SwiftUI
 import Kingfisher
 
+// Url에서 다운 받아서 보여주는 이미지
 struct UrlImageView: View {
     
     let urlString: String?

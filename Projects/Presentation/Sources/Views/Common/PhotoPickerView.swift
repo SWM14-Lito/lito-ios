@@ -9,6 +9,7 @@
 import PhotosUI
 import SwiftUI
 
+// 클릭 시 앨범 열려서 선택 가능한 이미지
 struct PhotoPickerView: View {
     @State private var item: PhotosPickerItem?
     @Binding private var imageData: Data?

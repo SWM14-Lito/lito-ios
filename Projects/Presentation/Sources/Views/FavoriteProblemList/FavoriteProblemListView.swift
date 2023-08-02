@@ -30,7 +30,7 @@ public struct FavoriteProblemListView: View {
     // 과목 필터링
     @ViewBuilder
     private var headFilter: some View {
-        HeadSectionView(selectedSubject: $viewModel.selectedSubject, filterHandling: viewModel)
+        HeadFilterView(selectedFilter: $viewModel.selectedSubject, filterHandling: viewModel)
     }
     
     // 필터링

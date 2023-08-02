@@ -8,18 +8,7 @@
 
 import SwiftUI
 
-protocol FilterComponent: CaseIterable, Hashable {
-    associatedtype T
-
-    var name: String { get }
-    static var allCases: [Self] { get }
-    static var defaultValue: Self { get }
-}
-
-protocol FilterHandling {
-    func updateProblem()
-}
-
+// 필터링 버튼 + 필터 박스 나열
 struct FilterView<T: FilterComponent>: View {
     
     @State private var selectedFilter: T = .defaultValue
