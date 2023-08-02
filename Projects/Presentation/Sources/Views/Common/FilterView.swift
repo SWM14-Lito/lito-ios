@@ -12,6 +12,7 @@ protocol FilterComponent: CaseIterable, Hashable {
     associatedtype T
 
     var name: String { get }
+    var query: String { get }
     static var allCases: [Self] { get }
     static var defaultValue: Self { get }
 }
@@ -36,67 +37,79 @@ struct FilterView<T: FilterComponent>: View {
     }
     
     var body: some View {
-        filteringView
-    }
-    
-    @ViewBuilder
-    private var filteringView: some View {
         ScrollView(.horizontal) {
             VStack {
                 HStack {
-                    Button {
-                        filterSheetToggle()
-                    } label: {
-                        HStack {
-                            Text("필터")
-                            Image(systemName: SymbolName.arrowtriangleDown)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10   )
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
-                    .sheet(isPresented: $showFilterSheet) {
-                        filteringModal
-                            .presentationDetents([.medium])
-                            .presentationDragIndicator(.visible)
-                            .frame(alignment: .topTrailing)
-                    }
-                    // 동적으로 선택된 필터 박스 생성.
-                    ForEach(selectedFilters, id: \.self) { filter in
-                        if filter != T.defaultValue {
-                            Button(filter.name) {
-                                removeFilter(filter)
-                            }
-                            .font(.caption)
-                            .buttonStyle(.borderedProminent)
-                            .tint(.orange)
-                        }
-                    }
+                    filteringButton
+                    filteredBoxes
                 }
             }
             .padding(.leading)
         }.scrollIndicators(.never)
     }
-
+    
+    // 필터링 버튼
     @ViewBuilder
-    private var filteringModal: some View {
-        
-        VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("풀이 여부")
-                    .font(.title2)
-                HStack {
-                    ForEach(T.allCases, id: \.self) { filter in
-                        Button(filter.name) {
-                            selectFilter(filter)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(selectedFilter == filter ? .orange : .gray)
+    private var filteringButton: some View {
+        Button {
+            filterSheetToggle()
+        } label: {
+            HStack {
+                Text("필터")
+                Image(systemName: SymbolName.arrowtriangleDown)
+            }
+        }
+        .padding(.horizontal)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10   )
+                .stroke(Color.gray, lineWidth: 1)
+        )
+        .sheet(isPresented: $showFilterSheet) {
+            filteringModal
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+                .frame(alignment: .topTrailing)
+        }
+    }
+    
+    // 동적으로 선택된 필터 박스들
+    @ViewBuilder
+    private var filteredBoxes: some View {
+        ForEach(selectedFilters, id: \.self) { filter in
+            if filter != T.defaultValue {
+                Button(filter.name) {
+                    removeFilter(filter)
+                }
+                .font(.caption)
+                .buttonStyle(.borderedProminent)
+                .tint(.orange)
+            }
+        }
+    }
+    
+    // 필터링 요소
+    @ViewBuilder
+    private var filteringComponents: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("풀이 여부")
+                .font(.title2)
+            HStack {
+                ForEach(T.allCases, id: \.self) { filter in
+                    Button(filter.name) {
+                        selectFilter(filter)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(selectedFilter == filter ? .orange : .gray)
                 }
             }
+        }
+    }
+
+    // 필터링 모달
+    @ViewBuilder
+    private var filteringModal: some View {
+        VStack(alignment: .leading) {
+            filteringComponents
             Spacer()
             HStack(alignment: .center) {
                 Spacer()
@@ -125,10 +138,12 @@ struct FilterView<T: FilterComponent>: View {
 }
 
 extension FilterView {
+    // 필터 모달 보여주기 or 끄기
     private func filterSheetToggle() {
         showFilterSheet.toggle()
     }
     
+    // 선택된 필터 해제하기
     private func removeFilter(_ filter: T) {
         if let index = selectedFilters.firstIndex(of: filter) {
             selectedFilters.remove(at: index)
@@ -138,6 +153,7 @@ extension FilterView {
         filterHandling.getProblemList()
     }
     
+    // 필터 선택하기
     private func selectFilter(_ filter: T) {
         if selectedFilter == filter {
             selectedFilter = T.defaultValue
@@ -146,6 +162,7 @@ extension FilterView {
         }
     }
     
+    // 필터 적용하기
     private func applyFilter() {
         isApply = true
         showFilterSheet = false
@@ -156,10 +173,12 @@ extension FilterView {
         }
     }
 
+    // 취소할 경우를 대비해서 원래 필터 저장해놓기
     private func storePrevFilter() {
         prevFilter = selectedFilter
     }
     
+    // 적용 안하고 그냥 닫아버리면 원래꺼로 되돌려놓기
     private func cancelSelectedFilter() {
         if !isApply {
             selectedFilter = prevFilter
