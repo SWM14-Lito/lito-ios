@@ -13,6 +13,7 @@ import Foundation
 enum UserAPI {
     case setProfileInfo(ProfileInfoDTO)
     case setNotiAcceptance(AlarmAcceptanceDTO)
+    case getUserInfo(id: String)
 }
 extension UserAPI: TargetType {
     var baseURL: URL {
@@ -25,6 +26,8 @@ extension UserAPI: TargetType {
             return "/api/v1/users"
         case .setNotiAcceptance:
             return "/api/v1/users/notifications"
+        case .getUserInfo(let id):
+            return "/api/v1/users/\(id)"
         }
     }
     
@@ -34,6 +37,8 @@ extension UserAPI: TargetType {
             return .patch
         case .setNotiAcceptance:
             return .patch
+        case .getUserInfo:
+            return .get
         }
     }
     
@@ -49,6 +54,10 @@ extension UserAPI: TargetType {
             return .requestParameters(parameters: [
                 "alarmStatus": alarmAcceptanceDTO.getAlarm ? "Y" : "N"
             ], encoding: URLEncoding.queryString)
+        case .getUserInfo(let id):
+            return .requestParameters(parameters: [
+                "id": id
+            ], encoding: URLEncoding.queryString)
         }
     }
     
@@ -58,6 +67,8 @@ extension UserAPI: TargetType {
             return ["Content-type": "application/json;charset=UTF-8"]
         case .setNotiAcceptance:
             return ["Content-type": "application/x-www-form-urlencoded"]
+        case .getUserInfo:
+            return nil
         }
     }
     

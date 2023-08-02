@@ -12,6 +12,7 @@ import Domain
 public protocol UserDataSource {
     func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
     func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
+    func getUserInfo() -> AnyPublisher<UserInfoDTO, Error>
 }
 
 final public class DefaultUserDataSource: UserDataSource {
@@ -26,5 +27,13 @@ final public class DefaultUserDataSource: UserDataSource {
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
         moyaProvider.call(target: .setNotiAcceptance(alarmAcceptanceDTO))
+    }
+    
+    public func getUserInfo() -> AnyPublisher<UserInfoDTO, Error> {
+        guard let userId = KeyChainManager.read(key: .userId) else {
+            return Fail(error: ErrorVO.fatalError)
+                .eraseToAnyPublisher()
+        }
+        return moyaProvider.call(target: .getUserInfo(id: userId))
     }
 }

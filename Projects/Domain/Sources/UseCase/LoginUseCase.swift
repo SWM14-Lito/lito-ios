@@ -38,6 +38,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     .map { loginVO in
                         KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
                         KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                        KeyChainManager.create(key: .userId, token: loginVO.userId)
                         return loginVO.registered ? .registered : .unregistered
                     }
                     .eraseToAnyPublisher()
@@ -55,6 +56,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     .map { loginVO in
                         KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
                         KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                        KeyChainManager.create(key: .userId, token: loginVO.userId)
                         return loginVO.registered ? .registered : .unregistered
                     }
                     .eraseToAnyPublisher()
