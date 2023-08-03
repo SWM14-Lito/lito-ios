@@ -23,8 +23,12 @@ public struct FavoriteProblemListView: View {
             filter
             problemList
             Spacer()
-        }.navigationTitle(viewModel.selectedSubject.name)
-            .navigationBarTitleDisplayMode(.large)
+        }
+        .navigationTitle(viewModel.selectedSubject.name)
+        .navigationBarTitleDisplayMode(.large)
+        .onAppear {
+            viewModel.getProblemMutable()
+        }
     }
     
     // 과목 필터링

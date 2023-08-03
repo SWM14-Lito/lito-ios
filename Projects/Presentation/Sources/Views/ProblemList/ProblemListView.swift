@@ -36,6 +36,9 @@ public struct ProblemListView: View {
                     })
                 }
             }
+            .onAppear {
+                viewModel.getProblemMutable()
+            }
     }
     
     @ViewBuilder

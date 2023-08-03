@@ -20,7 +20,10 @@ public struct SolvingProblemListView: View {
             errorMessage
             problemList
         }
-            .navigationTitle("풀던 문제")
+        .navigationTitle("풀던 문제")
+        .onAppear {
+            viewModel.getProblemMutable()
+        }
     }
     
     // 문제 리스트

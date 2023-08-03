@@ -15,6 +15,7 @@ final public class ProblemListViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
+    private var selectedProblemId: Int = 0
     @Published var problemCellList: [DefaultProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var selectedFilters: [ProblemListFilter] = []
@@ -73,7 +74,27 @@ final public class ProblemListViewModel: BaseViewModel {
         problemPage = 0
         problemTotalSize = nil
     }
-
+    
+    func getProblemMutable() {
+        if selectedProblemId == 0 {
+            return
+        }
+        useCase.getProblemMutable(id: selectedProblemId)
+            .sinkToResult { result in
+                switch result {
+                case .success(let problemMutableVO):
+                    let index = self.problemCellList.firstIndex(where: { $0.problemId == self.selectedProblemId})!
+                    self.problemCellList[index].favorite = problemMutableVO.favorite
+                    self.problemCellList[index].problemStatus = problemMutableVO.problemStatus
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+                self.selectedProblemId = 0
+            }
+            .store(in: cancelBag)
+    }
 }
 
 extension ProblemListViewModel: FilterHandling {
@@ -85,6 +106,7 @@ extension ProblemListViewModel: FilterHandling {
 
 extension ProblemListViewModel: ProblemCellHandling {
     public func moveToProblemView(id: Int) {
+        selectedProblemId = id
         coordinator.push(.problemDetailScene(id: id))
     }
     
