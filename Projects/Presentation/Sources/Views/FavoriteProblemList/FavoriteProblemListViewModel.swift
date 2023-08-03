@@ -86,8 +86,10 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
                 switch result {
                 case .success(let problemMutableVO):
                     let index = self.problemCellList.firstIndex(where: { $0.problemId == self.selectedProblemId})!
-                    self.problemCellList[index].favorite = problemMutableVO.favorite
                     self.problemCellList[index].problemStatus = problemMutableVO.problemStatus
+                    if problemMutableVO.favorite == .notFavorite {
+                        self.problemCellList.remove(at: index)
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -122,7 +124,7 @@ extension FavoriteProblemListViewModel: ProblemCellHandling {
                 switch result {
                 case .success(_):
                     let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
-                    self.problemCellList[index].favorite.toggle()
+                    self.problemCellList.remove(at: index)
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
