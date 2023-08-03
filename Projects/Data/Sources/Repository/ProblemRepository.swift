@@ -32,6 +32,12 @@ final public class DefaultProblemRepository: ProblemRepository {
             .eraseToAnyPublisher()
     }
     
+    public func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error> {
+        dataSource.getProblemDetail(id: id)
+            .map { $0.toMutableVO() }
+            .eraseToAnyPublisher()
+    }
+    
     public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
         dataSource.startSolvingProblem(id: id)
     }

@@ -30,6 +30,7 @@ public struct LearningHomeView: View {
                 viewModel.setViewFirstAppeared()
                 viewModel.getProfileAndProblems()
             }
+            viewModel.getProblemMutable()
         }
 
     }

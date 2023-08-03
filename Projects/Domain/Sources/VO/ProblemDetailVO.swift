@@ -11,14 +11,16 @@ public struct ProblemDetailVO {
     public let problemQuestion: String
     public let problemAnswer: String
     public let problemKeyword: String
+    public let problemStatus: ProblemSolvedStatus
     public var favorite: ProblemFavoriteStatus
     public let faqs: [ProblemFAQVO]?
     
-    public init(problemId: Int, problemQuestion: String, problemAnswer: String, problemKeyword: String, favorite: ProblemFavoriteStatus, faqs: [ProblemFAQVO]?) {
+    public init(problemId: Int, problemQuestion: String, problemAnswer: String, problemKeyword: String, problemStatus: ProblemSolvedStatus, favorite: ProblemFavoriteStatus, faqs: [ProblemFAQVO]?) {
         self.problemId = problemId
         self.problemQuestion = problemQuestion
         self.problemAnswer = problemAnswer
         self.problemKeyword = problemKeyword
+        self.problemStatus = problemStatus
         self.favorite = favorite
         self.faqs = faqs
     }
