@@ -12,6 +12,7 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
+    private(set) var isViewFirstAppeared: Bool = false
     @Published private(set) var isGotResponse: Bool = false
     @Published var solvingProblem: DefaultProblemCellVO?
     @Published var userInfo: LearningHomeUserInfoVO?
@@ -19,6 +20,11 @@ public final class LearningHomeViewModel: BaseViewModel {
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
+    }
+    
+    // 서버에서 전체 데이터 다운만 하기 위해 판별해주는 역할
+    func setViewFirstAppeared() {
+        isViewFirstAppeared = true
     }
     
     // 학습 화면으로 이동하기
