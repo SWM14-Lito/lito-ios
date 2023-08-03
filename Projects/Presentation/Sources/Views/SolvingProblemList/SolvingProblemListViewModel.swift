@@ -65,7 +65,9 @@ public final class SolvingProblemListViewModel: BaseViewModel {
                 case .success(let problemMutableVO):
                     let index = self.problemCellList.firstIndex(where: { $0.problemId == self.selectedProblemId})!
                     self.problemCellList[index].favorite = problemMutableVO.favorite
-                    self.problemCellList[index].problemStatus = problemMutableVO.problemStatus
+                    if !(problemMutableVO.problemStatus == .solving) {
+                        self.problemCellList.remove(at: index)
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
