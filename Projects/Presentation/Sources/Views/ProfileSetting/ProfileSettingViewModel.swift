@@ -16,6 +16,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
     private(set) var buttonIsLocked: Bool = false
+    private var userAuthVO: UserAuthVO
     @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
@@ -53,7 +54,8 @@ public class ProfileSettingViewModel: BaseViewModel {
         }
     }
     
-    public init(useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+    public init(userAuthVO: UserAuthVO, useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+        self.userAuthVO = userAuthVO
         self.username = LimitedText(limit: TextFieldCategory.username.limit)
         self.nickname = LimitedText(limit: TextFieldCategory.nickname.limit)
         self.introduce = LimitedText(limit: TextFieldCategory.introduce.limit)

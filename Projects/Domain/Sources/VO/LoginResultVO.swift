@@ -10,5 +10,5 @@ import Foundation
 
 public enum LoginResultVO {
     case registered
-    case unregistered
+    case unregistered(userAuthVO: UserAuthVO)
 }

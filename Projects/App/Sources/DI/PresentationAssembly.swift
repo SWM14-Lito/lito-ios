@@ -35,13 +35,13 @@ public struct PresentationAssembly: Assembly {
             return LoginView(viewModel: viewModel)
         }
         // ProfileSetting
-        container.register(ProfileSettingViewModel.self) { resolver in
+        container.register(ProfileSettingViewModel.self) { (resolver, userAuthVO: UserAuthVO) in
             let useCase = resolver.resolve(ProfileSettingUseCase.self)!
-            return ProfileSettingViewModel(useCase: useCase, coordinator: coordinator)
+            return ProfileSettingViewModel(userAuthVO: userAuthVO, useCase: useCase, coordinator: coordinator)
         }
         
-        container.register(ProfileSettingView.self) { resolver in
-            let viewModel = resolver.resolve(ProfileSettingViewModel.self)!
+        container.register(ProfileSettingView.self) { (resolver, userAuthVO: UserAuthVO) in
+            let viewModel = resolver.resolve(ProfileSettingViewModel.self, argument: userAuthVO)!
             return ProfileSettingView(viewModel: viewModel)
         }
         // RootTab

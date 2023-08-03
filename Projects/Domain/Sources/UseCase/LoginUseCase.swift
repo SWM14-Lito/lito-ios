@@ -36,10 +36,12 @@ public final class DefaultLoginUseCase: LoginUseCase {
                         return Fail(error: error)
                     }
                     .map { loginVO in
-                        KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
-                        KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
-                        KeyChainManager.create(key: .userId, token: loginVO.userId)
-                        return loginVO.registered ? .registered : .unregistered
+                        if loginVO.registered {
+                            KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
+                            KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                            KeyChainManager.create(key: .userId, token: loginVO.userId)
+                        }
+                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
                     }
                     .eraseToAnyPublisher()
             }
@@ -54,10 +56,12 @@ public final class DefaultLoginUseCase: LoginUseCase {
                         return Fail(error: error)
                     }
                     .map { loginVO in
-                        KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
-                        KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
-                        KeyChainManager.create(key: .userId, token: loginVO.userId)
-                        return loginVO.registered ? .registered : .unregistered
+                        if loginVO.registered {
+                            KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
+                            KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
+                            KeyChainManager.create(key: .userId, token: loginVO.userId)
+                        }
+                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
                     }
                     .eraseToAnyPublisher()
             }

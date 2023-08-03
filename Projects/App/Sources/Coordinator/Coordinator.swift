@@ -56,8 +56,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
                         _ = AuthController.handleOpenUrl(url: url)
                     }
                 })
-        case .profileSettingScene:
-            injector?.resolve(ProfileSettingView.self)
+        case .profileSettingScene(let userAuthVO):
+            injector?.resolve(ProfileSettingView.self, argument: userAuthVO)
         case .learningHomeScene:
             injector?.resolve(LearningHomeView.self)
         case .problemListScene:
