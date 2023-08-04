@@ -17,6 +17,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     @Published private(set) var isGotResponse: Bool = false
     @Published var solvingProblem: DefaultProblemCellVO?
     @Published var userInfo: LearningHomeUserInfoVO?
+    @Published var learningRate: Float = 0.8 // 임시 변수
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase

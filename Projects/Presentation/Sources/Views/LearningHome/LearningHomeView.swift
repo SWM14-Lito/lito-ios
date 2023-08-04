@@ -18,13 +18,24 @@ public struct LearningHomeView: View {
     
     public var body: some View {
         VStack {
-            errorMessage
-            profile
-            startLearningButton
-            Divider()
-            solvingProblem
+            HStack(alignment: .top) {
+                profile
+                Spacer()
+                toolMenu
+            }
+            .padding(.top, 26)
+            learningGoal
             Spacer()
+            
+            
+//            errorMessage
+//            profile
+//            startLearningButton
+//            Divider()
+//            solvingProblem
+//            Spacer()
         }
+        .padding([.leading, .trailing], 20)
         .onAppear {
             if !viewModel.isViewFirstAppeared {
                 viewModel.setViewFirstAppeared()
@@ -41,42 +52,110 @@ public struct LearningHomeView: View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
-    // 프로필 이미지와 닉네임 보여주기
+    // 프로필 이미지와 닉네임 보여주기 *
     @ViewBuilder
     private var profile: some View {
-        VStack {
+        VStack(alignment: .leading) {
             if let userInfo = viewModel.userInfo {
-                VStack {
-                    UrlImageView(urlString: userInfo.profileImgUrl)
-                        .frame(width: 88, height: 88)
-                        .clipShape(Circle())
+                UrlImageView(urlString: userInfo.profileImgUrl)
+                    .frame(width: 54, height: 54)
+                    .clipShape(Circle())
+                HStack {
                     Text(userInfo.nickname)
-                        .font(.system(size: 12))
+                        .fontWeight(.bold)
+                    Text("님,")
                 }
-                .frame(height: 115)
-            } else {
-                ProgressView()
-                    .frame(height: 115)
             }
+            Text("오늘도 목표를 달성하세요!")
         }
-        .padding(.bottom, 18)
+        .font(.system(size: 22))
     }
     
-    // 학습 시작 버튼
+    // 찜한 목록, 알림 목록으로 이동할 수 있는 툴바 버튼 *
+    @ViewBuilder
+    private var toolMenu: some View {
+        HStack(spacing: 16) {
+            Button {
+                viewModel.moveToFavoriteProblemView()
+            } label: {
+                Image(systemName: SymbolName.favoriteList)
+                    .font(.system(size: 24))
+            }
+            Button {
+                viewModel.moveToNotiView()
+            } label: {
+                Image(systemName: SymbolName.notiList)
+                    .font(.system(size: 24))
+            }
+        }
+    }
+    
+    // 학습 목표
+    @ViewBuilder
+    private var learningGoal: some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(Color.theme.white)
+                .cornerRadius(16)
+                .shadow(color: Color.theme.shadowGray, radius: 6, x: 0, y: 4)
+            VStack {
+                HStack {
+                    learningRateProgressBar
+                    VStack(alignment: .leading) {
+                        Text("오늘의 학습목표")
+                            .font(.system(size: 16, weight: .bold))
+                        HStack {
+                            Text("하루목표")
+                                .font(.system(size: 14))
+                            Spacer()
+                            Text("5개")
+                        }
+                    }
+                }
+                startLearningButton
+            }
+            .padding(20)
+        }
+        .frame(maxWidth: .infinity, maxHeight: 196)
+    }
+    
+    // 학습 진행률 프로그래스 바 *
+    @ViewBuilder
+    private var learningRateProgressBar: some View {
+        ZStack {
+            Circle()
+                .stroke(lineWidth: 6)
+                .foregroundColor(Color.theme.gray)
+            Circle()
+                .trim(from: 0.0, to: CGFloat(min(viewModel.learningRate, 1.0)))
+                .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Color.theme.mainBlue)
+                .rotationEffect(Angle(degrees: 270.0))
+
+            HStack {
+                Text(String(format: "%.0f%", min(viewModel.learningRate, 1.0)*100.0))
+                    .font(.system(size: 26))
+                    .bold()
+                Text("%")
+                    .font(.system(size: 12))
+            }
+        }
+        .frame(width: 88, height: 88)
+    }
+    
+    // 학습 시작 버튼 *
     @ViewBuilder
     private var startLearningButton: some View {
         Button {
             viewModel.moveToLearningView()
         } label: { 
-            Text("학습 시작")
-                .font(.system(size: 20))
-                .padding([.leading, .trailing], 70)
-                .padding([.top, .bottom], 10)
+            Text("학습시작")
+                .font(.system(size: 16, weight: .bold))
+                .frame(maxWidth: .infinity, maxHeight: 48)
         }
         .buttonStyle(.bordered)
-        .tint(.orange)
-        .cornerRadius(35)
-        .padding(.bottom, 20)
+        .tint(Color.theme.mainBlue)
+        .cornerRadius(46)
     }
     
     // 풀던 문제 보여주기
