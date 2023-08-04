@@ -93,15 +93,15 @@ public class ProfileSettingViewModel: BaseViewModel {
         guard checkAllTextAreFilled() else { return }
         
         buttonIsLocked = true
-        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
-        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
+        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
+        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
         
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
         
         // 프로필 이미지도 설정했을 경우
         if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: data)
+            let profileImageDTO = ProfileImageDTO(image: data, accessToken: userAuthVO.accessToken)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
             postProfileInfoPublisher

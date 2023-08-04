@@ -42,8 +42,8 @@ extension FileAPI: TargetType {
     
     var headers: [String: String]? {
         switch self {
-        case .setProfileImage:
-            return ["Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
+        case .setProfileImage(let profileImageDTO):
+            return ["Authorization": "Bearer: \(profileImageDTO.accessToken)", "Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
         }
     }
 }

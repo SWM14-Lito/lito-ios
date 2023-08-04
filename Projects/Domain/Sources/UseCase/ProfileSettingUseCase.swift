@@ -31,7 +31,7 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
         let compressedImage = imageHelper.compress(data: profileImageDTO.image, limit: 500000)
-        return fileRepository.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage))
+        return fileRepository.postProfileImage(profileImageDTO: ProfileImageDTO(image: compressedImage, accessToken: profileImageDTO.accessToken))
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {

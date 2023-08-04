@@ -10,8 +10,10 @@ import Foundation
 
 public struct ProfileImageDTO {
     public let image: Data
+    public let accessToken: String
     
-    public init(image: Data) {
+    public init(image: Data, accessToken: String) {
         self.image = image
+        self.accessToken = accessToken
     }
 }

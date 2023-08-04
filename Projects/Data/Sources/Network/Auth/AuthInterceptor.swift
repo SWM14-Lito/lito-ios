@@ -31,7 +31,7 @@ final class AuthInterceptor: RequestInterceptor {
             return
         }
         switch lastPath {
-        case "login":
+        case "login", "users", "notifications", "files":
             break
         case "logout":
             urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
