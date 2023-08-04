@@ -19,6 +19,10 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         let customEndpointClosure: MoyaProvider<Provider>.EndpointClosure
         let customStubClosure: MoyaProvider<Provider>.StubClosure
         let customSession: Session
+        var plugins = plugins
+        let authPlugin = AuthPlugin.shared
+        
+        plugins.append(authPlugin)
         
         if !authorizationNeeded {
             customSession = MoyaProvider<Target>.defaultAlamofireSession()

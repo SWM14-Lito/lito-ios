@@ -10,10 +10,12 @@ public struct ProfileInfoDTO {
     public let name: String
     public let nickname: String
     public let introduce: String
+    public let accessToken: String
     
-    public init(name: String, nickname: String, introduce: String) {
+    public init(name: String, nickname: String, introduce: String, accessToken: String) {
         self.name = name
         self.nickname = nickname
         self.introduce = introduce
+        self.accessToken = accessToken
     }
 }

@@ -8,9 +8,10 @@
 
 import SwiftUI
 import KakaoSDKAuth
+import Domain
 
-public enum AppScene: Hashable, Identifiable {
-    case loginScene, profileSettingScene
+public enum AppScene: Identifiable, Hashable {
+    case loginScene, profileSettingScene(userAuthVO: UserAuthVO)
     case rootTabScene
     case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int), chattingScene, problemSearchScene
     case pedigreeListScene
@@ -19,4 +20,5 @@ public enum AppScene: Hashable, Identifiable {
     public var id: Self {
         return self
     }
+    
 }

@@ -16,6 +16,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     private let useCase: ProfileSettingUseCase
     private var acceptAlarm: Bool = false
     private(set) var buttonIsLocked: Bool = false
+    private var userAuthVO: UserAuthVO
     @Published var imageData: Data?
     @Published var username: LimitedText
     @Published var nickname: LimitedText
@@ -53,7 +54,8 @@ public class ProfileSettingViewModel: BaseViewModel {
         }
     }
     
-    public init(useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+    public init(userAuthVO: UserAuthVO, useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+        self.userAuthVO = userAuthVO
         self.username = LimitedText(limit: TextFieldCategory.username.limit)
         self.nickname = LimitedText(limit: TextFieldCategory.nickname.limit)
         self.introduce = LimitedText(limit: TextFieldCategory.introduce.limit)
@@ -91,15 +93,15 @@ public class ProfileSettingViewModel: BaseViewModel {
         guard checkAllTextAreFilled() else { return }
         
         buttonIsLocked = true
-        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text)
-        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm)
+        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
+        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
         
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
         
         // 프로필 이미지도 설정했을 경우
         if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: data)
+            let profileImageDTO = ProfileImageDTO(image: data, accessToken: userAuthVO.accessToken)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
             postProfileInfoPublisher
@@ -107,6 +109,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
                         self.coordinator.pop()
                         self.coordinator.push(.rootTabScene)
                     case .failure(let error):
@@ -125,6 +128,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
                         self.coordinator.pop()
                         self.coordinator.push(.rootTabScene)
                     case .failure(let error):

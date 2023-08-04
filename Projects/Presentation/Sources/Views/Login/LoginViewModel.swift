@@ -27,8 +27,8 @@ final public class LoginViewModel: BaseViewModel {
                     switch loginResultVO {
                     case .registered:
                         self.coordinator.push(.rootTabScene)
-                    case .unregistered:
-                        self.coordinator.push(.profileSettingScene)
+                    case .unregistered(let userAuthVO):
+                        self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
@@ -55,8 +55,8 @@ final public class LoginViewModel: BaseViewModel {
                     switch loginResultVO {
                     case .registered:
                         self.coordinator.push(.rootTabScene)
-                    case .unregistered:
-                        self.coordinator.push(.profileSettingScene)
+                    case .unregistered(let userAuthVO):
+                        self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {

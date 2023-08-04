@@ -72,6 +72,16 @@ final public class KeyChainManager {
         let status = SecItemDelete(query)
         assert(status == noErr, "failed to delete the value, status code = \(status)")
     }
+
+}
+
+extension KeyChainManager {
+    
+    static public func createUserInfo(userAuthVO: UserAuthVO) {
+        create(key: .accessToken, token: userAuthVO.accessToken)
+        create(key: .refreshToken, token: userAuthVO.refreashToken)
+        create(key: .userId, token: userAuthVO.userId)
+    }
     
     static public func deleteUserInfo() {
         UserKeys.allCases.forEach { key in
@@ -84,4 +94,12 @@ final public class KeyChainManager {
         }
        
     }
+    
+    public static var isUserInfoExist: Bool {
+        if KeyChainManager.read(key: .accessToken) == nil && KeyChainManager.read(key: .refreshToken) == nil && KeyChainManager.read(key: .userId) == nil {
+            return false
+        }
+        return true
+    }
+    
 }

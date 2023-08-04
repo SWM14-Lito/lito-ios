@@ -8,8 +8,10 @@
 
 public struct AlarmAcceptanceDTO {
     public let getAlarm: Bool
+    public let accessToken: String
     
-    public init(getAlarm: Bool) {
+    public init(getAlarm: Bool, accessToken: String) {
         self.getAlarm = getAlarm
+        self.accessToken = accessToken
     }
 }
