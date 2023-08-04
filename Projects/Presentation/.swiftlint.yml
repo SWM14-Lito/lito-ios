@@ -5,3 +5,4 @@ disabled_rules:
 - empty_enum_arguments
 - type_name
 - force_cast
+- identifier_name

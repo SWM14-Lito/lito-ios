@@ -93,15 +93,15 @@ public struct LearningHomeView: View {
     // 학습 목표
     @ViewBuilder
     private var learningGoal: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             Rectangle()
-                .foregroundColor(Color.theme.white)
+                .foregroundColor(Color.theme.Bg_Default)
                 .cornerRadius(16)
-                .shadow(color: Color.theme.shadowGray, radius: 6, x: 0, y: 4)
+                .shadow(color: Color.theme.Shadow_Default, radius: 6, x: 0, y: 4)
             VStack {
                 HStack {
                     learningRateProgressBar
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 5) {
                         Text("오늘의 학습목표")
                             .font(.system(size: 16, weight: .bold))
                         HStack {
@@ -111,6 +111,7 @@ public struct LearningHomeView: View {
                             Text("5개")
                         }
                     }
+                    .padding(.leading, 17)
                 }
                 startLearningButton
             }
@@ -125,11 +126,11 @@ public struct LearningHomeView: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: 6)
-                .foregroundColor(Color.theme.gray)
+                .foregroundColor(Color.theme.Border_Default)
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(viewModel.learningRate, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
-                .foregroundColor(Color.theme.mainBlue)
+                .foregroundColor(Color.theme.Button_Point)
                 .rotationEffect(Angle(degrees: 270.0))
 
             HStack {
@@ -154,7 +155,7 @@ public struct LearningHomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: 48)
         }
         .buttonStyle(.bordered)
-        .tint(Color.theme.mainBlue)
+        .tint(Color.theme.Button_Point)
         .cornerRadius(46)
     }
     
