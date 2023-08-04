@@ -47,7 +47,7 @@ public struct MyPageView: View {
                         case .nickName:
                             Text(content.rawValue)
                             Spacer()
-                            Text(userInfo.name)
+                            Text(userInfo.nickname)
                                 .foregroundColor(.gray)
                             Image(systemName: "chevron.right")
                         case .introduce:

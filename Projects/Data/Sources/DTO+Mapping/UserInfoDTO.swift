@@ -13,7 +13,7 @@ public struct UserInfoDTO: Decodable {
     let userId: Int?
     let profileImgUrl: String?
     let point: Int?
-    let nickName: String?
+    let nickname: String?
     let name: String?
     let introduce: String?
     let alarmStatus: String?
@@ -26,7 +26,7 @@ public struct UserInfoDTO: Decodable {
         default:
             convertedAlarmStatus = true
         }
-        return UserInfoVO(userId: userId ?? 0, profileImgUrl: profileImgUrl ?? "", point: point ?? 0, nickName: nickName ?? "Unknown", name: name ?? "Unknown", introduce: introduce ?? "Unknown", alarmStatus: convertedAlarmStatus)
+        return UserInfoVO(userId: userId ?? 0, profileImgUrl: profileImgUrl ?? "", point: point ?? 0, nickName: nickname ?? "Unknown", name: name ?? "Unknown", introduce: introduce ?? "Unknown", alarmStatus: convertedAlarmStatus)
     }
     
 }
