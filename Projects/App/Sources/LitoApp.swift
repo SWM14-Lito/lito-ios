@@ -15,6 +15,9 @@ struct LitoApp: App {
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())
         coordinator = Coordinator(.loginScene)
+        if KeyChainManager.isUserInfoExist {
+            coordinator.push(.rootTabScene)
+        }
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
                            PresentationAssembly(coordinator: coordinator)

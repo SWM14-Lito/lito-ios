@@ -109,6 +109,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
                         self.coordinator.pop()
                         self.coordinator.push(.rootTabScene)
                     case .failure(let error):
@@ -127,6 +128,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .sinkToResult { result in
                     switch result {
                     case .success(_):
+                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
                         self.coordinator.pop()
                         self.coordinator.push(.rootTabScene)
                     case .failure(let error):

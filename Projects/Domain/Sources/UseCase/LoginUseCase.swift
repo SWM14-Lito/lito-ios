@@ -37,9 +37,8 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     }
                     .map { loginVO in
                         if loginVO.registered {
-                            KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
-                            KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
-                            KeyChainManager.create(key: .userId, token: loginVO.userId)
+                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId)
+                            KeyChainManager.createUserInfo(userAuthVO: userAuthVO)
                         }
                         return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
                     }
@@ -57,9 +56,8 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     }
                     .map { loginVO in
                         if loginVO.registered {
-                            KeyChainManager.create(key: .accessToken, token: loginVO.accessToken)
-                            KeyChainManager.create(key: .refreshToken, token: loginVO.refreshToken)
-                            KeyChainManager.create(key: .userId, token: loginVO.userId)
+                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId)
+                            KeyChainManager.createUserInfo(userAuthVO: userAuthVO)
                         }
                         return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
                     }

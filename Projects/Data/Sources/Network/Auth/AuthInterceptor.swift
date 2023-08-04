@@ -23,24 +23,7 @@ final class AuthInterceptor: RequestInterceptor {
     private func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error> {
         return moyaProvider.call(target: .reissueToken)
     }
-
-    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        var urlRequest = urlRequest
-        guard let lastPath = urlRequest.url?.lastPathComponent else {
-            completion(.failure(NetworkErrorDTO.requestError("Invalid path")))
-            return
-        }
-        switch lastPath {
-        case "login", "users", "notifications", "files":
-            break
-        case "logout":
-            urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
-            urlRequest.headers.add(name: "Refresh-Token", value: NetworkConfiguration.refreashToken)
-        default:
-            urlRequest.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
-        }
-        completion(.success(urlRequest))
-    }
+    
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401
         else {
