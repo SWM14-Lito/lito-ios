@@ -24,6 +24,9 @@ public struct ProblemSearchView: View {
             searchResult
             Spacer()
         }
+        .onAppear {
+            viewModel.getProblemMutable()
+        }
     }
     
     // 검색어 입력 박스

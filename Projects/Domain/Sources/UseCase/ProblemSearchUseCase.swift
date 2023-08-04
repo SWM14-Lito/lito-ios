@@ -11,6 +11,7 @@ import Combine
 public protocol ProblemSearchUseCase {
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error>
+    func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error>
 }
 
 public final class DefaultProblemSearchUseCase: ProblemSearchUseCase {
@@ -26,5 +27,9 @@ public final class DefaultProblemSearchUseCase: ProblemSearchUseCase {
     
     public func getProblemList(problemsQueryDTO: SearchedProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {
         repository.getProblemList(problemsQueryDTO: problemsQueryDTO)
+    }
+    
+    public func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error> {
+        repository.getProblemMutable(id: id)
     }
 }
