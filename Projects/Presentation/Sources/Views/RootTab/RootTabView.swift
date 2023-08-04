@@ -13,14 +13,12 @@ public struct RootTabView: View {
     private let tab1: LearningHomeView
     private let tab2: PedigreeListView
     private let tab3: MyPageView
-    private let tab1ViewModel: LearningHomeViewModel
     @State private var selection: Int = 1
     
-    public init(tab1: LearningHomeView, tab2: PedigreeListView, tab3: MyPageView, tab1ViewModel: LearningHomeViewModel) {
+    public init(tab1: LearningHomeView, tab2: PedigreeListView, tab3: MyPageView) {
         self.tab1 = tab1
         self.tab2 = tab2
         self.tab3 = tab3
-        self.tab1ViewModel = tab1ViewModel
     }
     
     public var body: some View {
@@ -51,31 +49,5 @@ public struct RootTabView: View {
                 .tag(3)
         }
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    tab1ViewModel.moveToFavoriteProblemView()
-                } label: {
-                    if selection == 1 {
-                        Image(systemName: SymbolName.favoriteList)
-                    } else {
-                        EmptyView()
-                    }
-                }
-
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    tab1ViewModel.moveToNotiView()
-                } label: {
-                    if selection == 1 {
-                        Image(systemName: SymbolName.notiList)
-                    } else {
-                        EmptyView()
-                    }
-                }
-
-            }
-        }
     }
 }
