@@ -15,6 +15,8 @@ public protocol ProblemRepository {
     
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error>
     
+    func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error>
+    
     func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error>
     
     func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error>

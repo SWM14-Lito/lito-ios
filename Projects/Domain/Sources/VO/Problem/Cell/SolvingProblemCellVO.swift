@@ -11,7 +11,7 @@ public struct SolvingProblemCellVO: Hashable, ProblemCell {
     public let problemId: Int
     public let subjectName: String
     public let question: String
-    public let problemStatus: ProblemSolvedStatus = .solving
+    public var problemStatus: ProblemSolvedStatus = .solving
     public var favorite: ProblemFavoriteStatus
     
     public init(problemUserId: Int, problemId: Int, subjectName: String, question: String, favorite: ProblemFavoriteStatus) {

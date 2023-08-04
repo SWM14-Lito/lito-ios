@@ -9,7 +9,7 @@
 public protocol ProblemCell {
     var problemId: Int { get }
     var question: String { get }
-    var problemStatus: ProblemSolvedStatus { get }
-    var favorite: ProblemFavoriteStatus { get }
+    var problemStatus: ProblemSolvedStatus { get set }
+    var favorite: ProblemFavoriteStatus { get set }
     var subjectName: String { get }
 }

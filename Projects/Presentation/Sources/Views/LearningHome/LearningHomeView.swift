@@ -26,7 +26,11 @@ public struct LearningHomeView: View {
             Spacer()
         }
         .onAppear {
-            viewModel.getProfileAndProblems()
+            if !viewModel.isViewFirstAppeared {
+                viewModel.setViewFirstAppeared()
+                viewModel.getProfileAndProblems()
+            }
+            viewModel.getProblemMutable()
         }
 
     }

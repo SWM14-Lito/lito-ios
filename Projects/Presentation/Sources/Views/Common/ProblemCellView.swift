@@ -9,22 +9,24 @@
 import SwiftUI
 import Domain
 
-public protocol ProblemCellHandling {
+// 문제 셀 사용하는 ViewModel에서 해당 프로토콜 따르도록 해야함
+protocol ProblemCellHandling {
     func moveToProblemView(id: Int)
     func changeFavoriteStatus(id: Int)
 }
 
-public struct ProblemCellView<T: ProblemCell>: View {
+// 문제 셀
+struct ProblemCellView<T: ProblemCell>: View {
     
     @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
     
-    public init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
+    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
         self._problemCellVO = problemCellVO
         self.problemCellHandling = problemCellHandling
     }
     
-    public var body: some View {
+    var body: some View {
             ZStack(alignment: .trailing) {
                 Button {
                     problemCellHandling.moveToProblemView(id: problemCellVO.problemId)

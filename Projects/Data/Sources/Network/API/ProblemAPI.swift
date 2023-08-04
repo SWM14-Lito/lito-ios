@@ -38,14 +38,14 @@ extension ProblemAPI: TargetType {
             return "/api/v1/problems/process-status"
         case .favoriteProblemList:
             return "/api/v1/problems/favorites"
-        case .problemDetail:
-            return "/api/v1/problems/1"
-        case .favoriteToggle:
-            return "/api/v1/problems/1/favorites"
-        case .enterProblem:
-            return "/api/v1/problems/1"
-        case .submitAnswer:
-            return "/api/v1/problems/1/users"
+        case .problemDetail(let id):
+            return "/api/v1/problems/" + String(id)
+        case .favoriteToggle(let id):
+            return "/api/v1/problems/" + String(id) + "/favorites"
+        case .enterProblem(let id):
+            return "/api/v1/problems/" + String(id)
+        case .submitAnswer(let id, _):
+            return "/api/v1/problems/" + String(id) + "/users"
         }
     }
     
@@ -118,27 +118,16 @@ extension ProblemAPI: TargetType {
             parameters["page"] = favoriteProblemsQueryDTO.page
             parameters["size"] = favoriteProblemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-        case .problemDetail(let id):
-            return .requestParameters(parameters: [
-                "id": id
-            ], encoding: URLEncoding.queryString)
-        case .favoriteToggle(let id):
-            return .requestParameters(parameters: [
-                "id": id
-            ], encoding: URLEncoding.queryString)
-        case .enterProblem(let id):
-            return .requestParameters(parameters: [
-                "id": id
-            ], encoding: URLEncoding.queryString)
-        case .submitAnswer(let id, let keyword):
-            return .requestCompositeParameters(
-                bodyParameters: [
-                    "keyword": keyword
-                ],
-                bodyEncoding: JSONEncoding.default,
-                urlParameters: [
-                    "id": id
-                ]
+        case .problemDetail:
+            return .requestPlain
+        case .favoriteToggle:
+            return .requestPlain
+        case .enterProblem:
+            return .requestPlain
+        case .submitAnswer(_, let keyword):
+            return .requestParameters(
+                parameters: ["keyword": keyword],
+                encoding: JSONEncoding.default
             )
         }
     }

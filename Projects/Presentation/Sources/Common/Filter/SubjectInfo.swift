@@ -8,7 +8,14 @@
 
 import Foundation
 
-public enum SubjectInfo: String, CaseIterable {
+public enum SubjectInfo: String, FilterComponent {
+    
+    typealias T = Self
+    
+    static var defaultValue: SubjectInfo {
+        return .all
+    }
+    
     case all
     case operationSystem
     case network
