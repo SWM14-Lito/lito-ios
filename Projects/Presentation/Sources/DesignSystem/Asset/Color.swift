@@ -19,6 +19,7 @@ public extension Color {
     static let Button_Point = makeLitoColor(.Button_Point)
     static let Button_Point_Light = makeLitoColor(.Button_Point_light)
     static let Button_Tag_Default = makeLitoColor(.Button_Tag_Default)
+    static let Button_Negative = makeLitoColor(.Button_Negative)
     static let Divider_Default = makeLitoColor(.Divider_Default)
     static let Divider_Strong = makeLitoColor(.Divider_Strong)
     static let Gradation_BottonTrailing = makeLitoColor(.Gradation_BottonTrailing)
@@ -47,6 +48,7 @@ extension ShapeStyle where Self == Color {
     static var Button_Point: Color { Color.Button_Point }
     static var Button_Point_Light: Color { Color.Button_Point_Light }
     static var Button_Tag_Default: Color { Color.Button_Tag_Default }
+    static var Button_Negative: Color { Color.Button_Negative }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
     static var Divider_Strong: Color { Color.makeLitoColor(.Divider_Strong) }
     static var Gradation_BottonTrailing: Color { Color.makeLitoColor(.Gradation_BottonTrailing) }
@@ -95,6 +97,7 @@ public enum LitoColor: String {
     case Button_Point
     case Button_Point_light
     case Button_Tag_Default
+    case Button_Negative
     case Divider_Default
     case Divider_Strong
     case Gradation_BottonTrailing

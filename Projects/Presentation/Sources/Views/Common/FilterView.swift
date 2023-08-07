@@ -105,7 +105,7 @@ struct FilterView<T: FilterComponent>: View {
     private var filteringComponents: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("풀이 여부")
-                .font(.title2)
+                .font(.system(size: 18, weight: .semibold))
             HStack {
                 ForEach(T.allCases, id: \.self) { filter in
                     Button {
@@ -114,16 +114,13 @@ struct FilterView<T: FilterComponent>: View {
                         Text(filter.name)
                             .font(.system(size: 14, weight: .regular))
                             .foregroundColor(selectedFilter == filter ? .Text_White : .Text_Default)
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 8)
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 19 )
                             .fill(selectedFilter == filter ? .Button_Point : .Bg_Light)
                     )
-//                    Button(filter.name) {
-//                        selectFilter(filter)
-//                    }
-//                    .buttonStyle(.borderedProminent)
-//                    .tint(selectedFilter == filter ? .orange : .gray)
                 }
             }
         }
@@ -137,19 +134,36 @@ struct FilterView<T: FilterComponent>: View {
             Spacer()
             HStack(alignment: .center) {
                 Spacer()
-                Button("초기화") {
+                Button {
                     selectedFilter = T.defaultValue
+                } label: {
+                    Text("초기화")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.Text_White)
+                        .padding(.horizontal, 56)
+                        .padding(.vertical, 15)
                 }
-                .buttonStyle(.bordered)
-                .font(.title2)
+                .background(
+                    RoundedRectangle(cornerRadius: 6 )
+                        .fill(.Button_Negative)
+                )
                 Spacer()
-                Button("적용하기") {
+                Button {
                     applyFilter()
+                } label: {
+                    Text("적용하기")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.Text_White)
+                        .padding(.horizontal, 56)
+                        .padding(.vertical, 15)
                 }
-                .buttonStyle(.bordered)
-                .font(.title2)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(.Button_Point)
+                )
                 Spacer()
             }
+            .padding(.bottom, 20)
         }
         .onAppear {
             storePrevFilter()
