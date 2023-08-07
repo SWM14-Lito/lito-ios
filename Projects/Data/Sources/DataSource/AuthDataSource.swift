@@ -10,7 +10,7 @@ import Combine
 import Domain
 
 public protocol AuthDataSource {
-    func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error>
+    func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginDTO, Error>
     func postTokenReissue() -> AnyPublisher<TokenReissueDTO, Error>
     func postLogout() -> AnyPublisher<Void, Error>
 }
@@ -21,7 +21,7 @@ final public class DefaultAuthDataSource: AuthDataSource {
     
     private let moyaProvider = MoyaWrapper<AuthAPI>()
     
-    public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
+    public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginDTO, Error> {
         switch OAuthProvider {
         case .apple(let appleVO):
             return moyaProvider.call(target: .appleLogin(appleVO: appleVO))

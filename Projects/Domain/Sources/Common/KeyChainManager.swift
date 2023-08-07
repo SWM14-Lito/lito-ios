@@ -15,6 +15,7 @@ final public class KeyChainManager {
         case userId
         case accessToken
         case refreshToken
+        case refreshTokenExpirationTime
     }
 
     static public func create(key: UserKeys, token: String) {
@@ -79,7 +80,8 @@ extension KeyChainManager {
     
     static public func createUserInfo(userAuthVO: UserAuthVO) {
         create(key: .accessToken, token: userAuthVO.accessToken)
-        create(key: .refreshToken, token: userAuthVO.refreashToken)
+        create(key: .refreshToken, token: userAuthVO.refreshToken)
+        create(key: .refreshTokenExpirationTime, token: userAuthVO.refreshTokenExpirationTime)
         create(key: .userId, token: userAuthVO.userId)
     }
     
@@ -92,14 +94,16 @@ extension KeyChainManager {
             let status = SecItemDelete(query)
             assert(status == noErr, "failed to delete the value, status code = \(status)")
         }
-       
+        
     }
     
-    public static var isUserInfoExist: Bool {
-        if KeyChainManager.read(key: .accessToken) == nil && KeyChainManager.read(key: .refreshToken) == nil && KeyChainManager.read(key: .userId) == nil {
+    public static var isPossibleAutoLogin: Bool {
+        if KeyChainManager.read(key: .accessToken) == nil || KeyChainManager.read(key: .refreshToken) == nil || KeyChainManager.read(key: .userId) == nil || KeyChainManager.read(key: .refreshTokenExpirationTime) == nil {
             return false
         }
-        return true
+        let refreshTokenExpirationStr = KeyChainManager.read(key: .refreshTokenExpirationTime)!
+        let refreshTokenExpriationDate = DateManager.shared.convertToDate(from: refreshTokenExpirationStr)
+        return Date() < refreshTokenExpriationDate
     }
     
 }

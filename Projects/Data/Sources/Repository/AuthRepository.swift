@@ -19,6 +19,8 @@ final public class DefaultAuthRepository: AuthRepository {
     
     public func postLoginInfo(OAuthProvider: OAuth) -> AnyPublisher<LoginVO, Error> {
         dataSource.postLoginInfo(OAuthProvider: OAuthProvider)
+            .map { $0.toVO() }
+            .eraseToAnyPublisher()
     }
     
     public func postLogout() -> AnyPublisher<Void, Error> {
