@@ -49,5 +49,8 @@ public struct RootTabView: View {
                 .tag(3)
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor(Color.theme.Bg_Default)
+        }
     }
 }

@@ -58,6 +58,7 @@ public final class LearningHomeViewModel: BaseViewModel {
                 switch result {
                 case .success(let learningHomeVO):
                     self.solvingProblem = learningHomeVO.solvingProblem
+                    self.recommendedProblem = nil
                     self.userInfo = learningHomeVO.userInfo
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
