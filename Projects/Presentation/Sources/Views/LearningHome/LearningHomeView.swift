@@ -11,31 +11,43 @@ import SwiftUI
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
-
+    
     public init(viewModel: LearningHomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
-        VStack {
-            HStack(alignment: .top) {
-                profile
+        ZStack(alignment: .top) {
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.theme.Gradation_TopLeading, Color.theme.Gradation_BottonTrailing
+                ]),
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            )
+            .frame(height: 283)
+            .cornerRadius(40, corners: [.bottomLeft, .bottomRight])
+            VStack {
+                HStack(alignment: .top) {
+                    profile
+                    Spacer()
+                    toolMenu
+                }
+                .padding(.top, 50)
+                .padding(.bottom, 16)
+                learningGoal
                 Spacer()
-                toolMenu
+                
+                //            errorMessage
+                //            profile
+                //            startLearningButton
+                //            Divider()
+                //            solvingProblem
+                //            Spacer()
             }
-            .padding(.top, 26)
-            learningGoal
-            Spacer()
-            
-            
-//            errorMessage
-//            profile
-//            startLearningButton
-//            Divider()
-//            solvingProblem
-//            Spacer()
+            .padding([.leading, .trailing], 20)
         }
-        .padding([.leading, .trailing], 20)
+        .edgesIgnoringSafeArea(.all)
+        .background(Color.theme.Bg_Light)
         .onAppear {
             if !viewModel.isViewFirstAppeared {
                 viewModel.setViewFirstAppeared()
@@ -43,7 +55,7 @@ public struct LearningHomeView: View {
             }
             viewModel.getProblemMutable()
         }
-
+        
     }
     
     // API 에러 발생시 알려줌
@@ -98,7 +110,7 @@ public struct LearningHomeView: View {
                 .foregroundColor(Color.theme.Bg_Default)
                 .cornerRadius(16)
                 .shadow(color: Color.theme.Shadow_Default, radius: 6, x: 0, y: 4)
-            VStack {
+            VStack(spacing: 16) {
                 HStack {
                     learningRateProgressBar
                     VStack(alignment: .leading, spacing: 5) {
@@ -108,7 +120,7 @@ public struct LearningHomeView: View {
                             Text("하루목표")
                                 .font(.system(size: 14))
                             Spacer()
-                            Text("5개")
+                            goalSettingPicker
                         }
                     }
                     .padding(.leading, 17)
@@ -132,7 +144,7 @@ public struct LearningHomeView: View {
                 .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.theme.Button_Point)
                 .rotationEffect(Angle(degrees: 270.0))
-
+            
             HStack {
                 Text(String(format: "%.0f%", min(viewModel.learningRate, 1.0)*100.0))
                     .font(.system(size: 26))
@@ -144,18 +156,45 @@ public struct LearningHomeView: View {
         .frame(width: 88, height: 88)
     }
     
+    // 학습 목표 설정 피커
+    @ViewBuilder
+    private var goalSettingPicker: some View {
+        Menu {
+            Picker(selection: $viewModel.goalCount, label: EmptyView(), content: {
+                ForEach(0 ..< 11) { number in
+                    Text("\(number)").tag(number)
+                }
+            }).pickerStyle(.automatic)
+        }label: {
+            HStack {
+                Text("\(viewModel.goalCount) 개")
+                    .font(.system(size: 14))
+                Image(systemName: SymbolName.chevronDown)
+                    .font(.system(size: 6, weight: .bold))
+            }
+            .frame(width: 70, height: 30)
+            .foregroundColor(Color.theme.Text_Serve)
+            .background(Color.theme.Bg_Picker)
+            .buttonStyle(.bordered)
+            .cornerRadius(17)
+        }
+        .padding(.trailing, 4)
+        
+    }
+    
     // 학습 시작 버튼 *
     @ViewBuilder
     private var startLearningButton: some View {
         Button {
             viewModel.moveToLearningView()
-        } label: { 
+        } label: {
             Text("학습시작")
                 .font(.system(size: 16, weight: .bold))
-                .frame(maxWidth: .infinity, maxHeight: 48)
+                .foregroundColor(Color.theme.Text_White)
+                .frame(maxWidth: .infinity, maxHeight: 40)
         }
         .buttonStyle(.bordered)
-        .tint(Color.theme.Button_Point)
+        .background(Color.theme.Button_Point)
         .cornerRadius(46)
     }
     
