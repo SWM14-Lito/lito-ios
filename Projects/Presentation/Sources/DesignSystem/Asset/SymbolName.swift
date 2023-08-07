@@ -23,4 +23,5 @@ class SymbolName {
     static let notiList = "bell.fill"
     static let arrowtriangleDown = "arrowtriangle.down.fill"
     static let chevronDown = "chevron.down"
+    static let chevronLeft = "chevron.left"
 }

@@ -20,7 +20,7 @@ public struct LearningHomeView: View {
         ZStack(alignment: .top) {
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color.theme.Gradation_TopLeading, Color.theme.Gradation_BottonTrailing
+                    .Gradation_TopLeading, .Gradation_BottonTrailing
                 ]),
                 startPoint: .topLeading, endPoint: .bottomTrailing
             )
@@ -47,7 +47,7 @@ public struct LearningHomeView: View {
             .padding([.leading, .trailing], 20)
         }
         .edgesIgnoringSafeArea(.all)
-        .background(Color.theme.Bg_Light)
+        .background(.Bg_Light)
         .onAppear {
             if !viewModel.isViewFirstAppeared {
                 viewModel.setViewFirstAppeared()
@@ -107,9 +107,9 @@ public struct LearningHomeView: View {
     private var learningGoal: some View {
         ZStack(alignment: .bottom) {
             Rectangle()
-                .foregroundColor(Color.theme.Bg_Default)
+                .foregroundColor(.Bg_Default)
                 .cornerRadius(16)
-                .shadow(color: Color.theme.Shadow_Default, radius: 6, x: 0, y: 4)
+                .shadow(color: .Shadow_Default, radius: 6, x: 0, y: 4)
             VStack(spacing: 16) {
                 HStack {
                     learningRateProgressBar
@@ -138,11 +138,11 @@ public struct LearningHomeView: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: 6)
-                .foregroundColor(Color.theme.Border_Default)
+                .foregroundColor(.Border_Default)
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(viewModel.learningRate, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
-                .foregroundColor(Color.theme.Button_Point)
+                .foregroundColor(.Button_Point)
                 .rotationEffect(Angle(degrees: 270.0))
             
             HStack {
@@ -173,8 +173,8 @@ public struct LearningHomeView: View {
                     .font(.system(size: 6, weight: .bold))
             }
             .frame(width: 70, height: 30)
-            .foregroundColor(Color.theme.Text_Serve)
-            .background(Color.theme.Bg_Picker)
+            .foregroundColor(.Text_Serve)
+            .background(.Bg_Picker)
             .buttonStyle(.bordered)
             .cornerRadius(17)
         }
@@ -190,11 +190,11 @@ public struct LearningHomeView: View {
         } label: {
             Text("학습시작")
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(Color.theme.Text_White)
+                .foregroundColor(.Text_White)
                 .frame(maxWidth: .infinity, maxHeight: 40)
         }
         .buttonStyle(.bordered)
-        .background(Color.theme.Button_Point)
+        .background(.Button_Point)
         .cornerRadius(46)
     }
     

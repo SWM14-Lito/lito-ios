@@ -31,7 +31,7 @@ struct HeadFilterView<T: FilterComponent>: View {
                                 .fixedSize()
                                 .font(.title3)
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(selectedFilter == filter ? .orange : .gray)
+                                .foregroundColor(selectedFilter == filter ? .Button_Point : .Text_Serve)
                             if selectedFilter == filter {
                                 Capsule()
                                     .foregroundColor(.orange)

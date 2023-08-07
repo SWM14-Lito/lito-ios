@@ -19,20 +19,36 @@ public struct ProblemListView: View {
     
     public var body: some View {
         VStack {
-            Divider()
             headFilter
             filter
             problemList
             Spacer()
-        }.navigationTitle(viewModel.selectedSubject.name)
-            .navigationBarTitleDisplayMode(.large)
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        viewModel.back()
+                    }, label: {
+                        HStack {
+                            Image(systemName: SymbolName.chevronLeft)
+                                .foregroundColor(.Text_Default)
+                                .font(.system(size: 22, weight: .regular))
+                            Text(viewModel.selectedSubject.name)
+                                .foregroundColor(.Text_Default)
+                                .font(.system(size: 22, weight: .bold))
+                        }
+                    })
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         viewModel.moveToProblemSearchScene()
                     }, label: {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.Text_Default)
                     })
                 }
             }
@@ -50,7 +66,7 @@ public struct ProblemListView: View {
     private var filter: some View {
         FilterView(selectedFilters: $viewModel.selectedFilters, filterHandling: viewModel)
     }
-
+    
     @ViewBuilder
     private var problemList: some View {
         ScrollView {
