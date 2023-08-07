@@ -27,38 +27,52 @@ struct ProblemCellView<T: ProblemCell>: View {
     }
     
     var body: some View {
-            ZStack(alignment: .trailing) {
+        ZStack(alignment: .trailing) {
                 Button {
                     problemCellHandling.moveToProblemView(id: problemCellVO.problemId)
                 } label: {
-                    HStack {
+                    HStack(alignment: .top, spacing: 8) {
                         Image(systemName: problemCellVO.problemStatus.symbolName)
-                        VStack(alignment: .leading) {
-                            Text(problemCellVO.question)
-                                .font(.system(size: 15))
-                                .foregroundColor(Color.black)
-                                .multilineTextAlignment(.leading)
+                            .foregroundColor(problemCellVO.problemStatus == .solved ? Color.theme.Button_Point : Color.theme.Text_Serve)
+                            .font(.system(size: 14))
+                        VStack(alignment: .leading, spacing: 2) {
                             Text(problemCellVO.subjectName)
-                                .font(.system(size: 13))
-                                .foregroundColor(Color.gray)
+                                .font(.system(size: 12))
+                                .foregroundColor(Color.theme.Text_Info)
                                 .multilineTextAlignment(.leading)
+                                .lineLimit(1)
+                            Text(problemCellVO.question)
+                                .font(.system(size: 14))
+                                .foregroundColor(Color.theme.Text_Default)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
                         }
                         Spacer()
                     }
-                    .padding(.trailing, 15)
+                    .padding(.trailing, 46)
                 }
                 
                 Button {
                     problemCellHandling.changeFavoriteStatus(id: problemCellVO.problemId)
                 } label: {
-                    Image(systemName: problemCellVO.favorite.symbolName)
+                    Circle()
+                        .foregroundColor(problemCellVO.favorite == .favorite ? Color.theme.Heart_Clicked_Inner : Color.theme.Heart_Unclicked_Inner)
+                        .frame(width: 28, height: 28)
+                        .overlay(
+                            Image(systemName: problemCellVO.favorite.symbolName)
+                                .font(.system(size: 28))
+                                .foregroundColor(problemCellVO.favorite == .favorite ? Color.theme.Heart_Clicked_Outer : Color.theme.Heart_Unclicked_Outer)
+                        )
                 }
+                .buttonStyle(.plain)
+
             }
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color.black, lineWidth: 1)
-            )
-        
+        .padding([.leading, .trailing], 16)
+        .padding([.top, .bottom], 18)
+        .background(problemCellVO.problemStatus == .solved ? Color.theme.Fill_Soft_Blue : Color.theme.Bg_Default)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(problemCellVO.problemStatus == .solved ? Color.theme.Border_Serve : Color.theme.Border_Default, lineWidth: 1)
+        )
     }
 }

@@ -35,14 +35,11 @@ public struct LearningHomeView: View {
                 .padding(.top, 50)
                 .padding(.bottom, 16)
                 learningGoal
+                solvingProblem
+                    .padding(.top, 38)
                 Spacer()
                 
                 //            errorMessage
-                //            profile
-                //            startLearningButton
-                //            Divider()
-                //            solvingProblem
-                //            Spacer()
             }
             .padding([.leading, .trailing], 20)
         }
@@ -80,6 +77,7 @@ public struct LearningHomeView: View {
             }
             Text("오늘도 목표를 달성하세요!")
         }
+        .foregroundColor(Color.theme.Text_White)
         .font(.system(size: 22))
     }
     
@@ -92,17 +90,19 @@ public struct LearningHomeView: View {
             } label: {
                 Image(systemName: SymbolName.favoriteList)
                     .font(.system(size: 24))
+                    .foregroundColor(Color.theme.Button_White)
             }
             Button {
                 viewModel.moveToNotiView()
             } label: {
                 Image(systemName: SymbolName.notiList)
                     .font(.system(size: 24))
+                    .foregroundColor(Color.theme.Button_White)
             }
         }
     }
     
-    // 학습 목표
+    // 학습 목표 *
     @ViewBuilder
     private var learningGoal: some View {
         ZStack(alignment: .bottom) {
@@ -156,7 +156,7 @@ public struct LearningHomeView: View {
         .frame(width: 88, height: 88)
     }
     
-    // 학습 목표 설정 피커
+    // 학습 목표 설정 피커 *
     @ViewBuilder
     private var goalSettingPicker: some View {
         Menu {
@@ -198,25 +198,30 @@ public struct LearningHomeView: View {
         .cornerRadius(46)
     }
     
-    // 풀던 문제 보여주기
+    // 풀던 문제 보여주기 *
     @ViewBuilder
     private var solvingProblem: some View {
         if viewModel.isGotResponse {
             if viewModel.solvingProblem != nil {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     HStack {
                         Text("풀던 문제")
+                            .foregroundColor(Color.theme.Text_Default)
                             .font(.system(size: 20, weight: .bold))
                         Spacer()
                         Button {
                             viewModel.moveToSolvingProblemView()
                         } label: {
-                            Text("전체 보기")
+                            HStack(spacing: 4) {
+                                Text("전체 보기")
+                                Image(systemName: SymbolName.chevronRight)
+                            }
+                            .foregroundColor(Color.theme.Text_Serve)
+                            .font(.system(size: 12))
                         }
                     }
                     ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 }
-                .padding([.leading, .trailing], 20)
             } else {
                 Text("진행중인 문제가 없습니다.")
                     .padding()

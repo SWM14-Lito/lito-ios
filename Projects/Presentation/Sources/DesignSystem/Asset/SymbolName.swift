@@ -14,8 +14,8 @@ class SymbolName {
     static let prevProblemTab = "books.vertical.fill"
     static let myPageTab = "person.fill"
     static let favoriteList = "heart.fill"
-    static let favorite = "heart.fill"
-    static let notFavorite = "heart"
+    static let favorite = "heart.circle.fill"
+    static let notFavorite = "heart.circle.fill"
     static let solved = "checkmark.circle.fill"
     static let unsolved = "book.closed.fill"
     static let solving = "book.fill"
@@ -23,4 +23,5 @@ class SymbolName {
     static let notiList = "bell.fill"
     static let arrowtriangleDown = "arrowtriangle.down.fill"
     static let chevronDown = "chevron.down"
+    static let chevronRight = "chevron.right"
 }
