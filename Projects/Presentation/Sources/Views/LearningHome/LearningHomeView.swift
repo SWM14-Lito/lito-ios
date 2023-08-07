@@ -37,11 +37,20 @@ public struct LearningHomeView: View {
                 learningGoal
                 solvingProblem
                     .padding(.top, 38)
+                recommendedProblem
+                    .padding(.top, 27)
                 Spacer()
                 
                 //            errorMessage
             }
             .padding([.leading, .trailing], 20)
+            if !viewModel.isGotResponse {
+                VStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+            }
         }
         .edgesIgnoringSafeArea(.all)
         .background(Color.theme.Bg_Light)
@@ -64,8 +73,8 @@ public struct LearningHomeView: View {
     // 프로필 이미지와 닉네임 보여주기 *
     @ViewBuilder
     private var profile: some View {
-        VStack(alignment: .leading) {
-            if let userInfo = viewModel.userInfo {
+        if let userInfo = viewModel.userInfo {
+            VStack(alignment: .leading) {
                 UrlImageView(urlString: userInfo.profileImgUrl)
                     .frame(width: 54, height: 54)
                     .clipShape(Circle())
@@ -74,11 +83,14 @@ public struct LearningHomeView: View {
                         .fontWeight(.bold)
                     Text("님,")
                 }
+                Text("오늘도 목표를 달성하세요!")
             }
-            Text("오늘도 목표를 달성하세요!")
+            .foregroundColor(Color.theme.Text_White)
+            .font(.system(size: 22))
+        } else {
+            Spacer()
+                .frame(height: 118)
         }
-        .foregroundColor(Color.theme.Text_White)
-        .font(.system(size: 22))
     }
     
     // 찜한 목록, 알림 목록으로 이동할 수 있는 툴바 버튼 *
@@ -111,19 +123,21 @@ public struct LearningHomeView: View {
                 .cornerRadius(16)
                 .shadow(color: Color.theme.Shadow_Default, radius: 6, x: 0, y: 4)
             VStack(spacing: 16) {
-                HStack {
-                    learningRateProgressBar
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("오늘의 학습목표")
-                            .font(.system(size: 16, weight: .bold))
-                        HStack {
-                            Text("하루목표")
-                                .font(.system(size: 14))
-                            Spacer()
-                            goalSettingPicker
+                if viewModel.isGotResponse {
+                    HStack {
+                        learningRateProgressBar
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("오늘의 학습목표")
+                                .font(.system(size: 16, weight: .bold))
+                            HStack {
+                                Text("하루목표")
+                                    .font(.system(size: 14))
+                                Spacer()
+                                goalSettingPicker
+                            }
                         }
+                        .padding(.leading, 17)
                     }
-                    .padding(.leading, 17)
                 }
                 startLearningButton
             }
@@ -202,33 +216,55 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private var solvingProblem: some View {
         if viewModel.isGotResponse {
-            if viewModel.solvingProblem != nil {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text("풀던 문제")
-                            .foregroundColor(Color.theme.Text_Default)
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Button {
-                            viewModel.moveToSolvingProblemView()
-                        } label: {
-                            HStack(spacing: 4) {
-                                Text("전체 보기")
-                                Image(systemName: SymbolName.chevronRight)
-                            }
-                            .foregroundColor(Color.theme.Text_Serve)
-                            .font(.system(size: 12))
+            VStack(spacing: 10) {
+                HStack {
+                    Text("풀던 문제")
+                        .foregroundColor(Color.theme.Text_Default)
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Button {
+                        viewModel.moveToSolvingProblemView()
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text("전체 보기")
+                            Image(systemName: SymbolName.chevronRight)
+                        }
+                        .foregroundColor(Color.theme.Text_Serve)
+                        .font(.system(size: 12))
+                    }
+                }
+                if viewModel.solvingProblem != nil {
+                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
+                } else {
+                    Text("진행중인 문제가 없습니다.")
+                        .padding()
+                }
+            }
+        }
+    }
+    
+    // 풀던 문제 보여주기 *
+    @ViewBuilder
+    private var recommendedProblem: some View {
+        if viewModel.isGotResponse {
+            VStack(spacing: 10) {
+                HStack {
+                    Text("추천 문제")
+                        .foregroundColor(Color.theme.Text_Default)
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                }
+                if viewModel.recommendedProblem != nil {
+                    VStack(spacing: 8) {
+                        ForEach($viewModel.recommendedProblem.toUnwrapped(), id: \.self) { problem in
+                            ProblemCellView(problemCellVO: problem, problemCellHandling: viewModel)
                         }
                     }
-                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
+                } else {
+                    Text("추천 문제가 없습니다.")
+                        .padding()
                 }
-            } else {
-                Text("진행중인 문제가 없습니다.")
-                    .padding()
             }
-        } else {
-            Spacer()
-            ProgressView()
         }
     }
 }

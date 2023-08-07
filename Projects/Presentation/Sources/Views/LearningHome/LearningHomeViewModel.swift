@@ -16,6 +16,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     private var selectedProblemId: Int = 0
     @Published private(set) var isGotResponse: Bool = false
     @Published var solvingProblem: DefaultProblemCellVO?
+    @Published var recommendedProblem: [DefaultProblemCellVO]? // 임시 변수 (서버 통신 필요)
     @Published var userInfo: LearningHomeUserInfoVO?
     @Published var learningRate: Float = 0.8 // 임시 변수 (서버 통신 필요)
     @Published var goalCount: Int = 5 // 임시 변수 (서버 통신 필요)
