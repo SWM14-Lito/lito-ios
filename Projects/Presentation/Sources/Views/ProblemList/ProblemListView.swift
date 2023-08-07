@@ -18,16 +18,21 @@ public struct ProblemListView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             headFilter
-            filter
-            problemList
-            Spacer()
+                .padding([.top, .leading], 20)
+            Divider()
+            VStack(spacing: 0) {
+                filter
+                    .padding(.top, 20)
+                problemList
+                Spacer()
+            }
+            .background(.Bg_Light)
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {

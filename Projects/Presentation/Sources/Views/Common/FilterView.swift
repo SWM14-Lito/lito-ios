@@ -34,7 +34,6 @@ struct FilterView<T: FilterComponent>: View {
                 }
                 .padding(.leading)
             }.scrollIndicators(.never)
-            Divider()
         }
     }
     
@@ -44,21 +43,33 @@ struct FilterView<T: FilterComponent>: View {
         Button {
             filterSheetToggle()
         } label: {
-            HStack {
+            HStack(spacing: 8) {
+                Image(systemName: SymbolName.line3Decrese)
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.Text_Default)
                 Text("필터")
-                Image(systemName: SymbolName.arrowtriangleDown)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundColor(.Text_Default)
             }
+            .padding(.horizontal, 15)
+            .padding(.vertical, 8)
         }
-        .padding(.horizontal)
+        .background(
+            RoundedRectangle(cornerRadius: 19 )
+                .fill(.Bg_Default)
+        )
         .overlay(
-            RoundedRectangle(cornerRadius: 10   )
-                .stroke(Color.gray, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 19 )
+                .stroke(.Border_Light, lineWidth: 1)
         )
         .sheet(isPresented: $showFilterSheet) {
             filteringModal
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
+                .presentationCornerRadius(30)
                 .frame(alignment: .topTrailing)
+                .padding(.top, 40)
+                .padding(.leading, 20)
         }
     }
     
@@ -67,12 +78,24 @@ struct FilterView<T: FilterComponent>: View {
     private var filteredBoxes: some View {
         ForEach(selectedFilters, id: \.self) { filter in
             if filter != T.defaultValue {
-                Button(filter.name) {
+                Button {
                     removeFilter(filter)
+                } label: {
+                    HStack(spacing: 8) {
+                        Text(filter.name)
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(.Text_White)
+                        Image(systemName: SymbolName.xmarkCircleFill)
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundStyle(.white, .Button_Point_Light)
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 8)
                 }
-                .font(.caption)
-                .buttonStyle(.borderedProminent)
-                .tint(.orange)
+                .background(
+                    RoundedRectangle(cornerRadius: 19 )
+                        .fill(.Button_Point)
+                )
             }
         }
     }
@@ -85,11 +108,22 @@ struct FilterView<T: FilterComponent>: View {
                 .font(.title2)
             HStack {
                 ForEach(T.allCases, id: \.self) { filter in
-                    Button(filter.name) {
+                    Button {
                         selectFilter(filter)
+                    } label: {
+                        Text(filter.name)
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundColor(selectedFilter == filter ? .Text_White : .Text_Default)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(selectedFilter == filter ? .orange : .gray)
+                    .background(
+                        RoundedRectangle(cornerRadius: 19 )
+                            .fill(selectedFilter == filter ? .Button_Point : .Bg_Light)
+                    )
+//                    Button(filter.name) {
+//                        selectFilter(filter)
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .tint(selectedFilter == filter ? .orange : .gray)
                 }
             }
         }
@@ -117,7 +151,6 @@ struct FilterView<T: FilterComponent>: View {
                 Spacer()
             }
         }
-        .padding(20)
         .onAppear {
             storePrevFilter()
         }

@@ -24,4 +24,6 @@ class SymbolName {
     static let arrowtriangleDown = "arrowtriangle.down.fill"
     static let chevronDown = "chevron.down"
     static let chevronLeft = "chevron.left"
+    static let line3Decrese = "line.3.horizontal.decrease"
+    static let xmarkCircleFill = "xmark.circle.fill"
 }

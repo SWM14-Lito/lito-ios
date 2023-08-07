@@ -15,7 +15,10 @@ public extension Color {
     static let Border_Default = makeLitoColor(.Border_Default)
     static let Border_Serve = makeLitoColor(.Border_Serve)
     static let Border_Strong = makeLitoColor(.Border_Strong)
+    static let Border_Light = makeLitoColor(.Border_Light)
     static let Button_Point = makeLitoColor(.Button_Point)
+    static let Button_Point_Light = makeLitoColor(.Button_Point_light)
+    static let Button_Tag_Default = makeLitoColor(.Button_Tag_Default)
     static let Divider_Default = makeLitoColor(.Divider_Default)
     static let Divider_Strong = makeLitoColor(.Divider_Strong)
     static let Gradation_BottonTrailing = makeLitoColor(.Gradation_BottonTrailing)
@@ -34,13 +37,16 @@ public extension Color {
 }
 
 extension ShapeStyle where Self == Color {
-    static var Bg_Default: Color { Color.makeLitoColor(.Bg_Default) }
-    static var Bg_Light: Color { Color.makeLitoColor(.Bg_Light) }
-    static var Bg_Picker: Color { Color.makeLitoColor(.Bg_Picker) }
-    static var Border_Default: Color { Color.makeLitoColor(.Border_Default) }
-    static var Border_Serve: Color { Color.makeLitoColor(.Border_Serve) }
-    static var Border_Strong: Color { Color.makeLitoColor(.Border_Strong) }
-    static var Button_Point: Color { Color.makeLitoColor(.Button_Point) }
+    static var Bg_Default: Color { Color.Bg_Default }
+    static var Bg_Light: Color { Color.Bg_Light }
+    static var Bg_Picker: Color { Color.Bg_Picker }
+    static var Border_Default: Color { Color.Border_Default }
+    static var Border_Serve: Color { Color.Border_Serve }
+    static var Border_Strong: Color { Color.Border_Strong }
+    static var Border_Light: Color { Color.Border_Light }
+    static var Button_Point: Color { Color.Button_Point }
+    static var Button_Point_Light: Color { Color.Button_Point_Light }
+    static var Button_Tag_Default: Color { Color.Button_Tag_Default }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
     static var Divider_Strong: Color { Color.makeLitoColor(.Divider_Strong) }
     static var Gradation_BottonTrailing: Color { Color.makeLitoColor(.Gradation_BottonTrailing) }
@@ -85,7 +91,10 @@ public enum LitoColor: String {
     case Border_Default
     case Border_Serve
     case Border_Strong
+    case Border_Light
     case Button_Point
+    case Button_Point_light
+    case Button_Tag_Default
     case Divider_Default
     case Divider_Strong
     case Gradation_BottonTrailing
