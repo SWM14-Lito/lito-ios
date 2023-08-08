@@ -49,8 +49,7 @@ public struct PresentationAssembly: Assembly {
             let tab1 = resolver.resolve(LearningHomeView.self)!
             let tab2 = resolver.resolve(PedigreeListView.self)!
             let tab3 = resolver.resolve(MyPageView.self)!
-            let tab1ViewModel = resolver.resolve(LearningHomeViewModel.self)!
-            return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3, tab1ViewModel: tab1ViewModel)
+            return RootTabView(tab1: tab1, tab2: tab2, tab3: tab3)
         }
         // ImageHelper
         container.register(ImageHelper.self) { _ in
