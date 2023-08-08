@@ -58,9 +58,9 @@ extension AuthAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .logout:
-            return ["Content-Type": "application/x-www-form-urlencoded"]
+            return APIConfiguration.urlencodedContentType
         default:
-            return AuthAPI.APICallHeaders.Json
+            return APIConfiguration.jsonContentType
         }
     }
     

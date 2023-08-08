@@ -134,12 +134,12 @@ extension ProblemAPI: TargetType {
     
     var headers: [String: String]? {
         switch self {
-        case .learningHome, .problemList, .searchedProblemList, .solvingProblemList, .favoriteProblemList, .problemDetail, .favoriteToggle:
-            return nil
         case .enterProblem:
-            return ["Content-type": "application/x-www-form-urlencoded"]
+            return APIConfiguration.urlencodedContentType
         case .submitAnswer:
-            return ["Content-type": "application/json;charset=UTF-8"]
+            return APIConfiguration.jsonContentType
+        default:
+            return nil
         }
     }
     
