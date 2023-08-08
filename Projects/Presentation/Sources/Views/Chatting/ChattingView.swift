@@ -19,7 +19,7 @@ public struct ChattingView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             closeButton
             dialogueList
             Divider()
@@ -71,9 +71,10 @@ public struct ChattingView: View {
     // 질문 입력하기
     @ViewBuilder
     private var questionTextfield: some View {
-        HStack {
+        HStack(spacing: 0) {
             TextField("ChatGPT에게 궁금한 점을 질문해보세요!", text: $viewModel.input)
-                .padding()
+                .padding([.top, .bottom], 14)
+                .padding(.leading, 18)
                 .focused($focused)
             Spacer()
             Button {
@@ -82,10 +83,17 @@ public struct ChattingView: View {
                     viewModel.getAnswer()
                 }
             } label: {
-                Text("보내기")
+                Image(systemName: SymbolName.paperplaneFill)
+                    .font(.system(size: 18))
+                    .foregroundColor(.Button_Point)
             }
-            .padding(.trailing)
+            .padding(.trailing, 20)
         }
+        .frame(height: 44)
+        .background(.Bg_Deep)
+        .cornerRadius(56)
+        .padding([.leading, .trailing], 15)
+        .padding([.top, .bottom], 10)
     }
     
     // ChatGPT 또는 User 중 누가 입력했는지에 따라 셀 구분
