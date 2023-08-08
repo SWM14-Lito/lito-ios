@@ -16,13 +16,13 @@ extension ProblemSolvedStatus: Symbol {
     var symbolName: String {
         switch self {
         case .solved:
-            return SymbolName.solved
+            return SymbolName.checkmarkCircleFill
         case .unsolved:
-            return SymbolName.unsolved
+            return SymbolName.bookClosedFill
         case .solving:
-            return SymbolName.solving
+            return SymbolName.bookFill
         case .unknown:
-            return SymbolName.unknown
+            return SymbolName.questionMark
         }
     } 
 }
@@ -30,12 +30,10 @@ extension ProblemSolvedStatus: Symbol {
 extension ProblemFavoriteStatus: Symbol {
     var symbolName: String {
         switch self {
-        case .favorite:
-            return SymbolName.favorite
-        case .notFavorite:
-            return SymbolName.notFavorite
+        case .favorite, .notFavorite:
+            return SymbolName.heartCircleFill
         case .unknown:
-            return SymbolName.unknown
+            return SymbolName.questionMark
         }
     }
     

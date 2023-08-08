@@ -18,21 +18,42 @@ public struct ProblemListView: View {
     }
     
     public var body: some View {
-        VStack {
-            Divider()
+        VStack(spacing: 0) {
             headFilter
-            filter
-            problemList
-            Spacer()
-        }.navigationTitle(viewModel.selectedSubject.name)
-            .navigationBarTitleDisplayMode(.large)
+                .padding([.top, .leading], 20)
+            Divider()
+            VStack(spacing: 0) {
+                filter
+                    .padding(.top, 20)
+                problemList
+                Spacer()
+            }
+            .background(.Bg_Light)
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        viewModel.back()
+                    }, label: {
+                        HStack {
+                            Image(systemName: SymbolName.chevronLeft)
+                                .foregroundColor(.Text_Default)
+                                .font(.system(size: 22, weight: .regular))
+                            Text(viewModel.selectedSubject.name)
+                                .foregroundColor(.Text_Default)
+                                .font(.Head1Bold)
+                        }
+                    })
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         viewModel.moveToProblemSearchScene()
                     }, label: {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.Text_Default)
                     })
                 }
             }
@@ -50,7 +71,7 @@ public struct ProblemListView: View {
     private var filter: some View {
         FilterView(selectedFilters: $viewModel.selectedFilters, filterHandling: viewModel)
     }
-
+    
     @ViewBuilder
     private var problemList: some View {
         ScrollView {

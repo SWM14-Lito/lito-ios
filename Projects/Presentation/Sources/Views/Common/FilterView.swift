@@ -34,7 +34,6 @@ struct FilterView<T: FilterComponent>: View {
                 }
                 .padding(.leading)
             }.scrollIndicators(.never)
-            Divider()
         }
     }
     
@@ -44,21 +43,32 @@ struct FilterView<T: FilterComponent>: View {
         Button {
             filterSheetToggle()
         } label: {
-            HStack {
+            HStack(spacing: 8) {
+                Image(systemName: SymbolName.line3HorizontalDecrese)
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.Text_Default)
                 Text("필터")
-                Image(systemName: SymbolName.arrowtriangleDown)
+                    .font(.Body2Regular)
+                    .foregroundColor(.Text_Default)
             }
+            .padding(.horizontal, 15)
+            .padding(.vertical, 8)
         }
-        .padding(.horizontal)
+        .background(
+            RoundedRectangle(cornerRadius: 19 )
+                .fill(.Bg_Default)
+        )
         .overlay(
-            RoundedRectangle(cornerRadius: 10   )
-                .stroke(Color.gray, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 19 )
+                .stroke(.Border_Light, lineWidth: 1)
         )
         .sheet(isPresented: $showFilterSheet) {
             filteringModal
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
                 .frame(alignment: .topTrailing)
+                .padding(.top, 40)
+                .padding(.leading, 20)
         }
     }
     
@@ -67,12 +77,24 @@ struct FilterView<T: FilterComponent>: View {
     private var filteredBoxes: some View {
         ForEach(selectedFilters, id: \.self) { filter in
             if filter != T.defaultValue {
-                Button(filter.name) {
+                Button {
                     removeFilter(filter)
+                } label: {
+                    HStack(spacing: 8) {
+                        Text(filter.name)
+                            .font(.Body2Regular)
+                            .foregroundColor(.Text_White)
+                        Image(systemName: SymbolName.xmarkCircleFill)
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundStyle(.white, .Button_Point_Light)
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 8)
                 }
-                .font(.caption)
-                .buttonStyle(.borderedProminent)
-                .tint(.orange)
+                .background(
+                    RoundedRectangle(cornerRadius: 19 )
+                        .fill(.Button_Point)
+                )
             }
         }
     }
@@ -82,14 +104,22 @@ struct FilterView<T: FilterComponent>: View {
     private var filteringComponents: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("풀이 여부")
-                .font(.title2)
+                .font(.Head3SemiBold)
             HStack {
                 ForEach(T.allCases, id: \.self) { filter in
-                    Button(filter.name) {
+                    Button {
                         selectFilter(filter)
+                    } label: {
+                        Text(filter.name)
+                            .font(.Body2Regular)
+                            .foregroundColor(selectedFilter == filter ? .Text_White : .Text_Default)
+                            .padding(.horizontal, 15)
+                            .padding(.vertical, 8)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(selectedFilter == filter ? .orange : .gray)
+                    .background(
+                        RoundedRectangle(cornerRadius: 19 )
+                            .fill(selectedFilter == filter ? .Button_Point : .Bg_Light)
+                    )
                 }
             }
         }
@@ -103,21 +133,37 @@ struct FilterView<T: FilterComponent>: View {
             Spacer()
             HStack(alignment: .center) {
                 Spacer()
-                Button("초기화") {
+                Button {
                     selectedFilter = T.defaultValue
+                } label: {
+                    Text("초기화")
+                        .font(.Body1Medium)
+                        .foregroundColor(.Text_White)
+                        .padding(.horizontal, 56)
+                        .padding(.vertical, 15)
                 }
-                .buttonStyle(.bordered)
-                .font(.title2)
+                .background(
+                    RoundedRectangle(cornerRadius: 6 )
+                        .fill(.Button_Negative)
+                )
                 Spacer()
-                Button("적용하기") {
+                Button {
                     applyFilter()
+                } label: {
+                    Text("적용하기")
+                        .font(.Body1Medium)
+                        .foregroundColor(.Text_White)
+                        .padding(.horizontal, 56)
+                        .padding(.vertical, 15)
                 }
-                .buttonStyle(.bordered)
-                .font(.title2)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(.Button_Point)
+                )
                 Spacer()
             }
+            .padding(.bottom, 20)
         }
-        .padding(20)
         .onAppear {
             storePrevFilter()
         }

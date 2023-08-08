@@ -43,7 +43,7 @@ struct PhotoPickerView: View {
         if let imageData = imageData, let uiImage = UIImage(data: imageData) {
             return Image(uiImage: uiImage)
         } else {
-            return Image(systemName: SymbolName.defaultProfile)
+            return Image(systemName: SymbolName.personCircleFill)
         }
     }
 }

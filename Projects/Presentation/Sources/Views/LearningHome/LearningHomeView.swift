@@ -26,7 +26,7 @@ public struct LearningHomeView: View {
             #endif
         }
         .edgesIgnoringSafeArea(.all)
-        .background(Color.theme.Bg_Light)
+        .background(.Bg_Light)
         .onAppear {
             if !viewModel.isViewFirstAppeared {
                 viewModel.setViewFirstAppeared()
@@ -48,7 +48,7 @@ public struct LearningHomeView: View {
     private var gradientBackground: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                Color.theme.Gradation_TopLeading, Color.theme.Gradation_BottonTrailing
+                .Gradation_TopLeading, .Gradation_BottonTrailing
             ]),
             startPoint: .topLeading, endPoint: .bottomTrailing
         )
@@ -106,15 +106,16 @@ public struct LearningHomeView: View {
                 UrlImageView(urlString: userInfo.profileImgUrl)
                     .frame(width: 54, height: 54)
                     .clipShape(Circle())
-                HStack {
+                HStack(spacing: 0) {
                     Text(userInfo.nickname)
-                        .fontWeight(.heavy)
+                        .font(.Head1Bold)
                     Text("님,")
+                        .font(.Head1Light)
                 }
                 Text("오늘도 목표를 달성하세요!")
+                    .font(.Head1Light)
             }
-            .foregroundColor(Color.theme.Text_White)
-            .font(.system(size: 22))
+            .foregroundColor(.Text_White)
         } else {
             Spacer()
                 .frame(height: 118)
@@ -128,16 +129,16 @@ public struct LearningHomeView: View {
             Button {
                 viewModel.moveToFavoriteProblemView()
             } label: {
-                Image(systemName: SymbolName.favoriteList)
+                Image(systemName: SymbolName.heartFill)
                     .font(.system(size: 24))
-                    .foregroundColor(Color.theme.Button_White)
+                    .foregroundColor(.Button_White)
             }
             Button {
                 viewModel.moveToNotiView()
             } label: {
-                Image(systemName: SymbolName.notiList)
+                Image(systemName: SymbolName.bellFill)
                     .font(.system(size: 24))
-                    .foregroundColor(Color.theme.Button_White)
+                    .foregroundColor(.Button_White)
             }
         }
     }
@@ -147,19 +148,19 @@ public struct LearningHomeView: View {
     private var learningGoal: some View {
         ZStack(alignment: .bottom) {
             Rectangle()
-                .foregroundColor(Color.theme.Bg_Default)
+                .foregroundColor(.Bg_Default)
                 .cornerRadius(16)
-                .shadow(color: Color.theme.Shadow_Default, radius: 6, x: 0, y: 4)
+                .shadow(color: .Shadow_Default, radius: 6, x: 0, y: 4)
             VStack(spacing: 16) {
                 if viewModel.isGotResponse {
                     HStack {
                         learningRateProgressBar
                         VStack(alignment: .leading, spacing: 5) {
                             Text("오늘의 학습목표")
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.Body1SemiBold)
                             HStack {
                                 Text("하루목표")
-                                    .font(.system(size: 14))
+                                    .font(.Body2Regular)
                                 Spacer()
                                 goalSettingPicker
                             }
@@ -180,19 +181,18 @@ public struct LearningHomeView: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: 6)
-                .foregroundColor(Color.theme.Border_Default)
+                .foregroundColor(.Border_Default)
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(viewModel.learningRate, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 6, lineCap: .round, lineJoin: .round))
-                .foregroundColor(Color.theme.Button_Point)
+                .foregroundColor(.Button_Point)
                 .rotationEffect(Angle(degrees: 270.0))
             
             HStack {
                 Text(String(format: "%.0f%", min(viewModel.learningRate, 1.0)*100.0))
-                    .font(.system(size: 26))
-                    .bold()
+                    .font(.ProgressBarSemiBold)
                 Text("%")
-                    .font(.system(size: 12))
+                    .font(.InfoRegular)
             }
         }
         .frame(width: 88, height: 88)
@@ -210,13 +210,13 @@ public struct LearningHomeView: View {
         }label: {
             HStack {
                 Text("\(viewModel.goalCount) 개")
-                    .font(.system(size: 14))
+                    .font(.Body2Regular)
                 Image(systemName: SymbolName.chevronDown)
                     .font(.system(size: 6, weight: .bold))
             }
             .frame(width: 70, height: 30)
-            .foregroundColor(Color.theme.Text_Serve)
-            .background(Color.theme.Bg_Picker)
+            .foregroundColor(.Text_Serve)
+            .background(.Bg_Picker)
             .buttonStyle(.bordered)
             .cornerRadius(17)
         }
@@ -230,12 +230,12 @@ public struct LearningHomeView: View {
             viewModel.moveToLearningView()
         } label: {
             Text("학습시작")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(Color.theme.Text_White)
+                .font(.Body1SemiBold)
+                .foregroundColor(.Text_White)
                 .frame(maxWidth: .infinity, maxHeight: 40)
         }
         .buttonStyle(.bordered)
-        .background(Color.theme.Button_Point)
+        .background(.Button_Point)
         .cornerRadius(46)
     }
     
@@ -246,8 +246,8 @@ public struct LearningHomeView: View {
             VStack(spacing: 10) {
                 HStack {
                     Text("풀던 문제")
-                        .foregroundColor(Color.theme.Text_Default)
-                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.Text_Default)
+                        .font(.Head2Bold)
                     Spacer()
                     if viewModel.solvingProblem != nil {
                         Button {
@@ -257,8 +257,8 @@ public struct LearningHomeView: View {
                                 Text("전체 보기")
                                 Image(systemName: SymbolName.chevronRight)
                             }
-                            .foregroundColor(Color.theme.Text_Serve)
-                            .font(.system(size: 12))
+                            .foregroundColor(.Text_Serve)
+                            .font(.InfoRegular)
                         }
                     }
                 }
@@ -266,6 +266,7 @@ public struct LearningHomeView: View {
                     ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 } else {
                     Text("진행중인 문제가 없습니다.")
+                        .font(.Body2Regular)
                         .padding()
                 }
             }
@@ -280,8 +281,8 @@ public struct LearningHomeView: View {
             VStack(spacing: 10) {
                 HStack {
                     Text("추천 문제")
-                        .foregroundColor(Color.theme.Text_Default)
-                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.Text_Default)
+                        .font(.Head2Bold)
                     Spacer()
                 }
                 if viewModel.recommendedProblem != nil {
@@ -292,6 +293,7 @@ public struct LearningHomeView: View {
                     }
                 } else {
                     Text("추천 문제가 없습니다.")
+                        .font(.Body2Regular)
                         .padding()
                 }
             }

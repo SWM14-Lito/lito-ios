@@ -23,18 +23,18 @@ struct HeadFilterView<T: FilterComponent>: View {
     var body: some View {
         ScrollView(.horizontal) {
             VStack(spacing: 0) {
-                HStack {
+                HStack(spacing: 23) {
                     ForEach(T.allCases, id: \.self) { filter in
-                        VStack {
+                        VStack(spacing: 0) {
                             Text(filter.name)
                                 .lineLimit(1)
                                 .fixedSize()
-                                .font(.title3)
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .foregroundColor(selectedFilter == filter ? .orange : .gray)
+                                .font(selectedFilter == filter ? .Body1SemiBold : .Body1Regular)
+                                .foregroundColor(selectedFilter == filter ? .Button_Point : .Text_Serve)
                             if selectedFilter == filter {
                                 Capsule()
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.Button_Point)
                                     .frame(height: 3)
                                     .matchedGeometryEffect(id: "all", in: subjectAnimation)
                             }
@@ -45,9 +45,8 @@ struct HeadFilterView<T: FilterComponent>: View {
                                 filterHandling.updateProblem()
                             }
                         }
-                    }.padding(.leading, 10)
+                    }
                 }
-                Divider()
             }
         }
         .scrollIndicators(.never)
