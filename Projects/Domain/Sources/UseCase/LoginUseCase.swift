@@ -37,10 +37,10 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     }
                     .map { loginVO in
                         if loginVO.registered {
-                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId)
+                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId)
                             KeyChainManager.createUserInfo(userAuthVO: userAuthVO)
                         }
-                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
+                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId))
                     }
                     .eraseToAnyPublisher()
             }
@@ -56,10 +56,10 @@ public final class DefaultLoginUseCase: LoginUseCase {
                     }
                     .map { loginVO in
                         if loginVO.registered {
-                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId)
+                            let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId)
                             KeyChainManager.createUserInfo(userAuthVO: userAuthVO)
                         }
-                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, userId: loginVO.userId))
+                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId))
                     }
                     .eraseToAnyPublisher()
             }

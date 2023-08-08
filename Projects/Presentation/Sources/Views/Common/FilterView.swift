@@ -44,7 +44,7 @@ struct FilterView<T: FilterComponent>: View {
             filterSheetToggle()
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: SymbolName.line3Decrese)
+                Image(systemName: SymbolName.line3HorizontalDecrese)
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.Text_Default)
                 Text("필터")

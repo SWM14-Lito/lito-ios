@@ -18,33 +18,12 @@ public struct LearningHomeView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    .Gradation_TopLeading, .Gradation_BottonTrailing
-                ]),
-                startPoint: .topLeading, endPoint: .bottomTrailing
-            )
-            .frame(height: 283)
-            .cornerRadius(40, corners: [.bottomLeft, .bottomRight])
-            VStack {
-                HStack(alignment: .top) {
-                    profile
-                    Spacer()
-                    toolMenu
-                }
-                .padding(.top, 50)
-                .padding(.bottom, 16)
-                learningGoal
-                Spacer()
-                
-                //            errorMessage
-                //            profile
-                //            startLearningButton
-                //            Divider()
-                //            solvingProblem
-                //            Spacer()
-            }
-            .padding([.leading, .trailing], 20)
+            gradientBackground
+            content
+            progressBar
+            #if DEBUG
+            errorMessage
+            #endif
         }
         .edgesIgnoringSafeArea(.all)
         .background(.Bg_Light)
@@ -64,40 +43,101 @@ public struct LearningHomeView: View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
-    // 프로필 이미지와 닉네임 보여주기 *
+    // 그라디언트 배경
+    @ViewBuilder
+    private var gradientBackground: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                .Gradation_TopLeading, .Gradation_BottonTrailing
+            ]),
+            startPoint: .topLeading, endPoint: .bottomTrailing
+        )
+        .frame(height: 283)
+        .cornerRadius(40, corners: [.bottomLeft, .bottomRight])
+    }
+    
+    // 서버에서 데이터 받아오는 동안 보여주는 로딩바
+    @ViewBuilder
+    private var progressBar: some View {
+        if !viewModel.isGotResponse {
+            VStack {
+                Spacer()
+                ProgressView()
+                Spacer()
+            }
+        }
+    }
+    
+    // 실제 화면에 보여줄 컨텐츠
+    @ViewBuilder
+    private var content: some View {
+        VStack {
+            header
+            learningGoal
+            ScrollView {
+                solvingProblem
+                recommendedProblem
+                    .padding(.bottom, 20)
+            }
+            .scrollIndicators(.hidden)
+            Spacer()
+        }
+        .padding([.leading, .trailing], 20)
+        .padding(.bottom, 77) // 탭바 사이즈 알아오는 코드 필요
+    }
+    
+    // 프로필 및 툴 버튼이 있는 헤더
+    @ViewBuilder
+    private var header: some View {
+        HStack(alignment: .top) {
+            profile
+            Spacer()
+            toolMenu
+        }
+        .padding(.top, 50)
+        .padding(.bottom, 16)
+    }
+    
+    // 프로필 이미지와 닉네임 보여주기
     @ViewBuilder
     private var profile: some View {
-        VStack(alignment: .leading) {
-            if let userInfo = viewModel.userInfo {
+        if let userInfo = viewModel.userInfo {
+            VStack(alignment: .leading) {
                 UrlImageView(urlString: userInfo.profileImgUrl)
                     .frame(width: 54, height: 54)
                     .clipShape(Circle())
                 HStack {
                     Text(userInfo.nickname)
-                        .fontWeight(.bold)
+                        .fontWeight(.heavy)
                     Text("님,")
                 }
+                Text("오늘도 목표를 달성하세요!")
             }
-            Text("오늘도 목표를 달성하세요!")
+            .foregroundColor(.Text_White)
+            .font(.system(size: 22))
+        } else {
+            Spacer()
+                .frame(height: 118)
         }
-        .font(.system(size: 22))
     }
     
-    // 찜한 목록, 알림 목록으로 이동할 수 있는 툴바 버튼 *
+    // 찜한 목록, 알림 목록으로 이동할 수 있는 툴바 버튼
     @ViewBuilder
     private var toolMenu: some View {
         HStack(spacing: 16) {
             Button {
                 viewModel.moveToFavoriteProblemView()
             } label: {
-                Image(systemName: SymbolName.favoriteList)
+                Image(systemName: SymbolName.heartFill)
                     .font(.system(size: 24))
+                    .foregroundColor(.Button_White)
             }
             Button {
                 viewModel.moveToNotiView()
             } label: {
-                Image(systemName: SymbolName.notiList)
+                Image(systemName: SymbolName.bellFill)
                     .font(.system(size: 24))
+                    .foregroundColor(.Button_White)
             }
         }
     }
@@ -111,19 +151,21 @@ public struct LearningHomeView: View {
                 .cornerRadius(16)
                 .shadow(color: .Shadow_Default, radius: 6, x: 0, y: 4)
             VStack(spacing: 16) {
-                HStack {
-                    learningRateProgressBar
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("오늘의 학습목표")
-                            .font(.system(size: 16, weight: .bold))
-                        HStack {
-                            Text("하루목표")
-                                .font(.system(size: 14))
-                            Spacer()
-                            goalSettingPicker
+                if viewModel.isGotResponse {
+                    HStack {
+                        learningRateProgressBar
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("오늘의 학습목표")
+                                .font(.system(size: 16, weight: .bold))
+                            HStack {
+                                Text("하루목표")
+                                    .font(.system(size: 14))
+                                Spacer()
+                                goalSettingPicker
+                            }
                         }
+                        .padding(.leading, 17)
                     }
-                    .padding(.leading, 17)
                 }
                 startLearningButton
             }
@@ -132,7 +174,7 @@ public struct LearningHomeView: View {
         .frame(maxWidth: .infinity, maxHeight: 196)
     }
     
-    // 학습 진행률 프로그래스 바 *
+    // 학습 진행률 프로그래스 바
     @ViewBuilder
     private var learningRateProgressBar: some View {
         ZStack {
@@ -179,10 +221,9 @@ public struct LearningHomeView: View {
             .cornerRadius(17)
         }
         .padding(.trailing, 4)
-        
     }
     
-    // 학습 시작 버튼 *
+    // 학습 시작 버튼
     @ViewBuilder
     private var startLearningButton: some View {
         Button {
@@ -202,28 +243,59 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private var solvingProblem: some View {
         if viewModel.isGotResponse {
-            if viewModel.solvingProblem != nil {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("풀던 문제")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
+            VStack(spacing: 10) {
+                HStack {
+                    Text("풀던 문제")
+                        .foregroundColor(.Text_Default)
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    if viewModel.solvingProblem != nil {
                         Button {
                             viewModel.moveToSolvingProblemView()
                         } label: {
-                            Text("전체 보기")
+                            HStack(spacing: 4) {
+                                Text("전체 보기")
+                                Image(systemName: SymbolName.chevronRight)
+                            }
+                            .foregroundColor(.Text_Serve)
+                            .font(.system(size: 12))
                         }
                     }
-                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 }
-                .padding([.leading, .trailing], 20)
-            } else {
-                Text("진행중인 문제가 없습니다.")
-                    .padding()
+                if viewModel.solvingProblem != nil {
+                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
+                } else {
+                    Text("진행중인 문제가 없습니다.")
+                        .padding()
+                }
             }
-        } else {
-            Spacer()
-            ProgressView()
+            .padding(.top, 38)
+        }
+    }
+    
+    // 추천 문제 보여주기
+    @ViewBuilder
+    private var recommendedProblem: some View {
+        if viewModel.isGotResponse {
+            VStack(spacing: 10) {
+                HStack {
+                    Text("추천 문제")
+                        .foregroundColor(.Text_Default)
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                }
+                if viewModel.recommendedProblem != nil {
+                    VStack(spacing: 8) {
+                        ForEach($viewModel.recommendedProblem.toUnwrapped(), id: \.self) { problem in
+                            ProblemCellView(problemCellVO: problem, problemCellHandling: viewModel)
+                        }
+                    }
+                } else {
+                    Text("추천 문제가 없습니다.")
+                        .padding()
+                }
+            }
+            .padding(.top, 27)
         }
     }
 }

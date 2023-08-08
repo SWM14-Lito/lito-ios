@@ -26,7 +26,7 @@ public struct RootTabView: View {
             tab1
                 .tabItem {
                     VStack {
-                        Image(systemName: SymbolName.learningTab)
+                        Image(systemName: SymbolName.bookClosedFill)
                         Text("학습")
                     }
                 }
@@ -34,7 +34,7 @@ public struct RootTabView: View {
             tab2
                 .tabItem {
                     VStack {
-                        Image(systemName: SymbolName.prevProblemTab)
+                        Image(systemName: SymbolName.bookVerticalFill)
                         Text("기출문제")
                     }
                 }
@@ -42,12 +42,15 @@ public struct RootTabView: View {
             tab3
                 .tabItem {
                     VStack {
-                        Image(systemName: SymbolName.myPageTab)
+                        Image(systemName: SymbolName.personFill)
                         Text("마이페이지")
                     }
                 }
                 .tag(3)
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor(.Bg_Default)
+        }
     }
 }

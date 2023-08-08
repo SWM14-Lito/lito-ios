@@ -9,6 +9,7 @@
 import SwiftUI
 
 public extension Color {
+    static let Bg_Deep = makeLitoColor(.Bg_Deep)
     static let Bg_Default = makeLitoColor(.Bg_Default)
     static let Bg_Light = makeLitoColor(.Bg_Light)
     static let Bg_Picker = makeLitoColor(.Bg_Picker)
@@ -20,14 +21,16 @@ public extension Color {
     static let Button_Point_Light = makeLitoColor(.Button_Point_light)
     static let Button_Tag_Default = makeLitoColor(.Button_Tag_Default)
     static let Button_Negative = makeLitoColor(.Button_Negative)
+    static let Button_White = makeLitoColor(.Button_White)
     static let Divider_Default = makeLitoColor(.Divider_Default)
     static let Divider_Strong = makeLitoColor(.Divider_Strong)
+    static let Fill_Soft_Blue = makeLitoColor(.Fill_Soft_Blue)
     static let Gradation_BottonTrailing = makeLitoColor(.Gradation_BottonTrailing)
     static let Gradation_TopLeading = makeLitoColor(.Gradation_TopLeading)
     static let Heart_Clicked_Inner = makeLitoColor(.Heart_Clicked_Inner)
     static let Heart_Clicked_Outer = makeLitoColor(.Heart_Clicked_Outer)
     static let Heart_Unclicked_Inner = makeLitoColor(.Heart_Unclicked_Inner)
-    static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Clicked_Outer)
+    static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Unclicked_Outer)
     static let Shadow_Default = makeLitoColor(.Shadow_Default)
     static let Text_Default = makeLitoColor(.Text_Default)
     static let Text_Disabled = makeLitoColor(.Text_Disabled)
@@ -38,6 +41,7 @@ public extension Color {
 }
 
 extension ShapeStyle where Self == Color {
+    static var Bg_Deep: Color { Color.Bg_Deep }
     static var Bg_Default: Color { Color.Bg_Default }
     static var Bg_Light: Color { Color.Bg_Light }
     static var Bg_Picker: Color { Color.Bg_Picker }
@@ -48,9 +52,11 @@ extension ShapeStyle where Self == Color {
     static var Button_Point: Color { Color.Button_Point }
     static var Button_Point_Light: Color { Color.Button_Point_Light }
     static var Button_Tag_Default: Color { Color.Button_Tag_Default }
+    static var Button_White: Color { Color.Button_White }
     static var Button_Negative: Color { Color.Button_Negative }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
     static var Divider_Strong: Color { Color.makeLitoColor(.Divider_Strong) }
+    static var Fill_Soft_Blue: Color { Color.makeLitoColor(.Fill_Soft_Blue) }
     static var Gradation_BottonTrailing: Color { Color.makeLitoColor(.Gradation_BottonTrailing) }
     static var Gradation_TopLeading: Color { Color.makeLitoColor(.Gradation_TopLeading) }
     static var Heart_Clicked_Inner: Color { Color.makeLitoColor(.Heart_Clicked_Inner) }
@@ -87,6 +93,7 @@ extension Color {
 }
 
 public enum LitoColor: String {
+    case Bg_Deep
     case Bg_Default
     case Bg_Light
     case Bg_Picker
@@ -94,12 +101,14 @@ public enum LitoColor: String {
     case Border_Serve
     case Border_Strong
     case Border_Light
+    case Button_White
     case Button_Point
     case Button_Point_light
     case Button_Tag_Default
     case Button_Negative
     case Divider_Default
     case Divider_Strong
+    case Fill_Soft_Blue
     case Gradation_BottonTrailing
     case Gradation_TopLeading
     case Heart_Clicked_Inner

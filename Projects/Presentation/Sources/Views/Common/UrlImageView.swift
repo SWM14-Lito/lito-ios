@@ -28,7 +28,7 @@ struct UrlImageView: View {
     }
     
     private var defaultImage: Image {
-        Image(systemName: SymbolName.defaultProfile)
+        Image(systemName: SymbolName.personCircleFill)
             .resizable()
     }
 }
