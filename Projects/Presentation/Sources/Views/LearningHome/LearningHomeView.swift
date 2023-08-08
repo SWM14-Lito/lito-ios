@@ -11,6 +11,7 @@ import SwiftUI
 public struct LearningHomeView: View {
     
     @StateObject private var viewModel: LearningHomeViewModel
+    @State private var tabBarHeight: CGFloat = 100
     
     public init(viewModel: LearningHomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -77,13 +78,16 @@ public struct LearningHomeView: View {
             ScrollView {
                 solvingProblem
                 recommendedProblem
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 10)
             }
             .scrollIndicators(.hidden)
             Spacer()
         }
         .padding([.leading, .trailing], 20)
-        .padding(.bottom, 77) // 탭바 사이즈 알아오는 코드 필요
+        .background(TabBarAccessor { tabBar in
+            tabBarHeight = tabBar.bounds.height
+        })
+        .padding(.bottom, tabBarHeight)
     }
     
     // 프로필 및 툴 버튼이 있는 헤더
