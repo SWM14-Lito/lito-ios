@@ -31,7 +31,7 @@ public struct ChattingView: View {
         .interactiveDismissDisabled()
     }
     
-    // 모달 닫는 버튼
+    // 모달 닫는 버튼 *
     @ViewBuilder
     private var closeButton: some View {
         HStack {
@@ -39,9 +39,11 @@ public struct ChattingView: View {
             Button {
                 viewModel.dismissSheet()
             } label: {
-                Text("닫기")
+                Image(systemName: SymbolName.xmarkCircleFill)
+                    .font(.system(size: 34))
+                    .foregroundStyle(.black, .Bg_Dark_Deep)
             }
-            .padding()
+            .padding(20)
         }
     }
     
@@ -50,17 +52,20 @@ public struct ChattingView: View {
     private var dialogueList: some View {
         ScrollView {
             ScrollViewReader { value in
-                ForEach(viewModel.dialogue.indices, id: \.self) { index in
-                    let dialogueUnit = viewModel.dialogue[index]
-                    dialogueCell(cellType: dialogueUnit.dialogueType, text: dialogueUnit.text)
-                        .id(index)
-                }
-                .onChange(of: viewModel.dialogue.count) { _ in
-                    value.scrollTo(viewModel.dialogue.count - 1)
+                VStack(spacing: 24) {
+                    ForEach(viewModel.dialogue.indices, id: \.self) { index in
+                        let dialogueUnit = viewModel.dialogue[index]
+                        dialogueCell(cellType: dialogueUnit.dialogueType, text: dialogueUnit.text)
+                            .id(index)
+                    }
+                    .onChange(of: viewModel.dialogue.count) { _ in
+                        value.scrollTo(viewModel.dialogue.count - 1)
+                    }
                 }
             }
         }
         .padding(.top)
+        .padding([.leading, .trailing], 20)
     }
     
     // 질문 입력하기
@@ -86,37 +91,47 @@ public struct ChattingView: View {
     // ChatGPT 또는 User 중 누가 입력했는지에 따라 셀 구분
     @ViewBuilder
     private func dialogueCell(cellType: DialogueType, text: String) -> some View {
-        HStack {
-            if cellType == .fromChatGPT {
+        if cellType == .fromChatGPT {
+            HStack(alignment: .top, spacing: 12) {
+                RoundedRectangle(cornerRadius: 2)
+                    .frame(width: 28, height: 28)
+                    .foregroundColor(.Bg_ChatGPT)
+                    .overlay {
+                        Image(.chatgpt)
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                    }
                 chatGPTDialogueCell(text)
-            } else {
-                userDialogueCell(text)
             }
+        } else {
+            userDialogueCell(text)
         }
-        .padding([.leading, .trailing])
     }
     
     // ChatGPT가 대답해준 내용을 나타내는 셀
     @ViewBuilder
     private func chatGPTDialogueCell(_ text: String) -> some View {
         Text(text)
-            .frame(width: 300)
-            .padding()
-            .background(.blue)
-            .foregroundColor(.white)
-            .cornerRadius(15)
-        Spacer()
+            .font(.Body3Regular)
+            .padding([.leading, .trailing], 15)
+            .padding([.top, .bottom], 12)
+            .background(.Bg_Dark_Deep)
+            .foregroundColor(.Text_Serve)
+            .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     // 유저가 물어본 내용을 나타내는 셀
     @ViewBuilder
     private func userDialogueCell(_ text: String) -> some View {
-        Spacer()
         Text(text)
-            .frame(width: 300)
-            .padding()
-            .background(.orange)
+            .font(.Body2Regular)
+            .padding([.leading, .trailing], 15)
+            .padding([.top, .bottom], 12)
+            .background(.Bg_Point)
             .foregroundColor(.white)
-            .cornerRadius(15)
+            .cornerRadius(20, corners: [.topLeft, .topRight, .bottomLeft])
+            .cornerRadius(2, corners: [.bottomRight])
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
