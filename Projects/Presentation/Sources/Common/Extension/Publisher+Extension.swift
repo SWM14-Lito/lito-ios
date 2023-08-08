@@ -24,7 +24,7 @@ extension Publisher {
         })
     }
     
-    func sinkToResultWithErrorHandler(_ result: @escaping (Output) -> Void, errorHandler: @escaping (Error) -> Void) -> AnyCancellable {
+    func sinkToResultWithErrorHandler(_ result: @escaping (Output) -> Void, errorHandler: @escaping (Failure) -> Void) -> AnyCancellable {
         return sink(receiveCompletion: { completion in
             switch completion {
             case let .failure(error):
@@ -57,5 +57,3 @@ extension Subscribers.Completion {
         }
     }
 }
-
-typealias ErrorHandler = () -> Void
