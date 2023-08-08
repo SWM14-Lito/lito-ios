@@ -6,3 +6,4 @@ disabled_rules:
 - type_name
 - force_cast
 - identifier_name
+- type_body_length

@@ -46,6 +46,9 @@ public struct ProblemListView: View {
                                 .foregroundColor(.Text_Default)
                                 .font(.Head1Bold)
                         }
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                     })
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
