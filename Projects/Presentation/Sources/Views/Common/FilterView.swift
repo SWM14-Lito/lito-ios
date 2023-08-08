@@ -48,7 +48,7 @@ struct FilterView<T: FilterComponent>: View {
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.Text_Default)
                 Text("필터")
-                    .font(.system(size: 14, weight: .regular))
+                    .font(.Body2Regular)
                     .foregroundColor(.Text_Default)
             }
             .padding(.horizontal, 15)
@@ -82,7 +82,7 @@ struct FilterView<T: FilterComponent>: View {
                 } label: {
                     HStack(spacing: 8) {
                         Text(filter.name)
-                            .font(.system(size: 14, weight: .regular))
+                            .font(.Body2Regular)
                             .foregroundColor(.Text_White)
                         Image(systemName: SymbolName.xmarkCircleFill)
                             .font(.system(size: 16, weight: .regular))
@@ -104,14 +104,14 @@ struct FilterView<T: FilterComponent>: View {
     private var filteringComponents: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("풀이 여부")
-                .font(.system(size: 18, weight: .semibold))
+                .font(.Head3SemiBold)
             HStack {
                 ForEach(T.allCases, id: \.self) { filter in
                     Button {
                         selectFilter(filter)
                     } label: {
                         Text(filter.name)
-                            .font(.system(size: 14, weight: .regular))
+                            .font(.Body2Regular)
                             .foregroundColor(selectedFilter == filter ? .Text_White : .Text_Default)
                             .padding(.horizontal, 15)
                             .padding(.vertical, 8)
@@ -137,7 +137,7 @@ struct FilterView<T: FilterComponent>: View {
                     selectedFilter = T.defaultValue
                 } label: {
                     Text("초기화")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.Body1Medium)
                         .foregroundColor(.Text_White)
                         .padding(.horizontal, 56)
                         .padding(.vertical, 15)
@@ -151,7 +151,7 @@ struct FilterView<T: FilterComponent>: View {
                     applyFilter()
                 } label: {
                     Text("적용하기")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.Body1Medium)
                         .foregroundColor(.Text_White)
                         .padding(.horizontal, 56)
                         .padding(.vertical, 15)

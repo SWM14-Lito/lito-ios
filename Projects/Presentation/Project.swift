@@ -16,5 +16,6 @@ let project = Project.makeModule(
         .Projcet.Domain,
         .SPM.Kingfisher
     ],
-    resources: ["Resources/**"]
+    resources: ["Resources/**"],
+    infoPlist: .file(path: "Support/Info.plist")
 )

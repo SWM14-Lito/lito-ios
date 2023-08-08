@@ -106,15 +106,16 @@ public struct LearningHomeView: View {
                 UrlImageView(urlString: userInfo.profileImgUrl)
                     .frame(width: 54, height: 54)
                     .clipShape(Circle())
-                HStack {
+                HStack(spacing: 0) {
                     Text(userInfo.nickname)
-                        .fontWeight(.heavy)
+                        .font(.Head1Bold)
                     Text("님,")
+                        .font(.Head1Light)
                 }
                 Text("오늘도 목표를 달성하세요!")
+                    .font(.Head1Light)
             }
             .foregroundColor(.Text_White)
-            .font(.system(size: 22))
         } else {
             Spacer()
                 .frame(height: 118)
@@ -156,10 +157,10 @@ public struct LearningHomeView: View {
                         learningRateProgressBar
                         VStack(alignment: .leading, spacing: 5) {
                             Text("오늘의 학습목표")
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.Body1SemiBold)
                             HStack {
                                 Text("하루목표")
-                                    .font(.system(size: 14))
+                                    .font(.Body2Regular)
                                 Spacer()
                                 goalSettingPicker
                             }
@@ -189,10 +190,9 @@ public struct LearningHomeView: View {
             
             HStack {
                 Text(String(format: "%.0f%", min(viewModel.learningRate, 1.0)*100.0))
-                    .font(.system(size: 26))
-                    .bold()
+                    .font(.ProgressBarSemiBold)
                 Text("%")
-                    .font(.system(size: 12))
+                    .font(.InfoRegular)
             }
         }
         .frame(width: 88, height: 88)
@@ -210,7 +210,7 @@ public struct LearningHomeView: View {
         }label: {
             HStack {
                 Text("\(viewModel.goalCount) 개")
-                    .font(.system(size: 14))
+                    .font(.Body2Regular)
                 Image(systemName: SymbolName.chevronDown)
                     .font(.system(size: 6, weight: .bold))
             }
@@ -230,7 +230,7 @@ public struct LearningHomeView: View {
             viewModel.moveToLearningView()
         } label: {
             Text("학습시작")
-                .font(.system(size: 16, weight: .bold))
+                .font(.Body1SemiBold)
                 .foregroundColor(.Text_White)
                 .frame(maxWidth: .infinity, maxHeight: 40)
         }
@@ -247,7 +247,7 @@ public struct LearningHomeView: View {
                 HStack {
                     Text("풀던 문제")
                         .foregroundColor(.Text_Default)
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.Head2Bold)
                     Spacer()
                     if viewModel.solvingProblem != nil {
                         Button {
@@ -258,7 +258,7 @@ public struct LearningHomeView: View {
                                 Image(systemName: SymbolName.chevronRight)
                             }
                             .foregroundColor(.Text_Serve)
-                            .font(.system(size: 12))
+                            .font(.InfoRegular)
                         }
                     }
                 }
@@ -266,6 +266,7 @@ public struct LearningHomeView: View {
                     ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 } else {
                     Text("진행중인 문제가 없습니다.")
+                        .font(.Body2Regular)
                         .padding()
                 }
             }
@@ -281,7 +282,7 @@ public struct LearningHomeView: View {
                 HStack {
                     Text("추천 문제")
                         .foregroundColor(.Text_Default)
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.Head2Bold)
                     Spacer()
                 }
                 if viewModel.recommendedProblem != nil {
@@ -292,6 +293,7 @@ public struct LearningHomeView: View {
                     }
                 } else {
                     Text("추천 문제가 없습니다.")
+                        .font(.Body2Regular)
                         .padding()
                 }
             }

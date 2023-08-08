@@ -30,7 +30,7 @@ struct HeadFilterView<T: FilterComponent>: View {
                                 .lineLimit(1)
                                 .fixedSize()
                                 .frame(maxWidth: .infinity, minHeight: 30)
-                                .font(.system(size: 16, weight: selectedFilter == filter ? .bold : .semibold))
+                                .font(selectedFilter == filter ? .Body1SemiBold : .Body1Regular)
                                 .foregroundColor(selectedFilter == filter ? .Button_Point : .Text_Serve)
                             if selectedFilter == filter {
                                 Capsule()

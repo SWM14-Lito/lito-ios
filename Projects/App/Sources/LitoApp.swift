@@ -11,6 +11,7 @@ struct LitoApp: App {
     @ObservedObject private var coordinator: Coordinator
     
     init() {
+        UIFont.registerCommonFonts()
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         injector = DependencyInjector(container: Container())

@@ -44,7 +44,7 @@ public struct ProblemListView: View {
                                 .font(.system(size: 22, weight: .regular))
                             Text(viewModel.selectedSubject.name)
                                 .foregroundColor(.Text_Default)
-                                .font(.system(size: 22, weight: .bold))
+                                .font(.Head1Bold)
                         }
                     })
                 }
