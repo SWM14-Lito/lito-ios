@@ -66,7 +66,6 @@ struct FilterView<T: FilterComponent>: View {
             filteringModal
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
-                .presentationCornerRadius(30)
                 .frame(alignment: .topTrailing)
                 .padding(.top, 40)
                 .padding(.leading, 20)
