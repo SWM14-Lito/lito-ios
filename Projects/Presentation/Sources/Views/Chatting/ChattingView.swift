@@ -132,9 +132,6 @@ public struct ChattingView: View {
             Spacer()
             Button {
                 viewModel.sendQuestion()
-                DispatchQueue.main.asyncAfter(deadline: .now()+2.0) {
-                    viewModel.getAnswer()
-                }
             } label: {
                 Image(systemName: SymbolName.paperplaneFill)
                     .font(.system(size: 18))

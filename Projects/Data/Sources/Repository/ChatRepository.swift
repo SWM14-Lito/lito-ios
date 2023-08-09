@@ -17,7 +17,9 @@ final public class DefaultChatRepository: ChatRepository {
         self.dataSource = dataSource
     }
     
-    public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
-        dataSource.postProfileImage(profileImageDTO: profileImageDTO)
+    public func sendQuestion(sendingQuestionDTO: SendingQuestionDTO) -> AnyPublisher<ChatGPTAnswerVO, Error> {
+        dataSource.sendQuestion(sendingQuestionDTO: sendingQuestionDTO)
+            .map { $0.toVO() }
+            .eraseToAnyPublisher()
     }
 }

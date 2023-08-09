@@ -13,31 +13,40 @@ public class ChattingViewModel: BaseViewModel {
     
     @Published var input: String = ""
     @Published var dialogue = [DialogueUnitVO]()
+    private let useCase: ChattingUseCase
     let question: String
     let answer: String
     
-    public init(question: String, answer: String, coordinator: CoordinatorProtocol) {
+    public init(question: String, answer: String, useCase: ChattingUseCase, coordinator: CoordinatorProtocol) {
         self.question = question
         self.answer = answer
+        self.useCase = useCase
         super.init(coordinator: coordinator)
     }
     
+    // 질문 보내기
     func sendQuestion() {
         dialogue.append(
             DialogueUnitVO(text: input, dialogueType: .fromUser)
         )
         input = ""
-        // TODO: 서버로 질문 보내기
+        useCase.sendQuestion(sendingQuestionDTO: SendingQuestionDTO(message: input))
+            .sinkToResult { result in
+                switch result {
+                case .success(let chatGPTAnswerVO):
+                    self.dialogue.append(
+                        DialogueUnitVO(text: chatGPTAnswerVO.messages[0].message, dialogueType: .fromChatGPT)
+                    )
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
     }
     
-    func getAnswer() {
-        // TODO: 서버에서 대답 받아오기
-        let answer = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        dialogue.append(
-            DialogueUnitVO(text: answer, dialogueType: .fromChatGPT)
-        )
-    }
-    
+    // 모달 내리기
     func dismissSheet() {
         coordinator.dismissSheet()
     }

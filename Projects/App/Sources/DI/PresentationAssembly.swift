@@ -105,9 +105,10 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(ProblemDetailViewModel.self, argument: id)!
             return ProblemDetailView(viewModel: viewModel)
         }
-        // ChatGPT (UseCase 연결 필요)
+        // ChatGPT
         container.register(ChattingViewModel.self) { (resolver, question: String, answer: String) in
-            return ChattingViewModel(question: question, answer: answer, coordinator: coordinator)
+            let useCase = resolver.resolve(ChattingUseCase.self)!
+            return ChattingViewModel(question: question, answer: answer, useCase: useCase, coordinator: coordinator)
         }
         
         container.register(ChattingView.self) { (resolver, question: String, answer: String) in

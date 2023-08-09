@@ -10,9 +10,7 @@ import Combine
 import Domain
 
 public protocol ChatDataSource {
-    func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
-    func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
-    func getUserInfo() -> AnyPublisher<UserInfoDTO, Error>
+    func sendQuestion(sendingQuestionDTO: SendingQuestionDTO) -> AnyPublisher<ChatGPTAnswerDTO, Error>
 }
 
 final public class DefaultChatDataSource: ChatDataSource {
@@ -21,7 +19,7 @@ final public class DefaultChatDataSource: ChatDataSource {
     
     private let moyaProvider = MoyaWrapper<ChatAPI>()
     
-    public func sendQuestion(sendingQuestionDTO: SendingQuestionDTO) -> AnyPublisher<Void, Error> {
+    public func sendQuestion(sendingQuestionDTO: SendingQuestionDTO) -> AnyPublisher<ChatGPTAnswerDTO, Error> {
         moyaProvider.call(target: .chattingWithChatCPT(sendingQuestionDTO))
     }
 

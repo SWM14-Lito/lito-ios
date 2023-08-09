@@ -45,7 +45,7 @@ extension ChatAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .chattingWithChatCPT:
-            return ["Authorization": "Bearer \(profileInfoDTO.accessToken)", "Content-type": "application/json;charset=UTF-8"]
+            return APIConfiguration.jsonContentType
         }
     }
 }
