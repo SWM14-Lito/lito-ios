@@ -69,7 +69,7 @@ public struct ChattingView: View {
     @ViewBuilder
     private var problemDetail: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 5) {
+            HStack(alignment: .top, spacing: 5) {
                 Circle()
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Point)
@@ -78,11 +78,11 @@ public struct ChattingView: View {
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }
-                Text("문맥전환 (Context Switching) 이 무엇인가?")
+                Text(viewModel.question)
                     .foregroundColor(.Text_Default)
                     .font(.Body2SemiBold)
             }
-            HStack(spacing: 5) {
+            HStack(alignment: .top, spacing: 5) {
                 Circle()
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Yellow)
@@ -91,7 +91,7 @@ public struct ChattingView: View {
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }
-                Text("CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정")
+                Text(viewModel.answer)
                     .foregroundColor(.Text_Default)
                     .font(.Body2Regular)
             }

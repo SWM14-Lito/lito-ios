@@ -13,6 +13,14 @@ public class ChattingViewModel: BaseViewModel {
     
     @Published var input: String = ""
     @Published var dialogue = [DialogueUnitVO]()
+    let question: String
+    let answer: String
+    
+    public init(question: String, answer: String, coordinator: CoordinatorProtocol) {
+        self.question = question
+        self.answer = answer
+        super.init(coordinator: coordinator)
+    }
     
     func sendQuestion() {
         dialogue.append(
