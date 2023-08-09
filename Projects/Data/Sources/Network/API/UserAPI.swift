@@ -64,9 +64,9 @@ extension UserAPI: TargetType {
     var headers: [String: String]? {
         switch self {
         case .setProfileInfo(let profileInfoDTO):
-            return ["Authorization": "Bearer \(profileInfoDTO.accessToken)", "Content-type": "application/json;charset=UTF-8"]
+            return APIConfiguration.jsonContentType + ["Authorization": "Bearer \(profileInfoDTO.accessToken)"]
         case .setNotiAcceptance(let alarmAcceptanceDTO):
-            return ["Authorization": "Bearer \(alarmAcceptanceDTO.accessToken)", "Content-type": "application/x-www-form-urlencoded"]
+            return APIConfiguration.urlencodedContentType + ["Authorization": "Bearer \(alarmAcceptanceDTO.accessToken)"]
         case .getUserInfo:
             return nil
         }
