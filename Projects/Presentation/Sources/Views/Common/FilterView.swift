@@ -83,7 +83,7 @@ struct FilterView<T: FilterComponent>: View {
                     HStack(spacing: 8) {
                         Text(filter.name)
                             .font(.Body2Regular)
-                            .foregroundColor(.Text_White)
+                            .foregroundColor(.white)
                         Image(systemName: SymbolName.xmarkCircleFill)
                             .font(.system(size: 16, weight: .regular))
                             .foregroundStyle(.white, .Button_Point_Light)
@@ -112,7 +112,7 @@ struct FilterView<T: FilterComponent>: View {
                     } label: {
                         Text(filter.name)
                             .font(.Body2Regular)
-                            .foregroundColor(selectedFilter == filter ? .Text_White : .Text_Default)
+                            .foregroundColor(selectedFilter == filter ? .white : .Text_Default)
                             .padding(.horizontal, 15)
                             .padding(.vertical, 8)
                     }
@@ -138,7 +138,7 @@ struct FilterView<T: FilterComponent>: View {
                 } label: {
                     Text("초기화")
                         .font(.Body1Medium)
-                        .foregroundColor(.Text_White)
+                        .foregroundColor(.white)
                         .padding(.horizontal, 56)
                         .padding(.vertical, 15)
                 }
@@ -152,7 +152,7 @@ struct FilterView<T: FilterComponent>: View {
                 } label: {
                     Text("적용하기")
                         .font(.Body1Medium)
-                        .foregroundColor(.Text_White)
+                        .foregroundColor(.white)
                         .padding(.horizontal, 56)
                         .padding(.vertical, 15)
                 }

@@ -115,7 +115,7 @@ public struct LearningHomeView: View {
                 Text("오늘도 목표를 달성하세요!")
                     .font(.Head1Light)
             }
-            .foregroundColor(.Text_White)
+            .foregroundColor(.white)
         } else {
             Spacer()
                 .frame(height: 118)
@@ -131,14 +131,14 @@ public struct LearningHomeView: View {
             } label: {
                 Image(systemName: SymbolName.heartFill)
                     .font(.system(size: 24))
-                    .foregroundColor(.Button_White)
+                    .foregroundColor(.white)
             }
             Button {
                 viewModel.moveToNotiView()
             } label: {
                 Image(systemName: SymbolName.bellFill)
                     .font(.system(size: 24))
-                    .foregroundColor(.Button_White)
+                    .foregroundColor(.white)
             }
         }
     }
@@ -231,7 +231,7 @@ public struct LearningHomeView: View {
         } label: {
             Text("학습시작")
                 .font(.Body1SemiBold)
-                .foregroundColor(.Text_White)
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: 40)
         }
         .buttonStyle(.bordered)
