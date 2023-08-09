@@ -19,19 +19,28 @@ public struct ChattingView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             closeButton
-            dialogueList
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    explanation
+                    problemDetail
+                    dialogueList
+                }
+            }
+            .padding(.bottom, 10)
             Divider()
+                .background(.Divider_Default)
             questionTextfield
         }
         .onAppear {
             focused = true
         }
+        .padding([.leading, .trailing], 20)
         .interactiveDismissDisabled()
     }
     
-    // 모달 닫는 버튼 *
+    // 모달 닫는 버튼
     @ViewBuilder
     private var closeButton: some View {
         HStack {
@@ -43,29 +52,73 @@ public struct ChattingView: View {
                     .font(.system(size: 34))
                     .foregroundStyle(.black, .Bg_Dark_Deep)
             }
-            .padding(20)
+            .padding(.top, 20)
         }
+    }
+    
+    // 설명
+    @ViewBuilder
+    private var explanation: some View {
+        Text("해당 문제에 대해 궁금한 점을 질문해주세요.")
+            .foregroundColor(.Text_Serve)
+            .font(.Body2Regular)
+            .padding(.top, 4)
+    }
+    
+    // 문제 질문과 답
+    @ViewBuilder
+    private var problemDetail: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 5) {
+                Circle()
+                    .frame(width: 22, height: 22)
+                    .foregroundColor(.Bg_Point)
+                    .overlay {
+                        Text("Q")
+                            .foregroundColor(.white)
+                            .font(.Body3SemiBold)
+                    }
+                Text("문맥전환 (Context Switching) 이 무엇인가?")
+                    .foregroundColor(.Text_Default)
+                    .font(.Body2SemiBold)
+            }
+            HStack(spacing: 5) {
+                Circle()
+                    .frame(width: 22, height: 22)
+                    .foregroundColor(.Bg_Yellow)
+                    .overlay {
+                        Text("A")
+                            .foregroundColor(.white)
+                            .font(.Body3SemiBold)
+                    }
+                Text("CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정")
+                    .foregroundColor(.Text_Default)
+                    .font(.Body2Regular)
+            }
+        }
+        .padding([.top, .bottom], 18)
+        .padding([.leading, .trailing], 15)
+        .background(.Bg_Soft_Blue)
+        .cornerRadius(16)
+        .padding(.top, 12)
     }
     
     // 대화 보여주기
     @ViewBuilder
     private var dialogueList: some View {
-        ScrollView {
-            ScrollViewReader { value in
-                VStack(spacing: 24) {
-                    ForEach(viewModel.dialogue.indices, id: \.self) { index in
-                        let dialogueUnit = viewModel.dialogue[index]
-                        dialogueCell(cellType: dialogueUnit.dialogueType, text: dialogueUnit.text)
-                            .id(index)
-                    }
-                    .onChange(of: viewModel.dialogue.count) { _ in
-                        value.scrollTo(viewModel.dialogue.count - 1)
-                    }
+        ScrollViewReader { value in
+            VStack(spacing: 24) {
+                ForEach(viewModel.dialogue.indices, id: \.self) { index in
+                    let dialogueUnit = viewModel.dialogue[index]
+                    dialogueCell(cellType: dialogueUnit.dialogueType, text: dialogueUnit.text)
+                        .id(index)
+                }
+                .onChange(of: viewModel.dialogue.count) { _ in
+                    value.scrollTo(viewModel.dialogue.count - 1)
                 }
             }
         }
-        .padding(.top)
-        .padding([.leading, .trailing], 20)
+        .padding(.top, 40)
     }
     
     // 질문 입력하기
