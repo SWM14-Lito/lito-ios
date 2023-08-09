@@ -25,6 +25,7 @@ extension Font {
     
     // special
     static var ProgressBarSemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 26)!) }
+    static var SearchMagnifyingglass: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 24)!) }
     
 }
 

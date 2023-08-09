@@ -35,17 +35,28 @@ public struct ProblemSearchView: View {
     // 검색어 입력 박스
     @ViewBuilder
     private var searchBox: some View {
-        TextField("원하는 문제의 제목을 검색해보세요.", text: $viewModel.searchKeyword)
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(.gray)
-            )
-            .padding()
-            .onSubmit {
-                viewModel.resetProblemCellList()
-                viewModel.getProblemList()
-            }
+        HStack(spacing: 0) {
+            TextField("검색어를 입력해주세요.", text: $viewModel.searchKeyword)
+                .font(.Body2Regular)
+                .onSubmit {
+                    viewModel.resetProblemCellList()
+                    viewModel.getProblemList()
+                }
+                .padding(.leading, 18)
+                
+            Image(systemName: SymbolName.magnifyingglass)
+                .font(.system(size: 20))
+                .foregroundColor(.Text_Default)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 11)
+
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 46 )
+                .fill(.Bg_Deep)
+        )
+        .padding(20)
+
     }
     
     // 검색 결과 (상태에 따라 각각 다른 뷰 보여주기)
