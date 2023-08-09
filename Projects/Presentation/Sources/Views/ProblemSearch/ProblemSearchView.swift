@@ -24,6 +24,9 @@ public struct ProblemSearchView: View {
             searchResult
             Spacer()
         }
+        .modifier(CustomNavigation(
+            title: "검색",
+            back: viewModel.back))
         .onAppear {
             viewModel.getProblemMutable()
         }

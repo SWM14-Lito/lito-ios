@@ -30,39 +30,16 @@ public struct ProblemListView: View {
             }
             .background(.Bg_Light)
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        viewModel.back()
-                    }, label: {
-                        HStack {
-                            Image(systemName: SymbolName.chevronLeft)
-                                .foregroundColor(.Text_Default)
-                                .font(.system(size: 22, weight: .regular))
-                            Text(viewModel.selectedSubject.name)
-                                .foregroundColor(.Text_Default)
-                                .font(.Head1Bold)
-                        }
-                        .transaction { transaction in
-                            transaction.animation = nil
-                        }
-                    })
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        viewModel.moveToProblemSearchScene()
-                    }, label: {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.Text_Default)
-                    })
-                }
-            }
-            .onAppear {
-                viewModel.getProblemMutable()
-            }
+        .modifier(CustomNavigation(
+            title: viewModel.selectedSubject.name,
+            back: viewModel.back,
+            toolbarContent: SymbolButtonToolbar(
+                placement: .navigationBarTrailing,
+                symbolName: SymbolName.magnifyingglass,
+                action: viewModel.moveToProblemSearchScene)))
+        .onAppear {
+            viewModel.getProblemMutable()
+        }
     }
     
     @ViewBuilder
