@@ -113,7 +113,7 @@ public struct ChattingView: View {
                     dialogueCell(cellType: dialogueUnit.dialogueType, text: dialogueUnit.text)
                         .id(index)
                 }
-                .onChange(of: viewModel.dialogue.count) { _ in
+                .onChange(of: viewModel.dialogue) { _ in
                     value.scrollTo(viewModel.dialogue.count - 1)
                 }
             }
@@ -149,34 +149,39 @@ public struct ChattingView: View {
     // ChatGPT 또는 User 중 누가 입력했는지에 따라 셀 구분
     @ViewBuilder
     private func dialogueCell(cellType: DialogueType, text: String) -> some View {
-        if cellType == .fromChatGPT {
-            HStack(alignment: .top, spacing: 12) {
-                RoundedRectangle(cornerRadius: 2)
-                    .frame(width: 28, height: 28)
-                    .foregroundColor(.Bg_ChatGPT)
-                    .overlay {
-                        Image(.chatgpt)
-                            .resizable()
-                            .frame(width: 18, height: 18)
-                    }
-                chatGPTDialogueCell(text)
-            }
-        } else {
+        switch cellType {
+        case .fromUser:
             userDialogueCell(text)
+        case .fromChatGPT:
+            chatGPTDialogueCell(text)
+        case .fromChatGPTWaiting:
+            chatGPTDialogueCell("...")
+        case .fromChatGPTFail:
+            chatGPTDialogueCell("현재 ChatGPT 서비스가 불안정합니다.")
         }
     }
     
     // ChatGPT가 대답해준 내용을 나타내는 셀
     @ViewBuilder
     private func chatGPTDialogueCell(_ text: String) -> some View {
-        Text(text)
-            .font(.Body3Regular)
-            .padding([.leading, .trailing], 15)
-            .padding([.top, .bottom], 12)
-            .background(.Bg_Dark_Deep)
-            .foregroundColor(.Text_Serve)
-            .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
-            .frame(maxWidth: .infinity, alignment: .leading)
+        HStack(alignment: .top, spacing: 12) {
+            RoundedRectangle(cornerRadius: 2)
+                .frame(width: 28, height: 28)
+                .foregroundColor(.Bg_ChatGPT)
+                .overlay {
+                    Image(.chatgpt)
+                        .resizable()
+                        .frame(width: 18, height: 18)
+                }
+            Text(text)
+                .font(.Body3Regular)
+                .padding([.leading, .trailing], 15)
+                .padding([.top, .bottom], 12)
+                .background(.Bg_Dark_Deep)
+                .foregroundColor(.Text_Serve)
+                .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
     
     // 유저가 물어본 내용을 나타내는 셀
