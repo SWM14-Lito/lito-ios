@@ -17,6 +17,7 @@ public class ProblemSearchViewModel: BaseViewModel {
     private var selectedProblemId: Int = 0
     @Published private(set) var searchState: SearchState = .notStart
     @Published var searchKeyword: String = ""
+    public private (set) var searchedKeyword = ""
     @Published var problemCellList: [DefaultProblemCellVO] = []
     
     public enum SearchState {
@@ -51,6 +52,7 @@ public class ProblemSearchViewModel: BaseViewModel {
             .sinkToResult({ result in
                 switch result {
                 case .success(let problemsListVO):
+                    self.searchedKeyword = self.searchKeyword
                     if let problemsCellVO = problemsListVO.problemsCellVO {
                         problemsCellVO.forEach({ problemCellVO in
                             self.problemCellList.append(problemCellVO)

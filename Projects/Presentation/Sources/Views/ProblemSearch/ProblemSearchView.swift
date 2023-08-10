@@ -20,6 +20,10 @@ public struct ProblemSearchView: View {
         VStack {
             errorMessage
             searchBox
+                .padding(.top, 15)
+            Divider()
+                .foregroundColor(.Divider_Default)
+                .padding(.top, 14)
             Spacer()
             searchResult
             Spacer()
@@ -55,7 +59,7 @@ public struct ProblemSearchView: View {
             RoundedRectangle(cornerRadius: 46 )
                 .fill(.Bg_Deep)
         )
-        .padding(20)
+        .padding(.horizontal, 20)
 
     }
     
@@ -82,7 +86,7 @@ public struct ProblemSearchView: View {
         ScrollView {
             LazyVStack {
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                    ProblemCellHighlightingView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlightingText: viewModel.searchedKeyword)
                         .onAppear {
                             viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
                         }

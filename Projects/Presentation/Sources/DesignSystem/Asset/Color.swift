@@ -63,6 +63,10 @@ public extension Color {
     static let Text_Point = makeLitoColor(.Text_Point)
     /// hex: 444444
     static let Text_Serve = makeLitoColor(.Text_Serve)
+    /// hex: DADAFF
+    static let Text_Highlight = makeLitoColor(.Text_Highlight)
+    /// hex: EEEEFF
+    static let Text_Highlight_Light = makeLitoColor(.Text_Highlight_Light)
 }
 
 extension ShapeStyle where Self == Color {
@@ -143,4 +147,6 @@ public enum LitoColor: String {
     case Text_Info
     case Text_Point
     case Text_Serve
+    case Text_Highlight
+    case Text_Highlight_Light
 }
