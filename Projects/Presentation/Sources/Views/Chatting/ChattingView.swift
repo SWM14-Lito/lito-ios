@@ -155,30 +155,49 @@ public struct ChattingView: View {
         case .fromChatGPT:
             chatGPTDialogueCell(text)
         case .fromChatGPTWaiting:
-            chatGPTDialogueCell("...")
+            chatGPTWaitingCell
         case .fromChatGPTFail:
             chatGPTDialogueCell("현재 ChatGPT 서비스가 불안정합니다.")
         }
+    }
+    
+    // ChatGPT 아이콘
+    @ViewBuilder
+    private var chatGPTIcon: some View {
+        RoundedRectangle(cornerRadius: 2)
+            .frame(width: 28, height: 28)
+            .foregroundColor(.Bg_ChatGPT)
+            .overlay {
+                Image(.chatgpt)
+                    .resizable()
+                    .frame(width: 18, height: 18)
+            }
     }
     
     // ChatGPT가 대답해준 내용을 나타내는 셀
     @ViewBuilder
     private func chatGPTDialogueCell(_ text: String) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            RoundedRectangle(cornerRadius: 2)
-                .frame(width: 28, height: 28)
-                .foregroundColor(.Bg_ChatGPT)
-                .overlay {
-                    Image(.chatgpt)
-                        .resizable()
-                        .frame(width: 18, height: 18)
-                }
+            chatGPTIcon
             Text(text)
                 .font(.Body3Regular)
                 .padding([.leading, .trailing], 15)
                 .padding([.top, .bottom], 12)
                 .background(.Bg_Dark_Deep)
                 .foregroundColor(.Text_Serve)
+                .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+    
+    // ChatGPT가 대답해준 내용을 나타내는 셀
+    @ViewBuilder
+    private var chatGPTWaitingCell: some View {
+        HStack(alignment: .top, spacing: 12) {
+            chatGPTIcon
+            LottieView(filename: "loading")
+                .frame(width: 80, height: 40)
+                .background(.Bg_Dark_Deep)
                 .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
