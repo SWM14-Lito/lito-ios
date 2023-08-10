@@ -26,7 +26,7 @@ struct ProblemHighlightingCellView<T: ProblemCell>: View {
         var highlightedQuestion = AttributedString(problemCellVO.question)
         highlightedQuestion.font = .Body2Regular
         highlightedQuestion.foregroundColor = .Text_Default
-        if let range = highlightedQuestion.range(of: highlighting) {
+        if let range = highlightedQuestion.range(of: highlighting, options: .caseInsensitive) {
             highlightedQuestion[range].font = .Body2SemiBold
             highlightedQuestion[range].foregroundColor = .Text_Point
             if case .solved = problemCellVO.problemStatus {

@@ -113,6 +113,16 @@ public struct ProblemSearchView: View {
     private var problemList: some View {
         ScrollView {
             LazyVStack {
+                HStack(spacing: 0) {
+                    Text("‘\(viewModel.searchedKeyword)‘ 검색결과 총 ")
+                    if let problemTotalSize = viewModel.problemTotalSize {
+                        Text(String(problemTotalSize))
+                            .foregroundColor(.Text_Point)
+                    }
+                    Text("건")
+                    Spacer()
+                }
+                .font(.Body2Regular)
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
                     ProblemHighlightingCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
                         .onAppear {

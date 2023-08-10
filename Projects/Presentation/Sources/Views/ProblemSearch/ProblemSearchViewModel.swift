@@ -13,7 +13,7 @@ public class ProblemSearchViewModel: BaseViewModel {
     private let useCase: ProblemSearchUseCase
     private let problemSize = 10
     private var problemPage = 0
-    private var problemTotalSize: Int?
+    public private (set) var problemTotalSize: Int?
     private var selectedProblemId: Int = 0
     @Published private(set) var searchState: SearchState = .notStart
     @Published var searchKeyword: String = ""
