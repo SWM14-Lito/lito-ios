@@ -118,7 +118,7 @@ struct FilterView<T: FilterComponent>: View {
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 19 )
-                            .fill(selectedFilter == filter ? .Button_Point : .Bg_Light)
+                            .fill()
                     )
                 }
             }

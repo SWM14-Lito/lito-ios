@@ -17,6 +17,8 @@ public extension Color {
     static let Bg_Light = makeLitoColor(.Bg_Light)
     /// hex: F0F0F0
     static let Bg_Picker = makeLitoColor(.Bg_Picker)
+    /// hex: F6F7FF
+    static let Bg_Point_Light = makeLitoColor(.Bg_Point_Light)
     /// hex: E0E0E0
     static let Border_Default = makeLitoColor(.Border_Default)
     /// hex: DEDEFF
@@ -74,6 +76,7 @@ extension ShapeStyle where Self == Color {
     static var Bg_Default: Color { Color.Bg_Default }
     static var Bg_Light: Color { Color.Bg_Light }
     static var Bg_Picker: Color { Color.Bg_Picker }
+    static var Bg_Point_Light: Color { Color.Bg_Point_Light }
     static var Border_Default: Color { Color.Border_Default }
     static var Border_Serve: Color { Color.Border_Serve }
     static var Border_Strong: Color { Color.Border_Strong }
@@ -124,6 +127,7 @@ public enum LitoColor: String {
     case Bg_Default
     case Bg_Light
     case Bg_Picker
+    case Bg_Point_Light
     case Border_Default
     case Border_Serve
     case Border_Strong

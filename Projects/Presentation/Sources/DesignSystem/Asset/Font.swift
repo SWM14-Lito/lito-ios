@@ -33,6 +33,8 @@ extension Font {
     static var Body2SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 14)!) }
     /// size: 13
     static var Body3Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 13)!) }
+    /// size: 13
+    static var Body3SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 13)!) }
     /// size: 12
     static var InfoRegular: Font { Font(UIFont(name: "Pretendard-Regular", size: 12)!) }
     
