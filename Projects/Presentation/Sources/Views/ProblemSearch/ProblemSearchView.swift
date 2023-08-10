@@ -21,11 +21,12 @@ public struct ProblemSearchView: View {
             errorMessage
             searchBox
                 .padding(.top, 15)
-            Divider()
-                .foregroundColor(.Divider_Default)
-                .padding(.top, 14)
-            Spacer()
-            searchResult
+            VStack(spacing: 0) {
+                Divider()
+                    .foregroundColor(.Divider_Default)
+                    .padding(.top, 14)
+                searchResult
+            }
             Spacer()
         }
         .modifier(CustomNavigation(
@@ -68,7 +69,7 @@ public struct ProblemSearchView: View {
     private var searchResult: some View {
         switch viewModel.searchState {
         case .notStart:
-            EmptyView()
+            recentSearched
         case .waiting:
             ProgressView()
         case .finish:
@@ -76,8 +77,35 @@ public struct ProblemSearchView: View {
                 Text("검색 결과가 없습니다.")
             } else {
                 problemList
+                    .background(.Bg_Light)
             }
         }
+    }
+    
+    // 최근 검색
+    // TODO: 최근 검색어 기능 추가 후 작업
+    @ViewBuilder
+    private var recentSearched: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text("최근 검색어")
+                    .font(.Body1SemiBold)
+                Spacer()
+                Button {
+                    // 검색어 삭제
+                } label: {
+                    Text("모두삭제")
+                        .font(.Body3Regular)
+                        .foregroundColor(.Text_Info)
+                        .underline()
+                }
+            }
+            ScrollView {
+                RecentKeywordCellView(keyword: "레지스터")
+                RecentKeywordCellView(keyword: "CPU")
+            }
+        }
+        .padding(20)
     }
     
     // 문제 리스트
@@ -86,7 +114,7 @@ public struct ProblemSearchView: View {
         ScrollView {
             LazyVStack {
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellHighlightingView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
+                    ProblemHighlightingCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
                         .onAppear {
                             viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
                         }

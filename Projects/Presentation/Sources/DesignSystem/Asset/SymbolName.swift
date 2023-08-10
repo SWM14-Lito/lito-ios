@@ -24,5 +24,6 @@ class SymbolName {
     static let personCircleFill = "person.circle.fill"
     static let personFill = "person.fill"
     static let questionMark = "questionmark"
+    static let xmark = "xmark"
     static let xmarkCircleFill = "xmark.circle.fill"
 }

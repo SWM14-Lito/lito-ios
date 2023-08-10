@@ -10,7 +10,7 @@ import SwiftUI
 import Domain
 
 // 문제 셀
-struct ProblemCellHighlightingView<T: ProblemCell>: View {
+struct ProblemHighlightingCellView<T: ProblemCell>: View {
     
     @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
