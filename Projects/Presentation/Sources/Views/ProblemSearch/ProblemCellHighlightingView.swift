@@ -14,29 +14,29 @@ struct ProblemCellHighlightingView<T: ProblemCell>: View {
     
     @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
-    private let highlightingText: String
+    private let highlighting: String
     
-    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling, highlightingText: String) {
+    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling, highlighting: String) {
         self._problemCellVO = problemCellVO
         self.problemCellHandling = problemCellHandling
-        self.highlightingText = highlightingText
+        self.highlighting = highlighting
     }
     
-    private var attributedString: AttributedString {
-        var attributedString = AttributedString(problemCellVO.question)
-        attributedString.font = .Body2Regular
-        attributedString.foregroundColor = .Text_Default
-        if let range = attributedString.range(of: highlightingText) {
-            attributedString[range].font = .Body2SemiBold
-            attributedString[range].foregroundColor = .Text_Point
+    private var highlightedQuestion: AttributedString {
+        var highlightedQuestion = AttributedString(problemCellVO.question)
+        highlightedQuestion.font = .Body2Regular
+        highlightedQuestion.foregroundColor = .Text_Default
+        if let range = highlightedQuestion.range(of: highlighting) {
+            highlightedQuestion[range].font = .Body2SemiBold
+            highlightedQuestion[range].foregroundColor = .Text_Point
             if case .solved = problemCellVO.problemStatus {
-                attributedString[range].backgroundColor = .Text_Highlight
+                highlightedQuestion[range].backgroundColor = .Text_Highlight
             } else {
-                attributedString[range].backgroundColor = .Text_Highlight_Light
+                highlightedQuestion[range].backgroundColor = .Text_Highlight_Light
             }
         }
 
-        return attributedString
+        return highlightedQuestion
     }
     
     var body: some View {
@@ -54,7 +54,7 @@ struct ProblemCellHighlightingView<T: ProblemCell>: View {
                                 .foregroundColor(.Text_Info)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(1)
-                            Text(attributedString)
+                            Text(highlightedQuestion)
                                 .multilineTextAlignment(.leading)
                                 .lineLimit(2)
                         }
@@ -89,4 +89,5 @@ struct ProblemCellHighlightingView<T: ProblemCell>: View {
                 .stroke(problemCellVO.problemStatus == .solved ? .Border_Serve : .Border_Default, lineWidth: 1)
         )
     }
+    
 }

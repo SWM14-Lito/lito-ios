@@ -86,7 +86,7 @@ public struct ProblemSearchView: View {
         ScrollView {
             LazyVStack {
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellHighlightingView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlightingText: viewModel.searchedKeyword)
+                    ProblemCellHighlightingView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
                         .onAppear {
                             viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
                         }
