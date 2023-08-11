@@ -82,7 +82,7 @@ struct ProblemHighlightingCellView<T: ProblemCell>: View {
         .padding([.top, .bottom], 18)
         .background(
             RoundedRectangle(cornerRadius: 16 )
-                .fill(problemCellVO.problemStatus == .solved ? .Fill_Soft_Blue : .Bg_Default)
+                .fill(problemCellVO.problemStatus == .solved ? .Bg_Soft_Blue : .Bg_Default)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16)

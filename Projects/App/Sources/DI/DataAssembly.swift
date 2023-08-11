@@ -62,6 +62,14 @@ public struct DataAssembly: Assembly {
             let dataSource = resolver.resolve(AuthDataSource.self)!
             return DefaultAuthRepository(dataSource: dataSource)
         }
+        // Chat
+        container.register(ChatDataSource.self) { _ in
+            return DefaultChatDataSource()
+        }
+        container.register(ChatRepository.self) { resolver in
+            let dataSource = resolver.resolve(ChatDataSource.self)!
+            return DefaultChatRepository(dataSource: dataSource)
+        }
     }
     
 }

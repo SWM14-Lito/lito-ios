@@ -22,6 +22,7 @@ class SymbolName {
     static let heartFill = "heart.fill"
     static let line3HorizontalDecrese = "line.3.horizontal.decrease"
     static let magnifyingglass = "magnifyingglass"
+    static let paperplaneFill = "paperplane.fill"
     static let personCircleFill = "person.circle.fill"
     static let personFill = "person.fill"
     static let questionMark = "questionmark"

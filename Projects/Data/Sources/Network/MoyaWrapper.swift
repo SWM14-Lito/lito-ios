@@ -31,12 +31,19 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         }
         
         if forTest {
-            customEndpointClosure = { (target: Provider) -> Endpoint in
+//            let sampleDataClosure = { (target: Provider) -> Endpoint in
+//                return Endpoint(url: URL(target: target).absoluteString,
+//                                sampleResponseClosure: { .networkResponse(200, target.sampleData) },
+//                                method: target.method,
+//                                task: target.task,
+//                                httpHeaderFields: target.headers)}
+            let responseClosure = { (target: Provider) in
                 return Endpoint(url: URL(target: target).absoluteString,
-                                sampleResponseClosure: { .networkResponse(200, target.sampleData) },
+                                sampleResponseClosure: { .networkResponse(401, target.sampleData) },
                                 method: target.method,
                                 task: target.task,
                                 httpHeaderFields: target.headers)}
+            customEndpointClosure = responseClosure
             customStubClosure = MoyaProvider.immediatelyStub
         } else {
             customEndpointClosure = endpointClosure
