@@ -13,7 +13,7 @@ import Domain
 public enum AppScene: Identifiable, Hashable {
     case loginScene, profileSettingScene(userAuthVO: UserAuthVO)
     case rootTabScene
-    case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int), chattingScene, problemSearchScene
+    case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int), chattingScene(question: String, answer: String), problemSearchScene
     case pedigreeListScene
     case myPageScene
     

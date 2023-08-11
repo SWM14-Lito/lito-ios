@@ -9,6 +9,11 @@
 import SwiftUI
 
 public extension Color {
+
+    /// hex: 3EC481
+    static let Bg_ChatGPT = makeLitoColor(.Bg_ChatGPT)
+    /// hex: F3F3F3
+    static let Bg_Dark_Deep = makeLitoColor(.Bg_Dark_Deep)
     /// hex: F5F5F5
     static let Bg_Deep = makeLitoColor(.Bg_Deep)
     /// hex: EFEFEF
@@ -17,6 +22,14 @@ public extension Color {
     static let Bg_Light = makeLitoColor(.Bg_Light)
     /// hex: F0F0F0
     static let Bg_Picker = makeLitoColor(.Bg_Picker)
+    /// hex: F6F7FF
+    static let Bg_Point_Light = makeLitoColor(.Bg_Point_Light)
+    /// hex: 494AE2
+    static let Bg_Point = makeLitoColor(.Bg_Point)
+    /// hex: F6F7FF
+    static let Bg_Soft_Blue = makeLitoColor(.Bg_Soft_Blue)
+    /// hex: FFB526
+    static let Bg_Yellow = makeLitoColor(.Bg_Yellow)
     /// hex: E0E0E0
     static let Border_Default = makeLitoColor(.Border_Default)
     /// hex: DEDEFF
@@ -37,8 +50,6 @@ public extension Color {
     static let Divider_Default = makeLitoColor(.Divider_Default)
     /// hex: A0A0A0
     static let Divider_Strong = makeLitoColor(.Divider_Strong)
-    /// hex: F6F7FF
-    static let Fill_Soft_Blue = makeLitoColor(.Fill_Soft_Blue)
     /// hex: 00D7F4
     static let Gradation_BottonTrailing = makeLitoColor(.Gradation_BottonTrailing)
     /// hex: 494AE2
@@ -70,10 +81,16 @@ public extension Color {
 }
 
 extension ShapeStyle where Self == Color {
+    static var Bg_ChatGPT: Color { Color.Bg_ChatGPT }
+    static var Bg_Dark_Deep: Color { Color.Bg_Dark_Deep }
     static var Bg_Deep: Color { Color.Bg_Deep }
     static var Bg_Default: Color { Color.Bg_Default }
     static var Bg_Light: Color { Color.Bg_Light }
     static var Bg_Picker: Color { Color.Bg_Picker }
+    static var Bg_Point_Light: Color { Color.Bg_Point_Light }
+    static var Bg_Point: Color { Color.Bg_Point }
+    static var Bg_Soft_Blue: Color { Color.makeLitoColor(.Bg_Soft_Blue) }
+    static var Bg_Yellow: Color { Color.makeLitoColor(.Bg_Yellow) }
     static var Border_Default: Color { Color.Border_Default }
     static var Border_Serve: Color { Color.Border_Serve }
     static var Border_Strong: Color { Color.Border_Strong }
@@ -84,7 +101,6 @@ extension ShapeStyle where Self == Color {
     static var Button_Negative: Color { Color.Button_Negative }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
     static var Divider_Strong: Color { Color.makeLitoColor(.Divider_Strong) }
-    static var Fill_Soft_Blue: Color { Color.makeLitoColor(.Fill_Soft_Blue) }
     static var Gradation_BottonTrailing: Color { Color.makeLitoColor(.Gradation_BottonTrailing) }
     static var Gradation_TopLeading: Color { Color.makeLitoColor(.Gradation_TopLeading) }
     static var Heart_Clicked_Inner: Color { Color.makeLitoColor(.Heart_Clicked_Inner) }
@@ -120,10 +136,16 @@ extension Color {
 }
 
 public enum LitoColor: String {
+    case Bg_ChatGPT
+    case Bg_Dark_Deep
     case Bg_Deep
     case Bg_Default
     case Bg_Light
     case Bg_Picker
+    case Bg_Point_Light
+    case Bg_Point
+    case Bg_Soft_Blue
+    case Bg_Yellow
     case Border_Default
     case Border_Serve
     case Border_Strong
@@ -134,7 +156,6 @@ public enum LitoColor: String {
     case Button_Negative
     case Divider_Default
     case Divider_Strong
-    case Fill_Soft_Blue
     case Gradation_BottonTrailing
     case Gradation_TopLeading
     case Heart_Clicked_Inner

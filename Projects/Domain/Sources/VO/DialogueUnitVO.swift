@@ -11,7 +11,7 @@ public struct DialogueUnitVO: Hashable {
     public let text: String
     public let dialogueType: DialogueType
     
-    public init(text: String, dialogueType: DialogueType) {
+    public init(text: String = "", dialogueType: DialogueType) {
         self.text = text
         self.dialogueType = dialogueType
     }
@@ -19,5 +19,7 @@ public struct DialogueUnitVO: Hashable {
 
 public enum DialogueType {
     case fromChatGPT
+    case fromChatGPTWaiting
+    case fromChatGPTFail
     case fromUser
 }
