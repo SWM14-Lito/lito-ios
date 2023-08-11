@@ -20,7 +20,9 @@ extension Font {
     static var Body1Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 16)!) }
     static var Body1Medium: Font { Font(UIFont(name: "Pretendard-Medium", size: 16)!) }
     static var Body2Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 14)!) }
+    static var Body2SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 14)!) }
     static var Body3Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 13)!) }
+    static var Body3SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 13)!) }
     static var InfoRegular: Font { Font(UIFont(name: "Pretendard-Regular", size: 12)!) }
     
     // special

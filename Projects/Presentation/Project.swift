@@ -14,7 +14,8 @@ let project = Project.makeModule(
     product: .staticFramework,
     dependencies: [
         .Projcet.Domain,
-        .SPM.Kingfisher
+        .SPM.Kingfisher,
+        .SPM.Lottie
     ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Support/Info.plist")

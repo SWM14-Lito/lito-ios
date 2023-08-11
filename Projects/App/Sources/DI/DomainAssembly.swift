@@ -56,6 +56,10 @@ public struct DomainAssembly: Assembly {
             let repository = resolver.resolve(ProblemRepository.self)!
             return DefaultProblemSearchUseCase(repository: repository)
         }
+        container.register(ChattingUseCase.self) { resolver in
+            let repository = resolver.resolve(ChatRepository.self)!
+            return DefaultChattingUseCase(repository: repository)
+        }
         
         // ------------------------ Second Tab ------------------------
         
