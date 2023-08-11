@@ -11,22 +11,38 @@ import SwiftUI
 extension Font {
     
     // common
+    /// size: 22
     static var Head1Bold: Font { Font(UIFont(name: "Pretendard-Bold", size: 22)!) }
+    /// size: 22
     static var Head1Light: Font { Font(UIFont(name: "Pretendard-Light", size: 22)!) }
+    /// size: 20
     static var Head2Bold: Font { Font(UIFont(name: "Pretendard-Bold", size: 20)!) }
+    /// size: 18
     static var Head3SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 18)!) }
+    /// size: 16
     static var Body1Bold: Font { Font(UIFont(name: "Pretendard-Bold", size: 16)!) }
+    /// size: 16
     static var Body1SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 16)!) }
+    /// size: 16
     static var Body1Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 16)!) }
+    /// size: 16
     static var Body1Medium: Font { Font(UIFont(name: "Pretendard-Medium", size: 16)!) }
+    /// size: 14
     static var Body2Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 14)!) }
+    /// size: 14
     static var Body2SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 14)!) }
+    /// size: 13
     static var Body3Regular: Font { Font(UIFont(name: "Pretendard-Regular", size: 13)!) }
+    /// size: 13
     static var Body3SemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 13)!) }
+    /// size: 12
     static var InfoRegular: Font { Font(UIFont(name: "Pretendard-Regular", size: 12)!) }
     
     // special
+    /// size: 26
     static var ProgressBarSemiBold: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 26)!) }
+    /// size: 24
+    static var SearchMagnifyingglass: Font { Font(UIFont(name: "Pretendard-SemiBold", size: 24)!) }
     
 }
 

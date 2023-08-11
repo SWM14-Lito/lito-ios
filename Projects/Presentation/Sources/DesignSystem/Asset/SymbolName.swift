@@ -9,6 +9,7 @@
 import Foundation
 
 class SymbolName {
+    static let bell = "bell"
     static let bellFill = "bell.fill"
     static let bookClosedFill = "book.closed.fill"
     static let bookFill = "book.fill"
@@ -20,9 +21,12 @@ class SymbolName {
     static let heartCircleFill = "heart.circle.fill"
     static let heartFill = "heart.fill"
     static let line3HorizontalDecrese = "line.3.horizontal.decrease"
+    static let magnifyingglass = "magnifyingglass"
+    static let paperplaneFill = "paperplane.fill"
     static let personCircleFill = "person.circle.fill"
     static let personFill = "person.fill"
     static let questionMark = "questionmark"
-    static let paperplaneFill = "paperplane.fill"
+    static let squareAndArrowDown = "square.and.arrow.down"
+    static let xmark = "xmark"
     static let xmarkCircleFill = "xmark.circle.fill"
 }

@@ -30,7 +30,6 @@ public class ChattingViewModel: BaseViewModel {
             DialogueUnitVO(text: input, dialogueType: .fromUser),
             DialogueUnitVO(dialogueType: .fromChatGPTWaiting)
         ]
-        input = ""
         useCase.sendQuestion(sendingQuestionDTO: SendingQuestionDTO(message: input))
             .sinkToResult { result in
                 switch result {
@@ -44,6 +43,7 @@ public class ChattingViewModel: BaseViewModel {
                 }
             }
             .store(in: cancelBag)
+        input = ""
     }
     
     // 모달 내리기

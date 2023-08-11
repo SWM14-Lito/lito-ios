@@ -126,9 +126,13 @@ public struct ChattingView: View {
     private var questionTextfield: some View {
         HStack(spacing: 0) {
             TextField("ChatGPT에게 궁금한 점을 질문해보세요!", text: $viewModel.input)
+                .font(.Body2Regular)
                 .padding([.top, .bottom], 14)
                 .padding(.leading, 18)
                 .focused($focused)
+                .onSubmit {
+                    viewModel.sendQuestion()
+                }
             Spacer()
             Button {
                 viewModel.sendQuestion()

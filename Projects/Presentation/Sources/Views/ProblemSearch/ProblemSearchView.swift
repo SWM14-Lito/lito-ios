@@ -20,10 +20,18 @@ public struct ProblemSearchView: View {
         VStack {
             errorMessage
             searchBox
-            Spacer()
-            searchResult
+                .padding(.top, 15)
+            VStack(spacing: 0) {
+                Divider()
+                    .foregroundColor(.Divider_Default)
+                    .padding(.top, 14)
+                searchResult
+            }
             Spacer()
         }
+        .modifier(CustomNavigation(
+            title: "검색",
+            back: viewModel.back))
         .onAppear {
             viewModel.getProblemMutable()
         }
@@ -32,17 +40,28 @@ public struct ProblemSearchView: View {
     // 검색어 입력 박스
     @ViewBuilder
     private var searchBox: some View {
-        TextField("원하는 문제의 제목을 검색해보세요.", text: $viewModel.searchKeyword)
-            .padding()
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(.gray)
-            )
-            .padding()
-            .onSubmit {
-                viewModel.resetProblemCellList()
-                viewModel.getProblemList()
-            }
+        HStack(spacing: 0) {
+            TextField("검색어를 입력해주세요.", text: $viewModel.searchKeyword)
+                .font(.Body2Regular)
+                .onSubmit {
+                    viewModel.resetProblemCellList()
+                    viewModel.getProblemList()
+                }
+                .padding(.leading, 18)
+                
+            Image(systemName: SymbolName.magnifyingglass)
+                .font(.system(size: 20))
+                .foregroundColor(.Text_Default)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 11)
+
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 46 )
+                .fill(.Bg_Deep)
+        )
+        .padding(.horizontal, 20)
+
     }
     
     // 검색 결과 (상태에 따라 각각 다른 뷰 보여주기)
@@ -50,7 +69,7 @@ public struct ProblemSearchView: View {
     private var searchResult: some View {
         switch viewModel.searchState {
         case .notStart:
-            EmptyView()
+            recentSearched
         case .waiting:
             ProgressView()
         case .finish:
@@ -58,8 +77,35 @@ public struct ProblemSearchView: View {
                 Text("검색 결과가 없습니다.")
             } else {
                 problemList
+                    .background(.Bg_Light)
             }
         }
+    }
+    
+    // 최근 검색
+    // TODO: 최근 검색어 기능 추가 후 작업
+    @ViewBuilder
+    private var recentSearched: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text("최근 검색어")
+                    .font(.Body1SemiBold)
+                Spacer()
+                Button {
+                    // 검색어 삭제
+                } label: {
+                    Text("모두삭제")
+                        .font(.Body3Regular)
+                        .foregroundColor(.Text_Info)
+                        .underline()
+                }
+            }
+            ScrollView {
+                RecentKeywordCellView(keyword: "레지스터")
+                RecentKeywordCellView(keyword: "CPU")
+            }
+        }
+        .padding(20)
     }
     
     // 문제 리스트
@@ -67,8 +113,18 @@ public struct ProblemSearchView: View {
     private var problemList: some View {
         ScrollView {
             LazyVStack {
+                HStack(spacing: 0) {
+                    Text("‘\(viewModel.searchedKeyword)‘ 검색결과 총 ")
+                    if let problemTotalSize = viewModel.problemTotalSize {
+                        Text(String(problemTotalSize))
+                            .foregroundColor(.Text_Point)
+                    }
+                    Text("건")
+                    Spacer()
+                }
+                .font(.Body2Regular)
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                    ProblemHighlightingCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
                         .onAppear {
                             viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
                         }
