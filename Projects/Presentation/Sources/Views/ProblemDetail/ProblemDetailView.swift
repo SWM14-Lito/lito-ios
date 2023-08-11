@@ -22,40 +22,62 @@ public struct ProblemDetailView: View {
             errorMessage
             if let problemDetailVO = viewModel.problemDetailVO {
                 ScrollView {
-                    question
-                    if viewModel.solvingState == .notSolved {
-                        answer(text: viewModel.answerWithoutKeyword ?? "")
-                        textField
-                        showAnswerButton
-                        wrongMessage
-                    } else {
-                        answer(text: problemDetailVO.problemAnswer)
-                        showChatGPTButton
-                        listOfFAQ
-                    }
-                    Spacer()
-                }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            viewModel.toggleFavorite()
-                        } label: {
-                            Image(systemName: problemDetailVO.favorite.symbolName)
+                    VStack(alignment: .leading) {
+                        questionLabel
+                        question
+                        switch viewModel.solvingState {
+                        case .notSolved:
+                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            writingAnswer
+                        case .waiting:
+                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            progressBarForAnswer
+                        case .correct:
+                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerLabelButton
+                        case .wrong:
+                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerLabelButton
+                            showAnswerButton
+                        case .showAnswer:
+                            answer(text: problemDetailVO.problemAnswer)
+                            showChatGPTButton
+                            listOfFAQ
                         }
+
+                        Spacer()
                     }
                 }
             } else {
                 ProgressView()
             }
         }
-        .padding([.leading, .trailing])
+        .modifier(CustomNavigation(
+            title: "문제풀이",
+            back: viewModel.back,
+            toolbarContent: SymbolButtonToolbar(
+                placement: .navigationBarTrailing,
+                symbolName: SymbolName.heartFill,
+                action: viewModel.toggleFavorite)))
+        .padding([.leading, .trailing], 20)
         .onAppear {
             viewModel.startSolvingProblem()
             viewModel.getProblemDetail()
         }
-        .onChange(of: viewModel.focused) {
-            focused = $0
-        }
+        
+    }
+    
+    // 질문 라벨
+    @ViewBuilder
+    private var questionLabel: some View {
+        Text("Question")
+            .font(.Body2SemiBold)
+            .foregroundColor(.white)
+            .padding([.top, .bottom], 4)
+            .padding([.leading, .trailing], 14)
+            .background(.Bg_Point)
+            .cornerRadius(14)
+            .padding(.bottom, 8)
     }
     
     // 문제 질문
@@ -63,7 +85,9 @@ public struct ProblemDetailView: View {
     private var question: some View {
         if let problemDetailVO = viewModel.problemDetailVO {
             Text(problemDetailVO.problemQuestion)
-                .padding(.bottom)
+                .font(.Head3SemiBold)
+                .foregroundColor(.Text_Default)
+                .padding(.bottom, 12)
         }
     }
     
@@ -71,19 +95,74 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private func answer(text: String) -> some View {
         Text(text)
-            .padding(.bottom)
+            .padding([.top, .bottom], 40)
+            .padding([.leading, .trailing], 24)
+            .background(.Bg_Light)
+            .cornerRadius(20)
+            .padding(.bottom, 45)
     }
     
     // 답변 입력칸
     @ViewBuilder
-    private var textField: some View {
-        TextField("정답을 입력해주세요", text: $viewModel.input)
-            .focused($focused)
+    private var writingAnswer: some View {
+        TextField("", text: $viewModel.input)
+            .placeholder(when: !focused && viewModel.input.isEmpty, alignment: .center, placeholder: {
+                Text("정답을 입력해주세요")
+                    .font(.Body1Regular)
+                    .foregroundColor(.Text_Disabled)
+            })
+            .font(.Body1Regular)
+            .foregroundColor(.Text_Default)
+            .padding([.top, .bottom], 18)
+            .padding([.leading, .trailing], 55)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(viewModel.input.isEmpty ? .Border_Default : .black, lineWidth: 1)
+            )
+            .padding(.bottom, 20)
             .multilineTextAlignment(.center)
-            .padding(.bottom)
+            .focused($focused)
             .onSubmit {
                 viewModel.submitAnswer()
             }
+    }
+    
+    // 답변이 맞는지 서버에서 판별하는 동안 보져주는 로딩뷰
+    @ViewBuilder
+    private var progressBarForAnswer: some View {
+        ProgressView()
+            .foregroundColor(.Text_Default)
+            .padding([.top, .bottom], 18)
+            .padding([.leading, .trailing], 55)
+            .frame(maxWidth: .infinity)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(.black, lineWidth: 1)
+            )
+            .padding(.bottom, 20)
+    }
+    
+    // 정답 확인하고 다음 상태로 넘어갈 수 있는 버튼
+    @ViewBuilder
+    private var answerLabelButton: some View {
+        Button {
+            if viewModel.solvingState == .correct {
+                viewModel.showAnswer()
+            } else {
+                viewModel.initInput()
+            }
+        } label: {
+            Text(viewModel.solvingState == .correct ? "정답입니다! 👍" : "오답이네요 ☹️")
+                .font(.Body1Regular)
+                .foregroundColor(.white)
+                .padding([.top, .bottom], 18)
+                .padding([.leading, .trailing], 55)
+                .frame(maxWidth: .infinity)
+                .background(viewModel.solvingState == .correct ? .Button_Point : .Button_Red)
+                .cornerRadius(10)
+                .padding(.bottom, 20)
+        }
+        .buttonStyle(.plain)
     }
     
     // 정답 보기 버튼
@@ -94,15 +173,6 @@ public struct ProblemDetailView: View {
         } label: {
             Text("정답 보기")
                 .padding(.bottom)
-        }
-    }
-    
-    // 틀렸을 때 띄워주는 메시지
-    @ViewBuilder
-    private var wrongMessage: some View {
-        if viewModel.isWrong {
-            Text("틀렸습니다.")
-                .foregroundColor(.red)
         }
     }
     

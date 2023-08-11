@@ -15,13 +15,14 @@ public class ProblemDetailViewModel: BaseViewModel {
     @Published var problemDetailVO: ProblemDetailVO?
     @Published var answerWithoutKeyword: String?
     @Published var input: String = ""
-    @Published var focused: Bool = false
-    @Published var isWrong: Bool = false
     @Published var solvingState: SolvingState = .notSolved
     
     enum SolvingState {
-        case solved
         case notSolved
+        case waiting
+        case correct
+        case wrong
+        case showAnswer
     }
     
     public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol) {
@@ -38,7 +39,6 @@ public class ProblemDetailViewModel: BaseViewModel {
                 case .success(let problemDetailVO):
                     self.problemDetailVO = problemDetailVO
                     self.hideKeyword()
-                    self.showKeyboard()
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -48,11 +48,16 @@ public class ProblemDetailViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    // 정답이 나오는 상태로 화면을 변경
+    // 정답이 나오는 상태로 변경
     func showAnswer() {
-        isWrong = false
-        solvingState = .solved
+        solvingState = .showAnswer
         useCase.showAnswer()
+    }
+    
+    // 다시 입력받도록 초기화 상태로 변경
+    func initInput() {
+        solvingState = .notSolved
+        input = ""
     }
     
     // 문제 찜하기 선택 및 해제
@@ -94,13 +99,15 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     func submitAnswer() {
+        solvingState = .waiting
         useCase.submitAnswer(id: problemId, keyword: input)
             .sinkToResult { result in
                 switch result {
                 case .success(let problemSolvedVO):
-                    self.isWrong = problemSolvedVO.solved ? false : true
-                    if problemSolvedVO.solved {
-                        self.showAnswer()
+                    if problemSolvedVO.solved == true {
+                        self.solvingState = .correct
+                    } else {
+                        self.solvingState = .wrong
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
@@ -109,11 +116,6 @@ public class ProblemDetailViewModel: BaseViewModel {
                 }
             }
             .store(in: cancelBag)
-    }
-    
-    // 키보드 보여주기
-    private func showKeyboard() {
-        focused = true
     }
     
     // 문제에 대한 답변에서 키워드 부분은 숨기기

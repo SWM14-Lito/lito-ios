@@ -10,7 +10,6 @@ import SwiftUI
 
 public extension Color {
 
-    
     /// hex: 3EC481
     static let Bg_ChatGPT = makeLitoColor(.Bg_ChatGPT)
     /// hex: F3F3F3
@@ -43,6 +42,8 @@ public extension Color {
     static let Button_Point = makeLitoColor(.Button_Point)
     /// hex: 7778FF
     static let Button_Point_Light = makeLitoColor(.Button_Point_light)
+    /// hex: E24949
+    static let Button_Red = makeLitoColor(.Button_Red)
     /// hex: E2E2E2
     static let Button_Tag_Default = makeLitoColor(.Button_Tag_Default)
     /// hex: A0A0A0
@@ -98,6 +99,7 @@ extension ShapeStyle where Self == Color {
     static var Border_Light: Color { Color.Border_Light }
     static var Button_Point: Color { Color.Button_Point }
     static var Button_Point_Light: Color { Color.Button_Point_Light }
+    static var Button_Red: Color { Color.Button_Red }
     static var Button_Tag_Default: Color { Color.Button_Tag_Default }
     static var Button_Negative: Color { Color.Button_Negative }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
@@ -153,6 +155,7 @@ public enum LitoColor: String {
     case Border_Light
     case Button_Point
     case Button_Point_light
+    case Button_Red
     case Button_Tag_Default
     case Button_Negative
     case Divider_Default
