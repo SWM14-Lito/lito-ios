@@ -41,7 +41,7 @@ struct AuthPlugin: PluginType {
             request.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
             request.headers.add(name: "Refresh-Token", value: NetworkConfiguration.refreashToken)
         case let path where needRefreashToken.contains(path):
-            request.headers.add(name: "Refresh-Token", value: NetworkConfiguration.refreashToken)
+            request.headers.add(.authorization(bearerToken: NetworkConfiguration.refreashToken))
         default:
             request.headers.add(.authorization(bearerToken: NetworkConfiguration.accessToken))
         }
