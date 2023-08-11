@@ -10,7 +10,6 @@ import SwiftUI
 
 public extension Color {
 
-    
     /// hex: 3EC481
     static let Bg_ChatGPT = makeLitoColor(.Bg_ChatGPT)
     /// hex: F3F3F3
@@ -61,6 +60,8 @@ public extension Color {
     static let Heart_Clicked_Outer = makeLitoColor(.Heart_Clicked_Outer)
     /// hex: C6C6C6
     static let Heart_Unclicked_Inner = makeLitoColor(.Heart_Unclicked_Inner)
+    /// hex: C6C6C6
+    static let Icon_Default = makeLitoColor(.Heart_Unclicked_Inner)
     /// hex: E2E2E2
     static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Unclicked_Outer)
     /// hex: BFBFBF
@@ -108,6 +109,7 @@ extension ShapeStyle where Self == Color {
     static var Heart_Clicked_Outer: Color { Color.makeLitoColor(.Heart_Clicked_Outer) }
     static var Heart_Unclicked_Inner: Color { Color.makeLitoColor(.Heart_Unclicked_Inner) }
     static var Heart_Unclicked_Outer: Color { Color.makeLitoColor(.Heart_Unclicked_Outer) }
+    static var Icon_Default: Color { Color.makeLitoColor(.Icon_Default) }
     static var Shadow_Default: Color { Color.makeLitoColor(.Shadow_Default) }
     static var Text_Default: Color { Color.makeLitoColor(.Text_Default) }
     static var Text_Disabled: Color { Color.makeLitoColor(.Text_Disabled) }
@@ -163,6 +165,7 @@ public enum LitoColor: String {
     case Heart_Clicked_Outer
     case Heart_Unclicked_Inner
     case Heart_Unclicked_Outer
+    case Icon_Default
     case Shadow_Default
     case Text_Default
     case Text_Disabled

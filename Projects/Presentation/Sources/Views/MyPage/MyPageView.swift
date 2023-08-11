@@ -155,6 +155,7 @@ public struct MyPageView: View {
                             .font(.system(size: 14))
                             .padding(.trailing, 8)
                         Toggle("알림받기", isOn: $viewModel.alarmStatus)
+                            .toggleStyle(AlarmToggleStyle())
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 18)
