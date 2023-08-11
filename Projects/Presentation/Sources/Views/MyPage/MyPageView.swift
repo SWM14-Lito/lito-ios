@@ -55,7 +55,7 @@ public struct MyPageView: View {
                                 .foregroundColor(.Text_Default)
                             Spacer()
                             Button {
-                                //
+                                viewModel.moveToModifyProfileView()
                             } label: {
                                 Text("정보수정")
                                     .font(.InfoRegular)
@@ -152,7 +152,7 @@ public struct MyPageView: View {
                     Divider()
                     HStack(spacing: 10) {
                         Image(systemName: SymbolName.bell)
-                            .font(.system(size: 14))
+                            .font(.system(size: 18))
                             .padding(.trailing, 8)
                         Toggle("알림받기", isOn: $viewModel.alarmStatus)
                             .toggleStyle(AlarmToggleStyle())

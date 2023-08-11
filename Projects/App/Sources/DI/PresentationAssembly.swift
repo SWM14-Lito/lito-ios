@@ -139,9 +139,16 @@ public struct PresentationAssembly: Assembly {
             let useCase = resolver.resolve(MyPageUseCase.self)!
             return MyPageViewModel(useCase: useCase, coordinator: coordinator)
         }
+        .inObjectScope(.container)
+        
         container.register(MyPageView.self) { resolver in
             let viewModel = resolver.resolve(MyPageViewModel.self)!
             return MyPageView(viewModel: viewModel)
+        }
+        
+        container.register(ModifyProfileView.self) { resolver in
+            let viewModel = resolver.resolve(MyPageViewModel.self)!
+            return ModifyProfileView(viewModel: viewModel)
         }
     }
     

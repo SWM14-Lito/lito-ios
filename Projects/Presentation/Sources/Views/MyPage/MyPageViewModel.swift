@@ -62,4 +62,8 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
+    public func moveToModifyProfileView() {
+        coordinator.push(.modifyProfileScene)
+    }
+    
 }
