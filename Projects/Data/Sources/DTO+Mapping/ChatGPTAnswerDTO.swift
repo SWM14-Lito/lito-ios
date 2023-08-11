@@ -22,7 +22,7 @@ public struct ChatGPTAnswerDTO: Decodable {
             object: object ?? "Unknown",
             created: created ?? -1,
             model: model ?? "Unknown",
-            messages: messages?.map{ $0.toVO() } ?? [],
+            messages: messages?.map { $0.toVO() } ?? [],
             usage: usage?.toVO() ?? ChatGPTUsageDTO(promptTokens: nil, completionTokens: nil, totalTokens: nil).toVO()
         )
     }
@@ -53,20 +53,3 @@ public struct ChatGPTUsageDTO: Decodable {
         )
     }
 }
-
-
-//{
-//  "id" : "chatcmpl-7j05y1QjDWTsAqsRipw7tfJ4nPqsB",
-//  "object" : "chat.completion",
-//  "created" : 1690959482,
-//  "model" : "gpt-3.5-turbo-0613",
-//  "messages" : [ {
-//    "role" : "assistant",
-//    "message" : "응답 메세지"
-//  } ],
-//  "usage" : {
-//    "promptTokens" : 13,
-//    "completionTokens" : 44,
-//    "totalTokens" : 57
-//  }
-//}
