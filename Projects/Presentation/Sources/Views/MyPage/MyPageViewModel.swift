@@ -16,6 +16,8 @@ public class MyPageViewModel: BaseViewModel {
     @Published var userInfo: UserInfoVO?
     @Published var imageData: Data?
     @Published var alarmStatus: Bool = true
+    @Published var modifyNickNameInput = LimitedText(limit: 8)
+    @Published var modifyIntroduceInput = LimitedText(limit: 255)
     
     public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase

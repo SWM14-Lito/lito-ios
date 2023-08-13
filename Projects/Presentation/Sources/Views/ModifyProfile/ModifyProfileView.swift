@@ -24,28 +24,85 @@ public struct ModifyProfileView: View {
                     .padding(.top, 15)
                     .padding(.bottom, 39)
                 VStack(spacing: 0) {
-                    HStack {
-                        Text("이름")
-                            .font(.Body2SemiBold)
-                        Spacer()
+                    // 이름
+                    VStack(spacing: 0) {
+                        HStack {
+                            Text("이름")
+                                .font(.Body2SemiBold)
+                            Spacer()
+                        }
+                        .padding(.bottom, 6)
+                        HStack {
+                            Text(userInfo.name)
+                                .font(.Body2Regular)
+                                .foregroundColor(.Text_Disabled)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                        .background {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(.Bg_Deep)
+                        }
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.Border_Default, lineWidth: 1)
+                        )
                     }
                     .padding(.bottom, 6)
                     HStack {
-                        Text(userInfo.name)
-                            .font(.Body2Regular)
-                            .foregroundColor(.Text_Disabled)
+                        Text("이름 변경을 원하실 경우 이메일로 문의해주세요!")
+                            .font(.InfoRegular)
+                            .foregroundColor(.Text_Info)
                         Spacer()
+                        Text("문의하기")
+                            .font(.InfoRegular)
+                            .foregroundColor(.Text_Point)
+                            .underline()
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(.Bg_Deep)
+                    .padding(.bottom, 30)
+                    // 닉네임
+                    VStack(spacing: 0) {
+                        HStack {
+                            Text("닉네임")
+                                .font(.Body2SemiBold)
+                            Spacer()
+                        }
+                        .padding(.bottom, 6)
+                        HStack {
+                            TextField("test", text: $viewModel.modifyNickNameInput.text)
+                                .font(.Body2Regular)
+                                .foregroundColor(.Text_Disabled)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.Border_Default, lineWidth: 1)
+                        )
                     }
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.Border_Default, lineWidth: 1)
-                    )
+                    .padding(.bottom, 30)
+                    VStack(spacing: 0) {
+                        HStack {
+                            Text("소개말 수정")
+                                .font(.Body2SemiBold)
+                            Spacer()
+                        }
+                        .padding(.bottom, 6)
+                        HStack {
+                            TextField("test", text: $viewModel.modifyIntroduceInput.text)
+                                .font(.Body2Regular)
+                                .foregroundColor(.Text_Disabled)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 14)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.Border_Default, lineWidth: 1)
+                        )
+                    }
                 }
                 .padding(.horizontal, 20)
             }
