@@ -13,7 +13,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
     private var problemId: Int
     @Published private(set) var problemDetailVO: ProblemDetailVO?
-    @Published private(set) var answerWithoutKeyword: String?
+    @Published private(set) var answerSplited: [String]?
     @Published var input: String = ""
     @Published private(set) var solvingState: SolvingState = .notSolved
     @Published private(set) var faqIsOpened: [Bool]?
@@ -129,7 +129,6 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 문제에 대한 답변에서 키워드 부분은 숨기기
     private func hideKeyword() {
         guard let problemDetailVO = problemDetailVO else { return }
-        let wordLength = problemDetailVO.problemKeyword.count
-        answerWithoutKeyword = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: String(repeating: " _ ", count: wordLength))
+        answerSplited = problemDetailVO.problemAnswer.split(separator: problemDetailVO.problemKeyword).map { String($0) }
     }
 }

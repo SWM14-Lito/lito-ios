@@ -100,14 +100,14 @@ public struct ProblemDetailView: View {
     // 문제 답변
     @ViewBuilder
     private var answerBox: some View {
-        Text(viewModel.answerWithoutKeyword ?? "")
-            .font(.Body2Regular)
-            .foregroundColor(.Text_Default)
-            .padding([.top, .bottom], 40)
-            .padding([.leading, .trailing], 24)
-            .background(.Bg_Light)
-            .cornerRadius(20)
-            .padding(.bottom, 45)
+        WHStack {
+            makeAnswerBoxComponents()
+        }
+        .padding([.top, .bottom], 40)
+        .padding([.leading, .trailing], 24)
+        .background(.Bg_Light)
+        .cornerRadius(20)
+        .padding(.bottom, 45)
     }
     
     // ChatGPT 버튼이 있는 문제 답변
@@ -303,5 +303,33 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)
+    }
+    
+    private func makeAnswerBoxComponents() -> [AnyView] {
+        var components = [AnyView]()
+        if let answerSplited = viewModel.answerSplited {
+            for idx in 0..<answerSplited.count {
+                components.append(
+                    AnyView(
+                        Text(answerSplited[idx])
+                            .font(.Body2Regular)
+                            .foregroundColor(.Text_Default)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineSpacing(10)
+                            .background(Color.blue)
+                    )
+                )
+                if idx != answerSplited.count-1 {
+                    components.append(
+                        AnyView(
+                            Color.red
+                                .frame(width: 96, height: 38)
+                        )
+                    )
+                }
+            }
+            print(answerSplited)
+        }
+        return components
     }
 }
