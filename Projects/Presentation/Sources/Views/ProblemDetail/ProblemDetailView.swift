@@ -20,10 +20,10 @@ public struct ProblemDetailView: View {
     public var body: some View {
         VStack {
             errorMessage
-            if viewModel.problemDetailVO != nil {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        questionLabel
+            ScrollView {
+                VStack(alignment: .leading) {
+                    questionLabel
+                    if viewModel.problemDetailVO != nil {
                         question
                         switch viewModel.solvingState {
                         case .notSolved:
@@ -46,12 +46,13 @@ public struct ProblemDetailView: View {
                             answerBoxWithChatGPTButton
                             listOfFaq
                         }
-
-                        Spacer()
+                    } else {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
                     }
+                    Spacer()
                 }
-            } else {
-                ProgressView()
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .modifier(CustomNavigation(
@@ -62,13 +63,13 @@ public struct ProblemDetailView: View {
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
                 action: viewModel.toggleFavorite)))
-        
+
         .padding([.leading, .trailing], 20)
         .onAppear {
             viewModel.startSolvingProblem()
             viewModel.getProblemDetail()
         }
-        
+
     }
     
     // 질문 라벨
