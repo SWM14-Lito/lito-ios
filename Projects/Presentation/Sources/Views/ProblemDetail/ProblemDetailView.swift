@@ -44,7 +44,7 @@ public struct ProblemDetailView: View {
                             showAnswerButton
                         case .showAnswer:
                             answerBoxWithChatGPTButton
-                            listOfFAQ
+                            listOfFaq
                         }
 
                         Spacer()
@@ -225,17 +225,74 @@ public struct ProblemDetailView: View {
     
     // FAQ 목록
     @ViewBuilder
-    private var listOfFAQ: some View {
+    private var listOfFaq: some View {
         if let problemDetailVO = viewModel.problemDetailVO,
            let faqs = problemDetailVO.faqs {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text("FAQ")
-                Divider()
+                    .font(.Head3SemiBold)
+                    .foregroundColor(.Text_Default)
+                    .padding(.bottom, 2)
                 
-                ForEach(faqs, id: \.self) { faq in
-                    Text("Q) " + faq.faqQuestion)
-                    Text("A) " + faq.faqAnswer)
-                        .padding(.bottom)
+                ForEach(faqs.indices, id: \.self) { idx in
+                    faqCell(idx: idx, question: faqs[idx].faqQuestion, answer: faqs[idx].faqAnswer)
+                }
+            }
+        }
+    }
+    
+    // FAQ 셀
+    @ViewBuilder
+    private func faqCell(idx: Int, question: String, answer: String) -> some View {
+        if let faqIsOpened = viewModel.faqIsOpened {
+            if faqIsOpened[idx] {
+                VStack(alignment: .leading, spacing: 18) {
+                    HStack(alignment: .top, spacing: 10) {
+                        Text(question)
+                            .font(.Body2Medium)
+                            .foregroundColor(.black)
+                        Spacer()
+                        Image(systemName: SymbolName.chevronUp)
+                            .font(.system(size: 15))
+                            .foregroundColor(.Text_Info)
+                    }
+                    .padding(.trailing, 15)
+                    Text(answer)
+                        .font(.Body3Regular)
+                        .foregroundColor(.Text_Serve)
+                        .padding(.trailing, 20)
+                }
+                .padding(.leading, 20)
+                .padding([.top, .bottom], 18)
+                .background(.Bg_Soft_Blue)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.Border_Strong, lineWidth: 1)
+                )
+                .onTapGesture {
+                    viewModel.toggleFaqOpenStatus(idx: idx)
+                }
+            } else {
+                HStack(spacing: 10) {
+                    Text(question)
+                        .font(.Body2Medium)
+                        .foregroundColor(.black)
+                        .lineLimit(1)
+                    Spacer()
+                    Image(systemName: SymbolName.chevronDown)
+                        .font(.system(size: 15))
+                        .foregroundColor(.Text_Info)
+                }
+                .padding(.leading, 20)
+                .padding(.trailing, 15)
+                .padding([.top, .bottom], 18)
+                .background(.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(.Border_Default, lineWidth: 1)
+                )
+                .onTapGesture {
+                    viewModel.toggleFaqOpenStatus(idx: idx)
                 }
             }
         }

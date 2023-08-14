@@ -12,10 +12,11 @@ import SwiftUI
 public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
     private var problemId: Int
-    @Published var problemDetailVO: ProblemDetailVO?
-    @Published var answerWithoutKeyword: String?
+    @Published private(set) var problemDetailVO: ProblemDetailVO?
+    @Published private(set) var answerWithoutKeyword: String?
     @Published var input: String = ""
-    @Published var solvingState: SolvingState = .notSolved
+    @Published private(set) var solvingState: SolvingState = .notSolved
+    @Published private(set) var faqIsOpened: [Bool]?
     
     enum SolvingState {
         case notSolved
@@ -39,6 +40,7 @@ public class ProblemDetailViewModel: BaseViewModel {
                 switch result {
                 case .success(let problemDetailVO):
                     self.problemDetailVO = problemDetailVO
+                    self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
                     self.hideKeyword()
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
@@ -117,6 +119,11 @@ public class ProblemDetailViewModel: BaseViewModel {
                 }
             }
             .store(in: cancelBag)
+    }
+    
+    // faq 열림, 닫힘 상태 변경하기
+    func toggleFaqOpenStatus(idx: Int) {
+        faqIsOpened?[idx].toggle()
     }
     
     // 문제에 대한 답변에서 키워드 부분은 숨기기
