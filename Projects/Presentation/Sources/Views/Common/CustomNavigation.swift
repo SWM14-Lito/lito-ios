@@ -43,13 +43,21 @@ struct CustomNavigation: ViewModifier {
 struct SymbolButtonToolbar: ToolbarContent {
     let placement: ToolbarItemPlacement
     let symbolName: String
+    let color: Color
     let action: () -> Void
+    
+    init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, action: @escaping () -> Void) {
+        self.placement = placement
+        self.symbolName = symbolName
+        self.color = color
+        self.action = action
+    }
     
     var body: some ToolbarContent {
         ToolbarItem(placement: placement) {
             Button(action: action, label: {
                 Image(systemName: symbolName)
-                    .foregroundColor(.Text_Default)
+                    .foregroundColor(color)
             })
         }
     }

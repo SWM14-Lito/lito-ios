@@ -38,6 +38,8 @@ public extension Color {
     static let Border_Strong = makeLitoColor(.Border_Strong)
     /// hex: F3F3F3
     static let Border_Light = makeLitoColor(.Border_Light)
+    /// hex: 12A480
+    static let Button_Dark_Green = makeLitoColor(.Button_Dark_Green)
     /// hex: 494AE2
     static let Button_Point = makeLitoColor(.Button_Point)
     /// hex: 7778FF
@@ -64,6 +66,10 @@ public extension Color {
     static let Heart_Unclicked_Inner = makeLitoColor(.Heart_Unclicked_Inner)
     /// hex: E2E2E2
     static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Unclicked_Outer)
+    /// hex: C6C6C6
+    static let Icon_Default = makeLitoColor(.Icon_Default)
+    /// hex: 444444
+    static let Icon_Strong = makeLitoColor(.Icon_Strong)
     /// hex: BFBFBF
     static let Shadow_Default = makeLitoColor(.Shadow_Default)
     /// hex: 232527
@@ -97,6 +103,7 @@ extension ShapeStyle where Self == Color {
     static var Border_Serve: Color { Color.Border_Serve }
     static var Border_Strong: Color { Color.Border_Strong }
     static var Border_Light: Color { Color.Border_Light }
+    static var Button_Dark_Green: Color { Color.Button_Dark_Green }
     static var Button_Point: Color { Color.Button_Point }
     static var Button_Point_Light: Color { Color.Button_Point_Light }
     static var Button_Red: Color { Color.Button_Red }
@@ -110,6 +117,8 @@ extension ShapeStyle where Self == Color {
     static var Heart_Clicked_Outer: Color { Color.makeLitoColor(.Heart_Clicked_Outer) }
     static var Heart_Unclicked_Inner: Color { Color.makeLitoColor(.Heart_Unclicked_Inner) }
     static var Heart_Unclicked_Outer: Color { Color.makeLitoColor(.Heart_Unclicked_Outer) }
+    static var Icon_Default: Color { Color.makeLitoColor(.Icon_Default) }
+    static var Icon_Strong: Color { Color.makeLitoColor(.Icon_Strong) }
     static var Shadow_Default: Color { Color.makeLitoColor(.Shadow_Default) }
     static var Text_Default: Color { Color.makeLitoColor(.Text_Default) }
     static var Text_Disabled: Color { Color.makeLitoColor(.Text_Disabled) }
@@ -153,6 +162,7 @@ public enum LitoColor: String {
     case Border_Serve
     case Border_Strong
     case Border_Light
+    case Button_Dark_Green
     case Button_Point
     case Button_Point_light
     case Button_Red
@@ -166,6 +176,8 @@ public enum LitoColor: String {
     case Heart_Clicked_Outer
     case Heart_Unclicked_Inner
     case Heart_Unclicked_Outer
+    case Icon_Default
+    case Icon_Strong
     case Shadow_Default
     case Text_Default
     case Text_Disabled

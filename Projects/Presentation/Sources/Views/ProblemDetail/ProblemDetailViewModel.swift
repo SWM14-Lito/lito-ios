@@ -22,6 +22,7 @@ public class ProblemDetailViewModel: BaseViewModel {
         case waiting
         case correct
         case wrong
+        case wronWithInput
         case showAnswer
     }
     
@@ -56,7 +57,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 다시 입력받도록 초기화 상태로 변경
     func initInput() {
-        solvingState = .notSolved
+        solvingState = .wronWithInput
         input = ""
     }
     

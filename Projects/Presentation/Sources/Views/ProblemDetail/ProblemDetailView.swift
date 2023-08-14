@@ -20,28 +20,30 @@ public struct ProblemDetailView: View {
     public var body: some View {
         VStack {
             errorMessage
-            if let problemDetailVO = viewModel.problemDetailVO {
+            if viewModel.problemDetailVO != nil {
                 ScrollView {
                     VStack(alignment: .leading) {
                         questionLabel
                         question
                         switch viewModel.solvingState {
                         case .notSolved:
-                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerBox
                             writingAnswer
                         case .waiting:
-                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerBox
                             progressBarForAnswer
                         case .correct:
-                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerBox
                             answerLabelButton
                         case .wrong:
-                            answer(text: viewModel.answerWithoutKeyword ?? "")
+                            answerBox
                             answerLabelButton
+                        case .wronWithInput:
+                            answerBox
+                            writingAnswer
                             showAnswerButton
                         case .showAnswer:
-                            answer(text: problemDetailVO.problemAnswer)
-                            showChatGPTButton
+                            answerBoxWithChatGPTButton
                             listOfFAQ
                         }
 
@@ -58,7 +60,9 @@ public struct ProblemDetailView: View {
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.heartFill,
+                color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
                 action: viewModel.toggleFavorite)))
+        
         .padding([.leading, .trailing], 20)
         .onAppear {
             viewModel.startSolvingProblem()
@@ -78,6 +82,7 @@ public struct ProblemDetailView: View {
             .background(.Bg_Point)
             .cornerRadius(14)
             .padding(.bottom, 8)
+            .padding(.top, 10)
     }
     
     // 문제 질문
@@ -93,13 +98,33 @@ public struct ProblemDetailView: View {
     
     // 문제 답변
     @ViewBuilder
-    private func answer(text: String) -> some View {
-        Text(text)
+    private var answerBox: some View {
+        Text(viewModel.answerWithoutKeyword ?? "")
+            .font(.Body2Regular)
+            .foregroundColor(.Text_Default)
             .padding([.top, .bottom], 40)
             .padding([.leading, .trailing], 24)
             .background(.Bg_Light)
             .cornerRadius(20)
             .padding(.bottom, 45)
+    }
+    
+    // ChatGPT 버튼이 있는 문제 답변
+    @ViewBuilder
+    private var answerBoxWithChatGPTButton: some View {
+        VStack(spacing: 30) {
+            Text(viewModel.problemDetailVO?.problemAnswer ?? "")
+                .font(.Body2Regular)
+                .foregroundColor(.Text_Default)
+                .padding([.leading, .trailing], 24)
+            showChatGPTButton
+                .padding([.leading, .trailing], 30)
+        }
+        .padding(.top, 40)
+        .padding(.bottom, 23)
+        .background(.Bg_Light)
+        .cornerRadius(20)
+        .padding(.bottom, 45)
     }
     
     // 답변 입력칸
@@ -182,9 +207,20 @@ public struct ProblemDetailView: View {
         Button {
             viewModel.showChatGPT()
         } label: {
-            Text("Chat GPT")
-                .padding(.bottom)
+            HStack(spacing: 10) {
+                Image(.chatgpt)
+                    .font(.system(size: 22))
+                    .foregroundColor(.white)
+                Text("Chat GPT 질문하기")
+                    .font(.Body2Regular)
+                    .foregroundColor(.white)
+            }
+            .padding([.top, .bottom], 13)
+            .padding([.leading, .trailing], 55)
+            .background(.Button_Dark_Green)
+            .cornerRadius(10)
         }
+        .buttonStyle(.plain)
     }
     
     // FAQ 목록
