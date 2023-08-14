@@ -18,7 +18,7 @@ public struct ModifyProfileView: View {
     
     public var body: some View {
         if let userInfo = viewModel.userInfo {
-            ScrollView {
+            VStack {
                 Divider()
                     .foregroundColor(.Divider_Default)
                     .padding(.top, 15)
@@ -72,7 +72,6 @@ public struct ModifyProfileView: View {
                         HStack {
                             TextField("test", text: $viewModel.modifyNickNameInput.text)
                                 .font(.Body2Regular)
-                                .foregroundColor(.Text_Disabled)
                             Spacer()
                         }
                         .padding(.horizontal, 20)
@@ -91,9 +90,9 @@ public struct ModifyProfileView: View {
                         }
                         .padding(.bottom, 6)
                         HStack {
-                            TextField("test", text: $viewModel.modifyIntroduceInput.text)
+                            TextField("test", text: $viewModel.modifyIntroduceInput.text, axis: .vertical)
+                                .lineLimit(3, reservesSpace: true)
                                 .font(.Body2Regular)
-                                .foregroundColor(.Text_Disabled)
                             Spacer()
                         }
                         .padding(.horizontal, 20)
@@ -103,6 +102,37 @@ public struct ModifyProfileView: View {
                                 .stroke(.Border_Default, lineWidth: 1)
                         )
                     }
+                    Spacer()
+                    HStack {
+                        Button {
+                            // 탈퇴
+                        } label: {
+                            Text("회원탈퇴")
+                                .font(.Body1Medium)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 55)
+                        .padding(.vertical, 20)
+                        .background {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(.Button_Negative)
+                        }
+                        Spacer()
+                        Button {
+                            // 수정
+                        } label: {
+                            Text("수정완료")
+                                .font(.Body1Medium)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 55)
+                        .padding(.vertical, 20)
+                        .background {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(.Button_Point)
+                        }
+                    }
+                    .padding(.bottom, 20)
                 }
                 .padding(.horizontal, 20)
             }
