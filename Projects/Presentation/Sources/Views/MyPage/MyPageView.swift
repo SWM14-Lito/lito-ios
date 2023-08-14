@@ -47,7 +47,6 @@ public struct MyPageView: View {
                 HStack(spacing: 14) {
                     PhotoPickerView(imageData: $viewModel.imageData)
                         .frame(width: 74, height: 74)
-                        .clipShape(Circle())
                     VStack(spacing: 9) {
                         HStack {
                             Text(userInfo.name)
