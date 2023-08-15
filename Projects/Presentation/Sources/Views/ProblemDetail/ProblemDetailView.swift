@@ -305,30 +305,54 @@ public struct ProblemDetailView: View {
         ErrorView(errorObject: viewModel.errorObject)
     }
     
+    // 키워드 컴포넌트
+    @ViewBuilder
+    private var keywordBox: some View {
+        if let keyword = viewModel.problemDetailVO?.problemKeyword {
+            HStack(spacing: 3) {
+                ForEach(keyword.map { String($0) }, id: \.self) { c in
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 3)
+                            .strokeBorder(.Border_Serve, lineWidth: 1)
+                            .frame(width: 26, height: 26)
+                            .background(.white)
+                        Text(c)
+                            .font(.Body1SemiBold)
+                            .foregroundColor(.Text_Point)
+                    }
+                }
+            }
+            .padding(6)
+            .background(.Bg_Dark_Soft_Blue)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .strokeBorder(.Border_Strong, lineWidth: focused ? 1 : 0)
+            )
+        }
+    }
+    
+    // 일반 단어와 키워드 뷰컴포넌트를 구분해서 리스트에 담아주기
     private func makeAnswerBoxComponents() -> [AnyView] {
         var components = [AnyView]()
         if let answerSplited = viewModel.answerSplited {
-            for idx in 0..<answerSplited.count {
-                components.append(
-                    AnyView(
-                        Text(answerSplited[idx])
-                            .font(.Body2Regular)
-                            .foregroundColor(.Text_Default)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineSpacing(10)
-                            .background(Color.blue)
-                    )
-                )
-                if idx != answerSplited.count-1 {
+            for word in answerSplited {
+                if word == viewModel.problemDetailVO?.problemKeyword {
                     components.append(
                         AnyView(
-                            Color.red
-                                .frame(width: 96, height: 38)
+                            keywordBox
+                        )
+                    )
+                } else {
+                    components.append(
+                        AnyView(
+                            Text(word)
+                                .font(.Body2Regular)
+                                .foregroundColor(.Text_Default)
+                                .fixedSize(horizontal: true, vertical: false)
                         )
                     )
                 }
             }
-            print(answerSplited)
         }
         return components
     }

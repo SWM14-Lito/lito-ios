@@ -6,6 +6,8 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
+// https://swiftui.diegolavalle.com/posts/linewrapping-stacks/
+
 import SwiftUI
 
 struct SizePref: PreferenceKey {

@@ -41,7 +41,7 @@ public class ProblemDetailViewModel: BaseViewModel {
                 case .success(let problemDetailVO):
                     self.problemDetailVO = problemDetailVO
                     self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
-                    self.hideKeyword()
+                    self.splitSentence()
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -126,9 +126,12 @@ public class ProblemDetailViewModel: BaseViewModel {
         faqIsOpened?[idx].toggle()
     }
     
-    // 문제에 대한 답변에서 키워드 부분은 숨기기
-    private func hideKeyword() {
+    // 문제에 대한 답변에서 단어별 (키워드 포함) 로 쪼개기
+    private func splitSentence() {
         guard let problemDetailVO = problemDetailVO else { return }
-        answerSplited = problemDetailVO.problemAnswer.split(separator: problemDetailVO.problemKeyword).map { String($0) }
+        print(problemDetailVO.problemAnswer)
+        
+        let keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: " " + problemDetailVO.problemKeyword + " ")
+        answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
     }
 }
