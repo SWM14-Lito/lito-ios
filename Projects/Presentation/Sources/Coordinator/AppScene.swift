@@ -15,7 +15,7 @@ public enum AppScene: Identifiable, Hashable {
     case rootTabScene
     case learningHomeScene, problemListScene, solvingProblemListScene, favoriteProblemListScene, problemDetailScene(id: Int), chattingScene(question: String, answer: String), problemSearchScene
     case pedigreeListScene
-    case myPageScene
+    case myPageScene, modifyProfileScene
     
     public var id: Self {
         return self

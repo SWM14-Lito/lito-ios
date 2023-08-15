@@ -14,6 +14,7 @@ class SymbolName {
     static let bookClosedFill = "book.closed.fill"
     static let bookFill = "book.fill"
     static let bookVerticalFill = "books.vertical.fill"
+    static let cameraCircleFill = "camera.circle.fill"
     static let checkmarkCircleFill = "checkmark.circle.fill"
     static let chevronDown = "chevron.down"
     static let chevronLeft = "chevron.left"
