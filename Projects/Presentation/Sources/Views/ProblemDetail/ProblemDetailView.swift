@@ -26,23 +26,29 @@ public struct ProblemDetailView: View {
                     if viewModel.problemDetailVO != nil {
                         question
                         switch viewModel.solvingState {
-                        case .notSolved:
+                        case .initial:
                             answerBox
-                            writingAnswer
-                            inputError
-                        case .waiting:
+                            if viewModel.isLoading {
+                                progressBarForAnswer
+                            } else {
+                                writingAnswer
+                                if !viewModel.isFirstTry {
+                                    showAnswerButton
+                                }
+                            }
+                        case .wrongInput:
                             answerBox
-                            progressBarForAnswer
-                        case .correct:
+                            if viewModel.isLoading {
+                                progressBarForAnswer
+                            } else {
+                                writingAnswer
+                            }
+                            if !focused && !viewModel.isLoading {
+                                inputError
+                            }
+                        case .wrongKeyword, .correctKeyword:
                             answerBox
                             answerLabelButton
-                        case .wrong:
-                            answerBox
-                            answerLabelButton
-                        case .wronWithInput:
-                            answerBox
-                            writingAnswer
-                            showAnswerButton
                         case .showAnswer:
                             answerBoxWithChatGPTButton
                             listOfFaq
@@ -173,19 +179,19 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private var answerLabelButton: some View {
         Button {
-            if viewModel.solvingState == .correct {
+            if viewModel.solvingState == .correctKeyword {
                 viewModel.showAnswer()
-            } else {
+            } else if viewModel.solvingState == .wrongKeyword {
                 viewModel.initInput()
             }
         } label: {
-            Text(viewModel.solvingState == .correct ? "정답입니다! 👍" : "오답이네요 ☹️")
+            Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
                 .font(.Body1Regular)
                 .foregroundColor(.white)
                 .padding([.top, .bottom], 18)
                 .padding([.leading, .trailing], 55)
                 .frame(maxWidth: .infinity)
-                .background(viewModel.solvingState == .correct ? .Button_Point : .Button_Red)
+                .background(viewModel.solvingState == .correctKeyword ? .Button_Point : .Button_Red)
                 .cornerRadius(10)
                 .padding(.bottom, 20)
         }
@@ -314,22 +320,22 @@ public struct ProblemDetailView: View {
                 ForEach(0..<keyword.count, id: \.self) { idx in
                     ZStack {
                         RoundedRectangle(cornerRadius: 3)
-                            .strokeBorder(viewModel.isWrong() ? .Border_Serve_Red  : .Border_Serve, lineWidth: 1)
+                            .strokeBorder(viewModel.IsWrongBefore ? .Border_Serve_Red  : .Border_Serve, lineWidth: 1)
                             .frame(width: 26, height: 26)
                             .background(.white)
-                        if viewModel.isSubmitAnswer() {
+                        if viewModel.showSubmittedInput {
                             Text(viewModel.input[idx])
                                 .font(.Body1SemiBold)
-                                .foregroundColor(viewModel.isWrong() ? .Text_Point_Red : .Text_Point)
+                                .foregroundColor(viewModel.IsWrongBefore ? .Text_Point_Red : .Text_Point)
                         }
                     }
                 }
             }
             .padding(6)
-            .background(viewModel.isWrong() ? .Bg_Soft_Red : .Bg_Dark_Soft_Blue)
+            .background(viewModel.IsWrongBefore ? .Bg_Soft_Red : .Bg_Dark_Soft_Blue)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .strokeBorder(viewModel.isWrong() ? .Border_Strong_Red : .Border_Strong, lineWidth: focused ? 1 : 0)
+                    .strokeBorder(viewModel.IsWrongBefore ? .Border_Strong_Red : .Border_Strong, lineWidth: focused ? 1 : 0)
             )
         }
     }
@@ -340,6 +346,7 @@ public struct ProblemDetailView: View {
         Text( String(viewModel.problemDetailVO?.problemKeyword.count ?? 0) + "글자를 입력해주세요.")
             .foregroundColor(.Text_Point_Red)
             .font(.InfoRegular)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
     
     // 일반 단어와 키워드 뷰컴포넌트를 구분해서 리스트에 담아주기

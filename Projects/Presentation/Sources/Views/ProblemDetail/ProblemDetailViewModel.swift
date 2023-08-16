@@ -11,20 +11,27 @@ import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
-    private var problemId: Int
+    private let problemId: Int
+    var showSubmittedInput: Bool {
+        return solvingState == .correctKeyword || solvingState == .wrongKeyword
+    }
+    var IsWrongBefore: Bool {
+        return solvingState == .wrongKeyword || (solvingState == .initial && !isFirstTry) || (solvingState == .wrongInput && !isFirstTry)
+    }
+    @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
     @Published private(set) var answerSplited: [String]?
-    @Published var input: String = ""
-    @Published private(set) var solvingState: SolvingState = .notSolved
+    @Published private(set) var solvingState: SolvingState = .initial
     @Published private(set) var faqIsOpened: [Bool]?
-    @Published var inputErrorMessage: String = ""
+    @Published private(set) var inputErrorMessage: String = ""
+    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var isFirstTry: Bool = true
     
     enum SolvingState {
-        case notSolved
-        case waiting
-        case correct
-        case wrong
-        case wronWithInput
+        case initial
+        case wrongInput
+        case correctKeyword
+        case wrongKeyword
         case showAnswer
     }
     
@@ -60,7 +67,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 다시 입력받도록 초기화 상태로 변경
     func initInput() {
-        solvingState = .wronWithInput
+        solvingState = .initial
         input = ""
     }
     
@@ -104,47 +111,33 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     func submitAnswer() {
         if checkInput() {
-            solvingState = .waiting
+           isLoading = true
             useCase.submitAnswer(id: problemId, keyword: input)
                 .sinkToResult { result in
                     switch result {
                     case .success(let problemSolvedVO):
                         if problemSolvedVO.solved == true {
-                            self.solvingState = .correct
+                            self.solvingState = .correctKeyword
                         } else {
-                            self.solvingState = .wrong
+                            self.solvingState = .wrongKeyword
+                            self.isFirstTry = false
                         }
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.errorObject.error  = errorVO
                         }
                     }
+                    self.isLoading = false
                 }
                 .store(in: cancelBag)
+        } else {
+            solvingState = .wrongInput
         }
     }
     
     // faq 열림, 닫힘 상태 변경하기
     func toggleFaqOpenStatus(idx: Int) {
         faqIsOpened?[idx].toggle()
-    }
-    
-    // 문제가 틀린 상태인지 확인하기
-    func isWrong() -> Bool {
-        if solvingState == .wrong || solvingState == .wronWithInput {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    // 문제를 제출한 상태인지 확인하기
-    func isSubmitAnswer() -> Bool {
-        if solvingState == .wrong || solvingState == .correct || solvingState == .showAnswer {
-            return true
-        } else {
-            return false
-        }
     }
     
     // 입력값이 틀렸는지 확인해주기
