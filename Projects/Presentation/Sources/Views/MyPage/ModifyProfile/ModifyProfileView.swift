@@ -70,7 +70,7 @@ public struct ModifyProfileView: View {
                         }
                         .padding(.bottom, 6)
                         HStack {
-                            TextField("test", text: $viewModel.modifyNickNameInput.text)
+                            TextField("변경하고 싶은 닉네임을 입력해주세요", text: $viewModel.modifyNickNameInput.text)
                                 .font(.Body2Regular)
                             Spacer()
                         }
@@ -90,7 +90,7 @@ public struct ModifyProfileView: View {
                         }
                         .padding(.bottom, 6)
                         HStack {
-                            TextField("test", text: $viewModel.modifyIntroduceInput.text, axis: .vertical)
+                            TextField("소개말을 작성해주세요", text: $viewModel.modifyIntroduceInput.text, axis: .vertical)
                                 .lineLimit(3, reservesSpace: true)
                                 .font(.Body2Regular)
                             Spacer()
@@ -119,7 +119,7 @@ public struct ModifyProfileView: View {
                                 }
                         }
                         Button {
-                            // 수정
+                            viewModel.postProfileInfo()
                         } label: {
                             Text("수정완료")
                                 .frame(maxWidth: .infinity)

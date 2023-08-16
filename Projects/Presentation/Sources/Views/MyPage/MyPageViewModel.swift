@@ -31,6 +31,8 @@ public class MyPageViewModel: BaseViewModel {
                 case .success(let userInfoVO):
                     self.userInfo = userInfoVO
                     self.alarmStatus = userInfoVO.alarmStatus
+                    self.modifyNickNameInput.text = userInfoVO.nickname
+                    self.modifyIntroduceInput.text = userInfoVO.introduce
                     if let imageUrl = URL(string: userInfoVO.profileImgUrl) {
                         KingfisherManager.shared.retrieveImage(with: imageUrl) { result in
                             switch result {
@@ -61,6 +63,38 @@ public class MyPageViewModel: BaseViewModel {
                     break
                 }
             }
+            .store(in: cancelBag)
+    }
+    
+    public func postProfileInfo() {
+        guard let userInfo = userInfo else { return }
+        var nickname: String?
+        var introduce: String?
+        if userInfo.nickname != modifyNickNameInput.text {
+            nickname = modifyNickNameInput.text
+        }
+        if userInfo.introduce != modifyIntroduceInput.text {
+            introduce = modifyIntroduceInput.text
+        }
+        useCase.postProfileInfo(nickname: nickname, introduce: introduce)
+            .sinkToResultWithErrorHandler({ _ in
+                self.coordinator.pop()
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
+    public func postProfileImage() {
+        guard let imageData = imageData else { return }
+        useCase.postProfileImage(image: imageData)
+            .sinkToResultWithErrorHandler({ _ in
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
+    public func postAlarmAcceptance() {
+        useCase.postAlarmAcceptance(getAlarm: alarmStatus)
+            .sinkToResultWithErrorHandler({ _ in
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     

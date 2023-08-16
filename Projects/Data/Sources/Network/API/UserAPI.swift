@@ -45,11 +45,17 @@ extension UserAPI: TargetType {
     var task: Moya.Task {
         switch self {
         case .setProfileInfo(let profileInfoDTO):
-            return .requestParameters( parameters: [
-                "nickname": profileInfoDTO.nickname,
-                "introduce": profileInfoDTO.introduce,
-                "name": profileInfoDTO.name
-            ], encoding: JSONEncoding.default)
+            var parameters: [String: Any] = [:]
+            if let name = profileInfoDTO.name {
+                parameters["name"] = name
+            }
+            if let nickname = profileInfoDTO.nickname {
+                parameters["nickname"] = nickname
+            }
+            if let introduce = profileInfoDTO.introduce {
+                parameters["introduce"] = introduce
+            }
+            return .requestParameters( parameters: parameters, encoding: JSONEncoding.default)
         case .setNotiAcceptance(let alarmAcceptanceDTO):
             return .requestParameters(parameters: [
                 "alarmStatus": alarmAcceptanceDTO.getAlarm ? "Y" : "N"
