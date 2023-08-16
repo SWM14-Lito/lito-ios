@@ -27,23 +27,19 @@ public struct ProblemDetailView: View {
                         question
                         switch viewModel.solvingState {
                         case .initial:
-                            answerBox
                             if viewModel.isLoading {
+                                answerBox
                                 progressBarForAnswer
                             } else {
-                                writingAnswer
-                                if !viewModel.isFirstTry {
-                                    showAnswerButton
+                                ZStack(alignment: .bottom) {
+                                    answerBox
+                                    if !viewModel.isFirstTry {
+                                        showAnswerButton
+                                    }
                                 }
-                            }
-                        case .wrongInput:
-                            answerBox
-                            if viewModel.isLoading {
-                                progressBarForAnswer
-                            } else {
                                 writingAnswer
                             }
-                            if !focused && !viewModel.isLoading {
+                            if !focused && !viewModel.isLoading && viewModel.isWrongInput {
                                 inputError
                             }
                         case .wrongKeyword, .correctKeyword:
@@ -204,8 +200,16 @@ public struct ProblemDetailView: View {
         Button {
             viewModel.showAnswer()
         } label: {
-            Text("정답 보기")
-                .padding(.bottom)
+            Text("터치하여 정답 확인하기")
+                .font(.Info2Regular)
+                .foregroundColor(.Text_Default)
+                .padding([.leading, .trailing], 10)
+                .padding([.top, .bottom], 5)
+                .background(.white)
+                .cornerRadius(11)
+                .opacity(0.95)
+                .shadow(color: .Shadow_Default, radius: 4, x: 0, y: 2)
+                .padding(.bottom, 33)
         }
     }
     

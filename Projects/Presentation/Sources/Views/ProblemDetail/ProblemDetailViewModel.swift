@@ -16,7 +16,7 @@ public class ProblemDetailViewModel: BaseViewModel {
         return solvingState == .correctKeyword || solvingState == .wrongKeyword
     }
     var IsWrongBefore: Bool {
-        return solvingState == .wrongKeyword || (solvingState == .initial && !isFirstTry) || (solvingState == .wrongInput && !isFirstTry)
+        return solvingState == .wrongKeyword || (solvingState == .initial && !isFirstTry)
     }
     @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
@@ -26,10 +26,10 @@ public class ProblemDetailViewModel: BaseViewModel {
     @Published private(set) var inputErrorMessage: String = ""
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var isFirstTry: Bool = true
+    @Published private(set) var isWrongInput: Bool = false
     
     enum SolvingState {
         case initial
-        case wrongInput
         case correctKeyword
         case wrongKeyword
         case showAnswer
@@ -111,6 +111,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     func submitAnswer() {
         if checkInput() {
+           isWrongInput = false
            isLoading = true
             useCase.submitAnswer(id: problemId, keyword: input)
                 .sinkToResult { result in
@@ -131,7 +132,7 @@ public class ProblemDetailViewModel: BaseViewModel {
                 }
                 .store(in: cancelBag)
         } else {
-            solvingState = .wrongInput
+            isWrongInput = true
         }
     }
     
@@ -153,7 +154,6 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 문제에 대한 답변에서 단어별 (키워드 포함) 로 쪼개기
     private func splitSentence() {
         guard let problemDetailVO = problemDetailVO else { return }
-        print(problemDetailVO.problemAnswer)
         
         let keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: " " + problemDetailVO.problemKeyword + " ")
         answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
