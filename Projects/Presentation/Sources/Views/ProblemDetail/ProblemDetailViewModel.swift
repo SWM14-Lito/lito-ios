@@ -17,6 +17,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     @Published var input: String = ""
     @Published private(set) var solvingState: SolvingState = .notSolved
     @Published private(set) var faqIsOpened: [Bool]?
+    @Published var inputErrorMessage: String = ""
     
     enum SolvingState {
         case notSolved
@@ -102,28 +103,58 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     func submitAnswer() {
-        solvingState = .waiting
-        useCase.submitAnswer(id: problemId, keyword: input)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemSolvedVO):
-                    if problemSolvedVO.solved == true {
-                        self.solvingState = .correct
-                    } else {
-                        self.solvingState = .wrong
-                    }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
+        if checkInput() {
+            solvingState = .waiting
+            useCase.submitAnswer(id: problemId, keyword: input)
+                .sinkToResult { result in
+                    switch result {
+                    case .success(let problemSolvedVO):
+                        if problemSolvedVO.solved == true {
+                            self.solvingState = .correct
+                        } else {
+                            self.solvingState = .wrong
+                        }
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.errorObject.error  = errorVO
+                        }
                     }
                 }
-            }
-            .store(in: cancelBag)
+                .store(in: cancelBag)
+        }
     }
     
     // faq 열림, 닫힘 상태 변경하기
     func toggleFaqOpenStatus(idx: Int) {
         faqIsOpened?[idx].toggle()
+    }
+    
+    // 문제가 틀린 상태인지 확인하기
+    func isWrong() -> Bool {
+        if solvingState == .wrong || solvingState == .wronWithInput {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // 문제를 제출한 상태인지 확인하기
+    func isSubmitAnswer() -> Bool {
+        if solvingState == .wrong || solvingState == .correct || solvingState == .showAnswer {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // 입력값이 틀렸는지 확인해주기
+    private func checkInput() -> Bool {
+        guard let keyword = problemDetailVO?.problemKeyword else { return false }
+        if input.count != keyword.count {
+            return false
+        } else {
+            return true
+        }
     }
     
     // 문제에 대한 답변에서 단어별 (키워드 포함) 로 쪼개기

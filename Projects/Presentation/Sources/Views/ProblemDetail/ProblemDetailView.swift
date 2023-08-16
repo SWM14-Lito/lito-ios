@@ -29,6 +29,7 @@ public struct ProblemDetailView: View {
                         case .notSolved:
                             answerBox
                             writingAnswer
+                            inputError
                         case .waiting:
                             answerBox
                             progressBarForAnswer
@@ -310,25 +311,35 @@ public struct ProblemDetailView: View {
     private var keywordBox: some View {
         if let keyword = viewModel.problemDetailVO?.problemKeyword {
             HStack(spacing: 3) {
-                ForEach(keyword.map { String($0) }, id: \.self) { c in
+                ForEach(0..<keyword.count, id: \.self) { idx in
                     ZStack {
                         RoundedRectangle(cornerRadius: 3)
-                            .strokeBorder(.Border_Serve, lineWidth: 1)
+                            .strokeBorder(viewModel.isWrong() ? .Border_Serve_Red  : .Border_Serve, lineWidth: 1)
                             .frame(width: 26, height: 26)
                             .background(.white)
-                        Text(c)
-                            .font(.Body1SemiBold)
-                            .foregroundColor(.Text_Point)
+                        if viewModel.isSubmitAnswer() {
+                            Text(viewModel.input[idx])
+                                .font(.Body1SemiBold)
+                                .foregroundColor(viewModel.isWrong() ? .Text_Point_Red : .Text_Point)
+                        }
                     }
                 }
             }
             .padding(6)
-            .background(.Bg_Dark_Soft_Blue)
+            .background(viewModel.isWrong() ? .Bg_Soft_Red : .Bg_Dark_Soft_Blue)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .strokeBorder(.Border_Strong, lineWidth: focused ? 1 : 0)
+                    .strokeBorder(viewModel.isWrong() ? .Border_Strong_Red : .Border_Strong, lineWidth: focused ? 1 : 0)
             )
         }
+    }
+    
+    // 입력값에 대한 오류 메시지
+    @ViewBuilder
+    private var inputError: some View {
+        Text( String(viewModel.problemDetailVO?.problemKeyword.count ?? 0) + "글자를 입력해주세요.")
+            .foregroundColor(.Text_Point_Red)
+            .font(.InfoRegular)
     }
     
     // 일반 단어와 키워드 뷰컴포넌트를 구분해서 리스트에 담아주기

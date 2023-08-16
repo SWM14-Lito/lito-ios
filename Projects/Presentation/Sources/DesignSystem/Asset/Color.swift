@@ -30,12 +30,18 @@ public extension Color {
     static let Bg_Point = makeLitoColor(.Bg_Point)
     /// hex: F6F7FF
     static let Bg_Soft_Blue = makeLitoColor(.Bg_Soft_Blue)
+    /// hex: FFD8D8
+    static let Bg_Soft_Red = makeLitoColor(.Bg_Soft_Red)
     /// hex: FFB526
     static let Bg_Yellow = makeLitoColor(.Bg_Yellow)
     /// hex: E0E0E0
     static let Border_Default = makeLitoColor(.Border_Default)
+    /// hex: FFB5B5
+    static let Border_Serve_Red = makeLitoColor(.Border_Serve_Red)
     /// hex: DEDEFF
     static let Border_Serve = makeLitoColor(.Border_Serve)
+    /// hex: E24949
+    static let Border_Strong_Red = makeLitoColor(.Border_Strong_Red)
     /// hex: 494AE2
     static let Border_Strong = makeLitoColor(.Border_Strong)
     /// hex: F3F3F3
@@ -80,6 +86,8 @@ public extension Color {
     static let Text_Disabled = makeLitoColor(.Text_Disabled)
     /// hex: 777777
     static let Text_Info = makeLitoColor(.Text_Info)
+    /// hex: E24949
+    static let Text_Point_Red = makeLitoColor(.Text_Point_Red)
     /// hex: 494AE2
     static let Text_Point = makeLitoColor(.Text_Point)
     /// hex: 444444
@@ -101,9 +109,12 @@ extension ShapeStyle where Self == Color {
     static var Bg_Point_Light: Color { Color.Bg_Point_Light }
     static var Bg_Point: Color { Color.Bg_Point }
     static var Bg_Soft_Blue: Color { Color.makeLitoColor(.Bg_Soft_Blue) }
+    static var Bg_Soft_Red: Color { Color.makeLitoColor(.Bg_Soft_Red) }
     static var Bg_Yellow: Color { Color.makeLitoColor(.Bg_Yellow) }
     static var Border_Default: Color { Color.Border_Default }
+    static var Border_Serve_Red: Color { Color.Border_Serve_Red }
     static var Border_Serve: Color { Color.Border_Serve }
+    static var Border_Strong_Red: Color { Color.Border_Strong_Red }
     static var Border_Strong: Color { Color.Border_Strong }
     static var Border_Light: Color { Color.Border_Light }
     static var Button_Dark_Green: Color { Color.Button_Dark_Green }
@@ -126,6 +137,7 @@ extension ShapeStyle where Self == Color {
     static var Text_Default: Color { Color.makeLitoColor(.Text_Default) }
     static var Text_Disabled: Color { Color.makeLitoColor(.Text_Disabled) }
     static var Text_Info: Color { Color.makeLitoColor(.Text_Info) }
+    static var Text_Point_Red: Color { Color.makeLitoColor(.Text_Point_Red) }
     static var Text_Point: Color { Color.makeLitoColor(.Text_Point) }
     static var Text_Serve: Color { Color.makeLitoColor(.Text_Serve) }
 }
@@ -161,9 +173,12 @@ public enum LitoColor: String {
     case Bg_Point_Light
     case Bg_Point
     case Bg_Soft_Blue
+    case Bg_Soft_Red
     case Bg_Yellow
     case Border_Default
+    case Border_Serve_Red
     case Border_Serve
+    case Border_Strong_Red
     case Border_Strong
     case Border_Light
     case Button_Dark_Green
@@ -186,6 +201,7 @@ public enum LitoColor: String {
     case Text_Default
     case Text_Disabled
     case Text_Info
+    case Text_Point_Red
     case Text_Point
     case Text_Serve
     case Text_Highlight
