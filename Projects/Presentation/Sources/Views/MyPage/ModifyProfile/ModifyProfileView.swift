@@ -62,46 +62,9 @@ public struct ModifyProfileView: View {
                     }
                     .padding(.bottom, 30)
                     // 닉네임
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("닉네임")
-                                .font(.Body2SemiBold)
-                            Spacer()
-                        }
-                        .padding(.bottom, 6)
-                        HStack {
-                            TextField("변경하고 싶은 닉네임을 입력해주세요", text: $viewModel.modifyNickNameInput.text)
-                                .font(.Body2Regular)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.Border_Default, lineWidth: 1)
-                        )
-                    }
+                    profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput, errorMessage: nil)
                     .padding(.bottom, 30)
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("소개말 수정")
-                                .font(.Body2SemiBold)
-                            Spacer()
-                        }
-                        .padding(.bottom, 6)
-                        HStack {
-                            TextField("소개말을 작성해주세요", text: $viewModel.modifyIntroduceInput.text, axis: .vertical)
-                                .lineLimit(3, reservesSpace: true)
-                                .font(.Body2Regular)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.Border_Default, lineWidth: 1)
-                        )
-                    }
+                    profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput, errorMessage: nil)
                     Spacer()
                     HStack(spacing: 12) {
                         Button {

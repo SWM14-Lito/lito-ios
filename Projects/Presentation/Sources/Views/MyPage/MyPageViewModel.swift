@@ -16,14 +16,14 @@ public class MyPageViewModel: BaseViewModel {
     @Published var userInfo: UserInfoVO?
     @Published var imageData: Data?
     @Published var alarmStatus: Bool = true
-    @Published var modifyNickNameInput = LimitedText(limit: 8)
-    @Published var modifyIntroduceInput = LimitedText(limit: 255)
+    @Published var modifyNickNameInput = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
+    @Published var modifyIntroduceInput = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     
     public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
     }
-    
+
     public func getUserInfo() {
         useCase.getUserInfo()
             .sinkToResult { result in
@@ -83,14 +83,6 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func postProfileImage() {
-        guard let imageData = imageData else { return }
-        useCase.postProfileImage(image: imageData)
-            .sinkToResultWithErrorHandler({ _ in
-            }, errorHandler: errorHandler)
-            .store(in: cancelBag)
-    }
-    
     public func postAlarmAcceptance() {
         useCase.postAlarmAcceptance(getAlarm: alarmStatus)
             .sinkToResultWithErrorHandler({ _ in
@@ -100,6 +92,19 @@ public class MyPageViewModel: BaseViewModel {
     
     public func moveToModifyProfileView() {
         coordinator.push(.modifyProfileScene)
+    }
+    
+}
+
+extension MyPageViewModel: PhotoPickerHandling {
+    
+    public func postProfileImage() {
+        print("upload image")
+        guard let imageData = imageData else { return }
+        useCase.postProfileImage(image: imageData)
+            .sinkToResultWithErrorHandler({ _ in
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
     }
     
 }

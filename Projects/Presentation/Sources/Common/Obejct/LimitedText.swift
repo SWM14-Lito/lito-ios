@@ -15,15 +15,15 @@ import Combine
 
 class LimitedText: ObservableObject {
     let limit: Int
-    let reachedLimit = PassthroughSubject<Bool, Never>()
+    var isReachedLimit: Bool {
+        return text.count == limit
+    }
     
     @Published var text = "" {
         didSet {
             if text.count > limit && oldValue.count <= limit {
                 text = oldValue
             }
-            reachedLimit.send(text.count == limit ? true : false)
-
         }
     }
 

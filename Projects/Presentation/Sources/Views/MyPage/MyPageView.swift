@@ -45,11 +45,8 @@ public struct MyPageView: View {
                 }
                 .padding(.bottom, 30)
                 HStack(spacing: 14) {
-                    PhotoPickerView(imageData: $viewModel.imageData)
+                    PhotoPickerView(imageData: $viewModel.imageData, photoPickerHandling: viewModel)
                         .frame(width: 74, height: 74)
-                        .onChange(of: viewModel.imageData) { _ in
-                            viewModel.postProfileImage()
-                        }
                     VStack(spacing: 9) {
                         HStack {
                             Text(userInfo.nickname)
