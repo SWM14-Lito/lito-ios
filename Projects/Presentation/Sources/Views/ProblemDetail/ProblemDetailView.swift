@@ -118,6 +118,7 @@ public struct ProblemDetailView: View {
     private var answerBoxWithChatGPTButton: some View {
         VStack(spacing: 30) {
             Text(viewModel.problemDetailVO?.problemAnswer ?? "")
+                .fixedSize(horizontal: false, vertical: true)
                 .font(.Body2Regular)
                 .foregroundColor(.Text_Default)
                 .padding([.leading, .trailing], 24)
@@ -126,6 +127,7 @@ public struct ProblemDetailView: View {
         }
         .padding(.top, 40)
         .padding(.bottom, 23)
+        .frame(maxWidth: .infinity)
         .background(.Bg_Light)
         .cornerRadius(20)
         .padding(.bottom, 45)
@@ -134,26 +136,34 @@ public struct ProblemDetailView: View {
     // 답변 입력칸
     @ViewBuilder
     private var writingAnswer: some View {
-        TextField("", text: $viewModel.input)
-            .placeholder(when: !focused && viewModel.input.isEmpty, alignment: .center, placeholder: {
-                Text("정답을 입력해주세요")
-                    .font(.Body1Regular)
-                    .foregroundColor(.Text_Disabled)
-            })
-            .font(.Body1Regular)
-            .foregroundColor(.Text_Default)
-            .padding([.top, .bottom], 18)
-            .padding([.leading, .trailing], 55)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(viewModel.input.isEmpty ? .Border_Default : .black, lineWidth: 1)
-            )
-            .padding(.bottom, 20)
-            .multilineTextAlignment(.center)
-            .focused($focused)
-            .onSubmit {
-                viewModel.submitAnswer()
-            }
+        ScrollViewReader { proxy in
+            TextField("", text: $viewModel.input)
+                .placeholder(when: !focused && viewModel.input.isEmpty, alignment: .center, placeholder: {
+                    Text("정답을 입력해주세요")
+                        .font(.Body1Regular)
+                        .foregroundColor(.Text_Disabled)
+                })
+                .font(.Body1Regular)
+                .foregroundColor(.Text_Default)
+                .padding([.top, .bottom], 18)
+                .padding([.leading, .trailing], 55)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .strokeBorder(viewModel.input.isEmpty ? .Border_Default : .black, lineWidth: 1)
+                )
+                .padding(.bottom, 20)
+                .multilineTextAlignment(.center)
+                .focused($focused)
+                .onSubmit {
+                    viewModel.submitAnswer()
+                }
+                .id("writingAnswer")
+                .onChange(of: focused) { _ in
+                    if focused {
+                        proxy.scrollTo("writingAnswer")
+                    }
+                }
+        }
     }
     
     // 답변이 맞는지 서버에서 판별하는 동안 보져주는 로딩뷰

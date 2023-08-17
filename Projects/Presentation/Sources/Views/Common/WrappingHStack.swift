@@ -18,13 +18,15 @@ struct SizePref: PreferenceKey {
 }
 
 struct WHStack: View {
-    private var alignment: VerticalAlignment
+    private var verticalAlignment: VerticalAlignment
+    private var horizontalAlignment: Alignment
     private var spacing: CGFloat
     private let content: [AnyView]
     @State private var height: CGFloat = 0
 
-    init<Content: View>(alignment: VerticalAlignment = .center, spacing: CGFloat = 8, content: () -> [Content]) {
-        self.alignment = alignment
+    init<Content: View>(verticalAlignment: VerticalAlignment = .center, horizontalAlignment: Alignment = .center, spacing: CGFloat = 8, content: () -> [Content]) {
+        self.verticalAlignment = verticalAlignment
+        self.horizontalAlignment = horizontalAlignment
         self.spacing = spacing
         self.content = content().map { AnyView($0) }
     }
@@ -33,7 +35,8 @@ struct WHStack: View {
         GeometryReader { p in
             WrapStack(
                 width: p.frame(in: .global).width,
-                verticalAlignment: self.alignment,
+                verticalAlignment: self.verticalAlignment,
+                horizontalAlignment: self.horizontalAlignment,
                 spacing: self.spacing,
                 content: self.content
             )
@@ -54,17 +57,19 @@ struct WHStack: View {
 
 struct WrapStack<Content: View>: View {
     
-    let width: CGFloat!
-    let verticalAlignment: VerticalAlignment!
+    let width: CGFloat
+    let verticalAlignment: VerticalAlignment
+    let horizontalAlignment: Alignment
     let spacing: CGFloat
     let content: [Content]
     
     private let totalLanes: Int
     private let limits: [Int]
     
-    init(width: CGFloat, verticalAlignment: VerticalAlignment, spacing: CGFloat, content: [Content]) {
+    init(width: CGFloat, verticalAlignment: VerticalAlignment, horizontalAlignment: Alignment, spacing: CGFloat, content: [Content]) {
         self.width = width
         self.verticalAlignment = verticalAlignment
+        self.horizontalAlignment = horizontalAlignment
         self.spacing = spacing
         self.content = content
         (totalLanes, limits, _, _) = content.reduce((0, [], 0, width)) { (accum, item) -> (Int, [Int], Int, CGFloat) in
@@ -100,7 +105,7 @@ struct WrapStack<Content: View>: View {
                 self.content[$0]
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: horizontalAlignment)
     }
     
     var lanes: some View {
