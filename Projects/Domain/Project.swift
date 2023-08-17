@@ -11,8 +11,8 @@ import DependencyPlugin
 
 let project = Project.makeModule(
     name: "Domain",
+    platform: .iOS,
     product: .staticFramework,
     dependencies: [
-        .SPM.KakaoOpenSDK
     ]
 )

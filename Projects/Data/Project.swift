@@ -11,11 +11,12 @@ import DependencyPlugin
 
 let project = Project.makeModule(
     name: "Data",
+    platform: .iOS,
     product: .staticFramework,
     dependencies: [
         .Projcet.Domain,
         .SPM.Moya,
-        .SPM.CombineMoya
-    ],
-    infoPlist: .file(path: "Support/Info.plist")
+        .SPM.CombineMoya,
+        .SPM.KakaoOpenSDK
+    ]
 )
