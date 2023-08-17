@@ -29,14 +29,6 @@ public struct ProblemDetailDTO: Decodable {
             faqs: faqVO
         )
     }
-    
-    func toMutableVO() -> ProblemMutableVO {
-        return ProblemMutableVO(
-            problemId: problemId ?? 0,
-            problemStatus: ProblemSolvedStatus(rawValue: problemStatus),
-            favorite: ProblemFavoriteStatus(isFavorite: favorite)
-        )
-    }
 }
 
 public struct ProblemFAQDTO: Decodable {

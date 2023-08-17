@@ -12,8 +12,6 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
-    private(set) var isViewFirstAppeared: Bool = false
-    private var selectedProblemId: Int = 0
     @Published private(set) var isGotResponse: Bool = false
     @Published var solvingProblem: DefaultProblemCellVO?
     @Published var recommendedProblem: [DefaultProblemCellVO]? // 임시 변수 (서버 통신 필요)
@@ -24,11 +22,6 @@ public final class LearningHomeViewModel: BaseViewModel {
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator)
-    }
-    
-    // 서버에서 전체 데이터 다운만 하기 위해 판별해주는 역할
-    func setViewFirstAppeared() {
-        isViewFirstAppeared = true
     }
     
     // 학습 화면으로 이동하기
@@ -69,32 +62,10 @@ public final class LearningHomeViewModel: BaseViewModel {
             }
             .store(in: cancelBag)
     }
-    
-    // 문제 풀이 화면으로 이동했다가 다시 돌아왔을 때 변할 가능성 있는 값 다시 받아오기
-    func getProblemMutable() {
-        if selectedProblemId == 0 {
-            return
-        }
-        useCase.getProblemMutable(id: selectedProblemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemMutableVO):
-                    self.solvingProblem?.favorite = problemMutableVO.favorite
-                    self.solvingProblem?.problemStatus = problemMutableVO.problemStatus
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-                self.selectedProblemId = 0
-            }
-            .store(in: cancelBag)
-    }
 }
 extension LearningHomeViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
-        selectedProblemId = id
         coordinator.push(.problemDetailScene(id: id))
     }
     

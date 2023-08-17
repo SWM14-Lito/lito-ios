@@ -14,10 +14,9 @@ public class ProblemSearchViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     public private (set) var problemTotalSize: Int?
-    private var selectedProblemId: Int = 0
+    public private (set) var searchedKeyword = ""
     @Published private(set) var searchState: SearchState = .notStart
     @Published var searchKeyword: String = ""
-    public private (set) var searchedKeyword = ""
     @Published var problemCellList: [DefaultProblemCellVO] = []
     
     public enum SearchState {
@@ -70,33 +69,37 @@ public class ProblemSearchViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    // 문제 풀이 화면으로 이동했다가 다시 돌아왔을 때 변할 가능성 있는 값 다시 받아오기
-    func getProblemMutable() {
-        if selectedProblemId == 0 {
+    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
+    func updateProblems() {
+        if problemCellList.isEmpty {
             return
         }
-        useCase.getProblemMutable(id: selectedProblemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemMutableVO):
-                    let index = self.problemCellList.firstIndex(where: { $0.problemId == self.selectedProblemId})!
-                    self.problemCellList[index].favorite = problemMutableVO.favorite
-                    self.problemCellList[index].problemStatus = problemMutableVO.problemStatus
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
+        
+        for page in 0...problemPage {
+            let problemsQueryDTO = SearchedProblemsQueryDTO(query: searchKeyword, page: page, size: problemSize)
+            useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+                .sinkToResult({ result in
+                    switch result {
+                    case .success(let problemsListVO):
+                        if let problemsCellVO = problemsListVO.problemsCellVO {
+                            for idx in 0..<problemsCellVO.count {
+                                self.problemCellList[idx] = problemsCellVO[idx+page*self.problemSize]
+                            }
+                        }
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.errorObject.error  = errorVO
+                        }
                     }
-                }
-                self.selectedProblemId = 0
-            }
-            .store(in: cancelBag)
+                })
+                .store(in: cancelBag)
+        }
     }
 }
 
 extension ProblemSearchViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
-        selectedProblemId = id
         coordinator.push(.problemDetailScene(id: id))
     }
     

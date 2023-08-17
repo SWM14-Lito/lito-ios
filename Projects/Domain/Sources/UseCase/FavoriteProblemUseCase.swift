@@ -12,7 +12,6 @@ import Foundation
 public protocol FavoriteProblemListUseCase {
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error>
-    func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error>
 }
 
 public final class DefaultFavoriteProblemListUseCase: FavoriteProblemListUseCase {
@@ -28,9 +27,5 @@ public final class DefaultFavoriteProblemListUseCase: FavoriteProblemListUseCase
     
     public func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error> {
         repository.getProblemList(problemsQueryDTO: problemsQueryDTO)
-    }
-    
-    public func getProblemMutable(id: Int) -> AnyPublisher<ProblemMutableVO, Error> {
-        repository.getProblemMutable(id: id)
     }
 }
