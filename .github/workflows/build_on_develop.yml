@@ -20,5 +20,7 @@ jobs:
           echo "$XC_CONFIG_FILE" > config.xcconfig
       - uses: tuist/tuist-action@0.13.0
         with:
+          command: 'fetch'
+      - uses: tuist/tuist-action@0.13.0
+        with:
           command: 'build'
-          arguments: ''
