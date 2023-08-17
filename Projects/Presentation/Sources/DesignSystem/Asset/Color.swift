@@ -72,6 +72,8 @@ public extension Color {
     static let Heart_Clicked_Outer = makeLitoColor(.Heart_Clicked_Outer)
     /// hex: C6C6C6
     static let Heart_Unclicked_Inner = makeLitoColor(.Heart_Unclicked_Inner)
+    /// hex: C6C6C6
+    static let Icon_Default = makeLitoColor(.Heart_Unclicked_Inner)
     /// hex: E2E2E2
     static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Unclicked_Outer)
     /// hex: C6C6C6

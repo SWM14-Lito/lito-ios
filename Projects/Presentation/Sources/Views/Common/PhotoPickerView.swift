@@ -19,16 +19,27 @@ struct PhotoPickerView: View {
     }
     
     var body: some View {
-        VStack {
-            PhotosPicker(selection: $item, matching: .images) {
-                pickerThumbnailImage
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                    .padding(.top, 30)
-            }
+        PhotosPicker(selection: $item, matching: .images) {
+            pickerThumbnailImage
+                .resizable()
+                .frame(width: 74, height: 74)
+                .clipShape(Circle())
+                .foregroundColor(.gray)
+        }
+        .overlay {
+            Image(systemName: SymbolName.cameraCircleFill)
+                .resizable()
+                .foregroundStyle(.white, .Icon_Default)
+                .frame(width: 24, height: 24)
+                .padding(.top, 50)
+                .padding(.leading, 50)
+                .overlay {
+                    Circle()
+                        .stroke(.white, lineWidth: 2)
+                        .frame(width: 24, height: 24)
+                        .padding(.top, 50)
+                        .padding(.leading, 50)
+                }
         }
         .onChange(of: item) { _ in
             Task {

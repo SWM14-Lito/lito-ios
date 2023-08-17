@@ -18,7 +18,7 @@ public struct MyPageView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            if let userInfo = viewModel.userInfo {
+            if viewModel.userInfo != nil {
                 headSection
                 Divider()
                     .frame(minHeight: 10)
@@ -47,15 +47,14 @@ public struct MyPageView: View {
                 HStack(spacing: 14) {
                     PhotoPickerView(imageData: $viewModel.imageData)
                         .frame(width: 74, height: 74)
-                        .clipShape(Circle())
                     VStack(spacing: 9) {
                         HStack {
-                            Text("번개 다람쥐")
+                            Text(userInfo.name)
                                 .font(.Head3SemiBold)
                                 .foregroundColor(.Text_Default)
                             Spacer()
                             Button {
-                                //
+                                viewModel.moveToModifyProfileView()
                             } label: {
                                 Text("정보수정")
                                     .font(.InfoRegular)
@@ -80,8 +79,9 @@ public struct MyPageView: View {
                 .padding(.bottom, 20)
                 
                 HStack {
-                    Image(systemName: SymbolName.heartCircleFill)
-                        .font(.system(size: 14))
+                    Image(.iconPoint)
+                        .resizable()
+                        .frame(width: 24, height: 24)
                         .padding(.trailing, 8)
                     Text("내 포인트: ")
                         .font(.Body2Regular)
@@ -122,63 +122,54 @@ public struct MyPageView: View {
     
     @ViewBuilder
     private var listSection: some View {
-        ScrollView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            Divider()
+            Group {
+                HStack(spacing: 10) {
+                    Image(systemName: SymbolName.squareAndArrowDown)
+                        .font(.system(size: 18))
+                        .padding(.trailing, 8)
+                    Text("업로드한 기출문제")
+                        .font(.Body1Regular)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
                 Divider()
-                Group {
-                    HStack(spacing: 10) {
-                        Image(systemName: SymbolName.squareAndArrowDown)
-                            .font(.system(size: 18))
-                            .padding(.trailing, 8)
-                        Text("업로드한 기출문제")
-                            .font(.Body1Regular)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 18)
-                    Divider()
-                    HStack(spacing: 10) {
-                        Image(systemName: SymbolName.squareAndArrowDown)
-                            .font(.system(size: 18))
-                            .padding(.trailing, 8)
-                        Text("구매한 기출문제")
-                            .font(.Body1Regular)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 18)
-                    Divider()
-                    HStack(spacing: 10) {
-                        Image(systemName: SymbolName.bell)
-                            .font(.system(size: 14))
-                            .padding(.trailing, 8)
-                        Toggle("알림받기", isOn: $viewModel.alarmStatus)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 18)
+                HStack(spacing: 10) {
+                    Image(systemName: SymbolName.squareAndArrowDown)
+                        .font(.system(size: 18))
+                        .padding(.trailing, 8)
+                    Text("구매한 기출문제")
+                        .font(.Body1Regular)
+                    Spacer()
+                    Image(systemName: "chevron.right")
                 }
-            }
-            Divider()
-            HStack {
-                Spacer()
-                Button("로그아웃") {
-                    viewModel.postLogout()
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
+                Divider()
+                HStack(spacing: 10) {
+                    Image(systemName: SymbolName.bell)
+                        .font(.system(size: 18))
+                        .padding(.trailing, 8)
+                    Toggle("알림받기", isOn: $viewModel.alarmStatus)
+                        .toggleStyle(AlarmToggleStyle())
                 }
-                Spacer()
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
             }
-            .padding(20)
-            Divider()
-            HStack {
-                Spacer()
-                Button("회원탈퇴") {
-                    // 회원탈퇴
-                }
-                Spacer()
-            }
-            .padding(20)
-            Spacer()
         }
+        Divider()
+        Spacer()
+        Button {
+            viewModel.postLogout()
+        } label: {
+            Text("로그아웃")
+                .underline()
+                .font(.Body2Regular)
+                .foregroundColor(.Text_Info)
+        }
+        .padding(.bottom, 30)
     }
 }

@@ -78,6 +78,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(ChattingView.self, arguments: question, answer)
         case .problemSearchScene:
             injector?.resolve(ProblemSearchView.self)
+        case .modifyProfileScene:
+            injector?.resolve(ModifyProfileView.self)
         }
     }
     
