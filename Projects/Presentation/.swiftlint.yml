@@ -7,3 +7,4 @@ disabled_rules:
 - force_cast
 - identifier_name
 - type_body_length
+- large_tuple
