@@ -17,15 +17,22 @@ public struct FavoriteProblemListView: View {
     }
     
     public var body: some View {
-        VStack {
-            Divider()
+        VStack(spacing: 0) {
+            errorMessage
             headFilter
-            filter
-            problemList
-            Spacer()
+                .padding([.top, .leading], 20)
+            Divider()
+            VStack(spacing: 0) {
+                filter
+                    .padding(.top, 20)
+                problemList
+                Spacer()
+            }
+            .background(.Bg_Light)
         }
-        .navigationTitle(viewModel.selectedSubject.name)
-        .navigationBarTitleDisplayMode(.large)
+        .modifier(CustomNavigation(
+            title: "찜한 문제",
+            back: viewModel.back))
         .onAppear {
             viewModel.updateProblems()
         }

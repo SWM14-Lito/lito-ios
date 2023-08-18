@@ -16,11 +16,13 @@ public struct SolvingProblemListView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             errorMessage
             problemList
         }
-        .navigationTitle("풀던 문제")
+        .modifier(CustomNavigation(
+            title: "풀던 문제",
+            back: viewModel.back))
         .onAppear {
             viewModel.updateProblems()
         }
