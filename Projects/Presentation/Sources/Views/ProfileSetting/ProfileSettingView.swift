@@ -36,7 +36,23 @@ public struct ProfileSettingView: View {
                 .padding(.bottom, 30)
             textErrorMessage
             Spacer()
-            finishButton
+            Button {
+                if !viewModel.buttonIsLocked {
+                    viewModel.requestNotiAndMoveToLearningHomeView()
+                }
+            } label: {
+                Text("완료")
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 15)
+                    .cornerRadius(6)
+                    .font(.Body1Medium)
+                    .foregroundColor(.white)
+                    .background {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(.Button_Point)
+                    }
+            }
+            .padding(.bottom, 16)
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)
@@ -55,7 +71,7 @@ public struct ProfileSettingView: View {
                         break
                     }
                 } label: {
-                    Text("Done")
+                    Text("Next")
                 }
             }
         }

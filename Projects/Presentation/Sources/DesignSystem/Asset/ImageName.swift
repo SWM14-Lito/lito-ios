@@ -12,6 +12,7 @@ public enum ImageName: String {
     
     case btnKakaologin
     case btnApplelogin
+    case imgProfileDefault
     case chatgpt
     case iconPoint
 }
