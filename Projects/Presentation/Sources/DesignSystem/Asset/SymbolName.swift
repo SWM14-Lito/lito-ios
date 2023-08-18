@@ -16,6 +16,7 @@ class SymbolName {
     static let bookVerticalFill = "books.vertical.fill"
     static let cameraCircleFill = "camera.circle.fill"
     static let checkmarkCircleFill = "checkmark.circle.fill"
+    static let chevronUp = "chevron.up"
     static let chevronDown = "chevron.down"
     static let chevronLeft = "chevron.left"
     static let chevronRight = "chevron.right"

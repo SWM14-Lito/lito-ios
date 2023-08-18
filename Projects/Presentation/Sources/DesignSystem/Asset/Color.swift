@@ -14,6 +14,8 @@ public extension Color {
     static let Bg_ChatGPT = makeLitoColor(.Bg_ChatGPT)
     /// hex: F3F3F3
     static let Bg_Dark_Deep = makeLitoColor(.Bg_Dark_Deep)
+    /// hex:F1F1FF
+    static let Bg_Dark_Soft_Blue = makeLitoColor(.Bg_Dark_Soft_Blue)
     /// hex: F5F5F5
     static let Bg_Deep = makeLitoColor(.Bg_Deep)
     /// hex: EFEFEF
@@ -28,20 +30,30 @@ public extension Color {
     static let Bg_Point = makeLitoColor(.Bg_Point)
     /// hex: F6F7FF
     static let Bg_Soft_Blue = makeLitoColor(.Bg_Soft_Blue)
+    /// hex: FFD8D8
+    static let Bg_Soft_Red = makeLitoColor(.Bg_Soft_Red)
     /// hex: FFB526
     static let Bg_Yellow = makeLitoColor(.Bg_Yellow)
     /// hex: E0E0E0
     static let Border_Default = makeLitoColor(.Border_Default)
+    /// hex: FFB5B5
+    static let Border_Serve_Red = makeLitoColor(.Border_Serve_Red)
     /// hex: DEDEFF
     static let Border_Serve = makeLitoColor(.Border_Serve)
+    /// hex: E24949
+    static let Border_Strong_Red = makeLitoColor(.Border_Strong_Red)
     /// hex: 494AE2
     static let Border_Strong = makeLitoColor(.Border_Strong)
     /// hex: F3F3F3
     static let Border_Light = makeLitoColor(.Border_Light)
+    /// hex: 12A480
+    static let Button_Dark_Green = makeLitoColor(.Button_Dark_Green)
     /// hex: 494AE2
     static let Button_Point = makeLitoColor(.Button_Point)
     /// hex: 7778FF
     static let Button_Point_Light = makeLitoColor(.Button_Point_light)
+    /// hex: E24949
+    static let Button_Red = makeLitoColor(.Button_Red)
     /// hex: E2E2E2
     static let Button_Tag_Default = makeLitoColor(.Button_Tag_Default)
     /// hex: A0A0A0
@@ -64,6 +76,8 @@ public extension Color {
     static let Icon_Default = makeLitoColor(.Heart_Unclicked_Inner)
     /// hex: E2E2E2
     static let Heart_Unclicked_Outer = makeLitoColor(.Heart_Unclicked_Outer)
+    /// hex: 444444
+    static let Icon_Strong = makeLitoColor(.Icon_Strong)
     /// hex: BFBFBF
     static let Shadow_Default = makeLitoColor(.Shadow_Default)
     /// hex: 232527
@@ -72,6 +86,8 @@ public extension Color {
     static let Text_Disabled = makeLitoColor(.Text_Disabled)
     /// hex: 777777
     static let Text_Info = makeLitoColor(.Text_Info)
+    /// hex: E24949
+    static let Text_Point_Red = makeLitoColor(.Text_Point_Red)
     /// hex: 494AE2
     static let Text_Point = makeLitoColor(.Text_Point)
     /// hex: 444444
@@ -85,6 +101,7 @@ public extension Color {
 extension ShapeStyle where Self == Color {
     static var Bg_ChatGPT: Color { Color.Bg_ChatGPT }
     static var Bg_Dark_Deep: Color { Color.Bg_Dark_Deep }
+    static var Bg_Dark_Soft_Blue: Color { Color.Bg_Dark_Soft_Blue }
     static var Bg_Deep: Color { Color.Bg_Deep }
     static var Bg_Default: Color { Color.Bg_Default }
     static var Bg_Light: Color { Color.Bg_Light }
@@ -92,13 +109,18 @@ extension ShapeStyle where Self == Color {
     static var Bg_Point_Light: Color { Color.Bg_Point_Light }
     static var Bg_Point: Color { Color.Bg_Point }
     static var Bg_Soft_Blue: Color { Color.makeLitoColor(.Bg_Soft_Blue) }
+    static var Bg_Soft_Red: Color { Color.makeLitoColor(.Bg_Soft_Red) }
     static var Bg_Yellow: Color { Color.makeLitoColor(.Bg_Yellow) }
     static var Border_Default: Color { Color.Border_Default }
+    static var Border_Serve_Red: Color { Color.Border_Serve_Red }
     static var Border_Serve: Color { Color.Border_Serve }
+    static var Border_Strong_Red: Color { Color.Border_Strong_Red }
     static var Border_Strong: Color { Color.Border_Strong }
     static var Border_Light: Color { Color.Border_Light }
+    static var Button_Dark_Green: Color { Color.Button_Dark_Green }
     static var Button_Point: Color { Color.Button_Point }
     static var Button_Point_Light: Color { Color.Button_Point_Light }
+    static var Button_Red: Color { Color.Button_Red }
     static var Button_Tag_Default: Color { Color.Button_Tag_Default }
     static var Button_Negative: Color { Color.Button_Negative }
     static var Divider_Default: Color { Color.makeLitoColor(.Divider_Default) }
@@ -110,10 +132,12 @@ extension ShapeStyle where Self == Color {
     static var Heart_Unclicked_Inner: Color { Color.makeLitoColor(.Heart_Unclicked_Inner) }
     static var Heart_Unclicked_Outer: Color { Color.makeLitoColor(.Heart_Unclicked_Outer) }
     static var Icon_Default: Color { Color.makeLitoColor(.Icon_Default) }
+    static var Icon_Strong: Color { Color.makeLitoColor(.Icon_Strong) }
     static var Shadow_Default: Color { Color.makeLitoColor(.Shadow_Default) }
     static var Text_Default: Color { Color.makeLitoColor(.Text_Default) }
     static var Text_Disabled: Color { Color.makeLitoColor(.Text_Disabled) }
     static var Text_Info: Color { Color.makeLitoColor(.Text_Info) }
+    static var Text_Point_Red: Color { Color.makeLitoColor(.Text_Point_Red) }
     static var Text_Point: Color { Color.makeLitoColor(.Text_Point) }
     static var Text_Serve: Color { Color.makeLitoColor(.Text_Serve) }
 }
@@ -141,6 +165,7 @@ extension Color {
 public enum LitoColor: String {
     case Bg_ChatGPT
     case Bg_Dark_Deep
+    case Bg_Dark_Soft_Blue
     case Bg_Deep
     case Bg_Default
     case Bg_Light
@@ -148,13 +173,18 @@ public enum LitoColor: String {
     case Bg_Point_Light
     case Bg_Point
     case Bg_Soft_Blue
+    case Bg_Soft_Red
     case Bg_Yellow
     case Border_Default
+    case Border_Serve_Red
     case Border_Serve
+    case Border_Strong_Red
     case Border_Strong
     case Border_Light
+    case Button_Dark_Green
     case Button_Point
     case Button_Point_light
+    case Button_Red
     case Button_Tag_Default
     case Button_Negative
     case Divider_Default
@@ -166,10 +196,12 @@ public enum LitoColor: String {
     case Heart_Unclicked_Inner
     case Heart_Unclicked_Outer
     case Icon_Default
+    case Icon_Strong
     case Shadow_Default
     case Text_Default
     case Text_Disabled
     case Text_Info
+    case Text_Point_Red
     case Text_Point
     case Text_Serve
     case Text_Highlight
