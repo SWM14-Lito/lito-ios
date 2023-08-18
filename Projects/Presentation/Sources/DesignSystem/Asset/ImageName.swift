@@ -11,6 +11,7 @@ import Foundation
 public enum ImageName: String {
     
     case btnKakaologin
+    case btnApplelogin
     case chatgpt
     case iconPoint
 }

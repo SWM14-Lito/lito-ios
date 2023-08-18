@@ -20,18 +20,18 @@ public struct LoginView: View {
     
     public var body: some View {
         errorView()
-        VStack {
-            Text("로그인")
+        VStack(spacing: 60) {
+            Text("CSTalk")
                 .font(.title)
             
-            VStack {
-                SignInWithAppleButtonView()
-                    .onTapGesture {
-                        viewModel.appleLogin()
-                    }
-                    .frame(width: 280, height: 45)
-                    .cornerRadius(10)
-                
+            VStack(spacing: 8) {
+                Button(action: {
+                    viewModel.appleLogin()
+                }, label: {
+                    Image(.btnApplelogin)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                })
                 Button(action: {
                     viewModel.kakaoLogin()
                 }, label: {
@@ -39,8 +39,8 @@ public struct LoginView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 })
-                .padding(20)                
             }
+            .padding(.horizontal, 30)
         }
         .navigationBarBackButtonHidden(true)
     }
