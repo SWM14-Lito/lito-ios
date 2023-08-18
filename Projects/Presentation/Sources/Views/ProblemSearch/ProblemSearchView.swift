@@ -33,7 +33,7 @@ public struct ProblemSearchView: View {
             title: "검색",
             back: viewModel.back))
         .onAppear {
-            viewModel.getProblemMutable()
+            viewModel.updateProblems()
         }
     }
     

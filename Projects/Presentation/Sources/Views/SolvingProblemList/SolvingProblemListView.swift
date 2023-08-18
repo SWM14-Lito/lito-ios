@@ -22,7 +22,7 @@ public struct SolvingProblemListView: View {
         }
         .navigationTitle("풀던 문제")
         .onAppear {
-            viewModel.getProblemMutable()
+            viewModel.updateProblems()
         }
     }
     

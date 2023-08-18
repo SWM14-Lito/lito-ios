@@ -27,7 +27,7 @@ public struct FavoriteProblemListView: View {
         .navigationTitle(viewModel.selectedSubject.name)
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
-            viewModel.getProblemMutable()
+            viewModel.updateProblems()
         }
     }
     
