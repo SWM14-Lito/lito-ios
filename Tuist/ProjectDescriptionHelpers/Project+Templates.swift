@@ -7,7 +7,7 @@ public extension Project {
         product: Product,
         organizationName: String = "com.lito",
         packages: [Package] = [],
-        deploymentTarget: DeploymentTarget? = .iOS(targetVersion: "16.0", devices: [.iphone]),
+        deploymentTarget: DeploymentTarget = .iOS(targetVersion: "16.0", devices: .iphone),
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,

@@ -15,7 +15,7 @@ let project = Project.makeModule(
     dependencies: [
         .Projcet.Domain,
         .SPM.Moya,
-        .SPM.CombineMoya
-    ],
-    infoPlist: .file(path: "Support/Info.plist")
+        .SPM.CombineMoya,
+        .SPM.KakaoOpenSDK
+    ]
 )

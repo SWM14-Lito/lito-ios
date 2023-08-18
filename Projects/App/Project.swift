@@ -11,7 +11,6 @@ import DependencyPlugin
 
 let project = Project.makeModule(
     name: "App",
-    platform: .iOS,
     product: .app,
     dependencies: [
         .Projcet.Presentation,

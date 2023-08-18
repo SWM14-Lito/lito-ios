@@ -6,22 +6,21 @@ on:
     branches: [ develop ]
   pull_request:
     branches: [ develop ]
-  
-    
+
 jobs:
-  buildtest:
+  build:
+    name: Build
     runs-on: macos-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install Tuist
-        run: curl -Ls https://install.tuist.io | bash
-      - name: Fetch Swift Packages
-        run: tuist fetch
+      - uses: actions/checkout@v3
       - name: Use xcconfig file
         env:
           XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
         run: |
           echo "$XC_CONFIG_FILE" > config.xcconfig
-      - name: Build
-        run: tuist build
+      - uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'fetch'
+      - uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'build'
