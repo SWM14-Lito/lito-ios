@@ -17,7 +17,7 @@ public struct ProfileSettingView: View {
     }
     
     public var body: some View {
-        VStack {
+        ScrollView {
             errorMessage
             HStack {
                 Text("프로필 설정")
@@ -35,7 +35,6 @@ public struct ProfileSettingView: View {
             profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
                 .padding(.bottom, 30)
             textErrorMessage
-            Spacer()
             Button {
                 if !viewModel.buttonIsLocked {
                     viewModel.requestNotiAndMoveToLearningHomeView()
@@ -52,7 +51,7 @@ public struct ProfileSettingView: View {
                             .fill(.Button_Point)
                     }
             }
-            .padding(.bottom, 16)
+            .padding(.top, 30)
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)
