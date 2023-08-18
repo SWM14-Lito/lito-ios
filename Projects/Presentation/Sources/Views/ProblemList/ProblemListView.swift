@@ -38,7 +38,7 @@ public struct ProblemListView: View {
                 symbolName: SymbolName.magnifyingglass,
                 action: viewModel.moveToProblemSearchScene)))
         .onAppear {
-            viewModel.getProblemMutable()
+            viewModel.updateProblems()
         }
     }
     

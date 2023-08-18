@@ -16,7 +16,6 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
-    private var selectedProblemId: Int = 0
     @Published var problemCellList: [FavoriteProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var selectedFilters: [ProblemListFilter] = []
@@ -76,28 +75,35 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         problemTotalSize = nil
     }
     
-    // 문제 풀이 화면으로 이동했다가 다시 돌아왔을 때 변할 가능성 있는 값 다시 받아오기
-    func getProblemMutable() {
-        if selectedProblemId == 0 {
+    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
+    func updateProblems() {
+        if problemCellList.isEmpty {
             return
         }
-        useCase.getProblemMutable(id: selectedProblemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemMutableVO):
-                    let index = self.problemCellList.firstIndex(where: { $0.problemId == self.selectedProblemId})!
-                    self.problemCellList[index].problemStatus = problemMutableVO.problemStatus
-                    if problemMutableVO.favorite == .notFavorite {
-                        self.problemCellList.remove(at: index)
+        
+        var problemFavoriteId: Int?
+        
+        for page in 0...problemPage {
+            let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: problemFavoriteId, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: page, size: problemSize)
+            useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+                .sinkToResult({ result in
+                    switch result {
+                    case .success(let problemsListVO):
+                        if let problemsCellVO = problemsListVO.problemsCellVO {
+                            for idx in 0..<problemsCellVO.count {
+                                let cell = problemsCellVO[idx+page*self.problemSize]
+                                self.problemCellList[idx] = cell
+                                problemFavoriteId = cell.favoriteId
+                            }
+                        }
+                    case .failure(let error):
+                        if let errorVO = error as? ErrorVO {
+                            self.errorObject.error  = errorVO
+                        }
                     }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-                self.selectedProblemId = 0
-            }
-            .store(in: cancelBag)
+                })
+                .store(in: cancelBag)
+        }
     }
 }
 
@@ -112,7 +118,6 @@ extension FavoriteProblemListViewModel: FilterHandling {
 extension FavoriteProblemListViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func moveToProblemView(id: Int) {
-        selectedProblemId = id
         coordinator.push(.problemDetailScene(id: id))
     }
     

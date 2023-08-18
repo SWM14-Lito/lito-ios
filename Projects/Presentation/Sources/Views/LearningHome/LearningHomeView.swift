@@ -29,11 +29,7 @@ public struct LearningHomeView: View {
         .edgesIgnoringSafeArea(.all)
         .background(.Bg_Light)
         .onAppear {
-            if !viewModel.isViewFirstAppeared {
-                viewModel.setViewFirstAppeared()
-                viewModel.getProfileAndProblems()
-            }
-            viewModel.getProblemMutable()
+            viewModel.getProfileAndProblems()
         }
         
     }
