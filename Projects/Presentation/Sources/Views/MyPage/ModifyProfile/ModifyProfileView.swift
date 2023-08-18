@@ -62,74 +62,38 @@ public struct ModifyProfileView: View {
                     }
                     .padding(.bottom, 30)
                     // 닉네임
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("닉네임")
-                                .font(.Body2SemiBold)
-                            Spacer()
-                        }
-                        .padding(.bottom, 6)
-                        HStack {
-                            TextField("test", text: $viewModel.modifyNickNameInput.text)
-                                .font(.Body2Regular)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.Border_Default, lineWidth: 1)
-                        )
-                    }
+                    profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput, errorMessage: nil)
                     .padding(.bottom, 30)
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("소개말 수정")
-                                .font(.Body2SemiBold)
-                            Spacer()
-                        }
-                        .padding(.bottom, 6)
-                        HStack {
-                            TextField("test", text: $viewModel.modifyIntroduceInput.text, axis: .vertical)
-                                .lineLimit(3, reservesSpace: true)
-                                .font(.Body2Regular)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.Border_Default, lineWidth: 1)
-                        )
-                    }
+                    profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput, errorMessage: nil)
                     Spacer()
-                    HStack {
+                    HStack(spacing: 12) {
                         Button {
                             // 탈퇴
                         } label: {
                             Text("회원탈퇴")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 20)
+                                .cornerRadius(6)
                                 .font(.Body1Medium)
                                 .foregroundColor(.white)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(.Button_Negative)
+                                }
                         }
-                        .padding(.horizontal, 55)
-                        .padding(.vertical, 20)
-                        .background {
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(.Button_Negative)
-                        }
-                        Spacer()
                         Button {
-                            // 수정
+                            viewModel.postProfileInfo()
                         } label: {
                             Text("수정완료")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 20)
+                                .cornerRadius(6)
                                 .font(.Body1Medium)
                                 .foregroundColor(.white)
-                        }
-                        .padding(.horizontal, 55)
-                        .padding(.vertical, 20)
-                        .background {
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(.Button_Point)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(.Button_Point)
+                                }
                         }
                     }
                     .padding(.bottom, 20)

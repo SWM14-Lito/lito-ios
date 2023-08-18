@@ -18,73 +18,15 @@ public class ProfileSettingViewModel: BaseViewModel {
     private(set) var buttonIsLocked: Bool = false
     private var userAuthVO: UserAuthVO
     @Published var imageData: Data?
-    @Published var username: LimitedText
-    @Published var nickname: LimitedText
-    @Published var introduce: LimitedText
+    @Published var username = LimitedText(limit: ProfileTextFieldCategory.username.limit)
+    @Published var nickname = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
+    @Published var introduce = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     @Published var textErrorMessage: String?
-    @Published private(set) var isExceedLimit: [TextFieldCategory: Bool]
-
-    enum TextFieldCategory: Hashable {
-        case username, nickname, introduce
-        var limit: Int {
-            switch self {
-            case .username:
-                return 10
-            case .nickname:
-                return 10
-            case .introduce:
-                return 250
-            }
-        }
-        var title: String {
-            switch self {
-            case .username:
-                return "이름"
-            case .nickname:
-                return "닉네임"
-            case .introduce:
-                return "소개말"
-            }
-        }
-        var placeHolder: String {
-            return title + "을 입력해주세요."
-        }
-        var errorMessage: String {
-            return title + "을 입력하지 않으셨습니다."
-        }
-    }
     
     public init(userAuthVO: UserAuthVO, useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
         self.userAuthVO = userAuthVO
-        self.username = LimitedText(limit: TextFieldCategory.username.limit)
-        self.nickname = LimitedText(limit: TextFieldCategory.nickname.limit)
-        self.introduce = LimitedText(limit: TextFieldCategory.introduce.limit)
-        self.isExceedLimit = [.username: false, .nickname: false, .introduce: false]
         self.useCase = useCase
         super.init(coordinator: coordinator)
-        initPublisher()
-    }
-    
-    // 각 글자가 제한수에 도달하는지 확인
-    func initPublisher() {
-        username.reachedLimit
-            .receive(on: DispatchQueue.main)
-            .sink { isExceed in
-                self.isExceedLimit[.username] = isExceed ? true : false
-            }
-            .store(in: cancelBag)
-        nickname.reachedLimit
-            .receive(on: DispatchQueue.main)
-            .sink { isExceed in
-                self.isExceedLimit[.nickname] = isExceed ? true : false
-            }
-            .store(in: cancelBag)
-        introduce.reachedLimit
-            .receive(on: DispatchQueue.main)
-            .sink { isExceed in
-                self.isExceedLimit[.introduce] = isExceed ? true : false
-            }
-            .store(in: cancelBag)
     }
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
@@ -145,10 +87,10 @@ public class ProfileSettingViewModel: BaseViewModel {
     // 글자 입력 관련하여 안채워진게 있는지 확인하기
     func checkAllTextAreFilled() -> Bool {
         if username.text.isEmpty {
-            textErrorMessage = TextFieldCategory.username.errorMessage
+            textErrorMessage = ProfileTextFieldCategory.username.errorMessage
             return false
         } else if nickname.text.isEmpty {
-            textErrorMessage = TextFieldCategory.nickname.errorMessage
+            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
             return false
         } else {
             textErrorMessage = nil

@@ -68,7 +68,9 @@ public struct DomainAssembly: Assembly {
         container.register(MyPageUseCase.self) { resolver in
             let userRepository = resolver.resolve(UserRepository.self)!
             let authRepository = resolver.resolve(AuthRepository.self)!
-            return DefaultMyPageUseCase(userRepository: userRepository, authRepository: authRepository)
+            let fileRepository = resolver.resolve(FileRepository.self)!
+            let imageHelper = resolver.resolve(ImageHelper.self)!
+            return DefaultMyPageUseCase(userRepository: userRepository, authRepository: authRepository, fileRepository: fileRepository, imageHelper: imageHelper)
         }
         
     }

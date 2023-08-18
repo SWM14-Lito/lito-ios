@@ -9,6 +9,28 @@
 import SwiftUI
 
 extension View {
+    @ViewBuilder
+    func ifLet<V, T>(_ value: V?, transform: (Self, V) -> T) -> some View where T: View {
+        if let value = value {
+            transform(self, value)
+        } else {
+            self
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ conditional: Bool, transform: (Self) -> Content) -> some View {
+        if conditional {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
+extension View {
     // 네 모서리 radius 각각 다르게 하고 싶을 때 사용
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )

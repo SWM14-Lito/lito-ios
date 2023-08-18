@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct ProfileSettingView: View {
     @StateObject private var viewModel: ProfileSettingViewModel
-    @FocusState private var focus: ProfileSettingViewModel.TextFieldCategory?
+    @FocusState private var focus: ProfileTextFieldCategory?
     
     public init(viewModel: ProfileSettingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -20,9 +20,9 @@ public struct ProfileSettingView: View {
         VStack {
             errorMessage
             PhotoPickerView(imageData: $viewModel.imageData)
-            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
-            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
-            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
             textErrorMessage
             Spacer()
             finishButton
@@ -54,38 +54,6 @@ public struct ProfileSettingView: View {
     @ViewBuilder
     private var errorMessage: some View {
         ErrorView(errorObject: viewModel.errorObject)
-    }
-    
-    // 프로필 관련 텍스트 입력 (fieldCategory로 선택 가능 - 이름, 닉네임, 소개글)
-    @ViewBuilder
-    private func profileTextField(fieldCategory: ProfileSettingViewModel.TextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileSettingViewModel.TextFieldCategory?>) -> some View {
-        
-        let curLength = String(limitedText.wrappedValue.text.count)
-        let maxLength = String(limitedText.wrappedValue.limit)
-        let isExceed = viewModel.isExceedLimit[fieldCategory] ?? false
-        
-        VStack {
-            Text(fieldCategory.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 10))
-            ZStack(alignment: .bottomTrailing) {
-                TextField(fieldCategory.placeHolder, text: limitedText.projectedValue.text, axis: .vertical)
-                    .font(.system(size: 15))
-                    .padding(.trailing, 70)
-                    .focused($focus, equals: fieldCategory)
-                HStack {
-                    Text(curLength + "/" + maxLength)
-                        .font(.system(size: 10))
-                        .foregroundColor(isExceed ? .red : .black)
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.secondary)
-                        .onTapGesture {
-                            limitedText.projectedValue.text.wrappedValue = ""
-                        }
-                }
-            }
-            Divider()
-        }
     }
     
     // 텍스트 입력 관련 오류 메시지 띄워줌
