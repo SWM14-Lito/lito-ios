@@ -19,6 +19,7 @@ public struct ProblemListView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
+            errorMessage
             headFilter
                 .padding([.top, .leading], 20)
             Divider()
@@ -70,4 +71,9 @@ public struct ProblemListView: View {
         }
     }
     
+    // API 에러 발생시 알려줌
+    @ViewBuilder
+    private var errorMessage: some View {
+        ErrorView(errorObject: viewModel.errorObject)
+    }
 }
