@@ -33,6 +33,9 @@ public struct ProblemDetailView: View {
                             } else {
                                 ZStack(alignment: .bottom) {
                                     answerBox
+                                        .onAppear {
+                                            focused = true
+                                        }
                                     if !viewModel.isFirstTry {
                                         showAnswerButton
                                     }
@@ -184,24 +187,15 @@ public struct ProblemDetailView: View {
     // 정답 확인하고 다음 상태로 넘어갈 수 있는 버튼
     @ViewBuilder
     private var answerLabelButton: some View {
-        Button {
-            if viewModel.solvingState == .correctKeyword {
-                viewModel.showAnswer()
-            } else if viewModel.solvingState == .wrongKeyword {
-                viewModel.initInput()
-            }
-        } label: {
-            Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
-                .font(.Body1Regular)
-                .foregroundColor(.white)
-                .padding([.top, .bottom], 18)
-                .padding([.leading, .trailing], 55)
-                .frame(maxWidth: .infinity)
-                .background(viewModel.solvingState == .correctKeyword ? .Button_Point : .Button_Red)
-                .cornerRadius(10)
-                .padding(.bottom, 20)
-        }
-        .buttonStyle(.plain)
+        Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
+            .font(.Body1Regular)
+            .foregroundColor(.white)
+            .padding([.top, .bottom], 18)
+            .padding([.leading, .trailing], 55)
+            .frame(maxWidth: .infinity)
+            .background(viewModel.solvingState == .correctKeyword ? .Button_Point : .Button_Red)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
     }
     
     // 정답 보기 버튼
