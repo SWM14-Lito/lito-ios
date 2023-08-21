@@ -18,12 +18,11 @@ public struct ProblemDetailView: View {
     }
     
     public var body: some View {
-        VStack {
-            errorMessage
-            ScrollView {
-                VStack(alignment: .leading) {
-                    questionLabel
-                    if viewModel.problemDetailVO != nil {
+        ZStack {
+            if viewModel.problemDetailVO != nil {
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        questionLabel
                         question
                         switch viewModel.solvingState {
                         case .initial:
@@ -52,14 +51,14 @@ public struct ProblemDetailView: View {
                             answerBoxWithChatGPTButton
                             listOfFaq
                         }
-                    } else {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
+                        Spacer()
                     }
-                    Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                LoadingView()
             }
+            errorMessage
         }
         .modifier(CustomNavigation(
             title: "문제풀이",
@@ -69,13 +68,13 @@ public struct ProblemDetailView: View {
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
                 action: viewModel.toggleFavorite)))
-
+        
         .padding([.leading, .trailing], 20)
         .onAppear {
             viewModel.startSolvingProblem()
             viewModel.getProblemDetail()
         }
-
+        
     }
     
     // 질문 라벨

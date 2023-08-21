@@ -34,7 +34,7 @@ public struct FavoriteProblemListView: View {
             title: "찜한 문제",
             back: viewModel.back))
         .onAppear {
-            viewModel.updateProblems()
+            viewModel.updateProblemValues()
         }
     }
     
@@ -53,25 +53,29 @@ public struct FavoriteProblemListView: View {
     // 찜한 문제 리스트
     @ViewBuilder
     private var problemList: some View {
-        VStack {
-            if !viewModel.problemCellList.isEmpty {
-                ScrollView {
-                    LazyVStack {
-                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                                .onAppear {
-                                    viewModel.getProblemList(problemFavoriteId: problemCellVO.wrappedValue.favoriteId)
-                                }
+        if !viewModel.isLoading {
+            VStack {
+                if !viewModel.problemCellList.isEmpty {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                    .onAppear {
+                                        viewModel.getProblemList(problemFavoriteId: problemCellVO.wrappedValue.favoriteId)
+                                    }
+                            }
                         }
+                        .padding(20)
                     }
-                    .padding(20)
+                } else {
+                    NoContentView(message: "찜한 문제가 없습니다.")
                 }
-            } else {
-                NoContentView(message: "찜한 문제가 없습니다.")
             }
-        }
-        .onAppear {
-            viewModel.getProblemList()
+            .onAppear {
+                viewModel.getProblemList()
+            }
+        } else {
+            LoadingView()
         }
     }
     

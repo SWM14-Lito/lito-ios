@@ -31,26 +31,30 @@ public struct SolvingProblemListView: View {
     // 문제 리스트
     @ViewBuilder
     private var problemList: some View {
-        VStack {
-            if !viewModel.problemCellList.isEmpty {
-                ScrollView {
-                    LazyVStack {
-                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                                .onAppear {
-                                    viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
-                                }
+        if !viewModel.isLoading {
+            VStack {
+                if !viewModel.problemCellList.isEmpty {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                    .onAppear {
+                                        viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
+                                    }
+                            }
                         }
+                        .padding(20)
+                        
                     }
-                    .padding(20)
-                    
+                } else {
+                    NoContentView(message: "풀던 문제가 없습니다.")
                 }
-            } else {
-                NoContentView(message: "풀던 문제가 없습니다.")
             }
-        }
-        .onAppear {
-            viewModel.getProblemList()
+            .onAppear {
+                viewModel.getProblemList()
+            }
+        } else {
+            LoadingView()
         }
     }
     

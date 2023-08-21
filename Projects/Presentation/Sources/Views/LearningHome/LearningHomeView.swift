@@ -21,10 +21,10 @@ public struct LearningHomeView: View {
         ZStack(alignment: .top) {
             gradientBackground
             content
-            progressBar
-            #if DEBUG
+            if viewModel.isLoading {
+                LoadingView()
+            }
             errorMessage
-            #endif
         }
         .edgesIgnoringSafeArea(.all)
         .background(.Bg_Light)
@@ -51,18 +51,6 @@ public struct LearningHomeView: View {
         )
         .frame(height: 283)
         .cornerRadius(40, corners: [.bottomLeft, .bottomRight])
-    }
-    
-    // 서버에서 데이터 받아오는 동안 보여주는 로딩바
-    @ViewBuilder
-    private var progressBar: some View {
-        if !viewModel.isGotResponse {
-            VStack {
-                Spacer()
-                ProgressView()
-                Spacer()
-            }
-        }
     }
     
     // 실제 화면에 보여줄 컨텐츠
@@ -152,7 +140,7 @@ public struct LearningHomeView: View {
                 .cornerRadius(16)
                 .shadow(color: .Shadow_Default, radius: 6, x: 0, y: 4)
             VStack(spacing: 16) {
-                if viewModel.isGotResponse {
+                if !viewModel.isLoading {
                     HStack {
                         learningRateProgressBar
                         VStack(alignment: .leading, spacing: 5) {
@@ -242,7 +230,7 @@ public struct LearningHomeView: View {
     // 풀던 문제 보여주기
     @ViewBuilder
     private var solvingProblem: some View {
-        if viewModel.isGotResponse {
+        if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
                     Text("풀던 문제")
@@ -275,7 +263,7 @@ public struct LearningHomeView: View {
     // 추천 문제 보여주기
     @ViewBuilder
     private var recommendedProblem: some View {
-        if viewModel.isGotResponse {
+        if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
                     Text("추천 문제")

@@ -19,6 +19,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     @Published var problemCellList: [FavoriteProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var selectedFilters: [ProblemListFilter] = []
+    @Published var isLoading: Bool = false
 
     public init(useCase: FavoriteProblemListUseCase, coordinator: CoordinatorProtocol) {
         self.useCase = useCase
@@ -33,6 +34,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
         }
+        isLoading = true
         let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: problemFavoriteId, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
 
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
@@ -55,6 +57,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
                         }
                     }
                 }
+                self.isLoading = false
             })
             .store(in: cancelBag)
     }
@@ -76,7 +79,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     }
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func updateProblems() {
+    func updateProblemValues() {
         if problemCellList.isEmpty {
             return
         }

@@ -75,7 +75,7 @@ public struct ProblemSearchView: View {
         case .notStart:
             recentSearched
         case .waiting:
-            ProgressView()
+            LoadingView()
         case .finish:
             if viewModel.problemCellList.isEmpty {
                 NoContentView(message: "검색 결과가 없습니다.")

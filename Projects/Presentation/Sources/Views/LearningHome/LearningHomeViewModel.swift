@@ -12,7 +12,7 @@ import Combine
 
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
-    @Published private(set) var isGotResponse: Bool = false
+    @Published private(set) var isLoading: Bool = false
     @Published var solvingProblem: DefaultProblemCellVO?
     @Published var recommendedProblem: [DefaultProblemCellVO]? // 임시 변수 (서버 통신 필요)
     @Published var userInfo: LearningHomeUserInfoVO?
@@ -46,6 +46,7 @@ public final class LearningHomeViewModel: BaseViewModel {
 
     // 프로필 정보와 문제 정보 가져오기
     func getProfileAndProblems() {
+        isLoading = true
         useCase.getProfileAndProblems()
             .sinkToResult { result in
                 switch result {
@@ -58,7 +59,7 @@ public final class LearningHomeViewModel: BaseViewModel {
                         self.errorObject.error  = errorVO
                     }
                 }
-                self.isGotResponse = true
+                self.isLoading = false
             }
             .store(in: cancelBag)
     }
