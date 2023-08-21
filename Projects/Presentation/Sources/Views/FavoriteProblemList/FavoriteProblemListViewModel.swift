@@ -38,27 +38,16 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: problemFavoriteId, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
 
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        problemsCellVO.forEach({ problemCellVO in
-                            self.problemCellList.append(problemCellVO)
-                        })
-                        self.problemPage += 1
-                    }
-                    self.problemTotalSize = problemsListVO.total
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        if case .tokenExpired = errorVO {
-                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                                self.popToRoot()
-                            }
-                        }
-                    }
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    problemsCellVO.forEach({ problemCellVO in
+                        self.problemCellList.append(problemCellVO)
+                    })
+                    self.problemPage += 1
                 }
+                self.problemTotalSize = problemsListVO.total
                 self.isLoading = false
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
