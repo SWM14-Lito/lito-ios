@@ -265,9 +265,7 @@ public struct LearningHomeView: View {
                 if viewModel.solvingProblem != nil {
                     ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
                 } else {
-                    Text("진행중인 문제가 없습니다.")
-                        .font(.Body2Regular)
-                        .padding()
+                    NoContentView(message: "풀던 문제가 없습니다.", withSymbol: false)
                 }
             }
             .padding(.top, 38)
@@ -292,9 +290,7 @@ public struct LearningHomeView: View {
                         }
                     }
                 } else {
-                    Text("추천 문제가 없습니다.")
-                        .font(.Body2Regular)
-                        .padding()
+                    NoContentView(message: "추천 문제가 없습니다.", withSymbol: false)
                 }
             }
             .padding(.top, 27)

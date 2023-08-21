@@ -55,16 +55,22 @@ public struct ProblemListView: View {
     
     @ViewBuilder
     private var problemList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                        .onAppear {
-                            viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+        VStack {
+            if !viewModel.problemCellList.isEmpty {
+                ScrollView {
+                    LazyVStack {
+                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                .onAppear {
+                                    viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                                }
                         }
+                    }
+                    .padding(20)
                 }
+            } else {
+                NoContentView(message: "해당 카테고리의 문제가 없습니다.")
             }
-            .padding(20)
         }
         .onAppear {
             viewModel.getProblemList()

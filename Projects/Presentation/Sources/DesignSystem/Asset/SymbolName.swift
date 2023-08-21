@@ -31,4 +31,5 @@ class SymbolName {
     static let squareAndArrowDown = "square.and.arrow.down"
     static let xmark = "xmark"
     static let xmarkCircleFill = "xmark.circle.fill"
+    static let exclamationMark = "exclamationmark.circle"
 }
