@@ -17,18 +17,44 @@ public struct ProfileSettingView: View {
     }
     
     public var body: some View {
-        VStack {
+        ScrollView {
             errorMessage
+            HStack {
+                Text("프로필 설정")
+                    .font(.Head1Bold)
+                Spacer()
+            }
+                .padding(.top, 22)
+                .padding(.bottom, 28)
             PhotoPickerView(imageData: $viewModel.imageData)
+                .padding(.bottom, 30)
             profileTextField(fieldCategory: .username, limitedText: $viewModel.username, errorMessage: viewModel.textErrorMessage, focus: _focus)
+                .padding(.bottom, 30)
             profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, errorMessage: viewModel.textErrorMessage, focus: _focus)
+                .padding(.bottom, 30)
             profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
+                .padding(.bottom, 30)
             textErrorMessage
-            Spacer()
-            finishButton
+            Button {
+                if !viewModel.buttonIsLocked {
+                    viewModel.requestNotiAndMoveToLearningHomeView()
+                }
+            } label: {
+                Text("완료")
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 15)
+                    .cornerRadius(6)
+                    .font(.Body1Medium)
+                    .foregroundColor(.white)
+                    .background {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(.Button_Point)
+                    }
+            }
+            .padding(.top, 30)
         }
         .navigationBarBackButtonHidden(true)
-        .padding([.leading, .trailing], 15)
+        .padding(.horizontal, 20)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -44,7 +70,7 @@ public struct ProfileSettingView: View {
                         break
                     }
                 } label: {
-                    Text("Done")
+                    Text("Next")
                 }
             }
         }
