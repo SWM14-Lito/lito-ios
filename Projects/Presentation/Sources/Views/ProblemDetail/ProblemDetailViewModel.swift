@@ -36,10 +36,10 @@ public class ProblemDetailViewModel: BaseViewModel {
         case showAnswer
     }
     
-    public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol) {
+    public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
         self.problemId = problemId
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
     // API 통신해서 문제 세부 정보 가져오기

@@ -17,11 +17,11 @@ public class ChattingViewModel: BaseViewModel {
     let question: String
     let answer: String
     
-    public init(question: String, answer: String, useCase: ChattingUseCase, coordinator: CoordinatorProtocol) {
+    public init(question: String, answer: String, useCase: ChattingUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.question = question
         self.answer = answer
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // 질문 보내기

@@ -9,10 +9,16 @@
 import SwiftUI
 
 struct ToastModifier: ViewModifier {
-    let message: String
-    let duration: Double
+    @Binding var message: String
+    @Binding var duration: Double
     @Binding var isToastShown: Bool
     @State private var opacityValue: Double = 0.0
+    
+    init(message: Binding<String>, duration: Binding<Double>, isToastShown: Binding<Bool>) {
+        self._message = message
+        self._duration = duration
+        self._isToastShown = isToastShown
+    }
     
     func body(content: Content) -> some View {
         content
@@ -54,11 +60,5 @@ struct ToastModifier: ViewModifier {
                 isToastShown = false
             }
         }
-    }
-}
-
-extension View {
-    func toast(message: String, duration: Double = 2.0, isToastShown: Binding<Bool>) -> some View {
-        self.modifier(ToastModifier(message: message, duration: duration, isToastShown: isToastShown))
     }
 }

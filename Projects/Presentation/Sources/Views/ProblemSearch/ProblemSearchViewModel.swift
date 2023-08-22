@@ -25,9 +25,9 @@ public class ProblemSearchViewModel: BaseViewModel {
         case finish
     }
     
-    public init(useCase: ProblemSearchUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: ProblemSearchUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // 검색 다시 했을 때 초기화해주기

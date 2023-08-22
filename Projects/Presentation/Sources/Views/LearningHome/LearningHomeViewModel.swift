@@ -19,9 +19,9 @@ public final class LearningHomeViewModel: BaseViewModel {
     @Published var learningRate: Float = 0.8 // 임시 변수 (서버 통신 필요)
     @Published var goalCount: Int = 5 // 임시 변수 (서버 통신 필요)
     
-    public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // 학습 화면으로 이동하기

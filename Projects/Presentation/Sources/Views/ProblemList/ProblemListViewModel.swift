@@ -20,9 +20,9 @@ final public class ProblemListViewModel: BaseViewModel {
     @Published var selectedFilters: [ProblemListFilter] = []
     @Published var isLoading: Bool = false
     
-    public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: ProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     public func getProblemList(problemId: Int? = nil) {

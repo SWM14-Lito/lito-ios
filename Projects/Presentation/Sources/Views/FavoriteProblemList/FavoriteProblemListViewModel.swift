@@ -21,9 +21,9 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     @Published var selectedFilters: [ProblemListFilter] = []
     @Published var isLoading: Bool = false
 
-    public init(useCase: FavoriteProblemListUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: FavoriteProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // 문제 가져오기

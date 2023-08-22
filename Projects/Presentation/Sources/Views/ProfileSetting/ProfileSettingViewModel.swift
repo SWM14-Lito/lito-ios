@@ -23,10 +23,10 @@ public class ProfileSettingViewModel: BaseViewModel {
     @Published var introduce = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     @Published var textErrorMessage: String?
     
-    public init(userAuthVO: UserAuthVO, useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol) {
+    public init(userAuthVO: UserAuthVO, useCase: ProfileSettingUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.userAuthVO = userAuthVO
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기

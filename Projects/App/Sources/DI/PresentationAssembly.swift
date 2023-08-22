@@ -13,6 +13,7 @@ import Presentation
 public struct PresentationAssembly: Assembly {
     
     let coordinator: Coordinator
+    let toastHelper: ToastHelper
     
     public func assemble(container: Container) {
         // ------------------------ Common ------------------------
@@ -28,7 +29,7 @@ public struct PresentationAssembly: Assembly {
         // Login
         container.register(LoginViewModel.self) { resolver in
             let useCase = resolver.resolve(LoginUseCase.self)!
-            return LoginViewModel(coordinator: coordinator, useCase: useCase)
+            return LoginViewModel(coordinator: coordinator, useCase: useCase, toastHelper: toastHelper)
         }
         container.register(LoginView.self) { resolver in
             let viewModel = resolver.resolve(LoginViewModel.self)!
@@ -37,7 +38,7 @@ public struct PresentationAssembly: Assembly {
         // ProfileSetting
         container.register(ProfileSettingViewModel.self) { (resolver, userAuthVO: UserAuthVO) in
             let useCase = resolver.resolve(ProfileSettingUseCase.self)!
-            return ProfileSettingViewModel(userAuthVO: userAuthVO, useCase: useCase, coordinator: coordinator)
+            return ProfileSettingViewModel(userAuthVO: userAuthVO, useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(ProfileSettingView.self) { (resolver, userAuthVO: UserAuthVO) in
@@ -59,7 +60,7 @@ public struct PresentationAssembly: Assembly {
         // LearningHome
         container.register(LearningHomeViewModel.self) { resolver in
             let useCase = resolver.resolve(LearningHomeUseCase.self)!
-            return LearningHomeViewModel(useCase: useCase, coordinator: coordinator)
+            return LearningHomeViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         container.register(LearningHomeView.self) { resolver in
             let viewModel = resolver.resolve(LearningHomeViewModel.self)!
@@ -68,7 +69,7 @@ public struct PresentationAssembly: Assembly {
         // ProblemList
         container.register(ProblemListViewModel.self) { resolver in
             let useCase = resolver.resolve(ProblemListUseCase.self)!
-            return ProblemListViewModel(useCase: useCase, coordinator: coordinator)
+            return ProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(ProblemListView.self) { resolver in
@@ -78,7 +79,7 @@ public struct PresentationAssembly: Assembly {
         // SolvingProblemList
         container.register(SolvingProblemListViewModel.self) { resolver in
             let useCase = resolver.resolve(SolvingProblemListUseCase.self)!
-            return SolvingProblemListViewModel(useCase: useCase, coordinator: coordinator)
+            return SolvingProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(SolvingProblemListView.self) { resolver in
@@ -88,7 +89,7 @@ public struct PresentationAssembly: Assembly {
         // FavoriteProblemList
         container.register(FavoriteProblemListViewModel.self) { resolver in
             let useCase = resolver.resolve(FavoriteProblemListUseCase.self)!
-            return FavoriteProblemListViewModel(useCase: useCase, coordinator: coordinator)
+            return FavoriteProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(FavoriteProblemListView.self) { resolver in
@@ -98,7 +99,7 @@ public struct PresentationAssembly: Assembly {
         // ProblemDetail
         container.register(ProblemDetailViewModel.self) { (resolver, id: Int) in
             let useCase = resolver.resolve(ProblemDetailUseCase.self)!
-            return ProblemDetailViewModel(problemId: id, useCase: useCase, coordinator: coordinator)
+            return ProblemDetailViewModel(problemId: id, useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(ProblemDetailView.self) { (resolver, id: Int) in
@@ -108,7 +109,7 @@ public struct PresentationAssembly: Assembly {
         // ChatGPT
         container.register(ChattingViewModel.self) { (resolver, question: String, answer: String) in
             let useCase = resolver.resolve(ChattingUseCase.self)!
-            return ChattingViewModel(question: question, answer: answer, useCase: useCase, coordinator: coordinator)
+            return ChattingViewModel(question: question, answer: answer, useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         
         container.register(ChattingView.self) { (resolver, question: String, answer: String) in
@@ -118,7 +119,7 @@ public struct PresentationAssembly: Assembly {
         // ProblemSearch
         container.register(ProblemSearchViewModel.self) { resolver in
             let useCase = resolver.resolve(ProblemSearchUseCase.self)!
-            return ProblemSearchViewModel(useCase: useCase, coordinator: coordinator)
+            return ProblemSearchViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         container.register(ProblemSearchView.self) { resolver in
             let viewModel = resolver.resolve(ProblemSearchViewModel.self)!
@@ -127,7 +128,7 @@ public struct PresentationAssembly: Assembly {
         // ------------------------ Second Tab ------------------------
         // PedigreeList
         container.register(PedigreeListViewModel.self) { _ in
-            return PedigreeListViewModel(coordinator: coordinator)
+            return PedigreeListViewModel(coordinator: coordinator, toastHelper: toastHelper)
         }
         container.register(PedigreeListView.self) { resolver in
             let viewModel = resolver.resolve(PedigreeListViewModel.self)!
@@ -137,7 +138,7 @@ public struct PresentationAssembly: Assembly {
         // MyPage
         container.register(MyPageViewModel.self) { resolver in
             let useCase = resolver.resolve(MyPageUseCase.self)!
-            return MyPageViewModel(useCase: useCase, coordinator: coordinator)
+            return MyPageViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
         }
         .inObjectScope(.container)
         

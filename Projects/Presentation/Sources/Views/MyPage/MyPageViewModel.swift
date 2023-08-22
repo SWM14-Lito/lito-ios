@@ -19,9 +19,9 @@ public class MyPageViewModel: BaseViewModel {
     @Published var modifyNickNameInput = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
     @Published var modifyIntroduceInput = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     
-    public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
     public func getUserInfo() {

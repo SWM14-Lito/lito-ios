@@ -18,9 +18,9 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     @Published private(set) var isLoading: Bool = false
     @Published var problemCellList: [SolvingProblemCellVO] = []
 
-    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
     // 문제 받아오기 (무한 스크롤)
