@@ -47,6 +47,9 @@ public struct MyPageView: View {
                 HStack(spacing: 14) {
                     PhotoPickerView(imageData: $viewModel.imageData, photoPickerHandling: viewModel)
                         .frame(width: 74, height: 74)
+                        .transaction { transaction in
+                            transaction.animation = nil
+                        }
                     VStack(spacing: 9) {
                         HStack {
                             Text(userInfo.nickname)

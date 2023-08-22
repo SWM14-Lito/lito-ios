@@ -99,7 +99,6 @@ public class MyPageViewModel: BaseViewModel {
 extension MyPageViewModel: PhotoPickerHandling {
     
     public func postProfileImage() {
-        print("upload image")
         guard let imageData = imageData else { return }
         useCase.postProfileImage(image: imageData)
             .sinkToResultWithErrorHandler({ _ in
