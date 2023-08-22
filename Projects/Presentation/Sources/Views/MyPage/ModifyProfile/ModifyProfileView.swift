@@ -84,7 +84,7 @@ public struct ModifyProfileView: View {
                                     }
                             }
                             Button {
-                                viewModel.postProfileInfo()
+                                viewModel.patchUserInfo()
                             } label: {
                                 Text("수정완료")
                                     .frame(maxWidth: .infinity)
@@ -103,7 +103,7 @@ public struct ModifyProfileView: View {
                     .padding(.horizontal, 20)
                 }
                 if presentCustomAlert {
-                    CustomAlert(presentAlert: $presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", alertStyle: .destructive)
+                    CustomAlert(presentAlert: $presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", rightButtonAction: viewModel.deleteUser, alertStyle: .destructive)
                 }
             }
             .modifier(CustomNavigation(title: "정보 수정", back: viewModel.back))

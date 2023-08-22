@@ -66,7 +66,7 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func postProfileInfo() {
+    public func patchUserInfo() {
         guard let userInfo = userInfo else { return }
         var nickname: String?
         var introduce: String?
@@ -76,7 +76,7 @@ public class MyPageViewModel: BaseViewModel {
         if userInfo.introduce != modifyIntroduceInput.text {
             introduce = modifyIntroduceInput.text
         }
-        useCase.postProfileInfo(nickname: nickname, introduce: introduce)
+        useCase.patchUserInfo(nickname: nickname, introduce: introduce)
             .sinkToResultWithErrorHandler({ _ in
                 self.coordinator.pop()
             }, errorHandler: errorHandler)
@@ -86,6 +86,16 @@ public class MyPageViewModel: BaseViewModel {
     public func postAlarmAcceptance() {
         useCase.postAlarmAcceptance(getAlarm: alarmStatus)
             .sinkToResultWithErrorHandler({ _ in
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
+    public func deleteUser() {
+        useCase.deleteUser()
+            .sinkToResultWithErrorHandler({ _ in
+                print("delete user")
+                KeyChainManager.deleteUserInfo()
+                self.popToRoot()
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }

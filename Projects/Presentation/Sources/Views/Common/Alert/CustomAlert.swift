@@ -15,11 +15,11 @@ struct CustomAlert: View {
     let alertContent: String
     let leftButtonTitle: String
     let rightButtonTitle: String
-    let leftButtonAction: ()?
-    let rightButtonAction: ()?
+    let leftButtonAction: (() -> Void)?
+    let rightButtonAction: (() -> Void)?
     let alertStyle: AlertStyle
     
-    public init(presentAlert: Binding<Bool>, alertTitle: String, alertContent: String, leftButtonTitle: String, rightButtonTitle: String, leftButtonAction: ()? = nil, rightButtonAction: ()? = nil, alertStyle: AlertStyle) {
+    public init(presentAlert: Binding<Bool>, alertTitle: String, alertContent: String, leftButtonTitle: String, rightButtonTitle: String, leftButtonAction: (() -> Void)? = nil, rightButtonAction: (() -> Void)? = nil, alertStyle: AlertStyle) {
         self._presentAlert = presentAlert
         self.alertTitle = alertTitle
         self.alertContent = alertContent
@@ -48,10 +48,9 @@ struct CustomAlert: View {
                 HStack(spacing: 12) {
                     Button {
                         if let leftButtonAction {
-                            leftButtonAction
-                        } else {
-                            presentAlert.toggle()
+                            leftButtonAction()
                         }
+                        presentAlert.toggle()
                     } label: {
                         Text(leftButtonTitle)
                             .frame(maxWidth: .infinity)
@@ -66,10 +65,9 @@ struct CustomAlert: View {
                     }
                     Button {
                         if let rightButtonAction {
-                            rightButtonAction
-                        } else {
-                            presentAlert.toggle()
+                            rightButtonAction()
                         }
+                        presentAlert.toggle()
                     } label: {
                         Text(rightButtonTitle)
                             .frame(maxWidth: .infinity)
