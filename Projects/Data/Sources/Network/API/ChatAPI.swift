@@ -48,4 +48,7 @@ extension ChatAPI: TargetType {
             return APIConfiguration.jsonContentType
         }
     }
+    var pathWithMethod: String {
+        return self.path + self.method.rawValue
+    }
 }

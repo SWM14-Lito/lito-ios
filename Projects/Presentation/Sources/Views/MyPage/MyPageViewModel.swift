@@ -93,7 +93,6 @@ public class MyPageViewModel: BaseViewModel {
     public func deleteUser() {
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
-                print("delete user")
                 KeyChainManager.deleteUserInfo()
                 self.popToRoot()
             }, errorHandler: errorHandler)

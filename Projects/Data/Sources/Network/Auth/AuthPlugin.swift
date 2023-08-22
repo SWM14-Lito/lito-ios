@@ -17,11 +17,12 @@ struct AuthPlugin: PluginType {
     private init() {}
     
     private let noNeedAuthorization = [
-        UserAPI.setProfileInfo(ProfileInfoDTO(name: "", nickname: "", introduce: "", accessToken: "")).path,
-        UserAPI.setNotiAcceptance(AlarmAcceptanceDTO(getAlarm: false, accessToken: "")).path,
-        FileAPI.setProfileImage(ProfileImageDTO(image: Data(), accessToken: "")).path,
-        AuthAPI.appleLogin(appleVO: OAuth.AppleVO(userIdentifier: "", userEmail: "")).path,
-        AuthAPI.kakaoLogin(kakaoVO: OAuth.KakaoVO(userIdentifier: "", userEmail: "")).path
+        UserAPI.postUserInfo(ProfileInfoDTO(name: "", nickname: "", introduce: "", accessToken: "")).pathWithMethod,
+        UserAPI.patchUserInfo(ProfileInfoDTO(accessToken: "")).pathWithMethod,
+        UserAPI.setNotiAcceptance(AlarmAcceptanceDTO(getAlarm: false, accessToken: "")).pathWithMethod,
+        FileAPI.setProfileImage(ProfileImageDTO(image: Data(), accessToken: "")).pathWithMethod,
+        AuthAPI.appleLogin(appleVO: OAuth.AppleVO(userIdentifier: "", userEmail: "")).pathWithMethod,
+        AuthAPI.kakaoLogin(kakaoVO: OAuth.KakaoVO(userIdentifier: "", userEmail: "")).pathWithMethod
     ]
     
     private let needAccessAndRefreashToken = [
@@ -34,7 +35,8 @@ struct AuthPlugin: PluginType {
     
     func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
         var request = request
-        switch target.path {
+        let pathWithMethod = target.path + target.method.rawValue
+        switch pathWithMethod {
         case let path where noNeedAuthorization.contains(path):
             break
         case let path where needAccessAndRefreashToken.contains(path):

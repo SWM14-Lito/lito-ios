@@ -48,6 +48,9 @@ extension ExampleAPI: TargetType {
         }
     }
     
+    var pathWithMethod: String {
+        return self.path + self.method.rawValue
+    }
 }
 
 extension ExampleAPI {

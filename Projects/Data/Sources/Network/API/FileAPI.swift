@@ -46,4 +46,8 @@ extension FileAPI: TargetType {
             return ["Authorization": "Bearer \(profileImageDTO.accessToken)", "Content-type": "multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm"]
         }
     }
+    
+    var pathWithMethod: String {
+        return self.path + self.method.rawValue
+    }
 }

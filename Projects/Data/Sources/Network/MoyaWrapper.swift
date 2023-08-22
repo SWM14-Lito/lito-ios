@@ -54,10 +54,8 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     }
     
     func call<Value>(target: Provider) -> AnyPublisher<Value, Error> where Value: Decodable {
-        print(target.task)
         return self.requestPublisher(target)
             .map(Value.self)
-            .print()
             .catch({ moyaError -> Fail in
                 let networkErrorDTO = moyaError.toNetworkError()
                 #if DEBUG
@@ -69,7 +67,6 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     }
     
     func call(target: Provider) -> AnyPublisher<Void, Error> {
-        print(target.task)
         return self.requestPublisher(target)
             .catch({ moyaError -> Fail in
                 let networkErrorDTO = moyaError.toNetworkError()

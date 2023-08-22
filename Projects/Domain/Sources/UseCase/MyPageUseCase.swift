@@ -12,9 +12,10 @@ import Foundation
 public protocol MyPageUseCase {
     func postLogout() -> AnyPublisher<Void, Error>
     func getUserInfo() -> AnyPublisher<UserInfoVO, Error>
-    func postProfileInfo(nickname: String?, introduce: String?) -> AnyPublisher<Void, Error>
+    func patchUserInfo(nickname: String?, introduce: String?) -> AnyPublisher<Void, Error>
     func postProfileImage(image: Data) -> AnyPublisher<Void, Error>
     func postAlarmAcceptance(getAlarm: Bool) -> AnyPublisher<Void, Error>
+    func deleteUser() -> AnyPublisher<Void, Error>
 }
 
 public final class DefaultMyPageUseCase: MyPageUseCase {
@@ -38,13 +39,13 @@ public final class DefaultMyPageUseCase: MyPageUseCase {
         authRepository.postLogout()
     }
     
-    public func postProfileInfo(nickname: String?, introduce: String?) -> AnyPublisher<Void, Error> {
+    public func patchUserInfo(nickname: String?, introduce: String?) -> AnyPublisher<Void, Error> {
         guard let accessToken = KeyChainManager.read(key: .accessToken) else {
             return Fail(error: ErrorVO.fatalError)
                 .eraseToAnyPublisher()
         }
         let profileInfoDTO = ProfileInfoDTO(nickname: nickname, introduce: introduce, accessToken: accessToken)
-        return userRepository.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        return userRepository.patchUserInfo(profileInfoDTO: profileInfoDTO)
     }
     
     public func postProfileImage(image: Data) -> AnyPublisher<Void, Error> {
@@ -64,6 +65,10 @@ public final class DefaultMyPageUseCase: MyPageUseCase {
         }
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: getAlarm, accessToken: accessToken)
         return userRepository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+    }
+    
+    public func deleteUser() -> AnyPublisher<Void, Error> {
+        userRepository.deleteUser()
     }
     
 }
