@@ -80,7 +80,7 @@ final public class ProblemListViewModel: BaseViewModel {
                     case .success(let problemsListVO):
                         if let problemsCellVO = problemsListVO.problemsCellVO {
                             for idx in 0..<problemsCellVO.count {
-                                self.problemCellList[idx] = problemsCellVO[idx+page*self.problemSize]
+                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
                             }
                         }
                     case .failure(let error):
