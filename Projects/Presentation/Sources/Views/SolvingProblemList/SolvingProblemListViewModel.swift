@@ -15,12 +15,12 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
-    @Published private(set) var isGotResponse: Bool = false
+    @Published private(set) var isLoading: Bool = false
     @Published var problemCellList: [SolvingProblemCellVO] = []
 
-    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
     // 문제 받아오기 (무한 스크롤)
@@ -31,6 +31,7 @@ public final class SolvingProblemListViewModel: BaseViewModel {
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
         }
+        isLoading = true
         let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: problemUserId, page: problemPage, size: problemSize)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResult({ result in
@@ -48,7 +49,7 @@ public final class SolvingProblemListViewModel: BaseViewModel {
                         self.errorObject.error  = errorVO
                     }
                 }
-                self.isGotResponse = true
+                self.isLoading = false
             })
             .store(in: cancelBag)
     }

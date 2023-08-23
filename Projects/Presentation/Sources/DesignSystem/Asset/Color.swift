@@ -14,6 +14,8 @@ public extension Color {
     static let Bg_ChatGPT = makeLitoColor(.Bg_ChatGPT)
     /// hex: F3F3F3
     static let Bg_Dark_Deep = makeLitoColor(.Bg_Dark_Deep)
+    /// hex: 444444
+    static let Bg_Dark_Gray = makeLitoColor(.Bg_Dark_Gray)
     /// hex:F1F1FF
     static let Bg_Dark_Soft_Blue = makeLitoColor(.Bg_Dark_Soft_Blue)
     /// hex: F5F5F5
@@ -101,6 +103,7 @@ public extension Color {
 extension ShapeStyle where Self == Color {
     static var Bg_ChatGPT: Color { Color.Bg_ChatGPT }
     static var Bg_Dark_Deep: Color { Color.Bg_Dark_Deep }
+    static var Bg_Dark_Gray: Color { Color.Bg_Dark_Gray }
     static var Bg_Dark_Soft_Blue: Color { Color.Bg_Dark_Soft_Blue }
     static var Bg_Deep: Color { Color.Bg_Deep }
     static var Bg_Default: Color { Color.Bg_Default }
@@ -165,6 +168,7 @@ extension Color {
 public enum LitoColor: String {
     case Bg_ChatGPT
     case Bg_Dark_Deep
+    case Bg_Dark_Gray
     case Bg_Dark_Soft_Blue
     case Bg_Deep
     case Bg_Default

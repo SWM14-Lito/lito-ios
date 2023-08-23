@@ -19,10 +19,11 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     @Published var problemCellList: [FavoriteProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var selectedFilters: [ProblemListFilter] = []
+    @Published var isLoading: Bool = false
 
-    public init(useCase: FavoriteProblemListUseCase, coordinator: CoordinatorProtocol) {
+    public init(useCase: FavoriteProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     // 문제 가져오기
@@ -33,29 +34,20 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
         }
+        isLoading = true
         let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: problemFavoriteId, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
 
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        problemsCellVO.forEach({ problemCellVO in
-                            self.problemCellList.append(problemCellVO)
-                        })
-                        self.problemPage += 1
-                    }
-                    self.problemTotalSize = problemsListVO.total
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        if case .tokenExpired = errorVO {
-                            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                                self.popToRoot()
-                            }
-                        }
-                    }
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    problemsCellVO.forEach({ problemCellVO in
+                        self.problemCellList.append(problemCellVO)
+                    })
+                    self.problemPage += 1
                 }
-            })
+                self.problemTotalSize = problemsListVO.total
+                self.isLoading = false
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
@@ -76,7 +68,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     }
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func updateProblems() {
+    func updateProblemValues() {
         if problemCellList.isEmpty {
             return
         }

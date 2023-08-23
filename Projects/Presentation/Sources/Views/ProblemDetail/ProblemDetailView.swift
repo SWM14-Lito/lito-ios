@@ -18,12 +18,11 @@ public struct ProblemDetailView: View {
     }
     
     public var body: some View {
-        VStack {
-            errorMessage
-            ScrollView {
-                VStack(alignment: .leading) {
-                    questionLabel
-                    if viewModel.problemDetailVO != nil {
+        ZStack {
+            if viewModel.problemDetailVO != nil {
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        questionLabel
                         question
                         switch viewModel.solvingState {
                         case .initial:
@@ -33,6 +32,9 @@ public struct ProblemDetailView: View {
                             } else {
                                 ZStack(alignment: .bottom) {
                                     answerBox
+                                        .onAppear {
+                                            focused = true
+                                        }
                                     if !viewModel.isFirstTry {
                                         showAnswerButton
                                     }
@@ -49,14 +51,14 @@ public struct ProblemDetailView: View {
                             answerBoxWithChatGPTButton
                             listOfFaq
                         }
-                    } else {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
+                        Spacer()
                     }
-                    Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                LoadingView()
             }
+            errorMessage
         }
         .modifier(CustomNavigation(
             title: "문제풀이",
@@ -66,13 +68,13 @@ public struct ProblemDetailView: View {
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
                 action: viewModel.toggleFavorite)))
-
+        
         .padding([.leading, .trailing], 20)
         .onAppear {
             viewModel.startSolvingProblem()
             viewModel.getProblemDetail()
         }
-
+        
     }
     
     // 질문 라벨
@@ -184,24 +186,15 @@ public struct ProblemDetailView: View {
     // 정답 확인하고 다음 상태로 넘어갈 수 있는 버튼
     @ViewBuilder
     private var answerLabelButton: some View {
-        Button {
-            if viewModel.solvingState == .correctKeyword {
-                viewModel.showAnswer()
-            } else if viewModel.solvingState == .wrongKeyword {
-                viewModel.initInput()
-            }
-        } label: {
-            Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
-                .font(.Body1Regular)
-                .foregroundColor(.white)
-                .padding([.top, .bottom], 18)
-                .padding([.leading, .trailing], 55)
-                .frame(maxWidth: .infinity)
-                .background(viewModel.solvingState == .correctKeyword ? .Button_Point : .Button_Red)
-                .cornerRadius(10)
-                .padding(.bottom, 20)
-        }
-        .buttonStyle(.plain)
+        Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
+            .font(.Body1Regular)
+            .foregroundColor(.white)
+            .padding([.top, .bottom], 18)
+            .padding([.leading, .trailing], 55)
+            .frame(maxWidth: .infinity)
+            .background(viewModel.solvingState == .correctKeyword ? .Button_Point : .Button_Red)
+            .cornerRadius(10)
+            .padding(.bottom, 20)
     }
     
     // 정답 보기 버튼

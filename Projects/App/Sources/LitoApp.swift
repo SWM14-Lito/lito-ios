@@ -9,20 +9,25 @@ import KakaoSDKCommon
 struct LitoApp: App {
     private let injector: Injector
     @ObservedObject private var coordinator: Coordinator
+    @ObservedObject private var toastHelper: ToastHelper
     
     init() {
         UIFont.registerCommonFonts()
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
+        
         injector = DependencyInjector(container: Container())
+        toastHelper = ToastHelper()
         coordinator = Coordinator(.loginScene)
         if KeyChainManager.isPossibleAutoLogin {
             coordinator.push(.rootTabScene)
         }
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
-                           PresentationAssembly(coordinator: coordinator)
-                          ])
+                           PresentationAssembly(
+                            coordinator: coordinator,
+                            toastHelper: toastHelper
+                           )])
         coordinator.injector = injector
     }
     
@@ -37,6 +42,7 @@ struct LitoApp: App {
                         coordinator.buildScene(scene: scene)
                     }
             }
+            .toast(message: $toastHelper.toastMessage, duration: $toastHelper.duration, isToastShown: $toastHelper.isToastShown)
         }
     }
 }

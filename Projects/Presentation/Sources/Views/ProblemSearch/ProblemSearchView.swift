@@ -48,13 +48,17 @@ public struct ProblemSearchView: View {
                     viewModel.getProblemList()
                 }
                 .padding(.leading, 18)
-                
-            Image(systemName: SymbolName.magnifyingglass)
-                .font(.system(size: 20))
-                .foregroundColor(.Text_Default)
-                .padding(.horizontal, 18)
-                .padding(.vertical, 11)
-
+            
+            Button {
+                viewModel.resetProblemCellList()
+                viewModel.getProblemList()
+            } label: {
+                Image(systemName: SymbolName.magnifyingglass)
+                    .font(.system(size: 20))
+                    .foregroundColor(.Text_Default)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 11)
+            }
         }
         .background(
             RoundedRectangle(cornerRadius: 46 )
@@ -71,10 +75,10 @@ public struct ProblemSearchView: View {
         case .notStart:
             recentSearched
         case .waiting:
-            ProgressView()
+            LoadingView()
         case .finish:
             if viewModel.problemCellList.isEmpty {
-                Text("검색 결과가 없습니다.")
+                NoContentView(message: "검색 결과가 없습니다.")
             } else {
                 problemList
                     .background(.Bg_Light)

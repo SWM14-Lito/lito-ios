@@ -25,7 +25,7 @@ public struct MyPageView: View {
                     .overlay(.Divider_Default)
                 listSection
             } else {
-                ProgressView()
+                LoadingView()
             }
         }
         .onAppear {

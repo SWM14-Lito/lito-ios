@@ -12,6 +12,7 @@ import SwiftUI
 public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
     private let problemId: Int
+    private let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
         return solvingState == .correctKeyword || solvingState == .wrongKeyword
     }
@@ -35,10 +36,10 @@ public class ProblemDetailViewModel: BaseViewModel {
         case showAnswer
     }
     
-    public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol) {
+    public init(problemId: Int, useCase: ProblemDetailUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
         self.problemId = problemId
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
     // API 통신해서 문제 세부 정보 가져오기
@@ -123,6 +124,7 @@ public class ProblemDetailViewModel: BaseViewModel {
                             self.solvingState = .wrongKeyword
                             self.isFirstTry = false
                         }
+                        self.changeStateFromSolvingResult()
                     case .failure(let error):
                         if let errorVO = error as? ErrorVO {
                             self.errorObject.error  = errorVO
@@ -133,6 +135,17 @@ public class ProblemDetailViewModel: BaseViewModel {
                 .store(in: cancelBag)
         } else {
             isWrongInput = true
+        }
+    }
+    
+    // 문제 풀이 결과 보고 다음 상태로 바꾸기
+    func changeStateFromSolvingResult() {
+        DispatchQueue.main.asyncAfter(deadline: .now()+stateChangingTime) {
+            if self.solvingState == .correctKeyword {
+                self.showAnswer()
+            } else if self.solvingState == .wrongKeyword {
+                self.initInput()
+            }
         }
     }
     

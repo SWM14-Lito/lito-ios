@@ -19,6 +19,12 @@ extension View {
     }
 }
 
+extension View {    
+    public func toast(message: Binding<String>, duration: Binding<Double>, isToastShown: Binding<Bool>) -> some View {
+        return self.modifier(ToastModifier(message: message, duration: duration, isToastShown: isToastShown))
+    }
+}
+
 extension View {
     @ViewBuilder
     func `if`<Content: View>(_ conditional: Bool, transform: (Self) -> Content) -> some View {

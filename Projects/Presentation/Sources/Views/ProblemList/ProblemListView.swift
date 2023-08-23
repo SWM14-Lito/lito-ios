@@ -39,7 +39,7 @@ public struct ProblemListView: View {
                 symbolName: SymbolName.magnifyingglass,
                 action: viewModel.moveToProblemSearchScene)))
         .onAppear {
-            viewModel.updateProblems()
+            viewModel.updateProblemValues()
         }
     }
     
@@ -55,19 +55,29 @@ public struct ProblemListView: View {
     
     @ViewBuilder
     private var problemList: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                    ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                        .onAppear {
-                            viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+        if !viewModel.isLoading {
+            VStack {
+                if !viewModel.problemCellList.isEmpty {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                    .onAppear {
+                                        viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                                    }
+                            }
                         }
+                        .padding(20)
+                    }
+                } else {
+                    NoContentView(message: "해당 카테고리의 문제가 없습니다.")
                 }
             }
-            .padding(20)
-        }
-        .onAppear {
-            viewModel.getProblemList()
+            .onAppear {
+                viewModel.getProblemList()
+            }
+        } else {
+            LoadingView()
         }
     }
     

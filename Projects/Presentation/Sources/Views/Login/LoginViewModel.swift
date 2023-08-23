@@ -14,9 +14,9 @@ final public class LoginViewModel: BaseViewModel {
     
     private let useCase: LoginUseCase
 
-    public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase) {
+    public init(coordinator: CoordinatorProtocol, useCase: LoginUseCase, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
-        super.init(coordinator: coordinator)
+        super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
     public func kakaoLogin() {
