@@ -17,18 +17,23 @@ public struct FavoriteProblemListView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            errorMessage
-            headFilter
-                .padding([.top, .leading], 20)
-            Divider()
+        ZStack {
             VStack(spacing: 0) {
-                filter
-                    .padding(.top, 20)
-                problemList
-                Spacer()
+                headFilter
+                    .padding([.top, .leading], 20)
+                Divider()
+                VStack(spacing: 0) {
+                    filter
+                        .padding(.top, 20)
+                    problemList
+                    Spacer()
+                }
+                .background(.Bg_Light)
             }
-            .background(.Bg_Light)
+            if viewModel.isLoading {
+                LoadingView()
+            }
+            errorMessage
         }
         .modifier(CustomNavigation(
             title: "찜한 문제",
@@ -53,29 +58,25 @@ public struct FavoriteProblemListView: View {
     // 찜한 문제 리스트
     @ViewBuilder
     private var problemList: some View {
-        if !viewModel.isLoading {
-            VStack {
-                if !viewModel.problemCellList.isEmpty {
-                    ScrollView {
-                        LazyVStack {
-                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                                    .onAppear {
-                                        viewModel.getProblemList(problemFavoriteId: problemCellVO.wrappedValue.favoriteId)
-                                    }
-                            }
+        VStack {
+            if !viewModel.problemCellList.isEmpty {
+                ScrollView {
+                    LazyVStack {
+                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                .onAppear {
+                                    viewModel.getProblemList(problemFavoriteId: problemCellVO.wrappedValue.favoriteId)
+                                }
                         }
-                        .padding(20)
                     }
-                } else {
-                    NoContentView(message: "찜한 문제가 없습니다.")
+                    .padding(20)
                 }
+            } else {
+                NoContentView(message: "찜한 문제가 없습니다.")
             }
-            .onAppear {
-                viewModel.getProblemList()
-            }
-        } else {
-            LoadingView()
+        }
+        .onAppear {
+            viewModel.getProblemList()
         }
     }
     

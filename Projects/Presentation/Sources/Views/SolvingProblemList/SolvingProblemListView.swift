@@ -16,9 +16,14 @@ public struct SolvingProblemListView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
+            VStack(spacing: 0) {
+                problemList
+            }
+            if viewModel.isLoading {
+                LoadingView()
+            }
             errorMessage
-            problemList
         }
         .modifier(CustomNavigation(
             title: "풀던 문제",
@@ -31,30 +36,26 @@ public struct SolvingProblemListView: View {
     // 문제 리스트
     @ViewBuilder
     private var problemList: some View {
-        if !viewModel.isLoading {
-            VStack {
-                if !viewModel.problemCellList.isEmpty {
-                    ScrollView {
-                        LazyVStack {
-                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                                    .onAppear {
-                                        viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
-                                    }
-                            }
+        VStack {
+            if !viewModel.problemCellList.isEmpty {
+                ScrollView {
+                    LazyVStack {
+                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                .onAppear {
+                                    viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
+                                }
                         }
-                        .padding(20)
-                        
                     }
-                } else {
-                    NoContentView(message: "풀던 문제가 없습니다.")
+                    .padding(20)
+                    
                 }
+            } else {
+                NoContentView(message: "풀던 문제가 없습니다.")
             }
-            .onAppear {
-                viewModel.getProblemList()
-            }
-        } else {
-            LoadingView()
+        }
+        .onAppear {
+            viewModel.getProblemList()
         }
     }
     

@@ -18,18 +18,23 @@ public struct ProblemListView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            errorMessage
-            headFilter
-                .padding([.top, .leading], 20)
-            Divider()
+        ZStack {
             VStack(spacing: 0) {
-                filter
-                    .padding(.top, 20)
-                problemList
-                Spacer()
+                headFilter
+                    .padding([.top, .leading], 20)
+                Divider()
+                VStack(spacing: 0) {
+                    filter
+                        .padding(.top, 20)
+                    problemList
+                    Spacer()
+                }
+                .background(.Bg_Light)
             }
-            .background(.Bg_Light)
+            if viewModel.isLoading {
+                LoadingView()
+            }
+            errorMessage
         }
         .modifier(CustomNavigation(
             title: viewModel.selectedSubject.name,
@@ -55,29 +60,25 @@ public struct ProblemListView: View {
     
     @ViewBuilder
     private var problemList: some View {
-        if !viewModel.isLoading {
-            VStack {
-                if !viewModel.problemCellList.isEmpty {
-                    ScrollView {
-                        LazyVStack {
-                            ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
-                                ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
-                                    .onAppear {
-                                        viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
-                                    }
-                            }
+        VStack {
+            if !viewModel.problemCellList.isEmpty {
+                ScrollView {
+                    LazyVStack {
+                        ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
+                            ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
+                                .onAppear {
+                                    viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                                }
                         }
-                        .padding(20)
                     }
-                } else {
-                    NoContentView(message: "해당 카테고리의 문제가 없습니다.")
+                    .padding(20)
                 }
+            } else {
+                NoContentView(message: "해당 카테고리의 문제가 없습니다.")
             }
-            .onAppear {
-                viewModel.getProblemList()
-            }
-        } else {
-            LoadingView()
+        }
+        .onAppear {
+            viewModel.getProblemList()
         }
     }
     
