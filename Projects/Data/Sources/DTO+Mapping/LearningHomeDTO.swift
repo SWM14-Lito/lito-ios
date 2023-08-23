@@ -12,51 +12,17 @@ public struct LearningHomeDTO: Decodable {
     let userId: Int
     let profileImgUrl: String?
     let nickname: String?
-    let question: String?
-    let problemId: Int?
-    let subject: String?
-    let favorite: Bool?
+    let processProblem: ProblemCellDTO?
+    let recommendProblems: [ProblemCellDTO]?
 
     func toVO() -> LearningHomeVO {
-        let userInfo = LearningHomeUserInfoDTO(
-            userId: userId,
-            profileImgUrl: profileImgUrl,
-            nickname: nickname
-        ).toVO()
-        let problemInfo: DefaultProblemCellVO?
-        
-        if let problemId = problemId {
-            problemInfo = ProblemCellDTO(
-                problemUserId: nil,
-                favoriteId: nil,
-                problemId: problemId,
-                subjectName: subject,
-                question: question,
-                problemStatus: "풀이중",
-                favorite: favorite
-            ).toProblemCellVO()
-        } else {
-            problemInfo = nil
-        }
-        
-        return LearningHomeVO(
-            userInfo: userInfo,
-            solvingProblem: problemInfo
-        )
-    }
-}
-
-public struct LearningHomeUserInfoDTO {
-    let userId: Int
-    let profileImgUrl: String?
-    let nickname: String?
-    
-    func toVO() -> LearningHomeUserInfoVO {
-        return LearningHomeUserInfoVO(
-            userId: userId,
-            profileImgUrl: profileImgUrl,
-            nickname: nickname ?? "Unkown"
-        )
+       return LearningHomeVO(
+        userId: userId,
+        profileImgUrl: profileImgUrl,
+        nickname: nickname ?? "Unknown",
+        processProblem: processProblem?.toProblemCellVO(),
+        recommendProblems: recommendProblems?.map { $0.toProblemCellVO() } ?? []
+       )
     }
 }
 

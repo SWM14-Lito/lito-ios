@@ -13,9 +13,9 @@ import Combine
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
     @Published private(set) var isLoading: Bool = false
-    @Published var solvingProblem: DefaultProblemCellVO?
-    @Published var recommendedProblem: [DefaultProblemCellVO]? // 임시 변수 (서버 통신 필요)
-    @Published var userInfo: LearningHomeUserInfoVO?
+    @Published var learningHomeVO: LearningHomeVO?
+    @Published var processProblem: DefaultProblemCellVO?
+    @Published var recommendProblems = [DefaultProblemCellVO]()
     @Published var learningRate: Float = 0.8 // 임시 변수 (서버 통신 필요)
     @Published var goalCount: Int = 5 // 임시 변수 (서버 통신 필요)
     
@@ -51,9 +51,9 @@ public final class LearningHomeViewModel: BaseViewModel {
             .sinkToResult { result in
                 switch result {
                 case .success(let learningHomeVO):
-                    self.solvingProblem = learningHomeVO.solvingProblem
-                    self.recommendedProblem = nil
-                    self.userInfo = learningHomeVO.userInfo
+                    self.learningHomeVO = learningHomeVO
+                    self.processProblem = learningHomeVO.processProblem
+                    self.recommendProblems = learningHomeVO.recommendProblems
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO
@@ -76,7 +76,11 @@ extension LearningHomeViewModel: ProblemCellHandling {
             .sinkToResult { result in
                 switch result {
                 case .success(_):
-                    self.solvingProblem?.favorite.toggle()
+                    if let index = self.learningHomeVO?.recommendProblems.firstIndex(where: { $0.problemId == id}) {
+                        self.learningHomeVO?.recommendProblems[index].favorite.toggle()
+                    } else {
+                        self.learningHomeVO?.processProblem?.favorite.toggle()
+                    }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
                         self.errorObject.error  = errorVO

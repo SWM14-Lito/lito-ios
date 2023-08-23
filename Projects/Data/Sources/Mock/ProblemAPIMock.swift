@@ -14,14 +14,48 @@ extension ProblemAPI {
     var sampleData: Data {
         switch self {
         case .learningHome:
-            let dto = LearningHomeDTO(
-                userId: 1,
+            let dto = LearningHomeDTO (
+                userId: 0,
                 profileImgUrl: nil,
                 nickname: "테스트",
-                question: "테스트",
-                problemId: 1,
-                subject: "테스트",
-                favorite: false
+                processProblem: ProblemCellDTO(
+                    problemUserId: 1,
+                    favoriteId: 1,
+                    problemId: 1,
+                    subjectName: "테스트",
+                    question: "테스트",
+                    problemStatus: "풀이완료",
+                    favorite: false
+                ),
+                recommendProblems: [
+                    ProblemCellDTO(
+                        problemUserId: 1,
+                        favoriteId: 1,
+                        problemId: 1,
+                        subjectName: "테스트",
+                        question: "테스트",
+                        problemStatus: "풀이완료",
+                        favorite: false
+                    ),
+                    ProblemCellDTO(
+                        problemUserId: 1,
+                        favoriteId: 1,
+                        problemId: 1,
+                        subjectName: "테스트",
+                        question: "테스트",
+                        problemStatus: "풀이완료",
+                        favorite: false
+                    ),
+                    ProblemCellDTO(
+                        problemUserId: 1,
+                        favoriteId: 1,
+                        problemId: 1,
+                        subjectName: "테스트",
+                        question: "테스트",
+                        problemStatus: "풀이완료",
+                        favorite: false
+                    )
+                ]
             )
             if let data = try? JSONEncoder().encode(dto) {
                 return data

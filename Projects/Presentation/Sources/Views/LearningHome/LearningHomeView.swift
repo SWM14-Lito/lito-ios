@@ -60,8 +60,8 @@ public struct LearningHomeView: View {
             header
             learningGoal
             ScrollView {
-                solvingProblem
-                recommendedProblem
+                processProblemArea
+                recommendedProblemArea
                     .padding(.bottom, 10)
             }
             .scrollIndicators(.hidden)
@@ -89,13 +89,13 @@ public struct LearningHomeView: View {
     // 프로필 이미지와 닉네임 보여주기
     @ViewBuilder
     private var profile: some View {
-        if let userInfo = viewModel.userInfo {
+        if let learningHomeVO = viewModel.learningHomeVO {
             VStack(alignment: .leading) {
-                UrlImageView(urlString: userInfo.profileImgUrl)
+                UrlImageView(urlString: learningHomeVO.profileImgUrl)
                     .frame(width: 54, height: 54)
                     .clipShape(Circle())
                 HStack(spacing: 0) {
-                    Text(userInfo.nickname)
+                    Text(learningHomeVO.nickname)
                         .font(.Head1Bold)
                     Text("님,")
                         .font(.Head1Light)
@@ -229,7 +229,7 @@ public struct LearningHomeView: View {
     
     // 풀던 문제 보여주기
     @ViewBuilder
-    private var solvingProblem: some View {
+    private var processProblemArea: some View {
         if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
@@ -237,7 +237,7 @@ public struct LearningHomeView: View {
                         .foregroundColor(.Text_Default)
                         .font(.Head2Bold)
                     Spacer()
-                    if viewModel.solvingProblem != nil {
+                    if viewModel.processProblem != nil {
                         Button {
                             viewModel.moveToSolvingProblemView()
                         } label: {
@@ -250,8 +250,8 @@ public struct LearningHomeView: View {
                         }
                     }
                 }
-                if viewModel.solvingProblem != nil {
-                    ProblemCellView(problemCellVO: $viewModel.solvingProblem.toUnwrapped(), problemCellHandling: viewModel)
+                if viewModel.processProblem != nil {
+                    ProblemCellView(problemCellVO: $viewModel.processProblem.toUnwrapped(), problemCellHandling: viewModel)
                 } else {
                     NoContentView(message: "풀던 문제가 없습니다.", withSymbol: false)
                 }
@@ -262,7 +262,7 @@ public struct LearningHomeView: View {
     
     // 추천 문제 보여주기
     @ViewBuilder
-    private var recommendedProblem: some View {
+    private var recommendedProblemArea: some View {
         if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
@@ -271,9 +271,9 @@ public struct LearningHomeView: View {
                         .font(.Head2Bold)
                     Spacer()
                 }
-                if viewModel.recommendedProblem != nil {
+                if !viewModel.recommendProblems.isEmpty {
                     VStack(spacing: 8) {
-                        ForEach($viewModel.recommendedProblem.toUnwrapped(), id: \.self) { problem in
+                        ForEach($viewModel.recommendProblems, id: \.self) { problem in
                             ProblemCellView(problemCellVO: problem, problemCellHandling: viewModel)
                         }
                     }
