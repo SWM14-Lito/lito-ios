@@ -62,6 +62,10 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 정답이 나오는 상태로 변경
     func showAnswer() {
+        useCase.submitAnswer(id: problemId, keyword: problemDetailVO?.problemKeyword ?? "")
+            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+
         solvingState = .showAnswer
         useCase.showAnswer()
     }
@@ -75,16 +79,9 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 문제 찜하기 선택 및 해제
     func toggleFavorite() {
         useCase.toggleProblemFavorite(id: problemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
+            .sinkToResultWithErrorHandler({ _ in
                     self.problemDetailVO?.favorite.toggle()
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
@@ -96,16 +93,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 문제 풀기 시작한다는거 서버에 알려주기
     func startSolvingProblem() {
         useCase.startSolvingProblem(id: problemId)
-            .sinkToResult { result in
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
@@ -115,23 +103,16 @@ public class ProblemDetailViewModel: BaseViewModel {
            isWrongInput = false
            isLoading = true
             useCase.submitAnswer(id: problemId, keyword: input)
-                .sinkToResult { result in
-                    switch result {
-                    case .success(let problemSolvedVO):
-                        if problemSolvedVO.solved == true {
-                            self.solvingState = .correctKeyword
-                        } else {
-                            self.solvingState = .wrongKeyword
-                            self.isFirstTry = false
-                        }
-                        self.changeStateFromSolvingResult()
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
-                        }
+                .sinkToResultWithErrorHandler({ problemSolvedVO in
+                    if problemSolvedVO.solved == true {
+                        self.solvingState = .correctKeyword
+                    } else {
+                        self.solvingState = .wrongKeyword
+                        self.isFirstTry = false
                     }
+                    self.changeStateFromSolvingResult()
                     self.isLoading = false
-                }
+                }, errorHandler: errorHandler)
                 .store(in: cancelBag)
         } else {
             isWrongInput = true
