@@ -26,11 +26,11 @@ struct AuthPlugin: PluginType {
     ]
     
     private let needAccessAndRefreashToken = [
-        AuthAPI.logout.path
+        AuthAPI.logout.pathWithMethod
     ]
     
     private let needRefreashToken = [
-        AuthAPI.reissueToken.path
+        AuthAPI.reissueToken.pathWithMethod
     ]
     
     func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
