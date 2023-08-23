@@ -72,7 +72,7 @@ final public class ProblemListViewModel: BaseViewModel {
             return
         }
         
-        for page in 0...problemPage {
+        for page in 0..<problemPage {
             let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: page, size: problemSize)
             useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
                 .sinkToResult({ result in
