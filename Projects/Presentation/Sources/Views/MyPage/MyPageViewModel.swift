@@ -66,7 +66,7 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func postProfileInfo() {
+    public func patchUserInfo() {
         guard let userInfo = userInfo else { return }
         var nickname: String?
         var introduce: String?
@@ -76,7 +76,7 @@ public class MyPageViewModel: BaseViewModel {
         if userInfo.introduce != modifyIntroduceInput.text {
             introduce = modifyIntroduceInput.text
         }
-        useCase.postProfileInfo(nickname: nickname, introduce: introduce)
+        useCase.patchUserInfo(nickname: nickname, introduce: introduce)
             .sinkToResultWithErrorHandler({ _ in
                 self.coordinator.pop()
             }, errorHandler: errorHandler)
@@ -90,6 +90,15 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
+    public func deleteUser() {
+        useCase.deleteUser()
+            .sinkToResultWithErrorHandler({ _ in
+                KeyChainManager.deleteUserInfo()
+                self.popToRoot()
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
     public func moveToModifyProfileView() {
         coordinator.push(.modifyProfileScene)
     }
@@ -99,7 +108,6 @@ public class MyPageViewModel: BaseViewModel {
 extension MyPageViewModel: PhotoPickerHandling {
     
     public func postProfileImage() {
-        print("upload image")
         guard let imageData = imageData else { return }
         useCase.postProfileImage(image: imageData)
             .sinkToResultWithErrorHandler({ _ in

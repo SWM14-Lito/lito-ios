@@ -17,8 +17,12 @@ final public class DefaultUserRepository: UserRepository {
         self.dataSource = dataSource
     }
     
-    public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
-        dataSource.postProfileInfo(profileInfoDTO: profileInfoDTO)
+    public func postUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        dataSource.postUserInfo(profileInfoDTO: profileInfoDTO)
+    }
+    
+    public func patchUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        dataSource.patchUserInfo(profileInfoDTO: profileInfoDTO)
     }
 
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
@@ -29,6 +33,10 @@ final public class DefaultUserRepository: UserRepository {
         dataSource.getUserInfo()
             .map { $0.toVO() }
             .eraseToAnyPublisher()
+    }
+    
+    public func deleteUser() -> AnyPublisher<Void, Error> {
+        dataSource.deleteUser()
     }
     
 }

@@ -67,6 +67,10 @@ extension AuthAPI: TargetType {
     var validationType: ValidationType {
         return .successCodes
     }
+    
+    var pathWithMethod: String {
+        return self.path + self.method.rawValue
+    }
 }
 
 extension AuthAPI {

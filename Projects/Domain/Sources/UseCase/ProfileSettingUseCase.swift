@@ -26,7 +26,7 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
     }
     
     public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
-        userRepository.postProfileInfo(profileInfoDTO: profileInfoDTO)
+        userRepository.postUserInfo(profileInfoDTO: profileInfoDTO)
     }
     
     public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {

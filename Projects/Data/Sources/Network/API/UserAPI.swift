@@ -11,9 +11,11 @@ import Domain
 import Foundation
 
 enum UserAPI {
-    case setProfileInfo(ProfileInfoDTO)
+    case postUserInfo(ProfileInfoDTO)
+    case patchUserInfo(ProfileInfoDTO)
     case setNotiAcceptance(AlarmAcceptanceDTO)
     case getUserInfo(id: String)
+    case deleteUser
 }
 extension UserAPI: TargetType {
     var baseURL: URL {
@@ -22,29 +24,35 @@ extension UserAPI: TargetType {
     
     var path: String {
         switch self {
-        case .setProfileInfo:
+        case .postUserInfo, .patchUserInfo:
             return "/api/v1/users"
         case .setNotiAcceptance:
             return "/api/v1/users/notifications"
         case .getUserInfo(let id):
             return "/api/v1/users/\(id)"
+        case .deleteUser:
+            return "/api/v1/users"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .setProfileInfo:
+        case .postUserInfo:
+            return .post
+        case .patchUserInfo:
             return .patch
         case .setNotiAcceptance:
             return .patch
         case .getUserInfo:
             return .get
+        case .deleteUser:
+            return .delete
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .setProfileInfo(let profileInfoDTO):
+        case .postUserInfo(let profileInfoDTO), .patchUserInfo(let profileInfoDTO):
             var parameters: [String: Any] = [:]
             if let name = profileInfoDTO.name {
                 parameters["name"] = name
@@ -64,21 +72,27 @@ extension UserAPI: TargetType {
             return .requestParameters(parameters: [
                 "id": id
             ], encoding: URLEncoding.queryString)
+        case .deleteUser:
+            return .requestPlain
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .setProfileInfo(let profileInfoDTO):
+        case .postUserInfo(let profileInfoDTO), .patchUserInfo(let profileInfoDTO):
             return APIConfiguration.jsonContentType + ["Authorization": "Bearer \(profileInfoDTO.accessToken)"]
         case .setNotiAcceptance(let alarmAcceptanceDTO):
             return APIConfiguration.urlencodedContentType + ["Authorization": "Bearer \(alarmAcceptanceDTO.accessToken)"]
-        case .getUserInfo:
+        default:
             return nil
         }
     }
     
     var validationType: ValidationType {
         return .successCodes
+    }
+    
+    var pathWithMethod: String {
+        return self.path + self.method.rawValue
     }
 }

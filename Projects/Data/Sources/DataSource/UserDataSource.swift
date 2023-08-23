@@ -10,9 +10,11 @@ import Combine
 import Domain
 
 public protocol UserDataSource {
-    func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
+    func postUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
+    func patchUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error>
     func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error>
     func getUserInfo() -> AnyPublisher<UserInfoDTO, Error>
+    func deleteUser() -> AnyPublisher<Void, Error>
 }
 
 final public class DefaultUserDataSource: UserDataSource {
@@ -21,8 +23,12 @@ final public class DefaultUserDataSource: UserDataSource {
     
     private let moyaProvider = MoyaWrapper<UserAPI>()
     
-    public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
-        moyaProvider.call(target: .setProfileInfo(profileInfoDTO))
+    public func postUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        moyaProvider.call(target: .postUserInfo(profileInfoDTO))
+    }
+    
+    public func patchUserInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        moyaProvider.call(target: .patchUserInfo(profileInfoDTO))
     }
     
     public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
@@ -35,5 +41,9 @@ final public class DefaultUserDataSource: UserDataSource {
                 .eraseToAnyPublisher()
         }
         return moyaProvider.call(target: .getUserInfo(id: userId))
+    }
+    
+    public func deleteUser() -> AnyPublisher<Void, Error> {
+        moyaProvider.call(target: .deleteUser)
     }
 }
