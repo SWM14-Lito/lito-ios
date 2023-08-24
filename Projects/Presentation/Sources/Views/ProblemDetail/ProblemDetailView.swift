@@ -270,6 +270,7 @@ public struct ProblemDetailView: View {
                         Text(question)
                             .font(.Body2Medium)
                             .foregroundColor(.black)
+                            .fixedSize(horizontal: false, vertical: true)
                         Spacer()
                         Image(systemName: SymbolName.chevronUp)
                             .font(.system(size: 15))
@@ -280,6 +281,7 @@ public struct ProblemDetailView: View {
                         .font(.Body3Regular)
                         .foregroundColor(.Text_Serve)
                         .padding(.trailing, 20)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(.leading, 20)
                 .padding([.top, .bottom], 18)
