@@ -14,7 +14,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     private let problemId: Int
     private let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
-        return solvingState == .correctKeyword || solvingState == .wrongKeyword
+        return solvingState == .correctKeyword || solvingState == .wrongKeyword || solvingState == .showAnswer
     }
     var IsWrongBefore: Bool {
         return solvingState == .wrongKeyword || (solvingState == .initial && !isFirstTry)
@@ -66,6 +66,7 @@ public class ProblemDetailViewModel: BaseViewModel {
             .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
             .store(in: cancelBag)
 
+        input = problemDetailVO?.problemKeyword ?? ""
         solvingState = .showAnswer
         useCase.showAnswer()
     }

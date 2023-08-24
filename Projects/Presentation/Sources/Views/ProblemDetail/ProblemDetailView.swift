@@ -119,11 +119,10 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private var answerBoxWithChatGPTButton: some View {
         VStack(spacing: 30) {
-            Text(viewModel.problemDetailVO?.problemAnswer ?? "")
-                .fixedSize(horizontal: false, vertical: true)
-                .font(.Body2Regular)
-                .foregroundColor(.Text_Default)
-                .padding([.leading, .trailing], 24)
+            WHStack {
+                makeAnswerBoxComponents()
+            }
+            .padding([.leading, .trailing], 24)
             showChatGPTButton
                 .padding([.leading, .trailing], 30)
         }
