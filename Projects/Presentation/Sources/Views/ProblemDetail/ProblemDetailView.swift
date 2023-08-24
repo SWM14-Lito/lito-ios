@@ -252,6 +252,10 @@ public struct ProblemDetailView: View {
                 ForEach(faqs.indices, id: \.self) { idx in
                     faqCell(idx: idx, question: faqs[idx].faqQuestion, answer: faqs[idx].faqAnswer)
                 }
+                
+                if faqs.isEmpty {
+                    NoContentView(message: "faq가 없습니다.", withSymbol: false, background: .white)
+                }
             }
         }
     }

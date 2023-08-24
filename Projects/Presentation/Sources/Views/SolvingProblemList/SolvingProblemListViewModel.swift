@@ -70,9 +70,8 @@ public final class SolvingProblemListViewModel: BaseViewModel {
                     case .success(let problemsListVO):
                         if let problemsCellVO = problemsListVO.problemsCellVO {
                             for idx in 0..<problemsCellVO.count {
-                                let cell = problemsCellVO[idx+page*self.problemSize]
-                                self.problemCellList[idx] = cell
-                                problemUserId = cell.problemUserId
+                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
+                                problemUserId = problemsCellVO[idx].problemUserId
                             }
                         }
                     case .failure(let error):

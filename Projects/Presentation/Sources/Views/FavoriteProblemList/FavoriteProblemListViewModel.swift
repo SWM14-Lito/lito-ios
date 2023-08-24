@@ -83,9 +83,8 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
                     case .success(let problemsListVO):
                         if let problemsCellVO = problemsListVO.problemsCellVO {
                             for idx in 0..<problemsCellVO.count {
-                                let cell = problemsCellVO[idx+page*self.problemSize]
-                                self.problemCellList[idx] = cell
-                                problemFavoriteId = cell.favoriteId
+                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
+                                problemFavoriteId = problemsCellVO[idx].favoriteId
                             }
                         }
                     case .failure(let error):

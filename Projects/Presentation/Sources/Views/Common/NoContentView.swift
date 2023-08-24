@@ -11,10 +11,12 @@ import SwiftUI
 struct NoContentView: View {
     private let message: String
     private let withSymbol: Bool
+    private let background: Color
     
-    init(message: String, withSymbol: Bool = true) {
+    init(message: String, withSymbol: Bool = true, background: Color = .Bg_Light) {
         self.message = message
         self.withSymbol = withSymbol
+        self.background = background
     }
     
     var body: some View {
@@ -30,6 +32,6 @@ struct NoContentView: View {
         }
         .frame(maxWidth: .infinity)
         .foregroundColor(.Text_Disabled)
-        .background(.Bg_Light)
+        .background(background)
     }
 }

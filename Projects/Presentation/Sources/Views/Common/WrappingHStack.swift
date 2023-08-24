@@ -22,6 +22,7 @@ struct WHStack: View {
     private var horizontalAlignment: Alignment
     private var spacing: CGFloat
     private let content: [AnyView]
+    @State private var isFirstTime: Bool = true
     @State private var height: CGFloat = 0
 
     init<Content: View>(verticalAlignment: VerticalAlignment = .center, horizontalAlignment: Alignment = .center, spacing: CGFloat = 8, content: () -> [Content]) {
@@ -50,7 +51,10 @@ struct WHStack: View {
         }
         .frame(height: height)
         .onPreferenceChange(SizePref.self, perform: {
-            self.height = $0.height
+            if isFirstTime {
+                isFirstTime = false
+                self.height = $0.height
+            }
         })
     }
 }
