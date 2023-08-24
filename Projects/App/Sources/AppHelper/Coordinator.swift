@@ -6,6 +6,7 @@
 //  Copyright © 2023 Lito. All rights reserved.
 //
 
+import UIKit
 import SwiftUI
 import Presentation
 import KakaoSDKAuth
@@ -88,5 +89,16 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
         NavigationStack {
             buildScene(scene: scene)
         }
+    }
+}
+
+extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 2
     }
 }
