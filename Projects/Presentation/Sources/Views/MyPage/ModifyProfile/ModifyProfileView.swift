@@ -9,8 +9,9 @@
 import SwiftUI
 
 public struct ModifyProfileView: View {
-    
     @ObservedObject private(set) var viewModel: MyPageViewModel
+    @FocusState var nicknameFocused: Bool
+    @FocusState var introduceFocused: Bool
     @State var presentCustomAlert = false
     
     public init(viewModel: MyPageViewModel) {
@@ -20,6 +21,12 @@ public struct ModifyProfileView: View {
     public var body: some View {
         if let userInfo = viewModel.userInfo {
             ZStack {
+                Color.white
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onTapGesture {
+                        nicknameFocused = false
+                        introduceFocused = false
+                    }
                 VStack {
                     Divider()
                         .foregroundColor(.Divider_Default)
@@ -66,7 +73,9 @@ public struct ModifyProfileView: View {
                         // 닉네임
                         profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput, errorMessage: nil)
                             .padding(.bottom, 30)
+                            .focused($nicknameFocused)
                         profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput, errorMessage: nil)
+                            .focused($introduceFocused)
                         Spacer()
                         HStack(spacing: 12) {
                             Button {

@@ -21,7 +21,7 @@ public struct LearningHomeDTO: Decodable {
         profileImgUrl: profileImgUrl,
         nickname: nickname ?? "Unknown",
         processProblem: processProblem?.toProblemCellVO(),
-        recommendProblems: recommendProblems?.map { $0.toProblemCellVO() } ?? []
+        recommendProblems: recommendProblems?.compactMap { $0.toProblemCellVO() } ?? []
        )
     }
 }
