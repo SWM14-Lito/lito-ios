@@ -57,6 +57,7 @@ public class MyPageViewModel: BaseViewModel {
             .sinkToResult { result in
                 switch result {
                 case .success:
+                    self.imageData = nil
                     KeyChainManager.deleteUserInfo()
                     self.coordinator.popToRoot()
                 case .failure:
@@ -94,6 +95,7 @@ public class MyPageViewModel: BaseViewModel {
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
                 KeyChainManager.deleteUserInfo()
+                self.imageData = nil
                 self.popToRoot()
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
