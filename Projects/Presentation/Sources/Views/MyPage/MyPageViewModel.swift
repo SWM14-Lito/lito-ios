@@ -37,7 +37,7 @@ public class MyPageViewModel: BaseViewModel {
                         KingfisherManager.shared.retrieveImage(with: imageUrl) { result in
                             switch result {
                             case .success(let value):
-                                if let imageData = value.image.pngData() {
+                                if let imageData = value.image.jpegData(compressionQuality: 1) {
                                     self.imageData = imageData
                                 }
                             case .failure:
@@ -57,6 +57,7 @@ public class MyPageViewModel: BaseViewModel {
             .sinkToResult { result in
                 switch result {
                 case .success:
+                    self.imageData = nil
                     KeyChainManager.deleteUserInfo()
                     self.coordinator.popToRoot()
                 case .failure:
@@ -94,6 +95,7 @@ public class MyPageViewModel: BaseViewModel {
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
                 KeyChainManager.deleteUserInfo()
+                self.imageData = nil
                 self.popToRoot()
             }, errorHandler: errorHandler)
             .store(in: cancelBag)

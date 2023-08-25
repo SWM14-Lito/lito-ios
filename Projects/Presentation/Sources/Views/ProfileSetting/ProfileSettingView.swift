@@ -17,7 +17,7 @@ public struct ProfileSettingView: View {
     }
     
     public var body: some View {
-        ScrollView {
+        VStack {
             errorMessage
             HStack {
                 Text("프로필 설정")
@@ -52,6 +52,7 @@ public struct ProfileSettingView: View {
                     }
             }
             .padding(.top, 30)
+            Spacer()
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)
@@ -70,7 +71,11 @@ public struct ProfileSettingView: View {
                         break
                     }
                 } label: {
-                    Text("Next")
+                    if focus == .introduce {
+                        Text("Done")
+                    } else {
+                        Text("Next")
+                    }
                 }
             }
         }
