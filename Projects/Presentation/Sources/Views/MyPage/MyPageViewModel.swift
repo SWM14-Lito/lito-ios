@@ -37,7 +37,7 @@ public class MyPageViewModel: BaseViewModel {
                         KingfisherManager.shared.retrieveImage(with: imageUrl) { result in
                             switch result {
                             case .success(let value):
-                                if let imageData = value.image.pngData() {
+                                if let imageData = value.image.jpegData(compressionQuality: 1) {
                                     self.imageData = imageData
                                 }
                             case .failure:
