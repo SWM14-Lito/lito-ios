@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import KakaoSDKAuth
 import Domain
 
 public enum AppScene: Identifiable, Hashable {
