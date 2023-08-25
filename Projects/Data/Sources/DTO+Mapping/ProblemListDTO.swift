@@ -15,17 +15,17 @@ public struct ProblemListDTO: Decodable {
     let total: Int
     
     func toProblemListVO() -> ProblemListVO {
-        let problems = problems?.map { $0.toProblemCellVO() }
+        let problems = problems?.compactMap { $0.toProblemCellVO() }
         return ProblemListVO(problemsCellVO: problems, total: total)
     }
     
     func toSolvingProblemListVO() -> SolvingProblemListVO {
-        let problems = problems?.map { $0.toSolvingProblemCellVO() }
+        let problems = problems?.compactMap { $0.toSolvingProblemCellVO() }
         return SolvingProblemListVO(problemsCellVO: problems, total: total)
     }
     
     func toFavoriteProblemListVO() -> FavoriteProblemListVO {
-        let problems = problems?.map { $0.toFavoriteProblemCellVO() }
+        let problems = problems?.compactMap { $0.toFavoriteProblemCellVO() }
         return FavoriteProblemListVO(problemsCellVO: problems, total: total)
     }
 }
