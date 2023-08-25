@@ -59,29 +59,27 @@ public final class SolvingProblemListViewModel: BaseViewModel {
         if problemCellList.isEmpty {
             return
         }
-        
-        var problemUserId: Int?
-        
-        for page in 0...problemPage {
-            let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: problemUserId, page: page, size: problemSize)
-            useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-                .sinkToResult({ result in
-                    switch result {
-                    case .success(let problemsListVO):
-                        if let problemsCellVO = problemsListVO.problemsCellVO {
-                            for idx in 0..<problemsCellVO.count {
-                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
-                                problemUserId = problemsCellVO[idx].problemUserId
-                            }
+
+        let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: nil, page: 0, size: problemCellList.count+1)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        for idx in 0..<problemsCellVO.count {
+                            self.problemCellList[idx] = problemsCellVO[idx]
                         }
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
+                        if self.problemCellList.count > problemsCellVO.count {
+                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
                         }
                     }
-                })
-                .store(in: cancelBag)
-        }
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            })
+            .store(in: cancelBag)
     }
 }
 

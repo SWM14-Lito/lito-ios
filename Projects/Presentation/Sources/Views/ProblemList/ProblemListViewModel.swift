@@ -72,25 +72,26 @@ final public class ProblemListViewModel: BaseViewModel {
             return
         }
         
-        for page in 0..<problemPage {
-            let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: page, size: problemSize)
-            useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-                .sinkToResult({ result in
-                    switch result {
-                    case .success(let problemsListVO):
-                        if let problemsCellVO = problemsListVO.problemsCellVO {
-                            for idx in 0..<problemsCellVO.count {
-                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
-                            }
+        let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: 0, size: problemCellList.count)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        for idx in 0..<problemsCellVO.count {
+                            self.problemCellList[idx] = problemsCellVO[idx]
                         }
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
+                        if self.problemCellList.count > problemsCellVO.count {
+                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
                         }
                     }
-                })
-                .store(in: cancelBag)
-        }
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            })
+            .store(in: cancelBag)
     }
 }
 
