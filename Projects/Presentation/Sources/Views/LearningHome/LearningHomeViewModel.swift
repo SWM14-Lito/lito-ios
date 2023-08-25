@@ -76,10 +76,10 @@ extension LearningHomeViewModel: ProblemCellHandling {
             .sinkToResult { result in
                 switch result {
                 case .success(_):
-                    if let index = self.learningHomeVO?.recommendProblems.firstIndex(where: { $0.problemId == id}) {
-                        self.learningHomeVO?.recommendProblems[index].favorite.toggle()
+                    if let index = self.recommendProblems.firstIndex(where: { $0.problemId == id}) {
+                        self.recommendProblems[index].favorite.toggle()
                     } else {
-                        self.learningHomeVO?.processProblem?.favorite.toggle()
+                        self.processProblem?.favorite.toggle()
                     }
                 case .failure(let error):
                     if let errorVO = error as? ErrorVO {
