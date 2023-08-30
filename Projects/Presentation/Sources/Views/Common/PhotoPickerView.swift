@@ -11,7 +11,7 @@ import SwiftUI
 
 // 이미지 업로드 가능한 viewModel
 protocol PhotoPickerHandling {
-    func postProfileImage()
+    func onImageChanged()
 }
 
 // 클릭 시 앨범 열려서 선택 가능한 이미지
@@ -53,7 +53,7 @@ struct PhotoPickerView: View {
                 if let data = try? await item?.loadTransferable(type: Data.self) {
                     imageData = data
                     if let photoPickerHandling = photoPickerHandling {
-                        photoPickerHandling.postProfileImage()
+                        photoPickerHandling.onImageChanged()
                     }
                 }
             }

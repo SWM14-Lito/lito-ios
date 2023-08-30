@@ -26,14 +26,14 @@ public struct LoginView: View {
             
             VStack(spacing: 8) {
                 Button(action: {
-                    viewModel.appleLogin()
+                    viewModel.onAppleLoginButtonClicked()
                 }, label: {
                     Image(.btnApplelogin)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 })
                 Button(action: {
-                    viewModel.kakaoLogin()
+                    viewModel.onKakaoLoginButttonClicked()
                 }, label: {
                     Image(.btnKakaologin)
                         .resizable()

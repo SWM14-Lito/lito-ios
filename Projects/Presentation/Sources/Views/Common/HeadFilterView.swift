@@ -42,7 +42,7 @@ struct HeadFilterView<T: FilterComponent>: View {
                         .onTapGesture {
                             withAnimation(.easeInOut) {
                                 changeFilter(filter: filter)
-                                filterHandling.updateProblem()
+                                filterHandling.onFilterChanged()
                             }
                         }
                     }

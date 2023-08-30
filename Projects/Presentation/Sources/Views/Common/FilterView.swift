@@ -185,7 +185,7 @@ extension FilterView {
             selectedFilters.remove(at: index)
             selectedFilter = T.defaultValue
         }
-        filterHandling.updateProblem()
+        filterHandling.onFilterChanged()
     }
     
     // 필터 선택하기
@@ -203,7 +203,7 @@ extension FilterView {
         showFilterSheet = false
         if selectedFilter != prevFilter {
             selectedFilters = [selectedFilter]
-            filterHandling.updateProblem()
+            filterHandling.onFilterChanged()
         }
     }
 

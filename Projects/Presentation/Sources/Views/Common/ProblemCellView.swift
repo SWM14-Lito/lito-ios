@@ -11,8 +11,8 @@ import Domain
 
 // 문제 셀 사용하는 ViewModel에서 해당 프로토콜 따르도록 해야함
 protocol ProblemCellHandling {
-    func moveToProblemView(id: Int)
-    func changeFavoriteStatus(id: Int)
+    func onProblemCellClicked(id: Int)
+    func onFavoriteClicked(id: Int)
 }
 
 // 문제 셀
@@ -29,7 +29,7 @@ struct ProblemCellView<T: ProblemCell>: View {
     var body: some View {
         ZStack(alignment: .trailing) {
                 Button {
-                    problemCellHandling.moveToProblemView(id: problemCellVO.problemId)
+                    problemCellHandling.onProblemCellClicked(id: problemCellVO.problemId)
                 } label: {
                     HStack(alignment: .top, spacing: 8) {
                         Image(systemName: problemCellVO.problemStatus.symbolName)
@@ -53,7 +53,7 @@ struct ProblemCellView<T: ProblemCell>: View {
                 }
                 
                 Button {
-                    problemCellHandling.changeFavoriteStatus(id: problemCellVO.problemId)
+                    problemCellHandling.onFavoriteClicked(id: problemCellVO.problemId)
                 } label: {
                     Circle()
                         .foregroundColor(problemCellVO.favorite == .favorite ? .Heart_Clicked_Inner : .Heart_Unclicked_Inner)

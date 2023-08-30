@@ -67,12 +67,11 @@ public struct ProblemDetailView: View {
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
-                action: viewModel.toggleFavorite)))
+                action: viewModel.onFavoriteButtonClicked)))
         
         .padding([.leading, .trailing], 20)
         .onAppear {
-            viewModel.startSolvingProblem()
-            viewModel.getProblemDetail()
+            viewModel.onScreenAppeared()
         }
         
     }
@@ -156,7 +155,7 @@ public struct ProblemDetailView: View {
                 .multilineTextAlignment(.center)
                 .focused($focused)
                 .onSubmit {
-                    viewModel.submitAnswer()
+                    viewModel.onAnswerSubmitted()
                 }
                 .id("writingAnswer")
                 .onChange(of: focused) { _ in
@@ -200,7 +199,7 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private var showAnswerButton: some View {
         Button {
-            viewModel.showAnswer()
+            viewModel.onShowAnswerButtonClicked()
         } label: {
             Text("터치하여 정답 확인하기")
                 .font(.Info2Regular)
@@ -219,7 +218,7 @@ public struct ProblemDetailView: View {
     @ViewBuilder
     private var showChatGPTButton: some View {
         Button {
-            viewModel.showChatGPT()
+            viewModel.onChatGPTButtonClicked()
         } label: {
             HStack(spacing: 10) {
                 Image(.chatgpt)
@@ -290,7 +289,7 @@ public struct ProblemDetailView: View {
                         .strokeBorder(.Border_Strong, lineWidth: 1)
                 )
                 .onTapGesture {
-                    viewModel.toggleFaqOpenStatus(idx: idx)
+                    viewModel.onFaqClicked(idx: idx)
                 }
             } else {
                 HStack(spacing: 10) {
@@ -312,7 +311,7 @@ public struct ProblemDetailView: View {
                         .strokeBorder(.Border_Default, lineWidth: 1)
                 )
                 .onTapGesture {
-                    viewModel.toggleFaqOpenStatus(idx: idx)
+                    viewModel.onFaqClicked(idx: idx)
                 }
             }
         }

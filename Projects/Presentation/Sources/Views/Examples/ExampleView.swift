@@ -22,7 +22,7 @@ public struct ExampleView: View {
             content
                 .padding(.bottom, 30)
             Button("Change Quote") {
-                self.viewModel.loadSlip()
+                self.viewModel.onChangeQuoteButtonClicked()
             }
         }
     }
@@ -44,7 +44,7 @@ public struct ExampleView: View {
 private extension ExampleView {
     var notRequestedView: some View {
         Text("").onAppear {
-            self.viewModel.loadSlip()
+            self.viewModel.onChangeQuoteButtonClicked()
         }
     }
     

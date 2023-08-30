@@ -17,5 +17,5 @@ protocol FilterComponent: CaseIterable, Hashable {
 
 // FilterView 쓰는 ViewModel에서 해당 프로토콜 따르도록 해야함
 protocol FilterHandling {
-    func updateProblem()
+    func onFilterChanged()
 }

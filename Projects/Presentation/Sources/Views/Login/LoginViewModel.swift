@@ -19,7 +19,7 @@ final public class LoginViewModel: BaseViewModel {
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
-    public func kakaoLogin() {
+    public func onKakaoLoginButttonClicked() {
         useCase.kakaoLogin()
             .sinkToResult({ result in
                 switch result {
@@ -37,7 +37,7 @@ final public class LoginViewModel: BaseViewModel {
                             self.errorObject.error = errorVO
                         case .retryableError:
                             self.errorObject.error = errorVO
-                            self.errorObject.retryAction = self.appleLogin
+                            self.errorObject.retryAction = self.onAppleLoginButtonClicked
                         case .tokenExpired:
                             break
                         }
@@ -47,7 +47,7 @@ final public class LoginViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func appleLogin() {
+    public func onAppleLoginButtonClicked() {
         useCase.appleLogin()
             .sinkToResult({ result in
                 switch result {
@@ -65,7 +65,7 @@ final public class LoginViewModel: BaseViewModel {
                             self.errorObject.error = errorVO
                         case .retryableError:
                             self.errorObject.error = errorVO
-                            self.errorObject.retryAction = self.appleLogin
+                            self.errorObject.retryAction = self.onAppleLoginButtonClicked
                         default:
                             break
                         }

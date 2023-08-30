@@ -33,7 +33,7 @@ public struct ProblemSearchView: View {
             title: "검색",
             back: viewModel.back))
         .onAppear {
-            viewModel.updateProblems()
+            viewModel.onScreenAppeared()
         }
     }
     
@@ -44,14 +44,12 @@ public struct ProblemSearchView: View {
             TextField("검색어를 입력해주세요.", text: $viewModel.searchKeyword)
                 .font(.Body2Regular)
                 .onSubmit {
-                    viewModel.resetProblemCellList()
-                    viewModel.getProblemList()
+                    viewModel.onSearchKeywordSubmitted()
                 }
                 .padding(.leading, 18)
             
             Button {
-                viewModel.resetProblemCellList()
-                viewModel.getProblemList()
+                viewModel.onSearchKeywordSubmitted()
             } label: {
                 Image(systemName: SymbolName.magnifyingglass)
                     .font(.system(size: 20))
@@ -130,7 +128,7 @@ public struct ProblemSearchView: View {
                 ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
                     ProblemHighlightingCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel, highlighting: viewModel.searchedKeyword)
                         .onAppear {
-                            viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                            viewModel.onProblemCellAppeared(id: problemCellVO.wrappedValue.problemId)
                         }
                 }
             }

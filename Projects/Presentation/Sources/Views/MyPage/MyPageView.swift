@@ -29,7 +29,7 @@ public struct MyPageView: View {
             }
         }
         .onAppear {
-            viewModel.getUserInfo()
+            viewModel.onScreenAppeared()
         }
     }
     
@@ -57,7 +57,7 @@ public struct MyPageView: View {
                                 .foregroundColor(.Text_Default)
                             Spacer()
                             Button {
-                                viewModel.moveToModifyProfileView()
+                                viewModel.onEditButtonClicked()
                             } label: {
                                 Text("정보수정")
                                     .font(.InfoRegular)
@@ -159,7 +159,7 @@ public struct MyPageView: View {
                     Toggle("알림받기", isOn: $viewModel.alarmStatus)
                         .toggleStyle(AlarmToggleStyle())
                         .onChange(of: viewModel.alarmStatus) { _ in
-                            viewModel.postAlarmAcceptance()
+                            viewModel.onAlarmAcceptanceChanged()
                         }
                 }
                 .padding(.horizontal, 20)
@@ -169,7 +169,7 @@ public struct MyPageView: View {
         Divider()
         Spacer()
         Button {
-            viewModel.postLogout()
+            viewModel.onLogoutButtonClicked()
         } label: {
             Text("로그아웃")
                 .underline()

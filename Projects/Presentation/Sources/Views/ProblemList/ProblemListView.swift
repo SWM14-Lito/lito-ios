@@ -42,9 +42,9 @@ public struct ProblemListView: View {
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.magnifyingglass,
-                action: viewModel.moveToProblemSearchScene)))
+                action: viewModel.onSearchButtonClicked)))
         .onAppear {
-            viewModel.updateProblemValues()
+            viewModel.onScreenAppeared()
         }
     }
     
@@ -67,7 +67,7 @@ public struct ProblemListView: View {
                         ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
                             ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
                                 .onAppear {
-                                    viewModel.getProblemList(problemId: problemCellVO.wrappedValue.problemId)
+                                    viewModel.onProblemCellAppeared(id: problemCellVO.wrappedValue.problemId)
                                 }
                         }
                     }
@@ -78,7 +78,7 @@ public struct ProblemListView: View {
             }
         }
         .onAppear {
-            viewModel.getProblemList()
+            viewModel.onProblemListAppeared()
         }
     }
     
