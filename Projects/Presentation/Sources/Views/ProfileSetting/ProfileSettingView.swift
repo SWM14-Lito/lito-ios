@@ -35,23 +35,7 @@ public struct ProfileSettingView: View {
             profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
                 .padding(.bottom, 30)
             textErrorMessage
-            Button {
-                if !viewModel.buttonIsLocked {
-                    viewModel.requestNotiAndMoveToLearningHomeView()
-                }
-            } label: {
-                Text("완료")
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 15)
-                    .cornerRadius(6)
-                    .font(.Body1Medium)
-                    .foregroundColor(.white)
-                    .background {
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(.Button_Point)
-                    }
-            }
-            .padding(.top, 30)
+            finishButton
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
@@ -101,13 +85,20 @@ public struct ProfileSettingView: View {
     private var finishButton: some View {
         Button {
             if !viewModel.buttonIsLocked {
-                viewModel.requestNotiAndMoveToLearningHomeView()
+                viewModel.onFinishButtonClicked()
             }
         } label: {
-            Text("설정하기")
+            Text("완료")
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 15)
+                .cornerRadius(6)
+                .font(.Body1Medium)
+                .foregroundColor(.white)
+                .background {
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(.Button_Point)
+                }
         }
-        .buttonStyle(.bordered)
-        .tint(.orange)
-        .padding(.bottom, 20)
+        .padding(.top, 30)
     }
 }

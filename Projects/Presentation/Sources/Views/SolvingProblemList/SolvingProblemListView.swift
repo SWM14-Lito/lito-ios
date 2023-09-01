@@ -29,7 +29,7 @@ public struct SolvingProblemListView: View {
             title: "풀던 문제",
             back: viewModel.back))
         .onAppear {
-            viewModel.updateProblems()
+            viewModel.onScreenAppeared()
         }
     }
     
@@ -43,7 +43,7 @@ public struct SolvingProblemListView: View {
                         ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
                             ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
                                 .onAppear {
-                                    viewModel.getProblemList(problemUserId: problemCellVO.wrappedValue.problemUserId)
+                                    viewModel.onProblemCellAppeared(id: problemCellVO.wrappedValue.problemUserId)
                                 }
                         }
                     }
@@ -55,7 +55,7 @@ public struct SolvingProblemListView: View {
             }
         }
         .onAppear {
-            viewModel.getProblemList()
+            viewModel.onProblemListAppeared()
         }
     }
     

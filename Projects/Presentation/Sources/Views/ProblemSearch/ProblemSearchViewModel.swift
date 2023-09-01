@@ -30,8 +30,47 @@ public class ProblemSearchViewModel: BaseViewModel {
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
+    // 무힌스크롤로 다음 문제 리스트 가져오기
+    public func onProblemCellAppeared(id: Int) {
+        getProblemList(problemId: id)
+    }
+    
+    // 검색어 입력하면 해당되는 문제 보여주기
+    public func onSearchKeywordSubmitted() {
+        resetProblemCellList()
+        getProblemList()
+    }
+    
+    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
+    public func onScreenAppeared() {
+        if problemCellList.isEmpty {
+            return
+        }
+        
+        let problemsQueryDTO = SearchedProblemsQueryDTO(query: searchKeyword, page: 0, size: problemCellList.count)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        for idx in 0..<problemsCellVO.count {
+                            self.problemCellList[idx] = problemsCellVO[idx]
+                        }
+                        if self.problemCellList.count > problemsCellVO.count {
+                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
+                        }
+                    }
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            })
+            .store(in: cancelBag)
+    }
+    
     // 검색 다시 했을 때 초기화해주기
-    public func resetProblemCellList() {
+    private func resetProblemCellList() {
         searchState = .waiting
         problemCellList.removeAll()
         problemPage = 0
@@ -39,7 +78,7 @@ public class ProblemSearchViewModel: BaseViewModel {
     }
 
     // 문제 받아오기 (무한 스크롤)
-    public func getProblemList(problemId: Int? = nil) {
+    private func getProblemList(problemId: Int? = nil) {
         if !problemCellList.isEmpty {
             guard problemId == problemCellList.last?.problemId else { return }
         }
@@ -68,43 +107,16 @@ public class ProblemSearchViewModel: BaseViewModel {
             })
             .store(in: cancelBag)
     }
-    
-    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func updateProblems() {
-        if problemCellList.isEmpty {
-            return
-        }
-        
-        for page in 0...problemPage {
-            let problemsQueryDTO = SearchedProblemsQueryDTO(query: searchKeyword, page: page, size: problemSize)
-            useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-                .sinkToResult({ result in
-                    switch result {
-                    case .success(let problemsListVO):
-                        if let problemsCellVO = problemsListVO.problemsCellVO {
-                            for idx in 0..<problemsCellVO.count {
-                                self.problemCellList[idx+page*self.problemSize] = problemsCellVO[idx]
-                            }
-                        }
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
-                        }
-                    }
-                })
-                .store(in: cancelBag)
-        }
-    }
 }
 
 extension ProblemSearchViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
-    public func moveToProblemView(id: Int) {
+    public func onProblemCellClicked(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
     }
     
     // 찜하기 or 찜해제하기
-    public func changeFavoriteStatus(id: Int) {
+    public func onFavoriteClicked(id: Int) {
         useCase.toggleProblemFavorite(id: id)
             .receive(on: DispatchQueue.main)
             .sinkToResult { result in

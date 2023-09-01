@@ -42,7 +42,7 @@ struct ProblemHighlightingCellView<T: ProblemCell>: View {
     var body: some View {
         ZStack(alignment: .trailing) {
                 Button {
-                    problemCellHandling.moveToProblemView(id: problemCellVO.problemId)
+                    problemCellHandling.onProblemCellClicked(id: problemCellVO.problemId)
                 } label: {
                     HStack(alignment: .top, spacing: 8) {
                         Image(systemName: problemCellVO.problemStatus.symbolName)
@@ -64,7 +64,7 @@ struct ProblemHighlightingCellView<T: ProblemCell>: View {
                 }
                 
                 Button {
-                    problemCellHandling.changeFavoriteStatus(id: problemCellVO.problemId)
+                    problemCellHandling.onFavoriteClicked(id: problemCellVO.problemId)
                 } label: {
                     Circle()
                         .foregroundColor(problemCellVO.favorite == .favorite ? .Heart_Clicked_Inner : .Heart_Unclicked_Inner)

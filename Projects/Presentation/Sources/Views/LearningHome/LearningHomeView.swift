@@ -29,7 +29,7 @@ public struct LearningHomeView: View {
         .edgesIgnoringSafeArea(.all)
         .background(.Bg_Light)
         .onAppear {
-            viewModel.getProfileAndProblems()
+            viewModel.onScreenAppeared()
         }
         
     }
@@ -115,14 +115,14 @@ public struct LearningHomeView: View {
     private var toolMenu: some View {
         HStack(spacing: 16) {
             Button {
-                viewModel.moveToFavoriteProblemView()
+                viewModel.onFavoriteListButtonClicked()
             } label: {
                 Image(systemName: SymbolName.heartFill)
                     .font(.system(size: 24))
                     .foregroundColor(.white)
             }
             Button {
-                viewModel.moveToNotiView()
+                viewModel.onNotiListButtonClicked()
             } label: {
                 Image(systemName: SymbolName.bellFill)
                     .font(.system(size: 24))
@@ -215,7 +215,7 @@ public struct LearningHomeView: View {
     @ViewBuilder
     private var startLearningButton: some View {
         Button {
-            viewModel.moveToLearningView()
+            viewModel.onStartLearningButtonClicked()
         } label: {
             Text("학습시작")
                 .font(.Body1SemiBold)
@@ -239,7 +239,7 @@ public struct LearningHomeView: View {
                     Spacer()
                     if viewModel.processProblem != nil {
                         Button {
-                            viewModel.moveToSolvingProblemView()
+                            viewModel.onSolvingListButtonClicked()
                         } label: {
                             HStack(spacing: 4) {
                                 Text("전체 보기")

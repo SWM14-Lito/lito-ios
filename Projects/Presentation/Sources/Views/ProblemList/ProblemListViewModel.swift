@@ -25,49 +25,23 @@ final public class ProblemListViewModel: BaseViewModel {
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
-    public func getProblemList(problemId: Int? = nil) {
-        if !problemCellList.isEmpty {
-            guard problemId == problemCellList.last?.problemId else { return }
-        }
-        if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
-            return
-        }
-        isLoading = true
-        let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
-        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResultWithErrorHandler({ problemsListVO in
-                if let problemsCellVO = problemsListVO.problemsCellVO {
-                    problemsCellVO.forEach({ problemCellVO in
-                        self.problemCellList.append(problemCellVO)
-                    })
-                    self.problemPage += 1
-                }
-                self.problemTotalSize = problemsListVO.total
-                self.isLoading = false
-            }, errorHandler: errorHandler)
-            .store(in: cancelBag)
+    // 문제 리스트 가져오기
+    public func onProblemListAppeared() {
+        getProblemList()
     }
     
-    public func changeSubject(subject: SubjectInfo) {
-        if selectedSubject != subject {
-            selectedSubject = subject
-            resetProblemCellList()
-            getProblemList()
-        }
+    // 무힌스크롤로 다음 문제 리스트 가져오기
+    public func onProblemCellAppeared(id: Int) {
+        getProblemList(problemId: id)
     }
     
-    public func moveToProblemSearchScene() {
+    // 검색 화면으로 이동하기
+    public func onSearchButtonClicked() {
         coordinator.push(.problemSearchScene)
     }
     
-    private func resetProblemCellList() {
-        problemCellList.removeAll()
-        problemPage = 0
-        problemTotalSize = nil
-    }
-    
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func updateProblemValues() {
+    public func onScreenAppeared() {
         if problemCellList.isEmpty {
             return
         }
@@ -93,21 +67,55 @@ final public class ProblemListViewModel: BaseViewModel {
             })
             .store(in: cancelBag)
     }
+    
+    // 문제 리스트 초기화하기
+    private func resetProblemCellList() {
+        problemCellList.removeAll()
+        problemPage = 0
+        problemTotalSize = nil
+    }
+    
+    // 문제 받아오기 (무한 스크롤)
+    private func getProblemList(problemId: Int? = nil) {
+        if !problemCellList.isEmpty {
+            guard problemId == problemCellList.last?.problemId else { return }
+        }
+        if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
+            return
+        }
+        isLoading = true
+        let problemsQueryDTO = ProblemsQueryDTO(subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: problemPage, size: problemSize)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    problemsCellVO.forEach({ problemCellVO in
+                        self.problemCellList.append(problemCellVO)
+                    })
+                    self.problemPage += 1
+                }
+                self.problemTotalSize = problemsListVO.total
+                self.isLoading = false
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
 }
 
 extension ProblemListViewModel: FilterHandling {
-    func updateProblem() {
+    // 필터에 따라 새로운 문제 보여주기
+    func onFilterChanged() {
         resetProblemCellList()
         getProblemList(problemId: nil)
     }
 }
 
 extension ProblemListViewModel: ProblemCellHandling {
-    public func moveToProblemView(id: Int) {
+    // 해당 문제 풀이 화면으로 이동하기
+    public func onProblemCellClicked(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
     }
     
-    public func changeFavoriteStatus(id: Int) {
+    // 찜하기 or 찜해제하기
+    public func onFavoriteClicked(id: Int) {
         useCase.toggleProblemFavorite(id: id)
             .receive(on: DispatchQueue.main)
             .sinkToResult { result in

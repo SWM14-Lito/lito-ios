@@ -39,7 +39,7 @@ public struct FavoriteProblemListView: View {
             title: "찜한 문제",
             back: viewModel.back))
         .onAppear {
-            viewModel.updateProblemValues()
+            viewModel.onScreenAppeared()
         }
     }
     
@@ -65,7 +65,7 @@ public struct FavoriteProblemListView: View {
                         ForEach($viewModel.problemCellList, id: \.self) { problemCellVO in
                             ProblemCellView(problemCellVO: problemCellVO, problemCellHandling: viewModel)
                                 .onAppear {
-                                    viewModel.getProblemList(problemFavoriteId: problemCellVO.wrappedValue.favoriteId)
+                                    viewModel.onProblemCellAppeared(id: problemCellVO.wrappedValue.favoriteId)
                                 }
                         }
                     }
@@ -76,7 +76,7 @@ public struct FavoriteProblemListView: View {
             }
         }
         .onAppear {
-            viewModel.getProblemList()
+            viewModel.onProblemListAppeared()
         }
     }
     

@@ -22,9 +22,47 @@ public final class SolvingProblemListViewModel: BaseViewModel {
         self.useCase = useCase
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
+    
+    // 문제 리스트 가져오기
+    public func onProblemListAppeared() {
+        getProblemList()
+    }
+    
+    // 무힌스크롤로 다음 문제 리스트 가져오기
+    public func onProblemCellAppeared(id: Int) {
+        getProblemList(problemUserId: id)
+    }
+    
+    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
+    public func onScreenAppeared() {
+        if problemCellList.isEmpty {
+            return
+        }
 
+        let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: nil, page: 0, size: problemCellList.count+1)
+        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .sinkToResult({ result in
+                switch result {
+                case .success(let problemsListVO):
+                    if let problemsCellVO = problemsListVO.problemsCellVO {
+                        for idx in 0..<problemsCellVO.count {
+                            self.problemCellList[idx] = problemsCellVO[idx]
+                        }
+                        if self.problemCellList.count > problemsCellVO.count {
+                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
+                        }
+                    }
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            })
+            .store(in: cancelBag)
+    }
+    
     // 문제 받아오기 (무한 스크롤)
-    public func getProblemList(problemUserId: Int? = nil) {
+    private func getProblemList(problemUserId: Int? = nil) {
         if !problemCellList.isEmpty {
             guard problemUserId == problemCellList.last?.problemUserId else { return }
         }
@@ -53,44 +91,16 @@ public final class SolvingProblemListViewModel: BaseViewModel {
             })
             .store(in: cancelBag)
     }
-    
-    // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func updateProblems() {
-        if problemCellList.isEmpty {
-            return
-        }
-
-        let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: nil, page: 0, size: problemCellList.count+1)
-        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        for idx in 0..<problemsCellVO.count {
-                            self.problemCellList[idx] = problemsCellVO[idx]
-                        }
-                        if self.problemCellList.count > problemsCellVO.count {
-                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
-                        }
-                    }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            })
-            .store(in: cancelBag)
-    }
 }
 
 extension SolvingProblemListViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
-    public func moveToProblemView(id: Int) {
+    public func onProblemCellClicked(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
     }
     
     // 찜하기 or 찜해제하기
-    public func changeFavoriteStatus(id: Int) {
+    public func onFavoriteClicked(id: Int) {
         useCase.toggleProblemFavorite(id: id)
             .receive(on: DispatchQueue.main)
             .sinkToResult { result in
