@@ -80,7 +80,7 @@ public struct ProfileSettingView: View {
             }
         }
         .onAppear {
-            viewModel.setName()
+            viewModel.viewOnAppear()
         }
     }
     

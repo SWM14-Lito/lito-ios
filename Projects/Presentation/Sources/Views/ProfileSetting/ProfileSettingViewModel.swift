@@ -112,7 +112,7 @@ public class ProfileSettingViewModel: BaseViewModel {
         })
     }
     
-    public func setName() {
+    public func viewOnAppear() {
         self.username.text = userAuthVO.userName
     }
 }
