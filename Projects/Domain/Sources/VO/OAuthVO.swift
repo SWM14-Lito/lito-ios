@@ -16,10 +16,12 @@ public enum OAuth {
     public struct AppleVO {
         public let userIdentifier: String
         public let userEmail: String?
+        public let userName: String?
         
-        public init(userIdentifier: String, userEmail: String?) {
+        public init(userIdentifier: String, userEmail: String?, userName: String?) {
             self.userIdentifier = userIdentifier
             self.userEmail = userEmail
+            self.userName = userName
         }
     }
     

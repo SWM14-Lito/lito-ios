@@ -79,6 +79,9 @@ public struct ProfileSettingView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.setName()
+        }
     }
     
     // API 에러 발생시 알려줌
