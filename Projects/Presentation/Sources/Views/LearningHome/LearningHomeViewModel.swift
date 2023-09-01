@@ -25,27 +25,27 @@ public final class LearningHomeViewModel: BaseViewModel {
     }
     
     // 학습 화면으로 이동하기
-    func moveToLearningView() {
+    func onStartLearningButtonClicked() {
         coordinator.push(.problemListScene)
     }
     
     // 찜한 목록 화면으로 이동하기
-    func moveToFavoriteProblemView() {
+    func onFavoriteListButtonClicked() {
         coordinator.push(.favoriteProblemListScene)
     }
     
     // 풀던 문제 화면으로 이동하기
-    func moveToSolvingProblemView() {
+    func onSolvingListButtonClicked() {
         coordinator.push(.solvingProblemListScene)
     }
     
     // 알림 목록 화면으로 이동하기
-    func moveToNotiView() {
+    func onNotiListButtonClicked() {
         print("알림 목록으로 이동하기")
     }
 
     // 프로필 정보와 문제 정보 가져오기
-    func getProfileAndProblems() {
+    func onScreenAppeared() {
         isLoading = true
         useCase.getProfileAndProblems()
             .sinkToResult { result in
@@ -66,12 +66,12 @@ public final class LearningHomeViewModel: BaseViewModel {
 }
 extension LearningHomeViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
-    public func moveToProblemView(id: Int) {
+    public func onProblemCellClicked(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
     }
     
     // 찜하기 or 찜해제하기
-    public func changeFavoriteStatus(id: Int) {
+    public func onFavoriteClicked(id: Int) {
         useCase.toggleProblemFavorite(id: id)
             .sinkToResult { result in
                 switch result {

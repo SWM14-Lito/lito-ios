@@ -41,44 +41,20 @@ public class ProblemDetailViewModel: BaseViewModel {
         self.problemId = problemId
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
-
-    // API 통신해서 문제 세부 정보 가져오기
-    func getProblemDetail() {
-        useCase.getProblemDetail(id: problemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemDetailVO):
-                    self.problemDetailVO = problemDetailVO
-                    self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
-                    self.splitSentence()
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
-            .store(in: cancelBag)
+    
+    // 화면 나오면 문제 받아오고 풀이 시작 상태 알려주기
+    public func onScreenAppeared() {
+        startSolvingProblem()
+        getProblemDetail()
     }
     
-    // 정답이 나오는 상태로 변경
-    func showAnswer() {
-        useCase.submitAnswer(id: problemId, keyword: problemDetailVO?.problemKeyword ?? "")
-            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
-            .store(in: cancelBag)
-
-        input = problemDetailVO?.problemKeyword ?? ""
-        solvingState = .showAnswer
-        useCase.showAnswer()
-    }
-    
-    // 다시 입력받도록 초기화 상태로 변경
-    func initInput() {
-        solvingState = .initial
-        input = ""
+    // 정답보기 버튼 눌리면 정답 보여주기
+    public func onShowAnswerButtonClicked() {
+        showAnswer()
     }
     
     // 문제 찜하기 선택 및 해제
-    func toggleFavorite() {
+    public func onFavoriteButtonClicked() {
         useCase.toggleProblemFavorite(id: problemId)
             .sinkToResultWithErrorHandler({ _ in
                     self.problemDetailVO?.favorite.toggle()
@@ -87,19 +63,12 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // ChatGPT 화면 모달로 보여주기
-    func showChatGPT() {
+    public func onChatGPTButtonClicked() {
         coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown"))
     }
     
-    // 문제 풀기 시작한다는거 서버에 알려주기
-    func startSolvingProblem() {
-        useCase.startSolvingProblem(id: problemId)
-            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
-            .store(in: cancelBag)
-    }
-    
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
-    func submitAnswer() {
+    public func onAnswerSubmitted() {
         if checkInput() {
            isWrongInput = false
            isLoading = true
@@ -120,8 +89,13 @@ public class ProblemDetailViewModel: BaseViewModel {
         }
     }
     
+    // faq 열림, 닫힘 상태 변경하기
+    public func onFaqClicked(idx: Int) {
+        faqIsOpened?[idx].toggle()
+    }
+    
     // 문제 풀이 결과 보고 다음 상태로 바꾸기
-    func changeStateFromSolvingResult() {
+    private func changeStateFromSolvingResult() {
         DispatchQueue.main.asyncAfter(deadline: .now()+stateChangingTime) {
             if self.solvingState == .correctKeyword {
                 self.showAnswer()
@@ -131,9 +105,46 @@ public class ProblemDetailViewModel: BaseViewModel {
         }
     }
     
-    // faq 열림, 닫힘 상태 변경하기
-    func toggleFaqOpenStatus(idx: Int) {
-        faqIsOpened?[idx].toggle()
+    // 다시 입력받도록 초기화 상태로 변경
+    private func initInput() {
+        solvingState = .initial
+        input = ""
+    }
+    
+    // API 통신해서 문제 세부 정보 가져오기
+    private func getProblemDetail() {
+        useCase.getProblemDetail(id: problemId)
+            .sinkToResult { result in
+                switch result {
+                case .success(let problemDetailVO):
+                    self.problemDetailVO = problemDetailVO
+                    self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
+                    self.splitSentence()
+                case .failure(let error):
+                    if let errorVO = error as? ErrorVO {
+                        self.errorObject.error  = errorVO
+                    }
+                }
+            }
+            .store(in: cancelBag)
+    }
+    
+    // 문제 풀기 시작한다는거 서버에 알려주기
+    private func startSolvingProblem() {
+        useCase.startSolvingProblem(id: problemId)
+            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
+    // 정답이 나오는 상태로 변경
+    private func showAnswer() {
+        useCase.submitAnswer(id: problemId, keyword: problemDetailVO?.problemKeyword ?? "")
+            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+
+        input = problemDetailVO?.problemKeyword ?? ""
+        solvingState = .showAnswer
+        useCase.showAnswer()
     }
     
     // 입력값이 틀렸는지 확인해주기

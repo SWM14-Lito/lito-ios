@@ -22,7 +22,7 @@ final public class ExampleViewModel: ObservableObject {
         self.exampleUseCase = exampleUseCase
     }
     
-    func loadSlip() {
+    func onChangeQuoteButtonClicked() {
         slip.setIsLoading(cancelBag: cancelBag)
         exampleUseCase.load()
             .receive(on: DispatchQueue.main)

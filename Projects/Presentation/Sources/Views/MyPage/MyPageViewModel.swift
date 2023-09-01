@@ -24,7 +24,7 @@ public class MyPageViewModel: BaseViewModel {
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
 
-    public func getUserInfo() {
+    public func onScreenAppeared() {
         useCase.getUserInfo()
             .sinkToResult { result in
                 switch result {
@@ -52,7 +52,7 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func postLogout() {
+    public func onLogoutButtonClicked() {
         useCase.postLogout()
             .sinkToResult { result in
                 switch result {
@@ -67,7 +67,7 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func patchUserInfo() {
+    public func onEditCompleteButtonClicked() {
         guard let userInfo = userInfo else { return }
         var nickname: String?
         var introduce: String?
@@ -84,14 +84,14 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func postAlarmAcceptance() {
+    public func onAlarmAcceptanceChanged() {
         useCase.postAlarmAcceptance(getAlarm: alarmStatus)
             .sinkToResultWithErrorHandler({ _ in
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
-    public func deleteUser() {
+    public func onAcoountDeleteButtonClicked() {
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
                 KeyChainManager.deleteUserInfo()
@@ -101,15 +101,14 @@ public class MyPageViewModel: BaseViewModel {
             .store(in: cancelBag)
     }
     
-    public func moveToModifyProfileView() {
+    public func onEditButtonClicked() {
         coordinator.push(.modifyProfileScene)
     }
     
 }
 
 extension MyPageViewModel: PhotoPickerHandling {
-    
-    public func postProfileImage() {
+    public func onImageChanged() {
         guard let imageData = imageData else { return }
         useCase.postProfileImage(image: imageData)
             .sinkToResultWithErrorHandler({ _ in

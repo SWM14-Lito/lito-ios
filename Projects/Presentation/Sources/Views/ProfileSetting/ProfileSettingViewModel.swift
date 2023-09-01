@@ -28,6 +28,34 @@ public class ProfileSettingViewModel: BaseViewModel {
         self.useCase = useCase
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
+
+    // 알람 받을건지 여부 확인하기
+    public func onFinishButtonClicked() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
+            if didAllow {
+                self.acceptAlarm = true
+            } else {
+                self.acceptAlarm = false
+            }
+            DispatchQueue.main.async {
+                self.moveToLearningHomeView()
+            }
+        })
+    }
+    
+    // 글자 입력 관련하여 안채워진게 있는지 확인하기
+    private func checkAllTextAreFilled() -> Bool {
+        if username.text.isEmpty {
+            textErrorMessage = ProfileTextFieldCategory.username.errorMessage
+            return false
+        } else if nickname.text.isEmpty {
+            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
+            return false
+        } else {
+            textErrorMessage = nil
+            return true
+        }
+    }
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
     private func moveToLearningHomeView() {
@@ -83,35 +111,7 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .store(in: cancelBag)
         }
     }
-    
-    // 글자 입력 관련하여 안채워진게 있는지 확인하기
-    func checkAllTextAreFilled() -> Bool {
-        if username.text.isEmpty {
-            textErrorMessage = ProfileTextFieldCategory.username.errorMessage
-            return false
-        } else if nickname.text.isEmpty {
-            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
-            return false
-        } else {
-            textErrorMessage = nil
-            return true
-        }
-    }
-
-    // 알람 받을건지 여부 확인하기
-    func requestNotiAndMoveToLearningHomeView() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { didAllow, _ in
-            if didAllow {
-                self.acceptAlarm = true
-            } else {
-                self.acceptAlarm = false
-            }
-            DispatchQueue.main.async {
-                self.moveToLearningHomeView()
-            }
-        })
-    }
-    
+  
     public func viewOnAppear() {
         self.username.text = userAuthVO.userName
     }
