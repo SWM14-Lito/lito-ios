@@ -40,7 +40,7 @@ public final class DefaultLoginUseCase: LoginUseCase {
                             let userAuthVO = UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId)
                             KeyChainManager.createUserInfo(userAuthVO: userAuthVO)
                         }
-                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId))
+                        return loginVO.registered ? .registered : .unregistered(userAuthVO: UserAuthVO(accessToken: loginVO.accessToken, refreashToken: loginVO.refreshToken, refreshTokenExpirationTime: loginVO.refreshTokenExpirationTime, userId: loginVO.userId, userName: appleVO.userName ?? ""))
                     }
                     .eraseToAnyPublisher()
             }

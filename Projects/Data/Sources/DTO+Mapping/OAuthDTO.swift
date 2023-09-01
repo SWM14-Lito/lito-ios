@@ -14,9 +14,10 @@ extension OAuth {
     public struct AppleDTO {
         let userIdentifier: String
         let userEmail: String?
+        let userName: String?
         
         func toVO() -> AppleVO {
-            return AppleVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "")
+            return AppleVO(userIdentifier: userIdentifier, userEmail: userEmail ?? "", userName: userName)
         }
     }
     

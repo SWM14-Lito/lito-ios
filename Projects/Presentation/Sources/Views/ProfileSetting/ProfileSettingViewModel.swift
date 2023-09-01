@@ -111,4 +111,8 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .store(in: cancelBag)
         }
     }
+  
+    public func viewOnAppear() {
+        self.username.text = userAuthVO.userName
+    }
 }
