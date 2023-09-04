@@ -22,16 +22,17 @@ struct ErrorView: View {
     // fatal Error: 로깅 + 가능한 다른 처리 필요
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             if let error = errorObject.error {
-                Text("An Error Occured")
+                Text("에러가 발생했습니다.")
                     .font(.title)
-                    .padding(20)
                 Text(error.localizedString)
                     .font(.callout)
                     .multilineTextAlignment(.center)
-                if errorObject.error == .retryableError {
-                    Button(action: errorObject.retryAction, label: { Text("Retry").bold() })
+                    .padding(20)
+                
+                if case .retryableError = errorObject.error {
+                    Button(action: errorObject.retryAction, label: { Text("다시 시도하기").bold() })
                 }
             }
         }

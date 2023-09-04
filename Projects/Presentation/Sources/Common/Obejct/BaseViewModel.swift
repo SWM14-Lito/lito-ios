@@ -14,13 +14,21 @@ import Domain
 
 public class BaseViewModel: ObservableObject {
     @Published private(set) var errorObject = ErrorObject()
+    @Published var presentRetryableErrorAlert = false
     let coordinator: CoordinatorProtocol
     let toastHelper: ToastHelperProtocol
     let cancelBag = CancelBag()
     lazy var errorHandler: (Error) -> Void = { error in
         if let errorVO = error as? ErrorVO {
-            if case .tokenExpired = errorVO {
-                self.showTokenExpiredToast()
+            switch errorVO {
+            case .retryableError(let errorMessage):
+                break
+            case .fatalError:
+                self.toastHelper.setMessage(errorVO.localizedString)
+                self.toastHelper.showToast()
+            case .tokenExpired:
+                self.toastHelper.setMessage(errorVO.localizedString)
+                self.toastHelper.showToast()
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                     self.popToRoot()
                 }
@@ -39,10 +47,5 @@ public class BaseViewModel: ObservableObject {
     
     func popToRoot() {
         coordinator.popToRoot()
-    }
-    
-    func showTokenExpiredToast() {
-        toastHelper.setMessage("토큰이 만료됐습니다.")
-        toastHelper.showToast()
     }
 }

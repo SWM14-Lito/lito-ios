@@ -45,7 +45,7 @@ extension Loadable {
             if let last = last {
                 self = .loaded(last)
             } else {
-                self = .failed(.retryableError)
+                self = .failed(.retryableError(""))
             }
         default: break
         }

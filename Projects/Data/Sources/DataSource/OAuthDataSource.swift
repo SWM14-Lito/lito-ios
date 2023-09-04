@@ -161,7 +161,7 @@ final public class DefaultOAuthDataSource: NSObject, OAuthDataSource, ASAuthoriz
             let clientError = sdkError.getClientError()
             let clientFailureReason = clientError.reason
             let clientFailureMessage = clientError.message
-            return OAuthErrorDTO.kakao.clientFailureReson(clientFailureReason, message: clientFailureMessage)
+            return OAuthErrorDTO.kakao.clientFailureReason(clientFailureReason, message: clientFailureMessage)
         }
         if sdkError.isApiFailed {
             let apiError = sdkError.getApiError()

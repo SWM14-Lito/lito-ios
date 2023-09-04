@@ -45,18 +45,19 @@ public enum NetworkErrorDTO: Error {
         case .requestError(_):
             return .fatalError
         case .serverError(let response):
-            if 500...599 ~= response.statusCode {
-                return .retryableError
+            if 500...599 ~= response.statusCode || 429 == response.statusCode {
+                let serverErrorMessage = convertServerErrorMessage(response: response)
+                return .retryableError(serverErrorMessage?.message)
+            } else {
+                return .fatalError
             }
-            if 429 == response.statusCode {
-                return .retryableError
+        case .underlyingError(_, let response):
+            if let response = response {
+                let serverErrorMessage = convertServerErrorMessage(response: response)
+                return .retryableError(serverErrorMessage?.message)
+            } else {
+                return .fatalError
             }
-            if 429 == response.statusCode {
-                return .retryableError
-            }
-            return .fatalError
-        case .underlyingError(_, _):
-            return .fatalError
         case .tokenExpired:
             return .tokenExpired
         }

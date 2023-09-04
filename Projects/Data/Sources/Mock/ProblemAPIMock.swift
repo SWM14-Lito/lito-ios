@@ -14,7 +14,7 @@ extension ProblemAPI {
     var sampleData: Data {
         switch self {
         case .learningHome:
-            let dto = LearningHomeDTO (
+            let dto = LearningHomeDTO(
                 userId: 0,
                 profileImgUrl: nil,
                 nickname: "테스트",

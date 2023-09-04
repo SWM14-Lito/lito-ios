@@ -15,14 +15,14 @@ public enum OAuthErrorDTO {
     
     public enum kakao: Error {
         
-        case clientFailureReson(ClientFailureReason, message: String?)
+        case clientFailureReason(ClientFailureReason, message: String?)
         case apiFailureReason(ApiFailureReason, ErrorInfo?)
         case authFailureReason(AuthFailureReason, AuthErrorInfo?)
         case commonError(Error)
         
         public var debugString: String {
             switch self {
-            case .clientFailureReson(_, let message):
+            case .clientFailureReason(_, let message):
                 return "🧐 " + (message ?? "no message")
             case .authFailureReason(_, let errorInfo):
                 return "🧐 " + errorInfo.debugDescription
@@ -39,8 +39,8 @@ public enum OAuthErrorDTO {
                 return .fatalError
             case .authFailureReason(_, _):
                 return .fatalError
-            case .clientFailureReson(_, message: _):
-                return .retryableError
+            case .clientFailureReason(_, let message):
+                return .retryableError(message)
             case .commonError(_):
                 return .fatalError
             }
@@ -57,7 +57,7 @@ public enum OAuthErrorDTO {
             case .authorizationError(let authorizationError):
                 switch authorizationError.code {
                 case .canceled:
-                    return .retryableError
+                    return .retryableError("인증이 취소됐습니다.")
                 case .failed:
                     return .fatalError
                 case .invalidResponse:
@@ -72,7 +72,7 @@ public enum OAuthErrorDTO {
                     return .fatalError
                 }
             case .commonError(_):
-                return .retryableError
+                return .retryableError("")
             }
         }
         
