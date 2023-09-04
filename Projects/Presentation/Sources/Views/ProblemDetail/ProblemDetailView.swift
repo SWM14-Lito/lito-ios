@@ -64,10 +64,12 @@ public struct ProblemDetailView: View {
         .modifier(CustomNavigation(
             title: "문제풀이",
             back: viewModel.back,
+            disabled: $viewModel.presentRetryableErrorAlert,
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
+                disabled: $viewModel.presentRetryableErrorAlert,
                 action: viewModel.onFavoriteButtonClicked)))
         .onAppear {
             viewModel.onScreenAppeared()

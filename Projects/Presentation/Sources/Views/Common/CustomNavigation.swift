@@ -11,6 +11,7 @@ import SwiftUI
 struct CustomNavigation: ViewModifier {
     var title: String
     var back: () -> Void
+    var disabled: Binding<Bool>?
     var toolbarContent: SymbolButtonToolbar?
     func body(content: Content) -> some View {
         content
@@ -32,6 +33,7 @@ struct CustomNavigation: ViewModifier {
                             transaction.animation = nil
                         }
                     })
+                    .disabled(disabled?.wrappedValue ?? false)
                 }
                 if let toolbarContent = toolbarContent {
                     toolbarContent
@@ -44,12 +46,14 @@ struct SymbolButtonToolbar: ToolbarContent {
     let placement: ToolbarItemPlacement
     let symbolName: String
     let color: Color
+    var disabled: Binding<Bool>?
     let action: () -> Void
     
-    init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, action: @escaping () -> Void) {
+    init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, disabled: Binding<Bool>? = nil, action: @escaping () -> Void) {
         self.placement = placement
         self.symbolName = symbolName
         self.color = color
+        self.disabled = disabled
         self.action = action
     }
     
@@ -59,6 +63,7 @@ struct SymbolButtonToolbar: ToolbarContent {
                 Image(systemName: symbolName)
                     .foregroundColor(color)
             })
+            .disabled(disabled?.wrappedValue ?? false)
         }
     }
 }
