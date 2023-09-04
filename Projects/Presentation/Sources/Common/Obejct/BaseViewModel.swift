@@ -15,6 +15,7 @@ import Domain
 public class BaseViewModel: ObservableObject {
     @Published private(set) var errorObject = ErrorObject()
     @Published var presentRetryableErrorAlert = false
+    var errorMessageForAlert = ""
     let coordinator: CoordinatorProtocol
     let toastHelper: ToastHelperProtocol
     let cancelBag = CancelBag()
@@ -22,7 +23,8 @@ public class BaseViewModel: ObservableObject {
         if let errorVO = error as? ErrorVO {
             switch errorVO {
             case .retryableError(let errorMessage):
-                break
+                self.presentRetryableErrorAlert = true
+                self.errorMessageForAlert = errorMessage ?? ""
             case .fatalError:
                 self.toastHelper.setMessage(errorVO.localizedString)
                 self.toastHelper.showToast()
