@@ -56,21 +56,20 @@ public struct ProblemDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding([.leading, .trailing], 20)
-            } else if viewModel.errorObject.error != nil {
+            } else if !viewModel.hasError {
                 LoadingView()
             }
-            CustomAlert(presentAlert: $viewModel.presentRetryableErrorAlert, alertTitle: "에러가 발생했습니다.", alertContent: viewModel.errorMessageForAlert, leftButtonTitle: "취소", rightButtonTitle: "재시도", rightButtonAction: viewModel.lastAction, alertStyle: .destructive)
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
             title: "문제풀이",
             back: viewModel.back,
-            disabled: $viewModel.presentRetryableErrorAlert,
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
-                disabled: $viewModel.presentRetryableErrorAlert,
-                action: viewModel.onFavoriteButtonClicked)))
+                action: viewModel.onFavoriteButtonClicked),
+            disabled: $viewModel.presentErrorAlert))
         .onAppear {
             viewModel.onScreenAppeared()
         }

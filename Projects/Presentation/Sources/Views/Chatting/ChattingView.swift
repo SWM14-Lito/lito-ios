@@ -38,6 +38,7 @@ public struct ChattingView: View {
         }
         .padding([.leading, .trailing], 20)
         .interactiveDismissDisabled()
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
     }
     
     // 모달 닫는 버튼

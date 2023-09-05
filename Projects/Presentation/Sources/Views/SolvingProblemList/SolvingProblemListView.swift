@@ -23,11 +23,12 @@ public struct SolvingProblemListView: View {
             if viewModel.isLoading {
                 LoadingView()
             }
-            errorMessage
         }
         .modifier(CustomNavigation(
             title: "풀던 문제",
-            back: viewModel.back))
+            back: viewModel.back,
+            disabled: $viewModel.presentErrorAlert))
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()
         }
@@ -57,11 +58,5 @@ public struct SolvingProblemListView: View {
         .onAppear {
             viewModel.onProblemListAppeared()
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
 }

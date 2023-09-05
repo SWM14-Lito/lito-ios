@@ -24,10 +24,11 @@ public struct MyPageView: View {
                     .frame(minHeight: 10)
                     .overlay(.Divider_Default)
                 listSection
-            } else {
+            } else if !viewModel.hasError {
                 LoadingView()
             }
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()
         }

@@ -46,21 +46,15 @@ public final class LearningHomeViewModel: BaseViewModel {
 
     // 프로필 정보와 문제 정보 가져오기
     func onScreenAppeared() {
+        lastNetworkAction = onScreenAppeared
         isLoading = true
         useCase.getProfileAndProblems()
-            .sinkToResult { result in
-                switch result {
-                case .success(let learningHomeVO):
-                    self.learningHomeVO = learningHomeVO
-                    self.processProblem = learningHomeVO.processProblem
-                    self.recommendProblems = learningHomeVO.recommendProblems
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
+            .sinkToResultWithErrorHandler({ learningHomeVO in
+                self.learningHomeVO = learningHomeVO
+                self.processProblem = learningHomeVO.processProblem
+                self.recommendProblems = learningHomeVO.recommendProblems
                 self.isLoading = false
-            }
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }
@@ -72,21 +66,18 @@ extension LearningHomeViewModel: ProblemCellHandling {
     
     // 찜하기 or 찜해제하기
     public func onFavoriteClicked(id: Int) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.onFavoriteClicked(id: id)
+        }
         useCase.toggleProblemFavorite(id: id)
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
-                    if let index = self.recommendProblems.firstIndex(where: { $0.problemId == id}) {
-                        self.recommendProblems[index].favorite.toggle()
-                    } else {
-                        self.processProblem?.favorite.toggle()
-                    }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
+            .sinkToResultWithErrorHandler({ _ in
+                if let index = self.recommendProblems.firstIndex(where: { $0.problemId == id}) {
+                    self.recommendProblems[index].favorite.toggle()
+                } else {
+                    self.processProblem?.favorite.toggle()
                 }
-            }
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }

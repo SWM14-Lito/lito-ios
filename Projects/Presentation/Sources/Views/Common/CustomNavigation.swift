@@ -9,10 +9,20 @@
 import SwiftUI
 
 struct CustomNavigation: ViewModifier {
-    var title: String
-    var back: () -> Void
-    var disabled: Binding<Bool>?
+    let title: String
+    let back: () -> Void
     var toolbarContent: SymbolButtonToolbar?
+    var disabled: Binding<Bool>?
+
+    init(title: String, back: @escaping () -> Void, toolbarContent: SymbolButtonToolbar? = nil, disabled: Binding<Bool>? = nil) {
+        self.title = title
+        self.back = back
+        self.toolbarContent = toolbarContent
+        self.disabled = disabled
+        
+        self.toolbarContent?.disabled = disabled
+    }
+    
     func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
@@ -46,14 +56,13 @@ struct SymbolButtonToolbar: ToolbarContent {
     let placement: ToolbarItemPlacement
     let symbolName: String
     let color: Color
-    var disabled: Binding<Bool>?
     let action: () -> Void
+    var disabled: Binding<Bool>?
     
-    init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, disabled: Binding<Bool>? = nil, action: @escaping () -> Void) {
+    init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, action: @escaping () -> Void) {
         self.placement = placement
         self.symbolName = symbolName
         self.color = color
-        self.disabled = disabled
         self.action = action
     }
     

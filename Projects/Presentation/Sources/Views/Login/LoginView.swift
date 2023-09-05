@@ -19,7 +19,6 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        errorView()
         VStack(spacing: 60) {
             Text("CSTalk")
                 .font(.title)
@@ -43,10 +42,7 @@ public struct LoginView: View {
             .padding(.horizontal, 30)
         }
         .navigationBarBackButtonHidden(true)
-    }
-    
-    @ViewBuilder private func errorView() -> some View {
-        ErrorView(errorObject: viewModel.errorObject)
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
     }
 }
 

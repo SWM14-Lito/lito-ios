@@ -31,10 +31,9 @@ public struct ProblemListView: View {
                 }
                 .background(.Bg_Light)
             }
-            if viewModel.isLoading {
+            if viewModel.isLoading && !viewModel.hasError {
                 LoadingView()
             }
-            errorMessage
         }
         .modifier(CustomNavigation(
             title: viewModel.selectedSubject.name,
@@ -42,7 +41,9 @@ public struct ProblemListView: View {
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.magnifyingglass,
-                action: viewModel.onSearchButtonClicked)))
+                action: viewModel.onSearchButtonClicked),
+            disabled: $viewModel.presentErrorAlert))
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()
         }
@@ -80,11 +81,5 @@ public struct ProblemListView: View {
         .onAppear {
             viewModel.onProblemListAppeared()
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
 }

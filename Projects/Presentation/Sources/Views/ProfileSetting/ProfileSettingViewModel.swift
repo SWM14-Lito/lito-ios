@@ -59,6 +59,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
     private func moveToLearningHomeView() {
+        lastNetworkAction = moveToLearningHomeView
         
         guard checkAllTextAreFilled() else { return }
         
@@ -76,38 +77,24 @@ public class ProfileSettingViewModel: BaseViewModel {
             
             postProfileInfoPublisher
                 .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
-                        self.coordinator.pop()
-                        self.coordinator.push(.rootTabScene)
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
-                            self.buttonIsLocked = false
-                        }
-                    }
-                }
+                .sinkToResultWithErrorHandler({ _ in
+                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+                    self.coordinator.pop()
+                    self.coordinator.push(.rootTabScene)
+                    self.buttonIsLocked = false
+                }, errorHandler: errorHandler)
                 .store(in: cancelBag)
         }
         // 이름, 닉네임, 소개글만 작성했을 경우
         else {
             postProfileInfoPublisher
                 .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
-                .sinkToResult { result in
-                    switch result {
-                    case .success(_):
-                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
-                        self.coordinator.pop()
-                        self.coordinator.push(.rootTabScene)
-                    case .failure(let error):
-                        if let errorVO = error as? ErrorVO {
-                            self.errorObject.error  = errorVO
-                            self.buttonIsLocked = false
-                        }
-                    }
-                }
+                .sinkToResultWithErrorHandler({ _ in
+                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+                    self.coordinator.pop()
+                    self.coordinator.push(.rootTabScene)
+                    self.buttonIsLocked = false
+                }, errorHandler: errorHandler)
                 .store(in: cancelBag)
         }
     }

@@ -14,8 +14,12 @@ import Domain
 
 public class BaseViewModel: ObservableObject {
     @Published private(set) var errorObject = ErrorObject()
-    @Published var presentRetryableErrorAlert = false
+    @Published var presentErrorAlert = false
     var errorMessageForAlert = ""
+    var lastNetworkAction: (() -> Void)?
+    var hasError: Bool {
+        return errorObject.error != nil
+    }
     let coordinator: CoordinatorProtocol
     let toastHelper: ToastHelperProtocol
     let cancelBag = CancelBag()
@@ -23,12 +27,9 @@ public class BaseViewModel: ObservableObject {
         if let errorVO = error as? ErrorVO {
             switch errorVO {
             case .retryableError(let errorMessage):
-                self.presentRetryableErrorAlert = true
+                self.presentErrorAlert = true
                 self.errorMessageForAlert = errorMessage ?? ""
-            case .fatalError:
-                self.toastHelper.setMessage(errorVO.localizedString)
-                self.toastHelper.showToast()
-            case .tokenExpired:
+            case .fatalError, .tokenExpired:
                 self.toastHelper.setMessage(errorVO.localizedString)
                 self.toastHelper.showToast()
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {

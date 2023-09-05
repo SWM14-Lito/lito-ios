@@ -20,58 +20,30 @@ final public class LoginViewModel: BaseViewModel {
     }
     
     public func onKakaoLoginButttonClicked() {
+        lastNetworkAction = onKakaoLoginButttonClicked
         useCase.kakaoLogin()
-            .sinkToResult({ result in
-                switch result {
-                case .success(let loginResultVO):
-                    switch loginResultVO {
-                    case .registered:
-                        self.coordinator.push(.rootTabScene)
-                    case .unregistered(let userAuthVO):
-                        self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
-                    }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        switch errorVO {
-                        case .fatalError:
-                            self.errorObject.error = errorVO
-                        case .retryableError:
-                            self.errorObject.error = errorVO
-                            self.errorObject.retryAction = self.onAppleLoginButtonClicked
-                        case .tokenExpired:
-                            break
-                        }
-                    }
+            .sinkToResultWithErrorHandler({ loginResultVO in
+                switch loginResultVO {
+                case .registered:
+                    self.coordinator.push(.rootTabScene)
+                case .unregistered(let userAuthVO):
+                    self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
                 }
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
     public func onAppleLoginButtonClicked() {
+        lastNetworkAction = onAppleLoginButtonClicked
         useCase.appleLogin()
-            .sinkToResult({ result in
-                switch result {
-                case .success(let loginResultVO):
-                    switch loginResultVO {
-                    case .registered:
-                        self.coordinator.push(.rootTabScene)
-                    case .unregistered(let userAuthVO):
-                        self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
-                    }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        switch errorVO {
-                        case .fatalError:
-                            self.errorObject.error = errorVO
-                        case .retryableError:
-                            self.errorObject.error = errorVO
-                            self.errorObject.retryAction = self.onAppleLoginButtonClicked
-                        default:
-                            break
-                        }
-                    }
+            .sinkToResultWithErrorHandler({ loginResultVO in
+                switch loginResultVO {
+                case .registered:
+                    self.coordinator.push(.rootTabScene)
+                case .unregistered(let userAuthVO):
+                    self.coordinator.push(.profileSettingScene(userAuthVO: userAuthVO))
                 }
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }

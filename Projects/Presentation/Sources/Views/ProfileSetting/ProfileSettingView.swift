@@ -18,7 +18,6 @@ public struct ProfileSettingView: View {
     
     public var body: some View {
         VStack {
-            errorMessage
             HStack {
                 Text("프로필 설정")
                     .font(.Head1Bold)
@@ -63,15 +62,10 @@ public struct ProfileSettingView: View {
                 }
             }
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.viewOnAppear()
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
     
     // 텍스트 입력 관련 오류 메시지 띄워줌

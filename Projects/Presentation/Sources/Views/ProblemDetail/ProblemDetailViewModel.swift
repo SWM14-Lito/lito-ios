@@ -19,7 +19,6 @@ public class ProblemDetailViewModel: BaseViewModel {
     var IsWrongBefore: Bool {
         return solvingState == .wrongKeyword || (solvingState == .initial && !isFirstTry)
     }
-    var lastAction: (() -> Void)?
     @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
     @Published private(set) var answerSplited: [String]?
@@ -45,20 +44,20 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 화면 나오면 문제 받아오고 풀이 시작 상태 알려주기
     public func onScreenAppeared() {
-        lastAction = onScreenAppeared
+        lastNetworkAction = onScreenAppeared
         startSolvingProblem()
         getProblemDetail()
     }
     
     // 정답보기 버튼 눌리면 정답 보여주기
     public func onShowAnswerButtonClicked() {
-        lastAction = onShowAnswerButtonClicked
+        lastNetworkAction = onShowAnswerButtonClicked
         showAnswer()
     }
     
     // 문제 찜하기 선택 및 해제
     public func onFavoriteButtonClicked() {
-        lastAction = onFavoriteButtonClicked
+        lastNetworkAction = onFavoriteButtonClicked
         useCase.toggleProblemFavorite(id: problemId)
             .sinkToResultWithErrorHandler({ _ in
                     self.problemDetailVO?.favorite.toggle()
@@ -68,13 +67,12 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // ChatGPT 화면 모달로 보여주기
     public func onChatGPTButtonClicked() {
-        lastAction = onChatGPTButtonClicked
         coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown"))
     }
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     public func onAnswerSubmitted() {
-        lastAction = onAnswerSubmitted
+        lastNetworkAction = onAnswerSubmitted
         if checkInput() {
            isWrongInput = false
            isLoading = true
@@ -97,10 +95,6 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // faq 열림, 닫힘 상태 변경하기
     public func onFaqClicked(idx: Int) {
-        lastAction = { [weak self] in
-            guard let self = self else { return }
-            self.onFaqClicked(idx: idx)
-        }
         faqIsOpened?[idx].toggle()
     }
     
