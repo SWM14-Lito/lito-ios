@@ -19,9 +19,6 @@ struct LitoApp: App {
         injector = DependencyInjector(container: Container())
         toastHelper = ToastHelper()
         coordinator = Coordinator(.loginScene)
-        if KeyChainManager.isPossibleAutoLogin {
-            coordinator.push(.rootTabScene)
-        }
         injector.assemble([DomainAssembly(),
                            DataAssembly(),
                            PresentationAssembly(
@@ -29,6 +26,9 @@ struct LitoApp: App {
                             toastHelper: toastHelper
                            )])
         coordinator.injector = injector
+        if KeyChainManager.isPossibleAutoLogin {
+            coordinator.push(.rootTabScene)
+        }
     }
     
     var body: some Scene {
