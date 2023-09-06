@@ -77,10 +77,15 @@ public class ProfileSettingViewModel: BaseViewModel {
             
             postProfileInfoPublisher
                 .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
-                .sinkToResultWithErrorHandler({ _ in
-                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
-                    self.coordinator.pop()
-                    self.coordinator.push(.rootTabScene)
+                .sinkToResultWithHandler({ result in
+                    switch result {
+                    case .success( _):
+                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+                        self.coordinator.pop()
+                        self.coordinator.push(.rootTabScene)
+                    case .failure( _):
+                        break
+                    }
                     self.buttonIsLocked = false
                 }, errorHandler: errorHandler)
                 .store(in: cancelBag)
