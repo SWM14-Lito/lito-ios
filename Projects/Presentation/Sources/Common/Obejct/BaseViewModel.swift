@@ -13,13 +13,9 @@ import Domain
 // 모든 ViewModel은 BaseViewModel을 상속
 
 public class BaseViewModel: ObservableObject {
-    @Published private(set) var errorObject = ErrorObject()
     @Published var presentErrorAlert = false
     var errorMessageForAlert = ""
     var lastNetworkAction: (() -> Void)?
-    var hasError: Bool {
-        return errorObject.error != nil
-    }
     let coordinator: CoordinatorProtocol
     let toastHelper: ToastHelperProtocol
     let cancelBag = CancelBag()
