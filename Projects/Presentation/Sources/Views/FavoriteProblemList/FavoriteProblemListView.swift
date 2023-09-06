@@ -30,7 +30,7 @@ public struct FavoriteProblemListView: View {
                 }
                 .background(.Bg_Light)
             }
-            if viewModel.isLoading && !viewModel.hasError {
+            if viewModel.isLoading {
                 LoadingView()
             }
         }

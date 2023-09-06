@@ -56,7 +56,7 @@ public struct ProblemDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding([.leading, .trailing], 20)
-            } else if !viewModel.hasError {
+            } else {
                 LoadingView()
             }
         }

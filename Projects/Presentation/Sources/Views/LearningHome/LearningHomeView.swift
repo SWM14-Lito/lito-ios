@@ -21,7 +21,7 @@ public struct LearningHomeView: View {
         ZStack(alignment: .top) {
             gradientBackground
             content
-            if viewModel.isLoading && !viewModel.hasError {
+            if viewModel.isLoading {
                 LoadingView()
             }
         }

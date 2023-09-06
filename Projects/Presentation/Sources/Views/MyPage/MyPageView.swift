@@ -24,7 +24,7 @@ public struct MyPageView: View {
                     .frame(minHeight: 10)
                     .overlay(.Divider_Default)
                 listSection
-            } else if !viewModel.hasError {
+            } else {
                 LoadingView()
             }
         }
