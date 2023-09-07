@@ -27,7 +27,7 @@ public struct SolvingProblemListView: View {
         .modifier(CustomNavigation(
             title: "풀던 문제",
             back: viewModel.back,
-            disabled: $viewModel.presentErrorAlert))
+            disabled: viewModel.presentErrorAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()

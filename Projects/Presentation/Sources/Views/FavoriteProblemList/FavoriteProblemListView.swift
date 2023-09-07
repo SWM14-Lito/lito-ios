@@ -38,7 +38,7 @@ public struct FavoriteProblemListView: View {
         .modifier(CustomNavigation(
             title: "찜한 문제",
             back: viewModel.back,
-            disabled: $viewModel.presentErrorAlert))
+            disabled: viewModel.presentErrorAlert))
         .onAppear {
             viewModel.onScreenAppeared()
         }

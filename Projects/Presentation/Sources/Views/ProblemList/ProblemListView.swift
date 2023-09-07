@@ -42,7 +42,7 @@ public struct ProblemListView: View {
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.magnifyingglass,
                 action: viewModel.onSearchButtonClicked),
-            disabled: $viewModel.presentErrorAlert))
+            disabled: viewModel.presentErrorAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()

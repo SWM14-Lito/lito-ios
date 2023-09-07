@@ -12,9 +12,9 @@ struct CustomNavigation: ViewModifier {
     let title: String
     let back: () -> Void
     var toolbarContent: SymbolButtonToolbar?
-    var disabled: Binding<Bool>?
+    let disabled: Bool?
 
-    init(title: String, back: @escaping () -> Void, toolbarContent: SymbolButtonToolbar? = nil, disabled: Binding<Bool>? = nil) {
+    init(title: String, back: @escaping () -> Void, toolbarContent: SymbolButtonToolbar? = nil, disabled: Bool? = nil) {
         self.title = title
         self.back = back
         self.toolbarContent = toolbarContent
@@ -43,7 +43,7 @@ struct CustomNavigation: ViewModifier {
                             transaction.animation = nil
                         }
                     })
-                    .disabled(disabled?.wrappedValue ?? false)
+                    .disabled(disabled ?? false)
                 }
                 if let toolbarContent = toolbarContent {
                     toolbarContent
@@ -57,7 +57,7 @@ struct SymbolButtonToolbar: ToolbarContent {
     let symbolName: String
     let color: Color
     let action: () -> Void
-    var disabled: Binding<Bool>?
+    var disabled: Bool?
     
     init(placement: ToolbarItemPlacement, symbolName: String, color: Color = .Text_Default, action: @escaping () -> Void) {
         self.placement = placement
@@ -72,7 +72,7 @@ struct SymbolButtonToolbar: ToolbarContent {
                 Image(systemName: symbolName)
                     .foregroundColor(color)
             })
-            .disabled(disabled?.wrappedValue ?? false)
+            .disabled(disabled ?? false)
         }
     }
 }

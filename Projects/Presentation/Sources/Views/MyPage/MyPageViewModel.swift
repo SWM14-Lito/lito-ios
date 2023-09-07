@@ -19,6 +19,9 @@ public class MyPageViewModel: BaseViewModel {
     @Published var modifyNickNameInput = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
     @Published var modifyIntroduceInput = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     @Published var presentCustomAlert = false
+    var presentAlert: Bool {
+        return presentErrorAlert || presentCustomAlert
+    }
     
     public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase

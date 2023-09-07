@@ -69,7 +69,7 @@ public struct ProblemDetailView: View {
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
                 action: viewModel.onFavoriteButtonClicked),
-            disabled: $viewModel.presentErrorAlert))
+            disabled: viewModel.presentErrorAlert))
         .onAppear {
             viewModel.onScreenAppeared()
         }

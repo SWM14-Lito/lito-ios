@@ -31,7 +31,7 @@ public struct ProblemSearchView: View {
         .modifier(CustomNavigation(
             title: "검색",
             back: viewModel.back,
-            disabled: $viewModel.presentErrorAlert))
+            disabled: viewModel.presentErrorAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()

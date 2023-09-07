@@ -113,7 +113,7 @@ public struct ModifyProfileView: View {
                 checkAccountDeleteAlert
             }
         }
-        .modifier(CustomNavigation(title: "정보 수정", back: viewModel.back))
+        .modifier(CustomNavigation(title: "정보 수정", back: viewModel.back, disabled: viewModel.presentAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .ignoresSafeArea(.keyboard)
     }
