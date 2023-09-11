@@ -28,6 +28,7 @@ public struct MyPageView: View {
                 LoadingView()
             }
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()
         }

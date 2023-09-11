@@ -28,16 +28,22 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 가져오기
     public func onProblemListAppeared() {
+        lastNetworkAction = onProblemListAppeared
         getProblemList()
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
     public func onProblemCellAppeared(id: Int) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.onProblemCellAppeared(id: id)
+        }
         getProblemList(problemFavoriteId: id)
     }
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
-    func onScreenAppeared() {
+    public func onScreenAppeared() {
+        lastNetworkAction = onScreenAppeared
         if problemCellList.isEmpty {
             return
         }
@@ -45,23 +51,16 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: nil, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: 0, size: problemCellList.count+1)
         
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        for idx in 0..<problemsCellVO.count {
-                            self.problemCellList[idx] = problemsCellVO[idx]
-                        }
-                        if self.problemCellList.count > problemsCellVO.count {
-                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
-                        }
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    for idx in 0..<problemsCellVO.count {
+                        self.problemCellList[idx] = problemsCellVO[idx]
                     }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
+                    if self.problemCellList.count > problemsCellVO.count {
+                        self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
                     }
                 }
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
@@ -101,6 +100,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
 extension FavoriteProblemListViewModel: FilterHandling {
     // 필터 업데이트되면 문제 목록 다시 받아오기
     func onFilterChanged() {
+        lastNetworkAction = onFilterChanged
         resetProblemCellList()
         getProblemList(problemFavoriteId: nil)
     }
@@ -114,19 +114,16 @@ extension FavoriteProblemListViewModel: ProblemCellHandling {
     
     // 찜하기 or 찜해제하기
     public func onFavoriteClicked(id: Int) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.onFavoriteClicked(id: id)
+        }
         useCase.toggleProblemFavorite(id: id)
             .receive(on: DispatchQueue.main)
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
-                    let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
-                    self.problemCellList.remove(at: index)
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            .sinkToResultWithErrorHandler({ _ in
+                let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
+                self.problemCellList.remove(at: index)
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }

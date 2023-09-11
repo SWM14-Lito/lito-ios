@@ -18,7 +18,6 @@ public struct ProblemSearchView: View {
     
     public var body: some View {
         VStack {
-            errorMessage
             searchBox
                 .padding(.top, 15)
             VStack(spacing: 0) {
@@ -31,7 +30,9 @@ public struct ProblemSearchView: View {
         }
         .modifier(CustomNavigation(
             title: "검색",
-            back: viewModel.back))
+            back: viewModel.back,
+            disabled: viewModel.presentErrorAlert))
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .onAppear {
             viewModel.onScreenAppeared()
         }
@@ -134,11 +135,5 @@ public struct ProblemSearchView: View {
             }
             .padding(20)
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
 }

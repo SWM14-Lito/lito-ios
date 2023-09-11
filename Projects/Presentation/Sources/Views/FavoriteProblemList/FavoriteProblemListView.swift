@@ -33,11 +33,12 @@ public struct FavoriteProblemListView: View {
             if viewModel.isLoading {
                 LoadingView()
             }
-            errorMessage
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
             title: "찜한 문제",
-            back: viewModel.back))
+            back: viewModel.back,
+            disabled: viewModel.presentErrorAlert))
         .onAppear {
             viewModel.onScreenAppeared()
         }
@@ -78,11 +79,5 @@ public struct FavoriteProblemListView: View {
         .onAppear {
             viewModel.onProblemListAppeared()
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
 }

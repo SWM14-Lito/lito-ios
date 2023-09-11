@@ -25,44 +25,46 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 가져오기
     public func onProblemListAppeared() {
+        lastNetworkAction = onProblemListAppeared
         getProblemList()
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
     public func onProblemCellAppeared(id: Int) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.onProblemCellAppeared(id: id)
+        }
         getProblemList(problemUserId: id)
     }
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
     public func onScreenAppeared() {
+        lastNetworkAction = onScreenAppeared
         if problemCellList.isEmpty {
             return
         }
-
         let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: nil, page: 0, size: problemCellList.count+1)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        for idx in 0..<problemsCellVO.count {
-                            self.problemCellList[idx] = problemsCellVO[idx]
-                        }
-                        if self.problemCellList.count > problemsCellVO.count {
-                            self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
-                        }
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    for idx in 0..<problemsCellVO.count {
+                        self.problemCellList[idx] = problemsCellVO[idx]
                     }
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
+                    if self.problemCellList.count > problemsCellVO.count {
+                        self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
                     }
                 }
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
     // 문제 받아오기 (무한 스크롤)
     private func getProblemList(problemUserId: Int? = nil) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.getProblemList(problemUserId: problemUserId)
+        }
         if !problemCellList.isEmpty {
             guard problemUserId == problemCellList.last?.problemUserId else { return }
         }
@@ -72,23 +74,16 @@ public final class SolvingProblemListViewModel: BaseViewModel {
         isLoading = true
         let problemsQueryDTO = SolvingProblemsQueryDTO(lastProblemUserId: problemUserId, page: problemPage, size: problemSize)
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
-            .sinkToResult({ result in
-                switch result {
-                case .success(let problemsListVO):
-                    if let problemsCellVO = problemsListVO.problemsCellVO {
-                        problemsCellVO.forEach({ problemCellVO in
-                            self.problemCellList.append(problemCellVO)
-                        })
-                        self.problemPage += 1
-                    }
-                    self.problemTotalSize = problemsListVO.total
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
+            .sinkToResultWithErrorHandler({ problemsListVO in
+                if let problemsCellVO = problemsListVO.problemsCellVO {
+                    problemsCellVO.forEach({ problemCellVO in
+                        self.problemCellList.append(problemCellVO)
+                    })
+                    self.problemPage += 1
                 }
+                self.problemTotalSize = problemsListVO.total
                 self.isLoading = false
-            })
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }
@@ -101,19 +96,16 @@ extension SolvingProblemListViewModel: ProblemCellHandling {
     
     // 찜하기 or 찜해제하기
     public func onFavoriteClicked(id: Int) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.onFavoriteClicked(id: id)
+        }
         useCase.toggleProblemFavorite(id: id)
             .receive(on: DispatchQueue.main)
-            .sinkToResult { result in
-                switch result {
-                case .success(_):
-                    let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
-                    self.problemCellList[index].favorite.toggle()
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            .sinkToResultWithErrorHandler({ _ in
+                let index = self.problemCellList.firstIndex(where: { $0.problemId == id})!
+                self.problemCellList[index].favorite.toggle()
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
 }

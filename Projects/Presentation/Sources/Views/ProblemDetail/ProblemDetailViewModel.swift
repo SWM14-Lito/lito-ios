@@ -44,17 +44,20 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 화면 나오면 문제 받아오고 풀이 시작 상태 알려주기
     public func onScreenAppeared() {
+        lastNetworkAction = onScreenAppeared
         startSolvingProblem()
         getProblemDetail()
     }
     
     // 정답보기 버튼 눌리면 정답 보여주기
     public func onShowAnswerButtonClicked() {
+        lastNetworkAction = onShowAnswerButtonClicked
         showAnswer()
     }
     
     // 문제 찜하기 선택 및 해제
     public func onFavoriteButtonClicked() {
+        lastNetworkAction = onFavoriteButtonClicked
         useCase.toggleProblemFavorite(id: problemId)
             .sinkToResultWithErrorHandler({ _ in
                     self.problemDetailVO?.favorite.toggle()
@@ -69,6 +72,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
     public func onAnswerSubmitted() {
+        lastNetworkAction = onAnswerSubmitted
         if checkInput() {
            isWrongInput = false
            isLoading = true
@@ -114,18 +118,11 @@ public class ProblemDetailViewModel: BaseViewModel {
     // API 통신해서 문제 세부 정보 가져오기
     private func getProblemDetail() {
         useCase.getProblemDetail(id: problemId)
-            .sinkToResult { result in
-                switch result {
-                case .success(let problemDetailVO):
-                    self.problemDetailVO = problemDetailVO
-                    self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
-                    self.splitSentence()
-                case .failure(let error):
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            .sinkToResultWithErrorHandler({ problemDetailVO in
+                self.problemDetailVO = problemDetailVO
+                self.faqIsOpened = Array(repeating: false, count: problemDetailVO.faqs?.count ?? 0)
+                self.splitSentence()
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     

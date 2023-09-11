@@ -18,6 +18,10 @@ public class MyPageViewModel: BaseViewModel {
     @Published var alarmStatus: Bool = true
     @Published var modifyNickNameInput = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
     @Published var modifyIntroduceInput = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
+    @Published var presentCustomAlert = false
+    var presentAlert: Bool {
+        return presentErrorAlert || presentCustomAlert
+    }
     
     public init(useCase: MyPageUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
@@ -25,49 +29,42 @@ public class MyPageViewModel: BaseViewModel {
     }
 
     public func onScreenAppeared() {
+        lastNetworkAction = onScreenAppeared
         useCase.getUserInfo()
-            .sinkToResult { result in
-                switch result {
-                case .success(let userInfoVO):
-                    self.userInfo = userInfoVO
-                    self.alarmStatus = userInfoVO.alarmStatus
-                    self.modifyNickNameInput.text = userInfoVO.nickname
-                    self.modifyIntroduceInput.text = userInfoVO.introduce
-                    if let imageUrl = URL(string: userInfoVO.profileImgUrl) {
-                        KingfisherManager.shared.retrieveImage(with: imageUrl) { result in
-                            switch result {
-                            case .success(let value):
-                                if let imageData = value.image.jpegData(compressionQuality: 1) {
-                                    self.imageData = imageData
-                                }
-                            case .failure:
-                                break
+            .sinkToResultWithErrorHandler({ userInfoVO in
+                self.userInfo = userInfoVO
+                self.alarmStatus = userInfoVO.alarmStatus
+                self.modifyNickNameInput.text = userInfoVO.nickname
+                self.modifyIntroduceInput.text = userInfoVO.introduce
+                if let imageUrl = URL(string: userInfoVO.profileImgUrl) {
+                    KingfisherManager.shared.retrieveImage(with: imageUrl) { result in
+                        switch result {
+                        case .success(let value):
+                            if let imageData = value.image.jpegData(compressionQuality: 1) {
+                                self.imageData = imageData
                             }
+                        case .failure:
+                            break
                         }
                     }
-                case .failure:
-                    break
                 }
-            }
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
     public func onLogoutButtonClicked() {
+        lastNetworkAction = onLogoutButtonClicked
         useCase.postLogout()
-            .sinkToResult { result in
-                switch result {
-                case .success:
-                    self.imageData = nil
-                    KeyChainManager.deleteUserInfo()
-                    self.coordinator.popToRoot()
-                case .failure:
-                    break
-                }
-            }
+            .sinkToResultWithErrorHandler({ _ in
+                self.imageData = nil
+                KeyChainManager.deleteUserInfo()
+                self.coordinator.popToRoot()
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
     public func onEditCompleteButtonClicked() {
+        lastNetworkAction = onEditButtonClicked
         guard let userInfo = userInfo else { return }
         var nickname: String?
         var introduce: String?
@@ -85,6 +82,7 @@ public class MyPageViewModel: BaseViewModel {
     }
     
     public func onAlarmAcceptanceChanged() {
+        lastNetworkAction = onAlarmAcceptanceChanged
         useCase.postAlarmAcceptance(getAlarm: alarmStatus)
             .sinkToResultWithErrorHandler({ _ in
             }, errorHandler: errorHandler)
@@ -92,6 +90,7 @@ public class MyPageViewModel: BaseViewModel {
     }
     
     public func onAcoountDeleteButtonClicked() {
+        lastNetworkAction = onAcoountDeleteButtonClicked
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
                 KeyChainManager.deleteUserInfo()
@@ -109,6 +108,7 @@ public class MyPageViewModel: BaseViewModel {
 
 extension MyPageViewModel: PhotoPickerHandling {
     public func onImageChanged() {
+        lastNetworkAction = onImageChanged
         guard let imageData = imageData else { return }
         useCase.postProfileImage(image: imageData)
             .sinkToResultWithErrorHandler({ _ in

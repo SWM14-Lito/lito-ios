@@ -26,22 +26,15 @@ public class ChattingViewModel: BaseViewModel {
     
     // 질문 보내기
     func sendQuestion() {
+        lastNetworkAction = sendQuestion
         dialogue += [
             DialogueUnitVO(text: input, dialogueType: .fromUser),
             DialogueUnitVO(dialogueType: .fromChatGPTWaiting)
         ]
         useCase.sendQuestion(sendingQuestionDTO: SendingQuestionDTO(message: input))
-            .sinkToResult { result in
-                switch result {
-                case .success(let chatGPTAnswerVO):
-                    self.dialogue[self.dialogue.count-1] = DialogueUnitVO(text: chatGPTAnswerVO.messages[0].message, dialogueType: .fromChatGPT)
-                case .failure(let error):
-                    self.dialogue[self.dialogue.count-1] = DialogueUnitVO(dialogueType: .fromChatGPTFail)
-                    if let errorVO = error as? ErrorVO {
-                        self.errorObject.error  = errorVO
-                    }
-                }
-            }
+            .sinkToResultWithErrorHandler({ chatGPTAnswerVO in
+                self.dialogue[self.dialogue.count-1] = DialogueUnitVO(text: chatGPTAnswerVO.messages[0].message, dialogueType: .fromChatGPT)
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
         input = ""
     }

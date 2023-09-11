@@ -24,20 +24,13 @@ public struct LearningHomeView: View {
             if viewModel.isLoading {
                 LoadingView()
             }
-            errorMessage
         }
         .edgesIgnoringSafeArea(.all)
         .background(.Bg_Light)
         .onAppear {
             viewModel.onScreenAppeared()
         }
-        
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
     }
     
     // 그라디언트 배경

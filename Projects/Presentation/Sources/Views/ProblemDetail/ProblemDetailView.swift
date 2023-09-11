@@ -55,11 +55,12 @@ public struct ProblemDetailView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .padding([.leading, .trailing], 20)
             } else {
                 LoadingView()
             }
-            errorMessage
         }
+        .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
             title: "문제풀이",
             back: viewModel.back,
@@ -67,9 +68,8 @@ public struct ProblemDetailView: View {
                 placement: .navigationBarTrailing,
                 symbolName: SymbolName.heartFill,
                 color: viewModel.problemDetailVO?.favorite == .favorite ? .Heart_Clicked_Outer : .Icon_Default,
-                action: viewModel.onFavoriteButtonClicked)))
-        
-        .padding([.leading, .trailing], 20)
+                action: viewModel.onFavoriteButtonClicked),
+            disabled: viewModel.presentErrorAlert))
         .onAppear {
             viewModel.onScreenAppeared()
         }
@@ -315,12 +315,6 @@ public struct ProblemDetailView: View {
                 }
             }
         }
-    }
-    
-    // API 에러 발생시 알려줌
-    @ViewBuilder
-    private var errorMessage: some View {
-        ErrorView(errorObject: viewModel.errorObject)
     }
     
     // 키워드 컴포넌트

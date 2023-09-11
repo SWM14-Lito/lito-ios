@@ -24,6 +24,19 @@ extension Publisher {
         })
     }
     
+    func sinkToResultWithHandler(_ result: @escaping (Result<Output, Failure>) -> Void, errorHandler: @escaping (Failure) -> Void) -> AnyCancellable {
+        return sink(receiveCompletion: { completion in
+            switch completion {
+            case let .failure(error):
+                errorHandler(error)
+                result(.failure(error))
+            default: break
+            }
+        }, receiveValue: { value in
+            result(.success(value))
+        })
+    }
+    
     func sinkToResultWithErrorHandler(_ result: @escaping (Output) -> Void, errorHandler: @escaping (Failure) -> Void) -> AnyCancellable {
         return sink(receiveCompletion: { completion in
             switch completion {
