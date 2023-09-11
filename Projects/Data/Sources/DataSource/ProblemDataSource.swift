@@ -22,6 +22,8 @@ public protocol ProblemDataSource {
     func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedDTO, Error>
     func setProblemGoalCount(problemGoalCount: Int)
     func getProblemGoalCount() -> Int
+    func setRecentKeywords(recentKeywords: [String])
+    func getRecentKeywords() -> [String]
 }
 
 final public class DefaultProblemDataSource: ProblemDataSource {
@@ -72,6 +74,14 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     public func getProblemGoalCount() -> Int {
         let problemGoalCount = UserDefaults.standard.integer(forKey: "problemGoalCount")
         return problemGoalCount
+    }
+
+    public func setRecentKeywords(recentKeywords: [String]) {
+        UserDefaults.standard.set(recentKeywords, forKey: "recentKeywords")
+    }
+    public func getRecentKeywords() -> [String] {
+        let recentKeywords = UserDefaults.standard.array(forKey: "recentKeywords") as? [String] ?? []
+        return recentKeywords
     }
 
 }

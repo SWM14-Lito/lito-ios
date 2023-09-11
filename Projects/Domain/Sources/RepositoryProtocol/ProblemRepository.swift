@@ -30,4 +30,8 @@ public protocol ProblemRepository {
     func setProblemGoalCount(problemGoalCount: Int)
     
     func getProblemGoalCount() -> Int
+    
+    func setRecentKeywords(recentKeywords: [String])
+    
+    func getRecentKeywords() -> [String]
 }

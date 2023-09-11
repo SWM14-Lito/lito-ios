@@ -73,4 +73,12 @@ final public class DefaultProblemRepository: ProblemRepository {
     public func getProblemGoalCount() -> Int {
         dataSource.getProblemGoalCount()
     }
+    
+    public func setRecentKeywords(recentKeywords: [String]) {
+        dataSource.setRecentKeywords(recentKeywords: recentKeywords)
+    }
+    
+    public func getRecentKeywords() -> [String] {
+        dataSource.getRecentKeywords()
+    }
 }
