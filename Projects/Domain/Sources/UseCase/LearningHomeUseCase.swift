@@ -12,6 +12,8 @@ import Foundation
 public protocol LearningHomeUseCase {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
+    func setProblemGoalCount(problemGoalCount: Int)
+    func getProblemGoalCount() -> Int
 }
 
 public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
@@ -27,5 +29,13 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     
     public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
         repository.toggleProblemFavorite(id: id)
+    }
+    
+    public func setProblemGoalCount(problemGoalCount: Int) {
+        repository.setProblemGoalCount(problemGoalCount: problemGoalCount)
+    }
+    
+    public func getProblemGoalCount() -> Int {
+        repository.getProblemGoalCount()
     }
 }

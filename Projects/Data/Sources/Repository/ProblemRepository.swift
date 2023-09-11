@@ -65,4 +65,12 @@ final public class DefaultProblemRepository: ProblemRepository {
             .map { $0.toSolvingProblemListVO() }
             .eraseToAnyPublisher()
     }
+    
+    public func setProblemGoalCount(problemGoalCount: Int) {
+        dataSource.setProblemGoalCount(problemGoalCount: problemGoalCount)
+    }
+    
+    public func getProblemGoalCount() -> Int {
+        dataSource.getProblemGoalCount()
+    }
 }

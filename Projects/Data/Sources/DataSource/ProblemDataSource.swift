@@ -8,6 +8,7 @@
 
 import Combine
 import Domain
+import Foundation
 
 public protocol ProblemDataSource {
     func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<ProblemListDTO, Error>
@@ -19,6 +20,8 @@ public protocol ProblemDataSource {
     func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailDTO, Error>
     func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error>
     func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedDTO, Error>
+    func setProblemGoalCount(problemGoalCount: Int)
+    func getProblemGoalCount() -> Int
 }
 
 final public class DefaultProblemDataSource: ProblemDataSource {
@@ -60,6 +63,15 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     
     public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedDTO, Error> {
         moyaProvider.call(target: .submitAnswer(id: id, keyword: keyword))
+    }
+    
+    public func setProblemGoalCount(problemGoalCount: Int) {
+        UserDefaults.standard.setValue(problemGoalCount, forKey: "problemGoalCount")
+    }
+    
+    public func getProblemGoalCount() -> Int {
+        let problemGoalCount = UserDefaults.standard.integer(forKey: "problemGoalCount")
+        return problemGoalCount
     }
 
 }

@@ -17,7 +17,11 @@ public final class LearningHomeViewModel: BaseViewModel {
     @Published var processProblem: DefaultProblemCellVO?
     @Published var recommendProblems = [DefaultProblemCellVO]()
     @Published var learningRate: Float = 0.8 // 임시 변수 (서버 통신 필요)
-    @Published var goalCount: Int = 5 // 임시 변수 (서버 통신 필요)
+    @Published var goalCount: Int = 0 {
+        didSet {
+            useCase.setProblemGoalCount(problemGoalCount: goalCount)
+        }
+    }
     
     public init(useCase: LearningHomeUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
@@ -56,6 +60,7 @@ public final class LearningHomeViewModel: BaseViewModel {
                 self.isLoading = false
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
+        goalCount = useCase.getProblemGoalCount()
     }
 }
 extension LearningHomeViewModel: ProblemCellHandling {
