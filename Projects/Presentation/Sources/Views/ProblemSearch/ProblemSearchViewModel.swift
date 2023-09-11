@@ -134,3 +134,19 @@ extension ProblemSearchViewModel: ProblemCellHandling {
             .store(in: cancelBag)
     }
 }
+
+extension ProblemSearchViewModel: RecentKeywordCellHandling {
+    func searchWithRecentKeyword(keyword: String, index: Int) {
+        searchKeyword = keyword
+        resetProblemCellList()
+        getProblemList()
+        recentKeywords.remove(at: index)
+        recentKeywords.append(searchKeyword)
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
+    }
+    
+    func deleteRecentKeyword(index: Int) {
+        recentKeywords.remove(at: index)
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
+    }
+}

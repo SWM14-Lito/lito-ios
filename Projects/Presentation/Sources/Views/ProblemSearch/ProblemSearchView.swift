@@ -103,8 +103,8 @@ public struct ProblemSearchView: View {
                 }
             }
             ScrollView {
-                ForEach(viewModel.recentKeywords, id: \.self) { keyword in
-                    RecentKeywordCellView(keyword: keyword)
+                ForEach(viewModel.recentKeywords.reversed().indices, id: \.self) { idx in
+                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: idx, recentKeywordCellHandling: viewModel)
                 }
             }
         }
