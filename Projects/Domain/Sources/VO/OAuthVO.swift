@@ -18,7 +18,7 @@ public enum OAuth {
         public let userEmail: String?
         public let userName: String?
         
-        public init(userIdentifier: String, userEmail: String?, userName: String?) {
+        public init(userIdentifier: String, userEmail: String?, userName: String? = nil) {
             self.userIdentifier = userIdentifier
             self.userEmail = userEmail
             self.userName = userName

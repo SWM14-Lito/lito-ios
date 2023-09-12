@@ -21,7 +21,7 @@ struct AuthPlugin: PluginType {
         UserAPI.patchUserInfo(ProfileInfoDTO(accessToken: "")).pathWithMethod,
         UserAPI.setNotiAcceptance(AlarmAcceptanceDTO(getAlarm: false, accessToken: "")).pathWithMethod,
         FileAPI.setProfileImage(ProfileImageDTO(image: Data(), accessToken: "")).pathWithMethod,
-        AuthAPI.appleLogin(appleVO: OAuth.AppleVO(userIdentifier: "", userEmail: "", userName: nil)).pathWithMethod,
+        AuthAPI.appleLogin(appleVO: OAuth.AppleVO(userIdentifier: "", userEmail: "")).pathWithMethod,
         AuthAPI.kakaoLogin(kakaoVO: OAuth.KakaoVO(userIdentifier: "", userEmail: "")).pathWithMethod
     ]
     

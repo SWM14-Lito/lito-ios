@@ -16,8 +16,6 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
     
     init(endpointClosure: @escaping MoyaProvider<Provider>.EndpointClosure = MoyaProvider.defaultEndpointMapping, requestClosure: @escaping MoyaProvider<Provider>.RequestClosure = MoyaProvider<Provider>.defaultRequestMapping, stubClosure: @escaping MoyaProvider<Provider>.StubClosure = MoyaProvider.neverStub, callbackQueue: DispatchQueue? = nil, session: Session = MoyaProvider<Target>.defaultAlamofireSession(), plugins: [PluginType] = [], trackInflights: Bool = false, authorizationNeeded: Bool = true, forTest: Bool = false) {
         
-        let customEndpointClosure: MoyaProvider<Provider>.EndpointClosure
-        let customStubClosure: MoyaProvider<Provider>.StubClosure
         let customSession: Session
         var plugins = plugins
         let authPlugin = AuthPlugin.shared
@@ -25,32 +23,12 @@ class MoyaWrapper<Provider: TargetType>: MoyaProvider<Provider> {
         plugins.append(authPlugin)
         
         if !authorizationNeeded {
-            customSession = MoyaProvider<Target>.defaultAlamofireSession()
+            customSession = session
         } else {
             customSession = Session(interceptor: AuthInterceptor.shared)
         }
         
-        if forTest {
-//            let sampleDataClosure = { (target: Provider) -> Endpoint in
-//                return Endpoint(url: URL(target: target).absoluteString,
-//                                sampleResponseClosure: { .networkResponse(200, target.sampleData) },
-//                                method: target.method,
-//                                task: target.task,
-//                                httpHeaderFields: target.headers)}
-            let responseClosure = { (target: Provider) in
-                return Endpoint(url: URL(target: target).absoluteString,
-                                sampleResponseClosure: { .networkResponse(401, target.sampleData) },
-                                method: target.method,
-                                task: target.task,
-                                httpHeaderFields: target.headers)}
-            customEndpointClosure = responseClosure
-            customStubClosure = MoyaProvider.immediatelyStub
-        } else {
-            customEndpointClosure = endpointClosure
-            customStubClosure = stubClosure
-        }
-        
-        super.init(endpointClosure: customEndpointClosure, requestClosure: requestClosure, stubClosure: customStubClosure, callbackQueue: callbackQueue, session: customSession, plugins: plugins, trackInflights: trackInflights)
+        super.init(endpointClosure: endpointClosure, requestClosure: requestClosure, stubClosure: stubClosure, callbackQueue: callbackQueue, session: customSession, plugins: plugins, trackInflights: trackInflights)
     }
     
     func call<Value>(target: Provider) -> AnyPublisher<Value, Error> where Value: Decodable {
