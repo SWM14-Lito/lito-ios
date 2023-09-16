@@ -21,7 +21,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
-    @Published private(set) var answerSplited: [String]?
+    @Published public private(set) var answerSplited: [String]?
     @Published private(set) var solvingState: SolvingState = .initial
     @Published private(set) var faqIsOpened: [Bool]?
     @Published private(set) var inputErrorMessage: String = ""
@@ -141,7 +141,6 @@ public class ProblemDetailViewModel: BaseViewModel {
 
         input = problemDetailVO?.problemKeyword ?? ""
         solvingState = .showAnswer
-        useCase.showAnswer()
     }
     
     // 입력값이 틀렸는지 확인해주기

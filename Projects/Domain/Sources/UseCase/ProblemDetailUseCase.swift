@@ -14,7 +14,6 @@ public protocol ProblemDetailUseCase {
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error>
     func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error>
-    func showAnswer()
 }
 
 public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
@@ -40,9 +39,45 @@ public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
     public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
         repository.submitAnswer(id: id, keyword: keyword)
     }
-    
-    public func showAnswer() {
-        
-    }
+}
 
+public final class MockProblemDetailUseCase: ProblemDetailUseCase {
+    
+    public init() { }
+    
+    public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error> {
+        Future<ProblemDetailVO, Error> { promise in
+            promise(.success(ProblemDetailVO(
+                problemId: 0,
+                problemQuestion: "question",
+                problemAnswer: "aaabbb aaa bbb",
+                problemKeyword: "aaa",
+                problemStatus: .solved,
+                favorite: .favorite,
+                faqs: []
+            )))
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            promise(.success(Void()))
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
+        Future<Void, Error> { promise in
+            promise(.success(Void()))
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
+        Future<ProblemSolvedVO, Error> { promise in
+            promise(.success(ProblemSolvedVO(solved: true)))
+        }
+        .eraseToAnyPublisher()
+    }
 }
