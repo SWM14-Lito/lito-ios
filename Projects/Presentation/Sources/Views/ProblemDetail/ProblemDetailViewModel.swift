@@ -21,7 +21,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
-    @Published public private(set) var answerSplited: [String]?
+    @Published private(set) var answerSplited: [String]?
     @Published private(set) var solvingState: SolvingState = .initial
     @Published private(set) var faqIsOpened: [Bool]?
     @Published private(set) var inputErrorMessage: String = ""
@@ -29,7 +29,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     @Published private(set) var isFirstTry: Bool = true
     @Published private(set) var isWrongInput: Bool = false
     
-    enum SolvingState {
+    public enum SolvingState {
         case initial
         case correctKeyword
         case wrongKeyword
@@ -159,5 +159,28 @@ public class ProblemDetailViewModel: BaseViewModel {
         
         let keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: " " + problemDetailVO.problemKeyword + " ")
         answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
+    }
+}
+
+public class MockProblemDetailViewModel: ProblemDetailViewModel {
+    public var inputForTest: String {
+        get {
+            input
+        }
+        set {
+            input = newValue
+        }
+    }
+    public var answerSplitedForTest: [String]? {
+        answerSplited
+    }
+    public var solvingStateForTest: SolvingState {
+        solvingState
+    }
+    public var isWrongInputForTest: Bool {
+        isWrongInput
+    }
+    public var solvingStatePublisherForTest: Published<SolvingState>.Publisher {
+        $solvingState
     }
 }

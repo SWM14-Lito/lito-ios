@@ -49,9 +49,9 @@ public final class MockProblemDetailUseCase: ProblemDetailUseCase {
         Future<ProblemDetailVO, Error> { promise in
             promise(.success(ProblemDetailVO(
                 problemId: 0,
-                problemQuestion: "question",
-                problemAnswer: "aaabbb aaa bbb",
-                problemKeyword: "aaa",
+                problemQuestion: "문맥 전환이 무엇인가?",
+                problemAnswer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정",
+                problemKeyword: "PCB",
                 problemStatus: .solved,
                 favorite: .favorite,
                 faqs: []
@@ -76,7 +76,11 @@ public final class MockProblemDetailUseCase: ProblemDetailUseCase {
     
     public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
         Future<ProblemSolvedVO, Error> { promise in
-            promise(.success(ProblemSolvedVO(solved: true)))
+            if keyword == "PCB" {
+                promise(.success(ProblemSolvedVO(solved: true)))
+            } else {
+                promise(.success(ProblemSolvedVO(solved: false)))
+            }
         }
         .eraseToAnyPublisher()
     }
