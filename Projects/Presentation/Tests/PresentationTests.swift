@@ -1,5 +1,5 @@
 import XCTest
-import Presentation
+@testable import Presentation
 import Domain
 import Combine
 
@@ -16,7 +16,7 @@ class BaseTestCase: XCTestCase {
 }
 
 class ProblemDetailViewModel_Test: BaseTestCase {
-    var viewModel: MockProblemDetailViewModel!
+    var viewModel: ProblemDetailViewModel!
     
     /*
     <테스트 설명> 키워드와 띄어쓰기 기준으로 잘 분리되는지 테스트
@@ -25,7 +25,7 @@ class ProblemDetailViewModel_Test: BaseTestCase {
      */
     func testSplittingSentence() throws {
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
@@ -33,11 +33,11 @@ class ProblemDetailViewModel_Test: BaseTestCase {
             )
         }
         when {
-            viewModel.getProblemDetailForTest()
-            viewModel.splitSentenceForTest()
+            viewModel.onScreenAppeared()
+            viewModel.onAnswerSubmitted()
         }
         then {
-            XCTAssertEqual(viewModel.answerSplitedForTest, ["CPU가", "이전", "상태의", "프로세스를", "PCB", "에", "보관하고,", "또", "다른", "프로세스를", "PCB", "에서", "읽어", "레지스터에", "적재하는", "과정"])
+            XCTAssertEqual(viewModel.answerSplited, ["CPU가", "이전", "상태의", "프로세스를", "PCB", "에", "보관하고,", "또", "다른", "프로세스를", "PCB", "에서", "읽어", "레지스터에", "적재하는", "과정"])
         }
     }
     
@@ -48,20 +48,20 @@ class ProblemDetailViewModel_Test: BaseTestCase {
      */
     func testJudgingSameLengthKeyword() throws {
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "AAA"
+            viewModel.input = "AAA"
         }
         when {
-            viewModel.getProblemDetailForTest()
+            viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
         }
         then {
-            XCTAssertEqual(viewModel.isWrongInputForTest, false)
+            XCTAssertEqual(viewModel.isWrongInput, false)
         }
     }
     
@@ -72,20 +72,20 @@ class ProblemDetailViewModel_Test: BaseTestCase {
      */
     func testJudgingNotSameLengthKeyword() throws {
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "AAAAA"
+            viewModel.input = "AAAAA"
         }
         when {
-            viewModel.getProblemDetailForTest()
+            viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
         }
         then {
-            XCTAssertEqual(viewModel.isWrongInputForTest, true)
+            XCTAssertEqual(viewModel.isWrongInput, true)
         }
     }
     
@@ -96,20 +96,20 @@ class ProblemDetailViewModel_Test: BaseTestCase {
      */
     func testJudgingCorrectKeyword() throws {
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "PCB"
+            viewModel.input = "PCB"
         }
         when {
             viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
         }
         then {
-            XCTAssertEqual(viewModel.solvingStateForTest, .correctKeyword)
+            XCTAssertEqual(viewModel.solvingState, .correctKeyword)
         }
     }
     
@@ -120,20 +120,20 @@ class ProblemDetailViewModel_Test: BaseTestCase {
      */
     func testJudgingWrongKeyword() throws {
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "AAA"
+            viewModel.input = "AAA"
         }
         when {
             viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
         }
         then {
-            XCTAssertEqual(viewModel.solvingStateForTest, .wrongKeyword)
+            XCTAssertEqual(viewModel.solvingState, .wrongKeyword)
         }
     }
     
@@ -147,24 +147,24 @@ class ProblemDetailViewModel_Test: BaseTestCase {
         let expectation = XCTestExpectation(description: "ChangingStateFromWrongState")
         
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "AAA"
+            viewModel.input = "AAA"
         }
         when {
             viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
-            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTimeForTest) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTime) {
                 expectation.fulfill()
             }
         }
         then {
-            wait(for: [expectation], timeout: viewModel.stateChangingTimeForTest)
-            XCTAssertEqual(viewModel.solvingStateForTest, .initial)
+            wait(for: [expectation], timeout: viewModel.stateChangingTime)
+            XCTAssertEqual(viewModel.solvingState, .initial)
         }
     }
     
@@ -178,24 +178,24 @@ class ProblemDetailViewModel_Test: BaseTestCase {
         let expectation = XCTestExpectation(description: "ChangingStateFromCorrectState")
         
         given {
-            viewModel = MockProblemDetailViewModel(
+            viewModel = ProblemDetailViewModel(
                 problemId: 0,
                 useCase: MockProblemDetailUseCase(),
                 coordinator: MockCoordinator(),
                 toastHelper: MockToastHelper()
             )
-            viewModel.inputForTest = "PCB"
+            viewModel.input = "PCB"
         }
         when {
             viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
-            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTimeForTest) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTime) {
                 expectation.fulfill()
             }
         }
         then {
-            wait(for: [expectation], timeout: viewModel.stateChangingTimeForTest)
-            XCTAssertEqual(viewModel.solvingStateForTest, .showAnswer)
+            wait(for: [expectation], timeout: viewModel.stateChangingTime)
+            XCTAssertEqual(viewModel.solvingState, .showAnswer)
         }
     }
 }
