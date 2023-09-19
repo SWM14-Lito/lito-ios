@@ -200,9 +200,9 @@ class ProblemDetailViewModel_Test: BaseTestCase {
     }
     
     /*
-     <테스트 설명> ProblemDetailVO 가져오는 것에 실패하면 테스트
-     <가정> 실제 정답: "PCB", 입력 키워드: "PCB", 2초 이상 지난 후 상태 확인
-     <원하는 결과값> solvingState == .showAnswer
+     <테스트 설명> ProblemDetailVO 가져오는 것에 실패하면 에러 메시지 설정되는지 테스트
+     <가정> usecase의 getProblemDetailResponse 함수에서 "에러 테스트" 메시지가 담겨있는 Fail 반환
+     <원하는 결과값> errorMessageForAlert == "에러 테스트"
      */
     func testGettingProblemDetailVOFail() throws {
         given {
