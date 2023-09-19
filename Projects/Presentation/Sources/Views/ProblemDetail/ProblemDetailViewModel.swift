@@ -10,9 +10,9 @@ import Domain
 import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
-    private let useCase: ProblemDetailUseCase
-    private let problemId: Int
-    private let stateChangingTime = 2.0
+    fileprivate let useCase: ProblemDetailUseCase
+    fileprivate let problemId: Int
+    fileprivate let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
         return solvingState == .correctKeyword || solvingState == .wrongKeyword || solvingState == .showAnswer
     }
@@ -99,7 +99,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // 문제 풀이 결과 보고 다음 상태로 바꾸기
-    private func changeStateFromSolvingResult() {
+    fileprivate func changeStateFromSolvingResult() {
         DispatchQueue.main.asyncAfter(deadline: .now()+stateChangingTime) {
             if self.solvingState == .correctKeyword {
                 self.showAnswer()
@@ -110,13 +110,13 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // 다시 입력받도록 초기화 상태로 변경
-    private func initInput() {
+    fileprivate func initInput() {
         solvingState = .initial
         input = ""
     }
     
     // API 통신해서 문제 세부 정보 가져오기
-    private func getProblemDetail() {
+    fileprivate func getProblemDetail() {
         useCase.getProblemDetail(id: problemId)
             .sinkToResultWithErrorHandler({ problemDetailVO in
                 self.problemDetailVO = problemDetailVO
@@ -127,14 +127,14 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // 문제 풀기 시작한다는거 서버에 알려주기
-    private func startSolvingProblem() {
+    fileprivate func startSolvingProblem() {
         useCase.startSolvingProblem(id: problemId)
             .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
     
     // 정답이 나오는 상태로 변경
-    private func showAnswer() {
+    fileprivate func showAnswer() {
         useCase.submitAnswer(id: problemId, keyword: problemDetailVO?.problemKeyword ?? "")
             .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
             .store(in: cancelBag)
@@ -144,7 +144,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // 입력값이 틀렸는지 확인해주기
-    private func checkInput() -> Bool {
+    fileprivate func checkInput() -> Bool {
         guard let keyword = problemDetailVO?.problemKeyword else { return false }
         if input.count != keyword.count {
             return false
@@ -154,7 +154,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     
     // 문제에 대한 답변에서 단어별 (키워드 포함) 로 쪼개기
-    private func splitSentence() {
+    fileprivate func splitSentence() {
         guard let problemDetailVO = problemDetailVO else { return }
         
         let keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: " " + problemDetailVO.problemKeyword + " ")
@@ -171,16 +171,52 @@ public class MockProblemDetailViewModel: ProblemDetailViewModel {
             input = newValue
         }
     }
+    public var stateChangingTimeForTest: Double {
+        stateChangingTime
+    }
+    public var problemDetailVOForTest: ProblemDetailVO? {
+        problemDetailVO
+    }
     public var answerSplitedForTest: [String]? {
         answerSplited
     }
     public var solvingStateForTest: SolvingState {
         solvingState
     }
+    public var faqIsOpenedForTest: [Bool]? {
+        faqIsOpened
+    }
+    public var inputErrorMessageForTest: String {
+        inputErrorMessage
+    }
+    public var isLoadingForTest: Bool {
+        isLoading
+    }
+    public var isFirstTryForTest: Bool {
+        isFirstTry
+    }
     public var isWrongInputForTest: Bool {
         isWrongInput
     }
-    public var solvingStatePublisherForTest: Published<SolvingState>.Publisher {
-        $solvingState
+    public func changeStateFromSolvingResultForTest() {
+        changeStateFromSolvingResult()
+    }
+    public func initInputForTest() {
+        initInput()
+    }
+    public func getProblemDetailForTest() {
+        getProblemDetail()
+    }
+    public func startSolvingProblemForTest() {
+        startSolvingProblem()
+    }
+    public func showAnswerForTest() {
+        showAnswer()
+    }
+    public func checkInputForTest() -> Bool {
+        checkInput()
+    }
+    public func splitSentenceForTest() {
+        splitSentence()
     }
 }

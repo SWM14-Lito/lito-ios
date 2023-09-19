@@ -46,42 +46,34 @@ public final class MockProblemDetailUseCase: ProblemDetailUseCase {
     public init() { }
     
     public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error> {
-        Future<ProblemDetailVO, Error> { promise in
-            promise(.success(ProblemDetailVO(
-                problemId: 0,
-                problemQuestion: "문맥 전환이 무엇인가?",
-                problemAnswer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정",
-                problemKeyword: "PCB",
-                problemStatus: .solved,
-                favorite: .favorite,
-                faqs: []
-            )))
-        }
+        Just(ProblemDetailVO(
+            problemId: 0,
+            problemQuestion: "문맥 전환이 무엇인가?",
+            problemAnswer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정",
+            problemKeyword: "PCB",
+            problemStatus: .solved,
+            favorite: .favorite,
+            faqs: []
+        ))
+        .setFailureType(to: Error.self)
         .eraseToAnyPublisher()
     }
     
     public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { promise in
-            promise(.success(Void()))
-        }
-        .eraseToAnyPublisher()
+        Just(Void())
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
     public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { promise in
-            promise(.success(Void()))
-        }
-        .eraseToAnyPublisher()
+        Just(Void())
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
     
-    public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
-        Future<ProblemSolvedVO, Error> { promise in
-            if keyword == "PCB" {
-                promise(.success(ProblemSolvedVO(solved: true)))
-            } else {
-                promise(.success(ProblemSolvedVO(solved: false)))
-            }
-        }
-        .eraseToAnyPublisher()
+    public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {        
+        Just(keyword == "PCB" ? ProblemSolvedVO(solved: true) : ProblemSolvedVO(solved: false))
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }

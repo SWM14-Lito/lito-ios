@@ -33,7 +33,8 @@ class ProblemDetailViewModel_Test: BaseTestCase {
             )
         }
         when {
-            viewModel.onScreenAppeared()
+            viewModel.getProblemDetailForTest()
+            viewModel.splitSentenceForTest()
         }
         then {
             XCTAssertEqual(viewModel.answerSplitedForTest, ["CPU가", "이전", "상태의", "프로세스를", "PCB", "에", "보관하고,", "또", "다른", "프로세스를", "PCB", "에서", "읽어", "레지스터에", "적재하는", "과정"])
@@ -56,7 +57,7 @@ class ProblemDetailViewModel_Test: BaseTestCase {
             viewModel.inputForTest = "AAA"
         }
         when {
-            viewModel.onScreenAppeared()
+            viewModel.getProblemDetailForTest()
             viewModel.onAnswerSubmitted()
         }
         then {
@@ -80,7 +81,7 @@ class ProblemDetailViewModel_Test: BaseTestCase {
             viewModel.inputForTest = "AAAAA"
         }
         when {
-            viewModel.onScreenAppeared()
+            viewModel.getProblemDetailForTest()
             viewModel.onAnswerSubmitted()
         }
         then {
@@ -157,12 +158,44 @@ class ProblemDetailViewModel_Test: BaseTestCase {
         when {
             viewModel.onScreenAppeared()
             viewModel.onAnswerSubmitted()
-  
+            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTimeForTest) {
+                expectation.fulfill()
+            }
         }
         then {
-            wait(for: [expectation], timeout: 3.0)
+            wait(for: [expectation], timeout: viewModel.stateChangingTimeForTest)
             XCTAssertEqual(viewModel.solvingStateForTest, .initial)
         }
     }
+    
+    /*
+     <테스트 설명> 정답 상태에서 일정 시간 후에 정답 보여주기 상태로 넘어가는지 테스트
+     <가정> 실제 정답: "PCB", 입력 키워드: "PCB", 2초 이상 지난 후 상태 확인
+     <원하는 결과값> solvingState == .showAnswer
+     */
+    func testChangingStateFromCorrectState() throws {
+        
+        let expectation = XCTestExpectation(description: "ChangingStateFromCorrectState")
+        
+        given {
+            viewModel = MockProblemDetailViewModel(
+                problemId: 0,
+                useCase: MockProblemDetailUseCase(),
+                coordinator: MockCoordinator(),
+                toastHelper: MockToastHelper()
+            )
+            viewModel.inputForTest = "PCB"
+        }
+        when {
+            viewModel.onScreenAppeared()
+            viewModel.onAnswerSubmitted()
+            DispatchQueue.main.asyncAfter(deadline: .now()+viewModel.stateChangingTimeForTest) {
+                expectation.fulfill()
+            }
+        }
+        then {
+            wait(for: [expectation], timeout: viewModel.stateChangingTimeForTest)
+            XCTAssertEqual(viewModel.solvingStateForTest, .showAnswer)
+        }
+    }
 }
-
