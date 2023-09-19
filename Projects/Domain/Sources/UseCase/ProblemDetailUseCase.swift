@@ -43,77 +43,56 @@ public final class DefaultProblemDetailUseCase: ProblemDetailUseCase {
 
 public final class MockProblemDetailUseCase: ProblemDetailUseCase {
     
-    private var getProblemDetailResponse: ((Int) -> AnyPublisher<ProblemDetailVO, Error>)?
-    private var toggleProblemFavoriteResponse: ((Int) -> AnyPublisher<Void, Error>)?
-    private var startSolvingProblemResponse: ((Int) -> AnyPublisher<Void, Error>)?
-    private var submitAnswerResponse: ((Int, String) -> AnyPublisher<ProblemSolvedVO, Error>)?
+    private var getProblemDetailResponse: AnyPublisher<ProblemDetailVO, Error> = Just(ProblemDetailVO(
+        problemId: 0,
+        problemQuestion: "문맥 전환이 무엇인가?",
+        problemAnswer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정",
+        problemKeyword: "PCB",
+        problemStatus: .solved,
+        favorite: .favorite,
+        faqs: []
+    ))
+    .setFailureType(to: Error.self)
+    .eraseToAnyPublisher()
+    private var toggleProblemFavoriteResponse: AnyPublisher<Void, Error> = Just(Void())
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    private var startSolvingProblemResponse: AnyPublisher<Void, Error> = Just(Void())
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    private var submitAnswerResponse: AnyPublisher<ProblemSolvedVO, Error> = Just(ProblemSolvedVO(solved: true))
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
     
     public init() { }
     
     // 테스트시 특정 값을 반환하도록 하고 싶다면 함수 호출해서 세팅해주기
-    public func setGetProblemDetailResponse(response: @escaping ((Int) -> AnyPublisher<ProblemDetailVO, Error>)) {
+    func setGetProblemDetailResponse(_ response: AnyPublisher<ProblemDetailVO, Error>) {
         self.getProblemDetailResponse = response
     }
-    
-    public func setToggleProblemFavoriteResponse(response: @escaping ((Int) -> AnyPublisher<Void, Error>)) {
+    func setToggleProblemFavoriteResponse(_ response: AnyPublisher<Void, Error>) {
         self.toggleProblemFavoriteResponse = response
     }
-    
-    public func setStartSolvingProblemResponse(response: @escaping ((Int) -> AnyPublisher<Void, Error>)) {
+    func setStartSolvingProblemResponse(_ response: AnyPublisher<Void, Error>) {
         self.startSolvingProblemResponse = response
     }
-    
-    public func setSubmitAnswerResponse(response: @escaping ((Int, String) -> AnyPublisher<ProblemSolvedVO, Error>)) {
+    func setSubmitAnswer(_ response: AnyPublisher<ProblemSolvedVO, Error>) {
         self.submitAnswerResponse = response
     }
     
     public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error> {
-        if let getProblemDetailResponse = getProblemDetailResponse {
-            // 따로 설정해줬으면 해당 값 반환
-            return getProblemDetailResponse(id)
-        } else {
-            // 디폴트로 반환
-            return Just(ProblemDetailVO(
-                problemId: 0,
-                problemQuestion: "문맥 전환이 무엇인가?",
-                problemAnswer: "CPU가 이전 상태의 프로세스를 PCB에 보관하고, 또 다른 프로세스를 PCB에서 읽어 레지스터에 적재하는 과정",
-                problemKeyword: "PCB",
-                problemStatus: .solved,
-                favorite: .favorite,
-                faqs: []
-            ))
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-        }
+        getProblemDetailResponse
     }
     
     public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
-        if let toggleProblemFavoriteResponse = toggleProblemFavoriteResponse {
-            return toggleProblemFavoriteResponse(id)
-        } else {
-            return Just(Void())
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
+        toggleProblemFavoriteResponse
     }
     
     public func startSolvingProblem(id: Int) -> AnyPublisher<Void, Error> {
-        if let startSolvingProblemResponse = startSolvingProblemResponse {
-            return startSolvingProblemResponse(id)
-        } else {
-            return Just(Void())
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
+        startSolvingProblemResponse
     }
     
     public func submitAnswer(id: Int, keyword: String) -> AnyPublisher<ProblemSolvedVO, Error> {
-        if let submitAnswerResponse = submitAnswerResponse {
-            return submitAnswerResponse(id, keyword)
-        } else {
-            return Just(keyword == "PCB" ? ProblemSolvedVO(solved: true) : ProblemSolvedVO(solved: false))
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
+        submitAnswerResponse
     }
 }
