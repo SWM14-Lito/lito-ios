@@ -198,4 +198,32 @@ class ProblemDetailViewModel_Test: BaseTestCase {
             XCTAssertEqual(viewModel.solvingState, .showAnswer)
         }
     }
+    
+    /*
+     <테스트 설명> ProblemDetailVO 가져오는 것에 실패하면 테스트
+     <가정> 실제 정답: "PCB", 입력 키워드: "PCB", 2초 이상 지난 후 상태 확인
+     <원하는 결과값> solvingState == .showAnswer
+     */
+    func testGettingProblemDetailVOFail() throws {
+        given {
+            let useCase = MockProblemDetailUseCase()
+            useCase.setGetProblemDetailResponse { _ in
+                return Fail<ProblemDetailVO, Error>(error: ErrorVO.retryableError("에러 테스트"))
+                    .eraseToAnyPublisher()
+            }
+            viewModel = ProblemDetailViewModel(
+                problemId: 0,
+                useCase: useCase,
+                coordinator: MockCoordinator(),
+                toastHelper: MockToastHelper()
+            )
+            viewModel.input = "PCB"
+        }
+        when {
+            viewModel.onScreenAppeared()
+        }
+        then {
+            XCTAssertEqual(viewModel.errorMessageForAlert, "에러 테스트")
+        }
+    }
 }

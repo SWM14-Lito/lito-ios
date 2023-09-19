@@ -50,7 +50,7 @@ public final class MockProblemDetailUseCase: ProblemDetailUseCase {
     
     public init() { }
     
-    // 테스트시 특정 값을 반환하도록 하고 싶다면 함수 호출
+    // 테스트시 특정 값을 반환하도록 하고 싶다면 함수 호출해서 세팅해주기
     public func setGetProblemDetailResponse(response: @escaping ((Int) -> AnyPublisher<ProblemDetailVO, Error>)) {
         self.getProblemDetailResponse = response
     }
@@ -67,11 +67,12 @@ public final class MockProblemDetailUseCase: ProblemDetailUseCase {
         self.submitAnswerResponse = response
     }
     
-    // 테스트시 디폴트로 반환해주는 값 정의
     public func getProblemDetail(id: Int) -> AnyPublisher<ProblemDetailVO, Error> {
         if let getProblemDetailResponse = getProblemDetailResponse {
+            // 따로 설정해줬으면 해당 값 반환
             return getProblemDetailResponse(id)
         } else {
+            // 디폴트로 반환
             return Just(ProblemDetailVO(
                 problemId: 0,
                 problemQuestion: "문맥 전환이 무엇인가?",
