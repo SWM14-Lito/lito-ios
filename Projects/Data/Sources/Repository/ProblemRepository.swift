@@ -65,4 +65,20 @@ final public class DefaultProblemRepository: ProblemRepository {
             .map { $0.toSolvingProblemListVO() }
             .eraseToAnyPublisher()
     }
+    
+    public func setProblemGoalCount(problemGoalCount: Int) {
+        dataSource.setProblemGoalCount(problemGoalCount: problemGoalCount)
+    }
+    
+    public func getProblemGoalCount() -> Int {
+        dataSource.getProblemGoalCount()
+    }
+    
+    public func setRecentKeywords(recentKeywords: [String]) {
+        dataSource.setRecentKeywords(recentKeywords: recentKeywords)
+    }
+    
+    public func getRecentKeywords() -> [String] {
+        dataSource.getRecentKeywords()
+    }
 }

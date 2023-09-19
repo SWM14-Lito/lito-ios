@@ -26,4 +26,12 @@ public protocol ProblemRepository {
     func getProblemList(problemsQueryDTO: FavoriteProblemsQueryDTO) -> AnyPublisher<FavoriteProblemListVO, Error>
     
     func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error>
+    
+    func setProblemGoalCount(problemGoalCount: Int)
+    
+    func getProblemGoalCount() -> Int
+    
+    func setRecentKeywords(recentKeywords: [String])
+    
+    func getRecentKeywords() -> [String]
 }

@@ -86,7 +86,6 @@ public struct ProblemSearchView: View {
     }
     
     // 최근 검색
-    // TODO: 최근 검색어 기능 추가 후 작업
     @ViewBuilder
     private var recentSearched: some View {
         VStack(spacing: 10) {
@@ -95,7 +94,7 @@ public struct ProblemSearchView: View {
                     .font(.Body1SemiBold)
                 Spacer()
                 Button {
-                    // 검색어 삭제
+                    viewModel.removeRecentKeywords()
                 } label: {
                     Text("모두삭제")
                         .font(.Body3Regular)
@@ -104,8 +103,9 @@ public struct ProblemSearchView: View {
                 }
             }
             ScrollView {
-                RecentKeywordCellView(keyword: "레지스터")
-                RecentKeywordCellView(keyword: "CPU")
+                ForEach(viewModel.recentKeywords.reversed().indices, id: \.self) { idx in
+                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: idx, recentKeywordCellHandling: viewModel)
+                }
             }
         }
         .padding(20)

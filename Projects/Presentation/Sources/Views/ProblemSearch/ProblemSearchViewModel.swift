@@ -16,6 +16,7 @@ public class ProblemSearchViewModel: BaseViewModel {
     public private (set) var problemTotalSize: Int?
     public private (set) var searchedKeyword = ""
     @Published private(set) var searchState: SearchState = .notStart
+    @Published private(set) var recentKeywords: [String] = []
     @Published var searchKeyword: String = ""
     @Published var problemCellList: [DefaultProblemCellVO] = []
     
@@ -44,11 +45,14 @@ public class ProblemSearchViewModel: BaseViewModel {
         lastNetworkAction = onSearchKeywordSubmitted
         resetProblemCellList()
         getProblemList()
+        recentKeywords.append(searchKeyword)
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
     }
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
     public func onScreenAppeared() {
         lastNetworkAction = onScreenAppeared
+        recentKeywords = useCase.getRecentKeywords()
         if problemCellList.isEmpty {
             return
         }
@@ -103,6 +107,10 @@ public class ProblemSearchViewModel: BaseViewModel {
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
+    
+    public func removeRecentKeywords() {
+        recentKeywords = []
+    }
 }
 
 extension ProblemSearchViewModel: ProblemCellHandling {
@@ -124,5 +132,21 @@ extension ProblemSearchViewModel: ProblemCellHandling {
                 self.problemCellList[index].favorite.toggle()
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
+    }
+}
+
+extension ProblemSearchViewModel: RecentKeywordCellHandling {
+    func searchWithRecentKeyword(keyword: String, index: Int) {
+        searchKeyword = keyword
+        resetProblemCellList()
+        getProblemList()
+        recentKeywords.remove(at: index)
+        recentKeywords.append(searchKeyword)
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
+    }
+    
+    func deleteRecentKeyword(index: Int) {
+        recentKeywords.remove(at: index)
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
     }
 }
