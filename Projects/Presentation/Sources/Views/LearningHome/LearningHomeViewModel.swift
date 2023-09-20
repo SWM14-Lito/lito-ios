@@ -13,7 +13,7 @@ import Combine
 public final class LearningHomeViewModel: BaseViewModel {
     private let useCase: LearningHomeUseCase
     var learningRate: Float {
-        max(Float(learningHomeVO?.completeProblemCntInToday ?? 0) / Float(goalCount), 1.0)
+        min(Float(learningHomeVO?.completeProblemCntInToday ?? 0) / Float(goalCount), 1.0)
     }
     @Published private(set) var isLoading: Bool = false
     @Published var learningHomeVO: LearningHomeVO?
