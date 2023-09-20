@@ -14,6 +14,7 @@ public struct LearningHomeDTO: Decodable {
     let nickname: String?
     let processProblem: ProblemCellDTO?
     let recommendProblems: [ProblemCellDTO]?
+    let completeProblemCntInToday: Int?
 
     func toVO() -> LearningHomeVO {
        return LearningHomeVO(
@@ -21,7 +22,8 @@ public struct LearningHomeDTO: Decodable {
         profileImgUrl: profileImgUrl,
         nickname: nickname ?? "Unknown",
         processProblem: processProblem?.toProblemCellVO(),
-        recommendProblems: recommendProblems?.compactMap { $0.toProblemCellVO() } ?? []
+        recommendProblems: recommendProblems?.compactMap { $0.toProblemCellVO() } ?? [],
+        completeProblemCntInToday: completeProblemCntInToday ?? 0
        )
     }
 }
