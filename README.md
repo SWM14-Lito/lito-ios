@@ -72,6 +72,14 @@
 ## 로깅
 
 ## 유닛 테스트
+    🎯 유닛테스트
+    - 하나의 기능에 대해 독립적으로 테스트
+    - 안정적으로 코드 변경 가능
+    - 코드에 대한 일종의 문서 기능
+
+> ViewModel 유닛 테스트
+- 사용자의 동작에 따라 변한 특정 변수의 값이 예상한 값과 일치하는지 테스트
+- 상위 객체와는 독립적으로 테스트 하기 위해 정해진 값을 바로 반환해주는 MockUseCase 주입
 
 ## 사용한 라이브러리
 - Swinject: DI
@@ -79,7 +87,7 @@
 - Combine: 비동기처리
 - Kingfisher: 이미지처리
   
-## 스크린샷
+## 앱 스크린샷
 |홈|문제 리스트|문제 풀이|
 |:---:|:---:|:---:|
 |<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/72b7a847-f0c3-4a10-8983-152b59b0bab9">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/41fc6669-abea-408c-8f82-9a42dd0f47cb">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/6336ebe1-4101-4a64-9cc0-54e779a9df3f">|
