@@ -1,5 +1,6 @@
 # lito-ios
-// 뭐하는 앱인지 설명
+개발직군 면접을 준비를 하는 것에 도움을 주기 위해 CS 문제를 제공해주는 서비스입니다.
+
 ## CleanArchitecture
 
 ![LitoCleanArchitecture-DataFlow drawio%20(1)](https://github.com/SWM14-Lito/lito-ios/assets/56781342/50c8e196-f457-4f85-a41a-c781137c06e2)
@@ -72,5 +73,16 @@
 ## 유닛 테스트
 
 ## 사용한 라이브러리
-
+- Swinject: DI
+- Moya: Network
+- Combine: 비동기처리
+- Kingfisher: 이미지처리
+  
 ## 스크린샷
+|홈|문제 리스트|문제 풀이|
+|:---:|:---:|:---:|
+|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/72b7a847-f0c3-4a10-8983-152b59b0bab9">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/41fc6669-abea-408c-8f82-9a42dd0f47cb">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/6336ebe1-4101-4a64-9cc0-54e779a9df3f">|
+
+|ChatGPT 질의응답|마이 페이지|
+|:---:|:---:|
+|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/ecbf34b9-f37b-4e32-8f80-e4c454c46ed9">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/42e068d8-61a3-4987-b658-43c3678e3c59">|
