@@ -137,3 +137,37 @@ class ProblemListViewModelTest: BaseTestCase {
     }
     
 }
+
+public final class MockProblemListUseCase: ProblemListUseCase {
+    
+    private var toggleProblemFavoriteResponse: AnyPublisher<Void, Error> =
+        Just(())
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    
+    private var getProblemListResponse: AnyPublisher<ProblemListVO, Error> = {
+        let problemListVO = ProblemListVO.makeMock(start: 0, end: 9, total: 20)
+        return Just(problemListVO)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }()
+    
+    public init() {}
+    
+    public func setGetProblemListResponse(_ response: AnyPublisher<ProblemListVO, Error>) {
+        self.getProblemListResponse = response
+    }
+    
+    public func setToggleProblemFavoriteResponse(_ response: AnyPublisher<Void, Error>) {
+        self.toggleProblemFavoriteResponse = response
+    }
+    
+    public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {
+        toggleProblemFavoriteResponse
+    }
+    
+    public func getProblemList(problemsQueryDTO: ProblemsQueryDTO) -> AnyPublisher<ProblemListVO, Error> {
+        getProblemListResponse
+    }
+    
+}
