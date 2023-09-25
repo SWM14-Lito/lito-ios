@@ -6,8 +6,6 @@
 //  Copyright © 2023 com.lito. All rights reserved.
 //
 
-import Foundation
-
 import XCTest
 import Combine
 @testable import Presentation

@@ -21,3 +21,7 @@ public struct LearningHomeVO {
         self.recommendProblems = recommendProblems
     }
 }
+
+extension LearningHomeVO: Equatable {
+    public static var mock: LearningHomeVO = .init(userId: 0, profileImgUrl: "", nickname: "", processProblem: DefaultProblemCellVO.mock, recommendProblems: [DefaultProblemCellVO.mock, DefaultProblemCellVO.mock])
+}
