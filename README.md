@@ -57,11 +57,11 @@
 
 ## 에러 핸들링
 
-![LitoCleanArchitecture-ErrorHandling%EC%9D%98%20%EB%B3%B5%EC%82%AC%EB%B3%B8 drawio%20(1)](https://github.com/SWM14-Lito/lito-ios/assets/56781342/ea302a80-f808-4577-891b-5e5146264180)
+![LitoCleanArchitecture-ErrorHandling drawio](https://github.com/SWM14-Lito/lito-ios/assets/56781342/3127e047-751b-4c37-9381-8e787c40bc04)
 
     🎯 에러 핸들링
     - CleanArchitecture 가 계층간의 역할 분리가 명확하다는 이점을 고려하여 계층마다의 에러 관심사와 핸들링 분리.
-    - 계층마다 사용하는 에러를 분리하였기 때문에 에러 케이스를 쉽게 확장, 변경 가능.
+    - Presentation, Domain 레이어와 Data 레이어가 사용하는 에러를 분리하였기 때문에 에러 케이스를 쉽게 확장, 변경 가능.
     - Presentation 에서 에러에 대응하는 view가 여러개일 수 있다는 것을 고려하여 ErrorView를 주입받아서 처리하도록 구현.
 
 <br/>
