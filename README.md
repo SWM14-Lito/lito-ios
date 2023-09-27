@@ -57,7 +57,8 @@
 
 ## 에러 핸들링
 
-![LitoCleanArchitecture-ErrorHandling drawio](https://github.com/SWM14-Lito/lito-ios/assets/56781342/3127e047-751b-4c37-9381-8e787c40bc04)
+![LitoCleanArchitecture-ErrorHandling 수정후 drawio](https://github.com/SWM14-Lito/lito-ios/assets/56781342/d4a31379-b9aa-481d-8f9c-091a9e453665)
+
 
     🎯 에러 핸들링
     - CleanArchitecture 가 계층간의 역할 분리가 명확하다는 이점을 고려하여 계층마다의 에러 관심사와 핸들링 분리.
