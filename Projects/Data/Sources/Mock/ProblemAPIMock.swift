@@ -55,7 +55,7 @@ extension ProblemAPI {
                         problemStatus: "풀이완료",
                         favorite: false
                     )
-                ]
+                ], completeProblemCntInToday: 3
             )
             if let data = try? JSONEncoder().encode(dto) {
                 return data

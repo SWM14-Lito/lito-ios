@@ -12,12 +12,14 @@ public struct LearningHomeVO {
     public let nickname: String
     public var processProblem: DefaultProblemCellVO?
     public var recommendProblems: [DefaultProblemCellVO]
+    public let completeProblemCntInToday: Int
     
-    public init(userId: Int, profileImgUrl: String?, nickname: String, processProblem: DefaultProblemCellVO?, recommendProblems: [DefaultProblemCellVO]) {
+    public init(userId: Int, profileImgUrl: String?, nickname: String, processProblem: DefaultProblemCellVO?, recommendProblems: [DefaultProblemCellVO], completeProblemCntInToday: Int) {
         self.userId = userId
         self.profileImgUrl = profileImgUrl
         self.nickname = nickname
         self.processProblem = processProblem
         self.recommendProblems = recommendProblems
+        self.completeProblemCntInToday = completeProblemCntInToday
     }
 }
