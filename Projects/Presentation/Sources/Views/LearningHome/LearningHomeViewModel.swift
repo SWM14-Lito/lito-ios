@@ -23,7 +23,7 @@ public final class LearningHomeViewModel: BaseViewModel {
     @Published var learningHomeVO: LearningHomeVO?
     @Published var processProblem: DefaultProblemCellVO?
     @Published var recommendProblems = [DefaultProblemCellVO]()
-    @Published var goalCount: Int = 0 {
+    @Published var goalCount: Int = 3 {
         didSet {
             useCase.setProblemGoalCount(problemGoalCount: goalCount)
         }
