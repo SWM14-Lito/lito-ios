@@ -73,6 +73,10 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     
     public func getProblemGoalCount() -> Int {
         let problemGoalCount = UserDefaults.standard.integer(forKey: "problemGoalCount")
+        // 초기값
+        if problemGoalCount == 0 {
+            return 3
+        }
         return problemGoalCount
     }
 
