@@ -114,13 +114,13 @@ public struct LearningHomeView: View {
                     .font(.system(size: 24))
                     .foregroundColor(.white)
             }
-            Button {
-                viewModel.onNotiListButtonClicked()
-            } label: {
-                Image(systemName: SymbolName.bellFill)
-                    .font(.system(size: 24))
-                    .foregroundColor(.white)
-            }
+//            Button {
+//                viewModel.onNotiListButtonClicked()
+//            } label: {
+//                Image(systemName: SymbolName.bellFill)
+//                    .font(.system(size: 24))
+//                    .foregroundColor(.white)
+//            }
         }
     }
     
@@ -184,7 +184,7 @@ public struct LearningHomeView: View {
     private var goalSettingPicker: some View {
         Menu {
             Picker(selection: $viewModel.goalCount, label: EmptyView(), content: {
-                ForEach(0 ..< 11) { number in
+                ForEach(1 ..< 11) { number in
                     Text("\(number)").tag(number)
                 }
             }).pickerStyle(.automatic)

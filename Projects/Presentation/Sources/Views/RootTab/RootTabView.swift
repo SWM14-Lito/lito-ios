@@ -30,7 +30,7 @@ public struct RootTabView: View {
                         Text("학습")
                     }
                 }
-//                .tag(1)
+                .tag(1)
 //            tab2
 //                .tabItem {
 //                    VStack {
