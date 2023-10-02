@@ -3,9 +3,8 @@
 
 ## CleanArchitecture
 
-![LitoCleanArchitecture-DataFlow drawio%20(1)](https://github.com/SWM14-Lito/lito-ios/assets/56781342/50c8e196-f457-4f85-a41a-c781137c06e2)
+![LitoCleanArchitecture-Layer drawio (1)](https://github.com/SWM14-Lito/lito-ios/assets/56781342/f50ae5cf-b578-4e1d-9540-db4c5b986dff)
 
-(이미지 수정예정)
 
     🎯 클린 아키텍쳐
     - 각각 분리된 계층의 역할과 책임이 명확해짐에 따라 코드 응집도가 높아짐.
