@@ -17,10 +17,8 @@ public protocol SolvingProblemListUseCase {
 }
 
 public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
-//    let logging = SWMLogging
     public func fireLogging(scheme: SWMLogging.SWMLoggingScheme) {
-//        let builder = OrderClickedBuilder
-        logger.fireLogging(scheme, authorization: "eyJhbGciOiJIUzI1NiJ9.eyJnaXRodWJJZCI6Ikt4eEh5b1JpbSIsImlhdCI6MTY5NTcxNDE1MiwiZXhwIjoxNzI3MjUwMTUyfQ.tbQFKNIQCekhWZjHwOqQNBIY3YgXZZm-B95NyTvBn5c")
+        logger.shotLogging(scheme, authorization: "eyJhbGciOiJIUzI1NiJ9.eyJnaXRodWJJZCI6Ikt4eEh5b1JpbSIsImlhdCI6MTY5NTcxNDE1MiwiZXhwIjoxNzI3MjUwMTUyfQ.tbQFKNIQCekhWZjHwOqQNBIY3YgXZZm-B95NyTvBn5c")
     }
     
     private let repository: ProblemRepository
@@ -38,10 +36,4 @@ public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
     public func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error> {
         repository.getProblemList(problemsQueryDTO: problemsQueryDTO)
     }
-    
-    // protocol scheme: encodable
-    // click, exposure 의 상위 추상화 객체
-//    public func fireLogging(scheme: Scheme) {
-//        SWMLogging.fireLogging(scheme: <#T##Scheme#>)
-//    }
 }

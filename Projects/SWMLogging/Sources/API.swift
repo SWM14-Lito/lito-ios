@@ -12,8 +12,17 @@ import Moya
 struct LoggingAPI: TargetType {
     let serverUrl: String
     let serverPath: String
-    let authorization: String
-    let scheme: SWMLoggingScheme
+    let authorization: String? = nil
+    var schemeData: Data = Data()
+
+    public init(serverUrl: String, serverPath: String) {
+        self.serverUrl = serverUrl
+        self.serverPath = serverPath
+    }
+
+    public mutating func setScheme(_ schemeData: Data) {
+        self.schemeData = schemeData
+    }
 
     var baseURL: URL {
         return URL(string: serverUrl)!
@@ -28,11 +37,11 @@ struct LoggingAPI: TargetType {
     }
 
     var task: Moya.Task {
-        return .requestJSONEncodable(scheme)
+        return .requestData(schemeData)
     }
 
     var headers: [String: String]? {
-        return ["Content-Type": "application/json", "Authorization": "Bearer \(authorization)"]
+        return ["Content-Type": "application/json", "Authorization": "Bearer \(authorization ?? "")"]
     }
 
 }

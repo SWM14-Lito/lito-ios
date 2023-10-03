@@ -25,7 +25,7 @@ public struct OrderClickedScheme: ClickScheme {
         
     }
     
-    public class Builder: SWMSchemeBuilder {
+    public class Builder {
         let userId: Int?
         var gender: String?
         var age: Int?

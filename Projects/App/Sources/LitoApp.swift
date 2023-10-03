@@ -11,7 +11,6 @@ struct LitoApp: App {
     private let injector: Injector
     @ObservedObject private var coordinator: Coordinator
     @ObservedObject private var toastHelper: ToastHelper
-    private let logger: SWMLogger
     
     init() {
         UIFont.registerCommonFonts()
@@ -24,7 +23,7 @@ struct LitoApp: App {
         toastHelper = ToastHelper()
         coordinator = Coordinator(.loginScene)
         // OS NameAndVersion 기기에서 불러오기
-        logger = SWMLogger(serverUrl: "https://dev.swm-lgtm.com", serverPath: "/v1/log", OSNameAndVersion: "iOS 16")
+        let logger = SWMLogger(serverUrl: "https://dev.swm-lgtm.com", serverPath: "/v1/log", OSNameAndVersion: "iOS 16", appVersion: "1.0")
         // domainAssembly 에 Logging 객체 주입
         injector.assemble([DomainAssembly(logger: logger),
                            DataAssembly(),
