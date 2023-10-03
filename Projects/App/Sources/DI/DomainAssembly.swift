@@ -8,8 +8,11 @@
 
 import Domain
 import Swinject
+import SWMLogging
 
 public struct DomainAssembly: Assembly {
+    
+    let logger: SWMLogger
     
     public func assemble(container: Container) {
         // ------------------------ Common ------------------------
@@ -46,7 +49,7 @@ public struct DomainAssembly: Assembly {
         }
         container.register(SolvingProblemListUseCase.self) { resolver in
             let repository = resolver.resolve(ProblemRepository.self)!
-            return DefaultSolvingProblemListUseCase(repository: repository)
+            return DefaultSolvingProblemListUseCase(repository: repository, logger: logger)
         }
         container.register(FavoriteProblemListUseCase.self) { resolver in
             let repository = resolver.resolve(ProblemRepository.self)!

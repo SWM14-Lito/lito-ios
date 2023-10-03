@@ -40,6 +40,12 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     
     // 화면이 다시 떴을 때 혹시나 바뀌었을 값들을 위해 마지막으로 본 문제까지 전부 업데이트해주기
     public func onScreenAppeared() {
+        
+        let orderClickedScheme = OrderClickedScheme.Builder()
+            .setAge(age: 0)
+            .setGender(gender: "man")
+            .build()
+        useCase.fireLogging(scheme: orderClickedScheme)
         lastNetworkAction = onScreenAppeared
         if problemCellList.isEmpty {
             return
