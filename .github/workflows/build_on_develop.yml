@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
       - name: Use xcconfig file
@@ -18,9 +18,11 @@ jobs:
           XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
         run: |
           echo "$XC_CONFIG_FILE" > config.xcconfig
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'fetch'
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'build'
+      - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Tuist Fetch Dependency
+        run: |
+          tuist fetch && tuist generate
+      - name: Tuist build
+        run: | 
+          tuist build
