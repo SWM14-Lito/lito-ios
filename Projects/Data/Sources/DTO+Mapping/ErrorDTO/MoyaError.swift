@@ -45,7 +45,12 @@ extension MoyaError {
         switch self {
         case .underlying(let error, let response):
             if let response = response, response.statusCode == 500 {
-                return .retryableError("일시적인 서버 에러입니다. 잠시 후 다시 시도해주세요.")
+                do {
+                    let serverErrorMessage = try convertServerErrorMessage(response: response)
+                    return .retryableError(serverErrorMessage.errors[0].reason)
+                } catch {
+                    return .retryableError("일시적인 서버 에러입니다. 잠시 후 다시 시도해주세요.")
+                }
             }
             // 토큰 재발급 실패
             if let afError = error.asAFError, afError.isRequestRetryError {

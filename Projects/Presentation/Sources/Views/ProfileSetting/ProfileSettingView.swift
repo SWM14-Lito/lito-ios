@@ -23,15 +23,15 @@ public struct ProfileSettingView: View {
                     .font(.Head1Bold)
                 Spacer()
             }
-                .padding(.top, 22)
-                .padding(.bottom, 28)
+            .padding(.top, 22)
+            .padding(.bottom, 28)
             PhotoPickerView(imageData: $viewModel.imageData)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
                 .padding(.bottom, 30)
             textErrorMessage
             finishButton
