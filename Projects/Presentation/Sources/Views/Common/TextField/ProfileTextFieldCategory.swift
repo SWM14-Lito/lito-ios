@@ -34,6 +34,6 @@ enum ProfileTextFieldCategory: Hashable {
         return title + "을 입력해주세요."
     }
     var errorMessage: String {
-        return title + "을 입력하지 않으셨습니다."
+        return title + "은 2자 이상 10자 이하로 작성해주세요."
     }
 }

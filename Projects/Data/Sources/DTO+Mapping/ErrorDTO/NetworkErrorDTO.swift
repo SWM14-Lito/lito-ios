@@ -54,8 +54,8 @@ public enum NetworkErrorDTO: Error {
         case .underlyingError(_, let response):
             if let response = response {
                 let serverErrorMessage = convertServerErrorMessage(response: response)
-                let reasons = serverErrorMessage?.errors.map {$0.reason}
-                return .retryableError(reasons?.joined(separator: "\n"))
+                let reason = serverErrorMessage?.errors[0].reason
+                return .retryableError(reason)
             } else {
                 return .fatalError
             }
