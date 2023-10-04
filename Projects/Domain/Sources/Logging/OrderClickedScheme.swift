@@ -18,7 +18,7 @@ public struct OrderClickedScheme: ClickScheme {
 
     public init(userId: Int?, gender: String?, age: Int?) {
         
-        //logData 만들기
+        // logData 만들기
         self.logData["userId"] = String(userId ?? -1)
         self.logData["gender"] = gender
         self.logData["age"] = String(age ?? -1)

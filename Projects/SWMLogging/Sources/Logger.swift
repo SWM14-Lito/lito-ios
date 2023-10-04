@@ -48,7 +48,8 @@ public class SWMLogger {
         loggingAPI = LoggingAPI(serverUrl: serverUrl, serverPath: serverPath)
     }
 
-    public func shotLogging(_ scheme: SWMLoggingScheme, authorization: String) {
+    // throw
+    public func shotLogging(_ scheme: SWMLoggingScheme, authorization: String) throws {
         do {
             loggingAPI.setScheme(try scheme.makeJson())
             moyaProvider.requestPublisher(loggingAPI)
@@ -63,7 +64,7 @@ public class SWMLogger {
                 })
                 .store(in: &cancelBag)
         } catch {
-
+            throw error
         }
 
     }
