@@ -28,16 +28,11 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 가져오기
     public func onProblemListAppeared() {
-        lastNetworkAction = onProblemListAppeared
         getProblemList()
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
     public func onProblemCellAppeared(id: Int) {
-        lastNetworkAction = { [weak self] in
-            guard let self = self else { return }
-            self.onProblemCellAppeared(id: id)
-        }
         getProblemList(problemFavoriteId: id)
     }
     
@@ -50,7 +45,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         
         let problemsQueryDTO = FavoriteProblemsQueryDTO(lastFavoriteId: nil, subjectId: selectedSubject.query, problemStatus: selectedFilters.first?.query, page: 0, size: problemCellList.count+1)
         
-        useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
+        self.useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResultWithErrorHandler({ problemsListVO in
                 if let problemsCellVO = problemsListVO.problemsCellVO {
                     for idx in 0..<problemsCellVO.count {
@@ -60,12 +55,16 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
                         self.problemCellList.removeLast(self.problemCellList.count-problemsCellVO.count)
                     }
                 }
-            }, errorHandler: errorHandler)
-            .store(in: cancelBag)
+            }, errorHandler: self.errorHandler)
+            .store(in: self.cancelBag)
     }
     
     // 문제 가져오기
     private func getProblemList(problemFavoriteId: Int? = nil) {
+        lastNetworkAction = { [weak self] in
+            guard let self = self else { return }
+            self.getProblemList(problemFavoriteId: problemFavoriteId)
+        }
         if !problemCellList.isEmpty {
             guard problemFavoriteId == problemCellList.last?.favoriteId else { return }
         }
