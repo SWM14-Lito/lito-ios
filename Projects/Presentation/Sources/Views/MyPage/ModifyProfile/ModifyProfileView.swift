@@ -75,6 +75,7 @@ public struct ModifyProfileView: View {
                             .focused($nicknameFocused)
                         profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput)
                             .focused($introduceFocused)
+                        textErrorMessage
                         Spacer()
                         HStack(spacing: 12) {
                             Button {
@@ -121,5 +122,14 @@ public struct ModifyProfileView: View {
     @ViewBuilder
     private var checkAccountDeleteAlert: some View {
         CustomAlert(presentAlert: $viewModel.presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", rightButtonAction: viewModel.onAcoountDeleteButtonClicked, alertStyle: .destructive)
+    }
+    
+    @ViewBuilder
+    private var textErrorMessage: some View {
+        if let msg = viewModel.textErrorMessage {
+            Text(msg)
+                .foregroundColor(.red)
+                .padding(.top, 10)
+        }
     }
 }
