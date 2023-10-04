@@ -38,17 +38,17 @@ public class ProfileSettingViewModel: BaseViewModel {
                 self.acceptAlarm = false
             }
             DispatchQueue.main.async {
-                self.moveToLearningHomeView()
+                self.uplodadInfoAndMoveToLearningHomeView()
             }
         })
     }
     
     // 글자 입력 관련하여 안채워진게 있는지 확인하기
     private func checkAllTextAreFilled() -> Bool {
-        if username.text.isEmpty {
+        if username.text.count < 2 {
             textErrorMessage = ProfileTextFieldCategory.username.errorMessage
             return false
-        } else if nickname.text.isEmpty {
+        } else if nickname.text.count < 2 {
             textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
             return false
         } else {
@@ -58,49 +58,45 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
     
     // API 연결해서 정보 업로드하고 탭뷰 (학습메인) 으로 이동하기
-    private func moveToLearningHomeView() {
-        lastNetworkAction = moveToLearningHomeView
+    private func uplodadInfoAndMoveToLearningHomeView() {
+        lastNetworkAction = uplodadInfoAndMoveToLearningHomeView
         
         guard checkAllTextAreFilled() else { return }
         
         buttonIsLocked = true
+        preparePublisher()
+            .sinkToResultWithHandler({ result in
+                switch result {
+                case .success( _):
+                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+                    self.coordinator.pop()
+                    self.coordinator.push(.rootTabScene)
+                case .failure( _):
+                    break
+                }
+                self.buttonIsLocked = false
+            }, errorHandler: errorHandler)
+            .store(in: cancelBag)
+    }
+    
+    private func preparePublisher() -> AnyPublisher<Any, Error> {
         let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
         
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
         let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
         
-        // 프로필 이미지도 설정했을 경우
         if let data = imageData {
             let profileImageDTO = ProfileImageDTO(image: data, accessToken: userAuthVO.accessToken)
             let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
             
-            postProfileInfoPublisher
+            return postProfileInfoPublisher
                 .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
-                .sinkToResultWithHandler({ result in
-                    switch result {
-                    case .success( _):
-                        KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
-                        self.coordinator.pop()
-                        self.coordinator.push(.rootTabScene)
-                    case .failure( _):
-                        break
-                    }
-                    self.buttonIsLocked = false
-                }, errorHandler: errorHandler)
-                .store(in: cancelBag)
-        }
-        // 이름, 닉네임, 소개글만 작성했을 경우
-        else {
-            postProfileInfoPublisher
+                .eraseToAnyPublisher()
+        } else {
+            return postProfileInfoPublisher
                 .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
-                .sinkToResultWithErrorHandler({ _ in
-                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
-                    self.coordinator.pop()
-                    self.coordinator.push(.rootTabScene)
-                    self.buttonIsLocked = false
-                }, errorHandler: errorHandler)
-                .store(in: cancelBag)
+                .eraseToAnyPublisher()
         }
     }
   
