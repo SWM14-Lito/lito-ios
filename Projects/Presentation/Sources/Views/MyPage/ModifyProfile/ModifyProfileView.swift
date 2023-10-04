@@ -74,6 +74,7 @@ public struct ModifyProfileView: View {
                             .padding(.bottom, 30)
                             .focused($nicknameFocused)
                         profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput)
+                            .padding(.bottom, 30)
                             .focused($introduceFocused)
                         textErrorMessage
                         Spacer()
@@ -129,7 +130,6 @@ public struct ModifyProfileView: View {
         if let msg = viewModel.textErrorMessage {
             Text(msg)
                 .foregroundColor(.red)
-                .padding(.top, 10)
         }
     }
 }
