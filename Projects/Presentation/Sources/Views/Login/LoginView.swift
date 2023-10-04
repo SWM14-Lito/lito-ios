@@ -20,7 +20,7 @@ public struct LoginView: View {
     
     public var body: some View {
         VStack(spacing: 60) {
-            Text("CSTalk")
+            Text(StringLiteral.serviceName)
                 .font(.title)
             
             VStack(spacing: 8) {

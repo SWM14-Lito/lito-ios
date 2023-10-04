@@ -36,7 +36,7 @@ public struct FavoriteProblemListView: View {
         }
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
-            title: "찜한 문제",
+            title: StringLiteral.favoriteProblem,
             back: viewModel.back,
             disabled: viewModel.presentErrorAlert))
         .onAppear {
@@ -73,7 +73,7 @@ public struct FavoriteProblemListView: View {
                     .padding(20)
                 }
             } else {
-                NoContentView(message: "찜한 문제가 없습니다.")
+                NoContentView(message: StringLiteral.favoriteProblemNoContent)
             }
         }
         .onAppear {
