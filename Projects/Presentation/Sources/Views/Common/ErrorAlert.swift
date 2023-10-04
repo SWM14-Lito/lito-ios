@@ -16,7 +16,7 @@ struct ErrorAlert: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             content
-            CustomAlert(presentAlert: $presentAlert, alertTitle: "에러가 발생했습니다.", alertContent: message, leftButtonTitle: "닫기", rightButtonTitle: "재시도", rightButtonAction: action, alertStyle: .destructive)
+            CustomAlert(presentAlert: $presentAlert, alertTitle: StringLiteral.errorAlertTitle, alertContent: message, leftButtonTitle: StringLiteral.errorAlertLeftButtonTitle, rightButtonTitle: StringLiteral.errorAlertRightButtonTitle, rightButtonAction: action, alertStyle: .destructive)
         }
     }
 }

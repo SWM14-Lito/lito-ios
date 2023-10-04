@@ -47,7 +47,7 @@ struct FilterView<T: FilterComponent>: View {
                 Image(systemName: SymbolName.line3HorizontalDecrese)
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.Text_Default)
-                Text("필터")
+                Text(StringLiteral.filter)
                     .font(.Body2Regular)
                     .foregroundColor(.Text_Default)
             }
@@ -103,7 +103,7 @@ struct FilterView<T: FilterComponent>: View {
     @ViewBuilder
     private var filteringComponents: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("풀이 여부")
+            Text(StringLiteral.filterTitle)
                 .font(.Head3SemiBold)
             HStack {
                 ForEach(T.allCases, id: \.self) { filter in
@@ -136,7 +136,7 @@ struct FilterView<T: FilterComponent>: View {
                 Button {
                     selectedFilter = T.defaultValue
                 } label: {
-                    Text("초기화")
+                    Text(StringLiteral.filterLeftButton)
                         .font(.Body1Medium)
                         .foregroundColor(.white)
                         .padding(.horizontal, 56)
@@ -150,7 +150,7 @@ struct FilterView<T: FilterComponent>: View {
                 Button {
                     applyFilter()
                 } label: {
-                    Text("적용하기")
+                    Text(StringLiteral.filterRightButton)
                         .font(.Body1Medium)
                         .foregroundColor(.white)
                         .padding(.horizontal, 56)
