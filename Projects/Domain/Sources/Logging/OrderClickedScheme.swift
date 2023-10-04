@@ -26,7 +26,7 @@ public struct OrderClickedScheme: ClickScheme {
     }
     
     public class Builder {
-        let userId: Int?
+        var userId: Int?
         var gender: String?
         var age: Int?
         
@@ -42,6 +42,11 @@ public struct OrderClickedScheme: ClickScheme {
         }
         public func setAge(age: Int) -> Builder {
             self.age = age
+            return self
+        }
+        
+        public func userId(id: Int) -> Builder {
+            self.userId = id
             return self
         }
 
