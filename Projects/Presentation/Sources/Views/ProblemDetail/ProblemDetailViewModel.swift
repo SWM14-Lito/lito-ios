@@ -140,7 +140,6 @@ public class ProblemDetailViewModel: BaseViewModel {
             .sinkToResultWithErrorHandler({ _ in
                 self.input = self.problemDetailVO?.problemKeyword ?? ""
                 self.solvingState = .showAnswer
-                self.useCase.showAnswer()
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
     }
