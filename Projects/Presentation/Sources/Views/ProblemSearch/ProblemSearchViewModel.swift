@@ -33,16 +33,11 @@ public class ProblemSearchViewModel: BaseViewModel {
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
     public func onProblemCellAppeared(id: Int) {
-        lastNetworkAction = { [weak self] in
-            guard let self = self else { return }
-            self.onProblemCellAppeared(id: id)
-        }
         getProblemList(problemId: id)
     }
     
     // 검색어 입력하면 해당되는 문제 보여주기
     public func onSearchKeywordSubmitted() {
-        lastNetworkAction = onSearchKeywordSubmitted
         resetProblemCellList()
         getProblemList()
         recentKeywords.append(searchKeyword)

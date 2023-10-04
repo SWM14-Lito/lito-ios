@@ -25,16 +25,11 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 가져오기
     public func onProblemListAppeared() {
-        lastNetworkAction = onProblemListAppeared
         getProblemList()
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
     public func onProblemCellAppeared(id: Int) {
-        lastNetworkAction = { [weak self] in
-            guard let self = self else { return }
-            self.onProblemCellAppeared(id: id)
-        }
         getProblemList(problemUserId: id)
     }
     
