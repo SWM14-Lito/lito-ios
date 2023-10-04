@@ -18,3 +18,12 @@ public struct ProblemListVO {
         self.total = total
     }
 }
+
+extension ProblemListVO {
+    public static func makeMock(start: Int, end: Int, total: Int) -> ProblemListVO {
+        let defaultProblemCellVO = (start...end).map { num in
+            DefaultProblemCellVO(problemId: num, subjectName: "Mock\(num)", question: "Mock\(num)", problemStatus: .unknown, favorite: .unknown)
+        }
+        return ProblemListVO(problemsCellVO: defaultProblemCellVO, total: total)
+    }
+}

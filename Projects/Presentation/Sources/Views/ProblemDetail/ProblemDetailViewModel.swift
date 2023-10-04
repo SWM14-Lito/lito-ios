@@ -11,8 +11,8 @@ import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
-    private let problemId: Int
-    private let stateChangingTime = 2.0
+    let problemId: Int
+    let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
         return solvingState == .correctKeyword || solvingState == .wrongKeyword || solvingState == .showAnswer
     }

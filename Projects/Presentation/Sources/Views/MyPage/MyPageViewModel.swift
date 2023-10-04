@@ -19,6 +19,7 @@ public class MyPageViewModel: BaseViewModel {
     @Published var modifyNickNameInput = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
     @Published var modifyIntroduceInput = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     @Published var presentCustomAlert = false
+    @Published var textErrorMessage: String?
     var presentAlert: Bool {
         return presentErrorAlert || presentCustomAlert
     }
@@ -64,8 +65,9 @@ public class MyPageViewModel: BaseViewModel {
     }
     
     public func onEditCompleteButtonClicked() {
-        lastNetworkAction = onEditButtonClicked
-        guard let userInfo = userInfo else { return }
+        lastNetworkAction = onEditCompleteButtonClicked
+        guard let userInfo = userInfo,
+              checkAllTextAreFilled() else { return }
         var nickname: String?
         var introduce: String?
         if userInfo.nickname != modifyNickNameInput.text {
@@ -102,6 +104,16 @@ public class MyPageViewModel: BaseViewModel {
     
     public func onEditButtonClicked() {
         coordinator.push(.modifyProfileScene)
+    }
+    
+    private func checkAllTextAreFilled() -> Bool {
+        if modifyNickNameInput.text.count < 2 {
+            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
+            return false
+        } else {
+            textErrorMessage = nil
+            return true
+        }
     }
     
 }
