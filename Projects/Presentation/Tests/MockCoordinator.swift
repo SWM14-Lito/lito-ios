@@ -11,10 +11,12 @@ import Presentation
 
 public class MockCoordinator: CoordinatorProtocol {
     
+    public var movedScene: [AppScene] = []
+    
     public init() { }
     
     public func push(_ scene: Presentation.AppScene) {
-        
+        movedScene.append(scene)
     }
     
     public func pop() {
