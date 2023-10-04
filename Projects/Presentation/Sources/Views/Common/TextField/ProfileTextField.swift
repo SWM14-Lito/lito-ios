@@ -12,7 +12,6 @@ struct profileTextField: View {
     
     private let fieldCategory: ProfileTextFieldCategory
     private let limitedText: Binding<LimitedText>
-    private let errorMessage: String?
     private let focus: FocusState<ProfileTextFieldCategory?>?
     
     private var curLength: String {
@@ -23,10 +22,9 @@ struct profileTextField: View {
         return String(limitedText.wrappedValue.limit)
     }
 
-    init(fieldCategory: ProfileTextFieldCategory, limitedText: Binding<LimitedText>, errorMessage: String?, focus: FocusState<ProfileTextFieldCategory?>? = nil ) {
+    init(fieldCategory: ProfileTextFieldCategory, limitedText: Binding<LimitedText>, focus: FocusState<ProfileTextFieldCategory?>? = nil ) {
         self.fieldCategory = fieldCategory
         self.limitedText = limitedText
-        self.errorMessage = errorMessage
         self.focus = focus
     }
     
@@ -72,15 +70,6 @@ struct profileTextField: View {
                     .padding(.horizontal, 20)
                     .padding(.vertical, 14)
                 }
-            }
-            if let errorMessage = errorMessage {
-                HStack {
-                    Text(errorMessage)
-                        .font(.InfoRegular)
-                        .foregroundColor(.red)
-                    Spacer()
-                }
-                .padding(.top, 5)
             }
         }
     }

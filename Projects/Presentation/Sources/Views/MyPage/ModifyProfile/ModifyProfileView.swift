@@ -70,10 +70,10 @@ public struct ModifyProfileView: View {
                         }
                         .padding(.bottom, 30)
                         // 닉네임
-                        profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput, errorMessage: nil)
+                        profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput)
                             .padding(.bottom, 30)
                             .focused($nicknameFocused)
-                        profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput, errorMessage: nil)
+                        profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput)
                             .focused($introduceFocused)
                         Spacer()
                         HStack(spacing: 12) {
