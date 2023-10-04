@@ -18,9 +18,9 @@ jobs:
           XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
         run: |
           echo "$XC_CONFIG_FILE" > config.xcconfig
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'fetch'
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'build'
+      - name: Tuist Fetch Dependency
+        run: |
+          tuist fetch && tuist generate
+      - name: Tuist build
+        run: | 
+          tuist build
