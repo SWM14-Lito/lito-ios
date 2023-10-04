@@ -6,6 +6,8 @@ on:
     branches: [ develop ]
   pull_request:
     branches: [ develop ]
+env:
+  XCODE_VERSION: "14.3.1"
 
 jobs:
   build:
@@ -13,6 +15,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Select Xcode Version
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_"$XCODE_VERSION".app
+          xcodebuild -version
       - name: Use xcconfig file
         env:
           XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
