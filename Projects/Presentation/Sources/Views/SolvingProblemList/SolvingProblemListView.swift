@@ -25,7 +25,7 @@ public struct SolvingProblemListView: View {
             }
         }
         .modifier(CustomNavigation(
-            title: "풀던 문제",
+            title: StringLiteral.solvingProblemListViewNavigationTitle,
             back: viewModel.back,
             disabled: viewModel.presentErrorAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
@@ -52,7 +52,7 @@ public struct SolvingProblemListView: View {
                     
                 }
             } else {
-                NoContentView(message: "풀던 문제가 없습니다.")
+                NoContentView(message: StringLiteral.noSolvingProblemListMessage)
             }
         }
         .onAppear {

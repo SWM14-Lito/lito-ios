@@ -12,6 +12,7 @@ public struct ModifyProfileView: View {
     @ObservedObject private(set) var viewModel: MyPageViewModel
     @FocusState var nicknameFocused: Bool
     @FocusState var introduceFocused: Bool
+    @State private var isShowingMailView = false
     
     public init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
@@ -63,10 +64,17 @@ public struct ModifyProfileView: View {
                                 .font(.InfoRegular)
                                 .foregroundColor(.Text_Info)
                             Spacer()
-                            Text("문의하기")
-                                .font(.InfoRegular)
-                                .foregroundColor(.Text_Point)
-                                .underline()
+                            Button {
+                                isShowingMailView.toggle()
+                            } label: {
+                                Text("문의하기")
+                                    .font(.InfoRegular)
+                                    .foregroundColor(.Text_Point)
+                                    .underline()
+                            }
+                            .sheet(isPresented: $isShowingMailView) {
+                                MailView(isShowing: self.$isShowingMailView)
+                            }
                         }
                         .padding(.bottom, 30)
                         // 닉네임

@@ -19,7 +19,7 @@ public struct ProfileSettingView: View {
     public var body: some View {
         VStack {
             HStack {
-                Text("프로필 설정")
+                Text(StringLiteral.profileSettingTitle)
                     .font(.Head1Bold)
                 Spacer()
             }
@@ -55,9 +55,9 @@ public struct ProfileSettingView: View {
                     }
                 } label: {
                     if focus == .introduce {
-                        Text("Done")
+                        Text(StringLiteral.profileSettingFocusEnd)
                     } else {
-                        Text("Next")
+                        Text(StringLiteral.profileSettingFocusNext)
                     }
                 }
             }
@@ -85,7 +85,7 @@ public struct ProfileSettingView: View {
                 viewModel.onFinishButtonClicked()
             }
         } label: {
-            Text("완료")
+            Text(StringLiteral.profileSettingDoneButtonTitle)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
                 .cornerRadius(6)

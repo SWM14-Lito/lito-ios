@@ -61,7 +61,7 @@ struct profileTextField: View {
                         Text(curLength + "/" + maxLength)
                             .font(.system(size: 10))
                             .foregroundColor(limitedText.wrappedValue.isReachedLimit ? .red : .black)
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: SymbolName.xmarkCircleFill)
                             .foregroundColor(.secondary)
                             .onTapGesture {
                                 limitedText.projectedValue.text.wrappedValue = ""
