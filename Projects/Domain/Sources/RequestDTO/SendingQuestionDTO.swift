@@ -8,8 +8,10 @@
 
 public struct SendingQuestionDTO {
     public let message: String
+    public let problemId: Int
     
-    public init(message: String) {
+    public init(message: String, problemId: Int) {
         self.message = message
+        self.problemId = problemId
     }
 }
