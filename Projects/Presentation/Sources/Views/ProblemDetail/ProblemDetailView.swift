@@ -62,7 +62,7 @@ public struct ProblemDetailView: View {
         }
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
-            title: "문제풀이",
+            title: StringLiteral.problemDetailViewNavigationTitle,
             back: viewModel.back,
             toolbarContent: SymbolButtonToolbar(
                 placement: .navigationBarTrailing,
@@ -79,7 +79,7 @@ public struct ProblemDetailView: View {
     // 질문 라벨
     @ViewBuilder
     private var questionLabel: some View {
-        Text("Question")
+        Text(StringLiteral.questionLabelTitle)
             .font(.Body2SemiBold)
             .foregroundColor(.white)
             .padding([.top, .bottom], 4)
@@ -139,7 +139,7 @@ public struct ProblemDetailView: View {
         ScrollViewReader { proxy in
             TextField("", text: $viewModel.input)
                 .placeholder(when: !focused && viewModel.input.isEmpty, alignment: .center, placeholder: {
-                    Text("정답을 입력해주세요")
+                    Text(StringLiteral.answerFieldPlaceHolder)
                         .font(.Body1Regular)
                         .foregroundColor(.Text_Disabled)
                 })
@@ -184,7 +184,7 @@ public struct ProblemDetailView: View {
     // 정답 확인하고 다음 상태로 넘어갈 수 있는 버튼
     @ViewBuilder
     private var answerLabelButton: some View {
-        Text(viewModel.solvingState == .correctKeyword ? "정답입니다! 👍" : "오답이네요 ☹️")
+        Text(viewModel.solvingState == .correctKeyword ? StringLiteral.answerCorrectMessage : StringLiteral.answerWrongMessage)
             .font(.Body1Regular)
             .foregroundColor(.white)
             .padding([.top, .bottom], 18)
@@ -201,7 +201,7 @@ public struct ProblemDetailView: View {
         Button {
             viewModel.onShowAnswerButtonClicked()
         } label: {
-            Text("터치하여 정답 확인하기")
+            Text(StringLiteral.showAnswerLabelTitle)
                 .font(.Info2Regular)
                 .foregroundColor(.Text_Default)
                 .padding([.leading, .trailing], 10)
@@ -224,7 +224,7 @@ public struct ProblemDetailView: View {
                 Image(.chatgpt)
                     .font(.system(size: 22))
                     .foregroundColor(.white)
-                Text("Chat GPT 질문하기")
+                Text(StringLiteral.chatGPTAskButtonTitle)
                     .font(.Body2Regular)
                     .foregroundColor(.white)
             }
@@ -242,7 +242,7 @@ public struct ProblemDetailView: View {
         if let problemDetailVO = viewModel.problemDetailVO,
            let faqs = problemDetailVO.faqs {
             VStack(alignment: .leading, spacing: 8) {
-                Text("FAQ")
+                Text(StringLiteral.faq)
                     .font(.Head3SemiBold)
                     .foregroundColor(.Text_Default)
                     .padding(.bottom, 2)
@@ -252,7 +252,7 @@ public struct ProblemDetailView: View {
                 }
                 
                 if faqs.isEmpty {
-                    NoContentView(message: "faq가 없습니다.", withSymbol: false, background: .white)
+                    NoContentView(message: StringLiteral.noFaqMessage, withSymbol: false, background: .white)
                 }
             }
         }
@@ -348,7 +348,7 @@ public struct ProblemDetailView: View {
     // 입력값에 대한 오류 메시지
     @ViewBuilder
     private var inputError: some View {
-        Text( String(viewModel.problemDetailVO?.problemKeyword.count ?? 0) + "글자를 입력해주세요.")
+        Text( String(viewModel.problemDetailVO?.problemKeyword.count ?? 0) + StringLiteral.answerLengthErrorMessage)
             .foregroundColor(.Text_Point_Red)
             .font(.InfoRegular)
             .frame(maxWidth: .infinity, alignment: .center)

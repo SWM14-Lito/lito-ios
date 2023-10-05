@@ -23,17 +23,17 @@ enum ProfileTextFieldCategory: Hashable {
     var title: String {
         switch self {
         case .username:
-            return "이름"
+            return StringLiteral.username
         case .nickname:
-            return "닉네임"
+            return StringLiteral.nickname
         case .introduce:
-            return "소개말"
+            return StringLiteral.introduce
         }
     }
     var placeHolder: String {
-        return title + "을 입력해주세요."
+        return title + StringLiteral.profilePlaceHolder
     }
     var errorMessage: String {
-        return title + "은 2자 이상 작성해주세요."
+        return title + StringLiteral.profileErrorMessage
     }
 }
