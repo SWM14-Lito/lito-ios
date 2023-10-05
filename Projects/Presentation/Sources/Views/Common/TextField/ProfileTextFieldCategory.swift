@@ -33,7 +33,10 @@ enum ProfileTextFieldCategory: Hashable {
     var placeHolder: String {
         return title + "을 입력해주세요."
     }
-    var errorMessage: String {
+    var errorMessageForLength: String {
         return title + "은 2자 이상 작성해주세요."
+    }
+    var errrorMessageForSpecialCharacter: String {
+        return title + "에 알파벳 또는 숫자만 써주세요"
     }
 }
