@@ -75,7 +75,7 @@ public struct ChattingView: View {
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Point)
                     .overlay {
-                        Text(StringLiteral.chattingQuestion)
+                        Text(StringLiteral.chattingQuestionMark)
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }
@@ -173,7 +173,7 @@ public struct ChattingView: View {
             .frame(width: 28, height: 28)
             .foregroundColor(.Bg_ChatGPT)
             .overlay {
-                Image(.chatgpt)
+                Image(.iconChatgpt)
                     .resizable()
                     .frame(width: 18, height: 18)
             }

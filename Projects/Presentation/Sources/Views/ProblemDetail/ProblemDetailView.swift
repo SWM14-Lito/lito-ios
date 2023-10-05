@@ -221,7 +221,7 @@ public struct ProblemDetailView: View {
             viewModel.onChatGPTButtonClicked()
         } label: {
             HStack(spacing: 10) {
-                Image(.chatgpt)
+                Image(.iconChatgpt)
                     .font(.system(size: 22))
                     .foregroundColor(.white)
                 Text(StringLiteral.chatGPTAskButtonTitle)
