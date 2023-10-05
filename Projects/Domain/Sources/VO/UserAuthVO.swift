@@ -15,6 +15,8 @@ public struct UserAuthVO: Hashable {
     public let userId: Int
     public let userName: String
     
+    static let mock = UserAuthVO(accessToken: "", refreashToken: "", refreshTokenExpirationTime: "", userId: 0)
+    
     public init(accessToken: String, refreashToken: String, refreshTokenExpirationTime: String, userId: Int, userName: String = "") {
         self.accessToken = accessToken
         self.refreshToken = refreashToken
