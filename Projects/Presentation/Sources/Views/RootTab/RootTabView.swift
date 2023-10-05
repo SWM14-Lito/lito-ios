@@ -27,7 +27,7 @@ public struct RootTabView: View {
                 .tabItem {
                     VStack {
                         Image(systemName: SymbolName.bookClosedFill)
-                        Text("학습")
+                        Text(StringLiteral.tab1Title)
                     }
                 }
                 .tag(1)
@@ -35,7 +35,7 @@ public struct RootTabView: View {
                 .tabItem {
                     VStack {
                         Image(systemName: SymbolName.bookVerticalFill)
-                        Text("기출문제")
+                        Text(StringLiteral.tab2Title)
                     }
                 }
                 .tag(2)
@@ -43,7 +43,7 @@ public struct RootTabView: View {
                 .tabItem {
                     VStack {
                         Image(systemName: SymbolName.personFill)
-                        Text("마이페이지")
+                        Text(StringLiteral.tab3Title)
                     }
                 }
                 .tag(3)
