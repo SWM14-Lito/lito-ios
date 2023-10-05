@@ -29,7 +29,8 @@ struct LitoApp: App {
                            DataAssembly(),
                            PresentationAssembly(
                             coordinator: coordinator,
-                            toastHelper: toastHelper
+                            toastHelper: toastHelper,
+                            logger: logger
                            )])
         coordinator.injector = injector
         if KeyChainManager.isPossibleAutoLogin {
