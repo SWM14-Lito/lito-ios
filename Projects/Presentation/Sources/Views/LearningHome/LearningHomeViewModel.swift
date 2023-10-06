@@ -83,10 +83,11 @@ extension LearningHomeViewModel: ProblemCellHandling {
         }
         useCase.toggleProblemFavorite(id: id)
             .sinkToResultWithErrorHandler({ _ in
+                if self.processProblem?.problemId == id {
+                    self.processProblem?.favorite.toggle()
+                }
                 if let index = self.recommendProblems.firstIndex(where: { $0.problemId == id}) {
                     self.recommendProblems[index].favorite.toggle()
-                } else {
-                    self.processProblem?.favorite.toggle()
                 }
             }, errorHandler: errorHandler)
             .store(in: cancelBag)
