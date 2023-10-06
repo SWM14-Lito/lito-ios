@@ -20,8 +20,8 @@ extension ChatAPI: TargetType {
     
     var path: String {
         switch self {
-        case .chattingWithChatCPT:
-            return "/api/v1/chat-gpt/1"
+        case .chattingWithChatCPT(let sendingQuestionDTO):
+            return "/api/v1/chat-gpt/\(sendingQuestionDTO.problemId)"
         }
     }
     

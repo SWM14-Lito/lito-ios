@@ -65,7 +65,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // ChatGPT 화면 모달로 보여주기
     public func onChatGPTButtonClicked() {
-        coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown"))
+        coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown", problemId: problemDetailVO?.problemId ?? 1))
     }
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기

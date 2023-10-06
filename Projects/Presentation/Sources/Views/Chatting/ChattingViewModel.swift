@@ -16,10 +16,12 @@ public class ChattingViewModel: BaseViewModel {
     private let useCase: ChattingUseCase
     let question: String
     let answer: String
+    private let problemId: Int
     
-    public init(question: String, answer: String, useCase: ChattingUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
+    public init(question: String, answer: String, problemId: Int, useCase: ChattingUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.question = question
         self.answer = answer
+        self.problemId = problemId
         self.useCase = useCase
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
@@ -31,7 +33,7 @@ public class ChattingViewModel: BaseViewModel {
             DialogueUnitVO(text: input, dialogueType: .fromUser),
             DialogueUnitVO(dialogueType: .fromChatGPTWaiting)
         ]
-        useCase.sendQuestion(sendingQuestionDTO: SendingQuestionDTO(message: input))
+        useCase.sendQuestion(sendingQuestionDTO: SendingQuestionDTO(message: input, problemId: problemId))
             .sinkToResultWithErrorHandler({ chatGPTAnswerVO in
                 self.dialogue[self.dialogue.count-1] = DialogueUnitVO(text: chatGPTAnswerVO.messages[0].message, dialogueType: .fromChatGPT)
             }, errorHandler: errorHandler)
