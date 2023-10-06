@@ -39,7 +39,7 @@ public struct MyPageView: View {
         if let userInfo = viewModel.userInfo {
             VStack(spacing: 0) {
                 HStack {
-                    Text("마이페이지")
+                    Text(StringLiteral.mypage)
                         .font(.Head1Bold)
                         .padding(.top, 22)
                     Spacer()
@@ -60,7 +60,7 @@ public struct MyPageView: View {
                             Button {
                                 viewModel.onEditButtonClicked()
                             } label: {
-                                Text("정보수정")
+                                Text(StringLiteral.mypageChangeInfo)
                                     .font(.InfoRegular)
                                     .foregroundColor(.Text_Info)
                             }
@@ -87,7 +87,7 @@ public struct MyPageView: View {
                         .resizable()
                         .frame(width: 24, height: 24)
                         .padding(.trailing, 8)
-                    Text("내 포인트: ")
+                    Text(StringLiteral.myPageMypoint)
                         .font(.Body2Regular)
                         .foregroundColor(.Text_Default)
                     Spacer()
@@ -97,7 +97,7 @@ public struct MyPageView: View {
                     Button {
                         // 충전 페이지로 이동
                     } label: {
-                        Text("충전")
+                        Text(StringLiteral.myPageCharge)
                             .font(.Body3SemiBold)
                             .foregroundColor(.white)
                     }
@@ -133,10 +133,10 @@ public struct MyPageView: View {
                     Image(systemName: SymbolName.squareAndArrowDown)
                         .font(.system(size: 18))
                         .padding(.trailing, 8)
-                    Text("업로드한 기출문제")
+                    Text(StringLiteral.myPageUploadedProblem)
                         .font(.Body1Regular)
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image(systemName: SymbolName.chevronRight)
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 18)
@@ -145,10 +145,10 @@ public struct MyPageView: View {
                     Image(systemName: SymbolName.squareAndArrowDown)
                         .font(.system(size: 18))
                         .padding(.trailing, 8)
-                    Text("구매한 기출문제")
+                    Text(StringLiteral.myPagePurchasedProblem)
                         .font(.Body1Regular)
                     Spacer()
-                    Image(systemName: "chevron.right")
+                    Image(systemName: SymbolName.chevronRight)
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 18)
@@ -157,7 +157,7 @@ public struct MyPageView: View {
                     Image(systemName: SymbolName.bell)
                         .font(.system(size: 18))
                         .padding(.trailing, 8)
-                    Toggle("알림받기", isOn: $viewModel.alarmStatus)
+                    Toggle(StringLiteral.myPageAcceptAlarm, isOn: $viewModel.alarmStatus)
                         .toggleStyle(AlarmToggleStyle())
                         .onChange(of: viewModel.alarmStatus) { _ in
                             viewModel.onAlarmAcceptanceChanged()
@@ -172,7 +172,7 @@ public struct MyPageView: View {
         Button {
             viewModel.onLogoutButtonClicked()
         } label: {
-            Text("로그아웃")
+            Text(StringLiteral.logout)
                 .underline()
                 .font(.Body2Regular)
                 .foregroundColor(.Text_Info)
