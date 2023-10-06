@@ -29,6 +29,9 @@ public struct ChattingView: View {
                 }
             }
             .padding(.bottom, 10)
+            .onTapGesture {
+                focused = false
+            }
             Divider()
                 .background(.Divider_Default)
             questionTextfield

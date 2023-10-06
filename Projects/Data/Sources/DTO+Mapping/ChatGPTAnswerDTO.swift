@@ -22,7 +22,7 @@ public struct ChatGPTAnswerDTO: Decodable {
             object: object ?? "Unknown",
             created: created ?? -1,
             model: model ?? "Unknown",
-            messages: messages?.map { $0.toVO() } ?? [],
+            messages: messages?.map { $0.toVO() } ?? [ChatGPTMessageVO(role: "Unknown", message: "Unknown")],
             usage: usage?.toVO() ?? ChatGPTUsageDTO(promptTokens: nil, completionTokens: nil, totalTokens: nil).toVO()
         )
     }
