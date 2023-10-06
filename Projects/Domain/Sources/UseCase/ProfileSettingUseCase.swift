@@ -38,3 +38,36 @@ public final class DefaultProfileSettingUseCase: ProfileSettingUseCase {
         userRepository.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
     }
 }
+
+public final class MockProfileSettingUseCase: ProfileSettingUseCase {
+    
+    private var postProfileInfoResponse: AnyPublisher<Void, Error> = Just(Void())
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    private var postProfileImageResponse: AnyPublisher<Void, Error> = Just(Void())
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    private var postAlarmAcceptanceResponse: AnyPublisher<Void, Error> = Just(Void())
+        .setFailureType(to: Error.self)
+        .eraseToAnyPublisher()
+    
+    public func setPostProfileInfoResponse(_ response: AnyPublisher<Void, Error>) {
+        self.postProfileInfoResponse = response
+    }
+    public func setPostProfileImageResponse(_ response: AnyPublisher<Void, Error>) {
+        self.postProfileImageResponse = response
+    }
+    public func setPostAlarmAcceptanceResponse(_ response: AnyPublisher<Void, Error>) {
+        self.postAlarmAcceptanceResponse = response
+    }
+    
+    public func postProfileInfo(profileInfoDTO: ProfileInfoDTO) -> AnyPublisher<Void, Error> {
+        postProfileInfoResponse
+    }
+    public func postProfileImage(profileImageDTO: ProfileImageDTO) -> AnyPublisher<Void, Error> {
+        postProfileImageResponse
+    }
+    public func postAlarmAcceptance(alarmAcceptanceDTO: AlarmAcceptanceDTO) -> AnyPublisher<Void, Error> {
+        postAlarmAcceptanceResponse
+    }
+}

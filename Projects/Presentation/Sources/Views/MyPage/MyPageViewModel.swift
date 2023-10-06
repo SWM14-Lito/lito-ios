@@ -108,11 +108,23 @@ public class MyPageViewModel: BaseViewModel {
     
     private func checkAllTextAreFilled() -> Bool {
         if modifyNickNameInput.text.count < 2 {
-            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
+            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessageForLength
+            return false
+        } else if !IsAlpOrNum(modifyNickNameInput.text) {
+            textErrorMessage = ProfileTextFieldCategory.nickname.errrorMessageForSpecialCharacter
             return false
         } else {
             textErrorMessage = nil
             return true
+        }
+    }
+    
+    private func IsAlpOrNum(_ str: String) -> Bool {
+        let pattern = "^[0-9a-zA-Z]*$"
+        if str.range(of: pattern, options: .regularExpression) != nil {
+            return true
+        } else {
+            return false
         }
     }
     

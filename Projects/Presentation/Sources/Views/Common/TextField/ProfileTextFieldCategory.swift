@@ -33,7 +33,10 @@ enum ProfileTextFieldCategory: Hashable {
     var placeHolder: String {
         return title + StringLiteral.profilePlaceHolder
     }
-    var errorMessage: String {
-        return title + StringLiteral.profileErrorMessage
+    var errorMessageForLength: String {
+        return title + StringLiteral.profileErrorMessageForLength
+    }
+    var errrorMessageForSpecialCharacter: String {
+        return title + StringLiteral.profileErrrorMessageForSpecialCharacter
     }
 }

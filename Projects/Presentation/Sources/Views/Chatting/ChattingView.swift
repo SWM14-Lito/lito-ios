@@ -75,7 +75,7 @@ public struct ChattingView: View {
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Point)
                     .overlay {
-                        Text(StringLiteral.chattingQuestion)
+                        Text(StringLiteral.chattingQuestionMark)
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }

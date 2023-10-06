@@ -46,14 +46,29 @@ public class ProfileSettingViewModel: BaseViewModel {
     // 글자 입력 관련하여 안채워진게 있는지 확인하기
     private func checkAllTextAreFilled() -> Bool {
         if username.text.count < 2 {
-            textErrorMessage = ProfileTextFieldCategory.username.errorMessage
+            textErrorMessage = ProfileTextFieldCategory.username.errorMessageForLength
+            return false
+        } else if !IsAlpOrNum(username.text) {
+            textErrorMessage = ProfileTextFieldCategory.username.errrorMessageForSpecialCharacter
             return false
         } else if nickname.text.count < 2 {
-            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessage
+            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessageForLength
+            return false
+        } else if !IsAlpOrNum(nickname.text) {
+            textErrorMessage = ProfileTextFieldCategory.nickname.errrorMessageForSpecialCharacter
             return false
         } else {
             textErrorMessage = nil
             return true
+        }
+    }
+    
+    private func IsAlpOrNum(_ str: String) -> Bool {
+        let pattern = "^[0-9a-zA-Z]*$"
+        if str.range(of: pattern, options: .regularExpression) != nil {
+            return true
+        } else {
+            return false
         }
     }
     
