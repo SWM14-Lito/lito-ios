@@ -48,16 +48,24 @@ public struct ProblemSearchView: View {
                     viewModel.onSearchKeywordSubmitted()
                 }
                 .padding(.leading, 18)
-            
-            Button {
-                viewModel.onSearchKeywordSubmitted()
-            } label: {
-                Image(systemName: SymbolName.magnifyingglass)
-                    .font(.system(size: 20))
-                    .foregroundColor(.Text_Default)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 11)
+            HStack(spacing: 13) {
+                if viewModel.searchKeyword.count != 0 {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                        .onTapGesture {
+                            viewModel.searchRemoveButtonClicked()
+                        }
+                }
+                Button {
+                    viewModel.onSearchKeywordSubmitted()
+                } label: {
+                    Image(systemName: SymbolName.magnifyingglass)
+                        .font(.system(size: 20))
+                        .foregroundColor(.Text_Default)
+                        .padding(.trailing, 18)
+                }
             }
+            .padding(.vertical, 11)
         }
         .background(
             RoundedRectangle(cornerRadius: 46 )
@@ -104,7 +112,7 @@ public struct ProblemSearchView: View {
             }
             ScrollView {
                 ForEach(viewModel.recentKeywords.reversed().indices, id: \.self) { idx in
-                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: idx, recentKeywordCellHandling: viewModel)
+                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: viewModel.recentKeywords.count - idx - 1, recentKeywordCellHandling: viewModel)
                 }
             }
         }
