@@ -96,6 +96,7 @@ public class MyPageViewModel: BaseViewModel {
         useCase.deleteUser()
             .sinkToResultWithErrorHandler({ _ in
                 KeyChainManager.deleteUserInfo()
+                UserDefaultsManager.deleteUserDefaults()
                 self.imageData = nil
                 self.popToRoot()
             }, errorHandler: errorHandler)
