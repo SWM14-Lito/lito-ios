@@ -12,7 +12,7 @@ struct LoadingView: View {
     var body: some View {
         VStack {
             Spacer()
-            LottieView(filename: "loadingCircle")
+            LottieView(filename: StringLiteral.lottieLoadingCircleFilename)
                 .frame(width: 54, height: 54)
             Spacer()
         }

@@ -60,7 +60,7 @@ public struct ChattingView: View {
     // 설명
     @ViewBuilder
     private var explanation: some View {
-        Text("해당 문제에 대해 궁금한 점을 질문해주세요.")
+        Text(StringLiteral.chattingExplanation)
             .foregroundColor(.Text_Serve)
             .font(.Body2Regular)
             .padding(.top, 4)
@@ -75,7 +75,7 @@ public struct ChattingView: View {
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Point)
                     .overlay {
-                        Text("Q")
+                        Text(StringLiteral.chattingQuestionMark)
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }
@@ -88,7 +88,7 @@ public struct ChattingView: View {
                     .frame(width: 22, height: 22)
                     .foregroundColor(.Bg_Yellow)
                     .overlay {
-                        Text("A")
+                        Text(StringLiteral.chattingAnswerMark)
                             .foregroundColor(.white)
                             .font(.Body3SemiBold)
                     }
@@ -126,7 +126,7 @@ public struct ChattingView: View {
     @ViewBuilder
     private var questionTextfield: some View {
         HStack(spacing: 0) {
-            TextField("ChatGPT에게 궁금한 점을 질문해보세요!", text: $viewModel.input)
+            TextField(StringLiteral.chattingQuestion, text: $viewModel.input)
                 .font(.Body2Regular)
                 .padding([.top, .bottom], 14)
                 .padding(.leading, 18)
@@ -162,7 +162,7 @@ public struct ChattingView: View {
         case .fromChatGPTWaiting:
             chatGPTWaitingCell
         case .fromChatGPTFail:
-            chatGPTDialogueCell("현재 ChatGPT 서비스가 불안정합니다.")
+            chatGPTDialogueCell(StringLiteral.chattingFail)
         }
     }
     
@@ -173,7 +173,7 @@ public struct ChattingView: View {
             .frame(width: 28, height: 28)
             .foregroundColor(.Bg_ChatGPT)
             .overlay {
-                Image(.chatgpt)
+                Image(.iconChatgpt)
                     .resizable()
                     .frame(width: 18, height: 18)
             }
@@ -200,7 +200,7 @@ public struct ChattingView: View {
     private var chatGPTWaitingCell: some View {
         HStack(alignment: .top, spacing: 12) {
             chatGPTIcon
-            LottieView(filename: "loading")
+            LottieView(filename: StringLiteral.lottieLoadingFileName)
                 .frame(width: 80, height: 40)
                 .background(.Bg_Dark_Deep)
                 .cornerRadius(20, corners: [.topRight, .bottomLeft, .bottomRight])

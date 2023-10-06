@@ -90,10 +90,10 @@ public struct LearningHomeView: View {
                 HStack(spacing: 0) {
                     Text(learningHomeVO.nickname)
                         .font(.Head1Bold)
-                    Text("님,")
+                    Text(StringLiteral.learningHomeCallUser)
                         .font(.Head1Light)
                 }
-                Text("오늘도 목표를 달성하세요!")
+                Text(StringLiteral.learningHomeGoal)
                     .font(.Head1Light)
             }
             .foregroundColor(.white)
@@ -137,10 +137,10 @@ public struct LearningHomeView: View {
                     HStack {
                         learningRateProgressBar
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("오늘의 학습목표")
+                            Text(StringLiteral.learningHomeTodayStudyGoal)
                                 .font(.Body1SemiBold)
                             HStack {
-                                Text("하루목표")
+                                Text(StringLiteral.learningHomeTodayGoal)
                                     .font(.Body2Regular)
                                 Spacer()
                                 goalSettingPicker
@@ -190,7 +190,7 @@ public struct LearningHomeView: View {
             }).pickerStyle(.automatic)
         }label: {
             HStack {
-                Text("\(viewModel.goalCount) 개")
+                Text("\(viewModel.goalCount) \(StringLiteral.learningHomeGoalCount)")
                     .font(.Body2Regular)
                 Image(systemName: SymbolName.chevronDown)
                     .font(.system(size: 6, weight: .bold))
@@ -210,7 +210,7 @@ public struct LearningHomeView: View {
         Button {
             viewModel.onStartLearningButtonClicked()
         } label: {
-            Text("학습시작")
+            Text(StringLiteral.learningHomeStartStudy)
                 .font(.Body1SemiBold)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: 40)
@@ -226,7 +226,7 @@ public struct LearningHomeView: View {
         if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
-                    Text("풀던 문제")
+                    Text(StringLiteral.learningHomeNowSolving)
                         .foregroundColor(.Text_Default)
                         .font(.Head2Bold)
                     Spacer()
@@ -235,7 +235,7 @@ public struct LearningHomeView: View {
                             viewModel.onSolvingListButtonClicked()
                         } label: {
                             HStack(spacing: 4) {
-                                Text("전체 보기")
+                                Text(StringLiteral.learningHomeSeeAll)
                                 Image(systemName: SymbolName.chevronRight)
                             }
                             .foregroundColor(.Text_Serve)
@@ -246,7 +246,7 @@ public struct LearningHomeView: View {
                 if viewModel.processProblem != nil {
                     ProblemCellView(problemCellVO: $viewModel.processProblem.toUnwrapped(), problemCellHandling: viewModel)
                 } else {
-                    NoContentView(message: "풀던 문제가 없습니다.", withSymbol: false)
+                    NoContentView(message: StringLiteral.learningHomeNoSolvingProblem, withSymbol: false)
                 }
             }
             .padding(.top, 38)
@@ -259,7 +259,7 @@ public struct LearningHomeView: View {
         if !viewModel.isLoading {
             VStack(spacing: 10) {
                 HStack {
-                    Text("추천 문제")
+                    Text(StringLiteral.learningHomeRecommendProblem)
                         .foregroundColor(.Text_Default)
                         .font(.Head2Bold)
                     Spacer()
@@ -271,7 +271,7 @@ public struct LearningHomeView: View {
                         }
                     }
                 } else {
-                    NoContentView(message: "추천 문제가 없습니다.", withSymbol: false)
+                    NoContentView(message: StringLiteral.learningHomeNoRecommendProblem, withSymbol: false)
                 }
             }
             .padding(.top, 27)

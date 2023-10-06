@@ -22,3 +22,7 @@ public struct DefaultProblemCellVO: Hashable, ProblemCell {
         self.favorite = favorite
     }
 }
+
+extension DefaultProblemCellVO {
+    public static var mock: DefaultProblemCellVO = .init(problemId: 0, subjectName: "Mock", question: "Mock", problemStatus: .unknown, favorite: .unknown)
+}

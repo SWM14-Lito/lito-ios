@@ -11,8 +11,8 @@ import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
     private let useCase: ProblemDetailUseCase
-    private let problemId: Int
-    private let stateChangingTime = 2.0
+    let problemId: Int
+    let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
         return solvingState == .correctKeyword || solvingState == .wrongKeyword || solvingState == .showAnswer
     }
@@ -44,14 +44,12 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 화면 나오면 문제 받아오고 풀이 시작 상태 알려주기
     public func onScreenAppeared() {
-        lastNetworkAction = onScreenAppeared
         startSolvingProblem()
         getProblemDetail()
     }
     
     // 정답보기 버튼 눌리면 정답 보여주기
     public func onShowAnswerButtonClicked() {
-        lastNetworkAction = onShowAnswerButtonClicked
         showAnswer()
     }
     
@@ -67,7 +65,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // ChatGPT 화면 모달로 보여주기
     public func onChatGPTButtonClicked() {
-        coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown"))
+        coordinator.present(sheet: .chattingScene(question: problemDetailVO?.problemQuestion ?? "Unknown", answer: problemDetailVO?.problemAnswer ?? "Unknown", problemId: problemDetailVO?.problemId ?? 1))
     }
     
     // 서버에 유저가 적은 키워드 제출해서 정답인지 확인하기
@@ -117,6 +115,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // API 통신해서 문제 세부 정보 가져오기
     private func getProblemDetail() {
+        lastNetworkAction = getProblemDetail
         useCase.getProblemDetail(id: problemId)
             .sinkToResultWithErrorHandler({ problemDetailVO in
                 self.problemDetailVO = problemDetailVO
@@ -128,6 +127,7 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 문제 풀기 시작한다는거 서버에 알려주기
     private func startSolvingProblem() {
+        lastNetworkAction = startSolvingProblem
         useCase.startSolvingProblem(id: problemId)
             .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
             .store(in: cancelBag)
@@ -135,13 +135,13 @@ public class ProblemDetailViewModel: BaseViewModel {
     
     // 정답이 나오는 상태로 변경
     private func showAnswer() {
+        lastNetworkAction = showAnswer
         useCase.submitAnswer(id: problemId, keyword: problemDetailVO?.problemKeyword ?? "")
-            .sinkToResultWithErrorHandler({ _ in }, errorHandler: errorHandler)
+            .sinkToResultWithErrorHandler({ _ in
+                self.input = self.problemDetailVO?.problemKeyword ?? ""
+                self.solvingState = .showAnswer
+            }, errorHandler: errorHandler)
             .store(in: cancelBag)
-
-        input = problemDetailVO?.problemKeyword ?? ""
-        solvingState = .showAnswer
-        useCase.showAnswer()
     }
     
     // 입력값이 틀렸는지 확인해주기

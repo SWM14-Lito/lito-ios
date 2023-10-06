@@ -1,15 +1,13 @@
 import XCTest
 
-class PresentationTests: XCTestCase {
-    override func setUpWithError() throws {
-        
+class BaseTestCase: XCTestCase {
+    func given(_ task: () -> Void) {
+        task()
     }
-    
-    override func tearDownWithError() throws {
-        
+    func when(_ task: () -> Void) {
+        task()
     }
-    
-    func testExample() throws {
-        XCTAssertTrue(true)
+    func then(_ task: () -> Void) {
+        task()
     }
 }

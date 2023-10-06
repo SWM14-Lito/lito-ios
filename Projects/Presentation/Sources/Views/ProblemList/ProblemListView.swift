@@ -75,7 +75,7 @@ public struct ProblemListView: View {
                     .padding(20)
                 }
             } else {
-                NoContentView(message: "해당 카테고리의 문제가 없습니다.")
+                NoContentView(message: StringLiteral.noProblemListMessage)
             }
         }
         .onAppear {

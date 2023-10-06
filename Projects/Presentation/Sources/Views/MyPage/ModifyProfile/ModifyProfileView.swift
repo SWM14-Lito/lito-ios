@@ -12,6 +12,7 @@ public struct ModifyProfileView: View {
     @ObservedObject private(set) var viewModel: MyPageViewModel
     @FocusState var nicknameFocused: Bool
     @FocusState var introduceFocused: Bool
+    @State private var isShowingMailView = false
     
     public init(viewModel: MyPageViewModel) {
         self.viewModel = viewModel
@@ -63,18 +64,27 @@ public struct ModifyProfileView: View {
                                 .font(.InfoRegular)
                                 .foregroundColor(.Text_Info)
                             Spacer()
-                            Text("문의하기")
-                                .font(.InfoRegular)
-                                .foregroundColor(.Text_Point)
-                                .underline()
+                            Button {
+                                isShowingMailView.toggle()
+                            } label: {
+                                Text("문의하기")
+                                    .font(.InfoRegular)
+                                    .foregroundColor(.Text_Point)
+                                    .underline()
+                            }
+                            .sheet(isPresented: $isShowingMailView) {
+                                MailView(isShowing: self.$isShowingMailView)
+                            }
                         }
                         .padding(.bottom, 30)
                         // 닉네임
-                        profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput, errorMessage: nil)
+                        profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput)
                             .padding(.bottom, 30)
                             .focused($nicknameFocused)
-                        profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput, errorMessage: nil)
+                        profileTextField(fieldCategory: .introduce, limitedText: $viewModel.modifyIntroduceInput)
+                            .padding(.bottom, 30)
                             .focused($introduceFocused)
+                        textErrorMessage
                         Spacer()
                         HStack(spacing: 12) {
                             Button {
@@ -121,5 +131,13 @@ public struct ModifyProfileView: View {
     @ViewBuilder
     private var checkAccountDeleteAlert: some View {
         CustomAlert(presentAlert: $viewModel.presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", rightButtonAction: viewModel.onAcoountDeleteButtonClicked, alertStyle: .destructive)
+    }
+    
+    @ViewBuilder
+    private var textErrorMessage: some View {
+        if let msg = viewModel.textErrorMessage {
+            Text(msg)
+                .foregroundColor(.red)
+        }
     }
 }

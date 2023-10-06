@@ -29,7 +29,7 @@ public struct ProblemSearchView: View {
             Spacer()
         }
         .modifier(CustomNavigation(
-            title: "검색",
+            title: StringLiteral.problemSearchViewNavigationTitle,
             back: viewModel.back,
             disabled: viewModel.presentErrorAlert))
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
@@ -42,22 +42,30 @@ public struct ProblemSearchView: View {
     @ViewBuilder
     private var searchBox: some View {
         HStack(spacing: 0) {
-            TextField("검색어를 입력해주세요.", text: $viewModel.searchKeyword)
+            TextField(StringLiteral.searchFieldPlaceHolder, text: $viewModel.searchKeyword)
                 .font(.Body2Regular)
                 .onSubmit {
                     viewModel.onSearchKeywordSubmitted()
                 }
                 .padding(.leading, 18)
-            
-            Button {
-                viewModel.onSearchKeywordSubmitted()
-            } label: {
-                Image(systemName: SymbolName.magnifyingglass)
-                    .font(.system(size: 20))
-                    .foregroundColor(.Text_Default)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 11)
+            HStack(spacing: 13) {
+                if viewModel.searchKeyword.count != 0 {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                        .onTapGesture {
+                            viewModel.searchRemoveButtonClicked()
+                        }
+                }
+                Button {
+                    viewModel.onSearchKeywordSubmitted()
+                } label: {
+                    Image(systemName: SymbolName.magnifyingglass)
+                        .font(.system(size: 20))
+                        .foregroundColor(.Text_Default)
+                        .padding(.trailing, 18)
+                }
             }
+            .padding(.vertical, 11)
         }
         .background(
             RoundedRectangle(cornerRadius: 46 )
@@ -77,7 +85,7 @@ public struct ProblemSearchView: View {
             LoadingView()
         case .finish:
             if viewModel.problemCellList.isEmpty {
-                NoContentView(message: "검색 결과가 없습니다.")
+                NoContentView(message: StringLiteral.noSearchContentMessage)
             } else {
                 problemList
                     .background(.Bg_Light)
@@ -90,13 +98,13 @@ public struct ProblemSearchView: View {
     private var recentSearched: some View {
         VStack(spacing: 10) {
             HStack {
-                Text("최근 검색어")
+                Text(StringLiteral.recentKeywordTitle)
                     .font(.Body1SemiBold)
                 Spacer()
                 Button {
                     viewModel.removeRecentKeywords()
                 } label: {
-                    Text("모두삭제")
+                    Text(StringLiteral.deleteAllRecentKeywordButtonTitle)
                         .font(.Body3Regular)
                         .foregroundColor(.Text_Info)
                         .underline()
@@ -104,7 +112,7 @@ public struct ProblemSearchView: View {
             }
             ScrollView {
                 ForEach(viewModel.recentKeywords.reversed().indices, id: \.self) { idx in
-                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: idx, recentKeywordCellHandling: viewModel)
+                    RecentKeywordCellView(keyword: viewModel.recentKeywords.reversed()[idx], index: viewModel.recentKeywords.count - idx - 1, recentKeywordCellHandling: viewModel)
                 }
             }
         }
@@ -117,12 +125,12 @@ public struct ProblemSearchView: View {
         ScrollView {
             LazyVStack {
                 HStack(spacing: 0) {
-                    Text("‘\(viewModel.searchedKeyword)‘ 검색결과 총 ")
+                    Text("‘\(viewModel.searchedKeyword)‘ " + StringLiteral.searchResultCountMessage1)
                     if let problemTotalSize = viewModel.problemTotalSize {
                         Text(String(problemTotalSize))
                             .foregroundColor(.Text_Point)
                     }
-                    Text("건")
+                    Text(StringLiteral.searchResultCountMessage2)
                     Spacer()
                 }
                 .font(.Body2Regular)

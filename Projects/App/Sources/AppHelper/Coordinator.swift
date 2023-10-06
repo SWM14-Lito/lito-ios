@@ -75,8 +75,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(MyPageView.self)
         case .rootTabScene:
             injector?.resolve(RootTabView.self)
-        case .chattingScene(let question, let answer):
-            injector?.resolve(ChattingView.self, arguments: question, answer)
+        case .chattingScene(let question, let answer, let problemId):
+            injector?.resolve(ChattingView.self, arguments: question, answer, problemId)
         case .problemSearchScene:
             injector?.resolve(ProblemSearchView.self)
         case .modifyProfileScene:

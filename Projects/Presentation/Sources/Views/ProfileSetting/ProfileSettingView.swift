@@ -19,19 +19,19 @@ public struct ProfileSettingView: View {
     public var body: some View {
         VStack {
             HStack {
-                Text("프로필 설정")
+                Text(StringLiteral.profileSettingTitle)
                     .font(.Head1Bold)
                 Spacer()
             }
-                .padding(.top, 22)
-                .padding(.bottom, 28)
+            .padding(.top, 22)
+            .padding(.bottom, 28)
             PhotoPickerView(imageData: $viewModel.imageData)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, errorMessage: viewModel.textErrorMessage, focus: _focus)
+            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
                 .padding(.bottom, 30)
             textErrorMessage
             finishButton
@@ -55,9 +55,9 @@ public struct ProfileSettingView: View {
                     }
                 } label: {
                     if focus == .introduce {
-                        Text("Done")
+                        Text(StringLiteral.profileSettingFocusEnd)
                     } else {
-                        Text("Next")
+                        Text(StringLiteral.profileSettingFocusNext)
                     }
                 }
             }
@@ -85,7 +85,7 @@ public struct ProfileSettingView: View {
                 viewModel.onFinishButtonClicked()
             }
         } label: {
-            Text("완료")
+            Text(StringLiteral.profileSettingDoneButtonTitle)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
                 .cornerRadius(6)
