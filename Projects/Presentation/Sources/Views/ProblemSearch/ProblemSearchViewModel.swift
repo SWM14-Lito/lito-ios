@@ -29,6 +29,16 @@ public class ProblemSearchViewModel: BaseViewModel {
     public init(useCase: ProblemSearchUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
         self.useCase = useCase
         super.init(coordinator: coordinator, toastHelper: toastHelper)
+        $searchKeyword
+            .sink { str in
+                if str.count == 0 {
+                    self.problemCellList.removeAll()
+                    self.problemPage = 0
+                    self.problemTotalSize = nil
+                    self.searchState = .notStart
+                }
+            }
+            .store(in: cancelBag)
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
@@ -105,6 +115,10 @@ public class ProblemSearchViewModel: BaseViewModel {
     
     public func removeRecentKeywords() {
         recentKeywords = []
+    }
+    
+    public func searchRemoveButtonClicked() {
+        searchKeyword = ""
     }
 }
 
