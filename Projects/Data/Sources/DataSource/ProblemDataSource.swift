@@ -68,11 +68,12 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     }
     
     public func setProblemGoalCount(problemGoalCount: Int) {
-        UserDefaults.standard.setValue(problemGoalCount, forKey: "problemGoalCount")
+        UserDefaultsManager.set(key: .problemGoalCount, problemGoalCount)
     }
     
     public func getProblemGoalCount() -> Int {
-        let problemGoalCount = UserDefaults.standard.integer(forKey: "problemGoalCount")
+        let problemGoalCount = UserDefaultsManager.get(key: .problemGoalCount)
+        
         // 초기값
         if problemGoalCount == 0 {
             return 3
@@ -81,10 +82,11 @@ final public class DefaultProblemDataSource: ProblemDataSource {
     }
 
     public func setRecentKeywords(recentKeywords: [String]) {
-        UserDefaults.standard.set(recentKeywords, forKey: "recentKeywords")
+        UserDefaultsManager.set(key: .recentKeywords, recentKeywords)
     }
+    
     public func getRecentKeywords() -> [String] {
-        let recentKeywords = UserDefaults.standard.array(forKey: "recentKeywords") as? [String] ?? []
+        let recentKeywords: [String] = UserDefaultsManager.get(key: .recentKeywords)
         return recentKeywords
     }
 
