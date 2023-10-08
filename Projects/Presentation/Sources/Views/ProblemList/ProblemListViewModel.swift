@@ -63,7 +63,6 @@ final public class ProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 초기화하기
     private func resetProblemCellList() {
-        problemCellList.removeAll()
         problemPage = 0
         problemTotalSize = nil
     }
@@ -75,7 +74,7 @@ final public class ProblemListViewModel: BaseViewModel {
             self.getProblemList(problemId: problemId)
         }
         if !problemCellList.isEmpty {
-            guard problemId == problemCellList.last?.problemId else { return }
+            guard problemId == problemCellList.last?.problemId || problemId == nil else { return }
         }
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
@@ -85,9 +84,11 @@ final public class ProblemListViewModel: BaseViewModel {
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResultWithErrorHandler({ problemsListVO in
                 if let problemsCellVO = problemsListVO.problemsCellVO {
-                    problemsCellVO.forEach({ problemCellVO in
-                        self.problemCellList.append(problemCellVO)
-                    })
+                    if problemId == nil {
+                        self.problemCellList = problemsCellVO
+                    } else {
+                        self.problemCellList += problemsCellVO
+                    }
                     self.problemPage += 1
                 }
                 self.problemTotalSize = problemsListVO.total
