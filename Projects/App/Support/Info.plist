@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>20231008130624</string>
 	<key>DEVELOPMENT_SERVER_URL</key>
 	<string>${DEVELOPMENT_SERVER_URL}</string>
 	<key>KAKAO_NATIVE_APP_KEY</key>
