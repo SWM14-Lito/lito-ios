@@ -11,11 +11,11 @@ import Moya
 import CombineMoya
 import RxSwift
 
-public protocol SWMLoggingScheme: Encodable{
+public protocol SWMLoggingScheme: Encodable {
     var eventLogName: String { get set }
     var screenName: String { get set }
     var logVersion: Int { get set }
-    var logData: [String: String] { get set }
+    var logData: [String: AnyEncodable] { get set }
 }
 
 extension SWMLoggingScheme {

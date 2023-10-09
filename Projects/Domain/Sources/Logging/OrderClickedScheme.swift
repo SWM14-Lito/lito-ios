@@ -14,14 +14,14 @@ public struct OrderClickedScheme: ClickScheme {
     public var eventLogName = "missionClick"
     public var screenName = "SolvingProblemListView"
     public var logVersion = 1
-    public var logData: [String: String] = [:]
+    public var logData: [String: AnyEncodable] = [:]
 
     public init(userId: Int?, gender: String?, age: Int?) {
         
         // logData 만들기
-        self.logData["userId"] = String(userId ?? -1)
-        self.logData["gender"] = gender
-        self.logData["age"] = String(age ?? -1)
+        self.logData["userId"] = .int(userId ?? -1)
+        self.logData["gender"] = .string(gender ?? "")
+        self.logData["age"] = .int(age ?? -1)
         
     }
     
