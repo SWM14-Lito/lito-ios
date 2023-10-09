@@ -66,7 +66,7 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
             self.getProblemList(problemFavoriteId: problemFavoriteId)
         }
         if !problemCellList.isEmpty {
-            guard problemFavoriteId == problemCellList.last?.favoriteId else { return }
+            guard problemFavoriteId == problemCellList.last?.favoriteId || problemFavoriteId == nil else { return }
         }
         if let totalSize = problemTotalSize, problemPage*problemSize >= totalSize {
             return
@@ -77,9 +77,11 @@ public final class FavoriteProblemListViewModel: BaseViewModel {
         useCase.getProblemList(problemsQueryDTO: problemsQueryDTO)
             .sinkToResultWithErrorHandler({ problemsListVO in
                 if let problemsCellVO = problemsListVO.problemsCellVO {
-                    problemsCellVO.forEach({ problemCellVO in
-                        self.problemCellList.append(problemCellVO)
-                    })
+                    if problemFavoriteId == nil {
+                        self.problemCellList = problemsCellVO
+                    } else {
+                        self.problemCellList += problemsCellVO
+                    }
                     self.problemPage += 1
                 }
                 self.problemTotalSize = problemsListVO.total
