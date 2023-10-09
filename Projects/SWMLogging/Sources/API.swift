@@ -10,10 +10,10 @@ import Foundation
 import Moya
 
 struct LoggingAPI: TargetType {
-    let serverUrl: String
-    let serverPath: String
-    let authorization: String? = nil
-    var schemeData: Data = Data()
+    private let serverUrl: String
+    private let serverPath: String
+    private var authorization: String?
+    private var schemeData: Data = Data()
 
     public init(serverUrl: String, serverPath: String) {
         self.serverUrl = serverUrl
@@ -22,6 +22,10 @@ struct LoggingAPI: TargetType {
 
     public mutating func setScheme(_ schemeData: Data) {
         self.schemeData = schemeData
+    }
+
+    public mutating func setAuthorization(_ authorization: String) {
+        self.authorization = authorization
     }
 
     var baseURL: URL {

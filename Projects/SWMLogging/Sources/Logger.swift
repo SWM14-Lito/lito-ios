@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import Moya
 import CombineMoya
-import RxSwift
 
 public protocol SWMLoggingScheme: Encodable {
     var eventLogName: String { get set }
@@ -36,55 +35,53 @@ public class SWMLogger {
 
     static let encoder = JSONEncoder()
     private let moyaProvider = MoyaProvider<LoggingAPI>()
+    private let throttleLimit = 1.0
 
     private let sessionId = UUID()
     private let appVersion: String
     private let OSNameAndVersion: String
+
     private var cancelBag = Set<AnyCancellable>()
     private var loggingAPI: LoggingAPI
-    let disposeBag = DisposeBag()
-    public let hotObservable = PublishSubject<SWMLoggingScheme>()
     private var latestLogName = ""
+    private var latestShotTime = Date()
 
     public init(serverUrl: String, serverPath: String, OSNameAndVersion: String, appVersion: String) {
         self.OSNameAndVersion = OSNameAndVersion
         self.appVersion = appVersion
         loggingAPI = LoggingAPI(serverUrl: serverUrl, serverPath: serverPath)
-        hotObservable
-//            .flatMap({ scheme -> Observable<SWMLoggingScheme> in
-//                if scheme.eventLogName == self.latestLogName {
-//                    return self.hotObservable
-//                        .throttle(.seconds(1), scheduler: MainScheduler.instance)
-//                } else {
-//                    return Observable.just(scheme)
-//                }
-//            })
-            .subscribe(onNext: { scheme in
-                print("scheme", scheme)
-                self.latestLogName = scheme.eventLogName
-            })
-            .disposed(by: disposeBag)
     }
 
-    // throw
     public func shotLogging(_ scheme: SWMLoggingScheme, authorization: String) throws {
         do {
-            hotObservable.onNext(scheme)
-            loggingAPI.setScheme(try scheme.makeJson())
-            moyaProvider.requestPublisher(loggingAPI)
-                .sink(receiveCompletion: { result in
-                    switch result {
-                    case let .failure(error):
-                        print(error)
-                    default: break
-                    }
-                }, receiveValue: { _ in
-                    print("suceess")
-                })
-                .store(in: &cancelBag)
+            if throttleCondition(scheme.eventLogName) {
+                latestShotTime = Date()
+                latestLogName = scheme.eventLogName
+                loggingAPI.setScheme(try scheme.makeJson())
+                loggingAPI.setAuthorization(authorization)
+                sendRequest(loggingAPI)
+            }
         } catch {
             throw error
         }
+    }
 
+    private func throttleCondition(_ eventLogName: String) -> Bool {
+        (eventLogName == latestLogName && Date().timeIntervalSince(latestShotTime) > throttleLimit) ||
+        (eventLogName != latestLogName)
+    }
+
+    private func sendRequest(_ api: LoggingAPI) {
+        moyaProvider.requestPublisher(loggingAPI)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case let .failure(error):
+                    print(error)
+                default: break
+                }
+            }, receiveValue: { _ in
+                print("suceess")
+            })
+            .store(in: &cancelBag)
     }
 }
