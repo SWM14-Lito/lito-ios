@@ -52,11 +52,11 @@ public class SWMLogger {
         loggingAPI = LoggingAPI(serverUrl: serverUrl, serverPath: serverPath)
         hotObservable
 //            .flatMap({ scheme -> Observable<SWMLoggingScheme> in
-//                if scheme.eventLogName == latestLogName {
-//                    return Observable<SWMLoggingScheme>
-//                    // .throttle(for: , scheduler: <#T##Scheduler#>, latest: <#T##Bool#>)
+//                if scheme.eventLogName == self.latestLogName {
+//                    return self.hotObservable
+//                        .throttle(.seconds(1), scheduler: MainScheduler.instance)
 //                } else {
-//                    return Just(scheme)
+//                    return Observable.just(scheme)
 //                }
 //            })
             .subscribe(onNext: { scheme in
