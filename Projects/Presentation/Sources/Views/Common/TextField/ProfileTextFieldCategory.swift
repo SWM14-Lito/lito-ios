@@ -13,7 +13,7 @@ enum ProfileTextFieldCategory: Hashable {
     var limit: Int {
         switch self {
         case .username:
-            return 10
+            return 20
         case .nickname:
             return 10
         case .introduce:
