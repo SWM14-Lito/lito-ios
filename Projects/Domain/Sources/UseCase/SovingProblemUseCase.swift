@@ -13,20 +13,9 @@ import SWMLogging
 public protocol SolvingProblemListUseCase {
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error>
-    func fireLogging(scheme: SWMLoggingScheme)
 }
 
 public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
-    public func fireLogging(scheme: SWMLogging.SWMLoggingScheme) {
-        do {
-//            logger.hotObservable.onNext(scheme)
-            try logger.shotLogging(scheme, authorization: "eyJhbGciOiJIUzI1NiJ9.eyJnaXRodWJJZCI6Ikt4eEh5b1JpbSIsImlhdCI6MTY5NTcxNDE1MiwiZXhwIjoxNzI3MjUwMTUyfQ.tbQFKNIQCekhWZjHwOqQNBIY3YgXZZm-B95NyTvBn5c")
-            try logger.shotLogging(scheme, authorization: "eyJhbGciOiJIUzI1NiJ9.eyJnaXRodWJJZCI6Ikt4eEh5b1JpbSIsImlhdCI6MTY5NTcxNDE1MiwiZXhwIjoxNzI3MjUwMTUyfQ.tbQFKNIQCekhWZjHwOqQNBIY3YgXZZm-B95NyTvBn5c")
-        } catch {
-            
-        }
-    }
-    
     private let repository: ProblemRepository
     private let logger: SWMLogger
     

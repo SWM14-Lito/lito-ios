@@ -37,7 +37,7 @@ public struct DomainAssembly: Assembly {
         // ------------------------ First Tab ------------------------
         container.register(LearningHomeUseCase.self) { resolver in
             let repository = resolver.resolve(ProblemRepository.self)!
-            return DefaultLearningHomeUseCase(repository: repository)
+            return DefaultLearningHomeUseCase(repository: repository, logger: logger)
         }
         container.register(ProblemDetailUseCase.self) { resolver in
             let repository = resolver.resolve(ProblemRepository.self)!

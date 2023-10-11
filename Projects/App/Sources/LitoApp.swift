@@ -15,16 +15,13 @@ struct LitoApp: App {
     init() {
         UIFont.registerCommonFonts()
         let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
-        // Logging 객체 생성
-        // Logging.init(mandatory 요소)
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         
         injector = DependencyInjector(container: Container())
         toastHelper = ToastHelper()
         coordinator = Coordinator(.loginScene)
-        // OS NameAndVersion 기기에서 불러오기
+        // TODO: 우리 서버 API에 맞게 주소 변경 필요
         let logger = SWMLogger(serverUrl: "https://dev.swm-lgtm.com", serverPath: "/v1/log", OSNameAndVersion: "iOS 16", appVersion: "1.0")
-        // domainAssembly 에 Logging 객체 주입
         injector.assemble([DomainAssembly(logger: logger),
                            DataAssembly(),
                            PresentationAssembly(

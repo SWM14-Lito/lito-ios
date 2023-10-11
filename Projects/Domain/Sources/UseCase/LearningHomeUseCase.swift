@@ -8,19 +8,23 @@
 
 import Combine
 import Foundation
+import SWMLogging
 
 public protocol LearningHomeUseCase {
     func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error>
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
     func setProblemGoalCount(problemGoalCount: Int)
     func getProblemGoalCount() -> Int
+    func fireLogging(scheme: SWMLogging.SWMLoggingScheme)
 }
 
 public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     private let repository: ProblemRepository
+    private let logger: SWMLogger
     
-    public init(repository: ProblemRepository) {
+    public init(repository: ProblemRepository, logger: SWMLogger) {
         self.repository = repository
+        self.logger = logger
     }
     
     public func getProfileAndProblems() -> AnyPublisher<LearningHomeVO, Error> {
@@ -37,5 +41,12 @@ public final class DefaultLearningHomeUseCase: LearningHomeUseCase {
     
     public func getProblemGoalCount() -> Int {
         repository.getProblemGoalCount()
+    }
+    public func fireLogging(scheme: SWMLogging.SWMLoggingScheme) {
+        do {
+            try logger.shotLogging(scheme, authorization: KeyChainManager.read(key: .accessToken) ?? "")
+        } catch {
+            
+        }
     }
 }
