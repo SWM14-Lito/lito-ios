@@ -64,7 +64,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
     
     private func IsAlpOrNum(_ str: String) -> Bool {
-        let pattern = "^[0-9a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ]*$"
+        let pattern = "^[0-9a-zA-Z가-힣ㄱ-ㅎㅏ-ㅣ\\s]*$"
         if str.range(of: pattern, options: .regularExpression) != nil {
             return true
         } else {
