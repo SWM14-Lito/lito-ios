@@ -7,13 +7,11 @@
 //
 
 public struct ProfileInfoDTO {
-    public let name: String?
     public let nickname: String?
     public let introduce: String?
     public let accessToken: String
     
-    public init(name: String? = nil, nickname: String? = nil, introduce: String? = nil, accessToken: String) {
-        self.name = name
+    public init(nickname: String? = nil, introduce: String? = nil, accessToken: String) {
         self.nickname = nickname
         self.introduce = introduce
         self.accessToken = accessToken

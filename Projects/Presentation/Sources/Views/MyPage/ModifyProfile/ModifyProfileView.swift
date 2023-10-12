@@ -33,50 +33,6 @@ public struct ModifyProfileView: View {
                         .padding(.top, 15)
                         .padding(.bottom, 39)
                     VStack(spacing: 0) {
-                        // 이름
-                        VStack(spacing: 0) {
-                            HStack {
-                                Text("이름")
-                                    .font(.Body2SemiBold)
-                                Spacer()
-                            }
-                            .padding(.bottom, 6)
-                            HStack {
-                                Text(userInfo.name)
-                                    .font(.Body2Regular)
-                                    .foregroundColor(.Text_Disabled)
-                                Spacer()
-                            }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 14)
-                            .background {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(.Bg_Deep)
-                            }
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(.Border_Default, lineWidth: 1)
-                            )
-                        }
-                        .padding(.bottom, 6)
-                        HStack {
-                            Text("이름 변경을 원하실 경우 이메일로 문의해주세요!")
-                                .font(.InfoRegular)
-                                .foregroundColor(.Text_Info)
-                            Spacer()
-                            Button {
-                                isShowingMailView.toggle()
-                            } label: {
-                                Text("문의하기")
-                                    .font(.InfoRegular)
-                                    .foregroundColor(.Text_Point)
-                                    .underline()
-                            }
-                            .sheet(isPresented: $isShowingMailView) {
-                                MailView(isShowing: self.$isShowingMailView)
-                            }
-                        }
-                        .padding(.bottom, 30)
                         // 닉네임
                         profileTextField(fieldCategory: .nickname, limitedText: $viewModel.modifyNickNameInput)
                             .padding(.bottom, 30)

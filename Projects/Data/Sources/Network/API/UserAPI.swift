@@ -54,9 +54,6 @@ extension UserAPI: TargetType {
         switch self {
         case .postUserInfo(let profileInfoDTO), .patchUserInfo(let profileInfoDTO):
             var parameters: [String: Any] = [:]
-            if let name = profileInfoDTO.name {
-                parameters["name"] = name
-            }
             if let nickname = profileInfoDTO.nickname {
                 parameters["nickname"] = nickname
             }

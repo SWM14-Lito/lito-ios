@@ -18,7 +18,6 @@ public class ProfileSettingViewModel: BaseViewModel {
     private(set) var buttonIsLocked: Bool = false
     private var userAuthVO: UserAuthVO
     @Published var imageData: Data?
-    @Published var username = LimitedText(limit: ProfileTextFieldCategory.username.limit)
     @Published var nickname = LimitedText(limit: ProfileTextFieldCategory.nickname.limit)
     @Published var introduce = LimitedText(limit: ProfileTextFieldCategory.introduce.limit)
     @Published var textErrorMessage: String?
@@ -45,13 +44,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     
     // 글자 입력 관련하여 안채워진게 있는지 확인하기
     private func checkAllTextAreFilled() -> Bool {
-        if username.text.count < 2 {
-            textErrorMessage = ProfileTextFieldCategory.username.errorMessageForLength
-            return false
-        } else if !IsAlpOrNum(username.text) {
-            textErrorMessage = ProfileTextFieldCategory.username.errrorMessageForSpecialCharacter
-            return false
-        } else if nickname.text.count < 2 {
+        if nickname.text.count < 2 {
             textErrorMessage = ProfileTextFieldCategory.nickname.errorMessageForLength
             return false
         } else if !IsAlpOrNum(nickname.text) {
@@ -95,7 +88,7 @@ public class ProfileSettingViewModel: BaseViewModel {
     }
     
     private func preparePublisher() -> AnyPublisher<Any, Error> {
-        let profileInfoDTO = ProfileInfoDTO(name: username.text, nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
+        let profileInfoDTO = ProfileInfoDTO(nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
         let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
         
         let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
@@ -113,9 +106,5 @@ public class ProfileSettingViewModel: BaseViewModel {
                 .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
                 .eraseToAnyPublisher()
         }
-    }
-  
-    public func viewOnAppear() {
-        self.username.text = userAuthVO.userName
     }
 }
