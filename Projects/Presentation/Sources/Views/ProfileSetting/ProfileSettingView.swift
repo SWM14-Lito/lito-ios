@@ -27,8 +27,6 @@ public struct ProfileSettingView: View {
             .padding(.bottom, 28)
             PhotoPickerView(imageData: $viewModel.imageData)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .username, limitedText: $viewModel.username, focus: _focus)
-                .padding(.bottom, 30)
             profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
                 .padding(.bottom, 30)
             profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
@@ -44,8 +42,6 @@ public struct ProfileSettingView: View {
                 Spacer()
                 Button {
                     switch focus {
-                    case .username:
-                        focus = .nickname
                     case .nickname:
                         focus = .introduce
                     case .introduce:
@@ -63,9 +59,6 @@ public struct ProfileSettingView: View {
             }
         }
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
-        .onAppear {
-            viewModel.viewOnAppear()
-        }
     }
     
     // 텍스트 입력 관련 오류 메시지 띄워줌

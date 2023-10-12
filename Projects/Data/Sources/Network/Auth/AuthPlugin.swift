@@ -17,7 +17,7 @@ struct AuthPlugin: PluginType {
     private init() {}
     
     private let noNeedAuthorization = [
-        UserAPI.postUserInfo(ProfileInfoDTO(name: "", nickname: "", introduce: "", accessToken: "")).pathWithMethod,
+        UserAPI.postUserInfo(ProfileInfoDTO(nickname: "", introduce: "", accessToken: "")).pathWithMethod,
         UserAPI.patchUserInfo(ProfileInfoDTO(accessToken: "")).pathWithMethod,
         UserAPI.setNotiAcceptance(AlarmAcceptanceDTO(getAlarm: false, accessToken: "")).pathWithMethod,
         FileAPI.setProfileImage(ProfileImageDTO(image: Data(), accessToken: "")).pathWithMethod,

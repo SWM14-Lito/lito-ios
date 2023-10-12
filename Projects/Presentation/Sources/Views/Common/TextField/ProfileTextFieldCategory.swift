@@ -9,11 +9,9 @@
 import Foundation
 
 enum ProfileTextFieldCategory: Hashable {
-    case username, nickname, introduce
+    case nickname, introduce
     var limit: Int {
         switch self {
-        case .username:
-            return 20
         case .nickname:
             return 10
         case .introduce:
@@ -22,8 +20,6 @@ enum ProfileTextFieldCategory: Hashable {
     }
     var title: String {
         switch self {
-        case .username:
-            return StringLiteral.username
         case .nickname:
             return StringLiteral.nickname
         case .introduce:
