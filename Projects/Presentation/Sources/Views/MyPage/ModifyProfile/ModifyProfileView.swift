@@ -20,7 +20,7 @@ public struct ModifyProfileView: View {
     
     public var body: some View {
         ZStack {
-            if let userInfo = viewModel.userInfo {
+            if viewModel.userInfo != nil {
                 Color.white
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onTapGesture {
