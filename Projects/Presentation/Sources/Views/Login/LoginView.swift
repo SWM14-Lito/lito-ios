@@ -20,8 +20,16 @@ public struct LoginView: View {
     
     public var body: some View {
         VStack(spacing: 60) {
-            Text(StringLiteral.serviceName)
-                .font(.title)
+            VStack {
+                Image(.imgLuncherLogo)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 112, height: 112)
+                Image(.imgTextLogo)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 210, height: 64)
+            }
             
             VStack(spacing: 8) {
                 Button(action: {
