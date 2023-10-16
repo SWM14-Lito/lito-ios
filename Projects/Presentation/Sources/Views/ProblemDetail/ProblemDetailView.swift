@@ -319,10 +319,10 @@ public struct ProblemDetailView: View {
     
     // 키워드 컴포넌트
     @ViewBuilder
-    private var keywordBox: some View {
+    private func keywordBox(startIdx: Int, endIdx: Int) -> some View {
         if let keyword = viewModel.problemDetailVO?.problemKeyword {
             HStack(spacing: 3) {
-                ForEach(0..<keyword.count, id: \.self) { idx in
+                ForEach(startIdx..<endIdx, id: \.self) { idx in
                     ZStack {
                         RoundedRectangle(cornerRadius: 3)
                             .strokeBorder(viewModel.IsWrongBefore ? .Border_Serve_Red  : .Border_Serve, lineWidth: 1)
@@ -357,12 +357,12 @@ public struct ProblemDetailView: View {
     // 일반 단어와 키워드 뷰컴포넌트를 구분해서 리스트에 담아주기
     private func makeAnswerBoxComponents() -> [AnyView] {
         var components = [AnyView]()
-        if let answerSplited = viewModel.answerSplited {
-            for word in answerSplited {
-                if word == viewModel.problemDetailVO?.problemKeyword {
+        if !viewModel.answerSplited.isEmpty {
+            for (idx, word) in viewModel.answerSplited.enumerated() {
+                if viewModel.keywordRange[idx].0 != -1 {
                     components.append(
                         AnyView(
-                            keywordBox
+                            keywordBox(startIdx: viewModel.keywordRange[idx].0, endIdx: viewModel.keywordRange[idx].1)
                         )
                     )
                 } else {
