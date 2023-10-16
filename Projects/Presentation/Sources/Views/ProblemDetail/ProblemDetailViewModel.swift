@@ -10,7 +10,9 @@ import Domain
 import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
+    private(set) var keywordRange = [(Int, Int)]()
     private let useCase: ProblemDetailUseCase
+    private let keywordBoxMaxLength = 9
     let problemId: Int
     let stateChangingTime = 2.0
     var showSubmittedInput: Bool {
@@ -21,10 +23,10 @@ public class ProblemDetailViewModel: BaseViewModel {
     }
     @Published var input: String = ""
     @Published private(set) var problemDetailVO: ProblemDetailVO?
-    @Published private(set) var answerSplited: [String]?
     @Published private(set) var solvingState: SolvingState = .initial
     @Published private(set) var faqIsOpened: [Bool]?
     @Published private(set) var inputErrorMessage: String = ""
+    @Published private(set) var answerSplited = [String]()
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var isFirstTry: Bool = true
     @Published private(set) var isWrongInput: Bool = false
@@ -157,8 +159,33 @@ public class ProblemDetailViewModel: BaseViewModel {
     // 문제에 대한 답변에서 단어별 (키워드 포함) 로 쪼개기
     private func splitSentence() {
         guard let problemDetailVO = problemDetailVO else { return }
+        let keyword = problemDetailVO.problemKeyword
         
-        let keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: problemDetailVO.problemKeyword, with: " " + problemDetailVO.problemKeyword + " ")
+        var keywordDistinguished = problemDetailVO.problemAnswer.replacingOccurrences(of: keyword, with: " " + keyword + " ")
+        
         answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
+        for word in answerSplited {
+            if word == keyword {
+                keywordRange.append((0, keyword.count))
+            } else {
+                keywordRange.append((-1, -1))
+            }
+        }
+        
+        if keyword.count > keywordBoxMaxLength {
+            keywordDistinguished = keywordDistinguished.replacingOccurrences(of: keyword, with: keyword[0..<keywordBoxMaxLength] + " " + keyword[keywordBoxMaxLength..<keyword.count] )
+            
+            for idx in (0..<answerSplited.count).reversed() {
+                if keywordRange[idx].0 != -1 {
+                    keywordRange[idx] = (keywordBoxMaxLength, keyword.count)
+                    keywordRange.insert((0, keywordBoxMaxLength), at: idx)
+                }
+            }
+            
+            answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
+            
+            print(keywordRange)
+            print(answerSplited)
+        }
     }
 }
