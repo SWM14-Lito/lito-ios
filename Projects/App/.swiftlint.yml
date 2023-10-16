@@ -1,0 +1,8 @@
+disabled_rules:
+- line_length
+- trailing_whitespace
+- function_body_length
+- empty_enum_arguments
+- type_name
+- force_cast
+- cyclomatic_complexity

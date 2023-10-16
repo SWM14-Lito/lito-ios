@@ -1,0 +1,102 @@
+name: deploy_on_testflight
+
+on:
+  push:
+    branches: [ testflight/* ]
+jobs:
+  deploy:
+    runs-on: macos-latest
+    env:
+      # app archive 및 export 에 쓰일 환경 변수 설정
+      XC_WORKSPACE: ${{ 'Lito.xcworkspace' }}
+      XC_SCHEME: ${{ 'App' }}
+      XC_ARCHIVE: ${{ 'Lito.xcarchive' }}
+      
+      # certification export key
+      CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PWD }}
+      KEYCHAIN: ${{ 'test.keychain' }}
+      
+      # Tuist signing
+      ENCRYPTED_APP_DEBUG_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Debug.mobileprovision.gpg' }}
+      ENCRYPTED_APP_RELEASE_MOBILEPROVISION_PATH: ${{ '.github/secrets/App.Release.mobileprovision.gpg' }}
+      ENCRYPTED_LITO_CERT_PATH: ${{ '.github/secrets/Lito.cer.gpg' }}
+      ENCRYPTED_LITO_P12_PATH: ${{ '.github/secrets/Lito.p12.gpg' }}
+      DECRYPTED_APP_DEBUG_MOBILEPROVISION_PATH: ${{ 'Tuist/Signing/App.Debug.mobileprovision' }}
+      DECRYPTED_APP_RELEASE_MOBILEPROVISION_PATH: ${{ 'Tuist/Signing/App.Release.mobileprovision' }}
+      DECRYPTED_LITO_CERT_PATH: ${{ 'Tuist/Signing/Lito.cer' }}
+      DECRYPTED_LITO_P12_PATH: ${{ 'Tuist/Signing/Lito.p12' }}
+      
+      # Build version
+      BRANCH_NAME: ${{ github.ref_name }}
+      
+      # AppStore privateKey Path
+      ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8.gpg' }}
+      DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/secrets/AuthKey_KR54A93BHC.p8' }}
+      
+      CERT_SIGNING_KEY: ${{ secrets.CERTS_SIGNING_PWD }}
+      
+    steps:
+      - name: Select latest Xcode
+        # shell 이용해서 하나의 command 수행
+        run: "sudo xcode-select -s /Applications/Xcode.app"
+      - name: Checkout project
+        # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
+        uses: actions/checkout@v2
+      - name: Configure Keychain 
+        # 키체인 초기화 - 임시 키체인 생성
+        run: |
+          security create-keychain -p "" "$KEYCHAIN"
+          security list-keychains -s "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p "" "$KEYCHAIN"
+          security set-keychain-settings
+      - name : Tuist Signing
+        run: |
+          # Tuist Signing 파일들 복호화
+          mkdir -p Tuist/Signing
+          gpg -d -o "$DECRYPTED_APP_DEBUG_MOBILEPROVISION_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APP_DEBUG_MOBILEPROVISION_PATH"
+          gpg -d -o "$DECRYPTED_APP_RELEASE_MOBILEPROVISION_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APP_RELEASE_MOBILEPROVISION_PATH"
+          gpg -d -o "$DECRYPTED_LITO_CERT_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_LITO_CERT_PATH"
+          gpg -d -o "$DECRYPTED_LITO_P12_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_LITO_P12_PATH"
+          
+      - name : Configure Code Signing
+        run: |
+          security import "$DECRYPTED_LITO_P12_PATH" -k "$KEYCHAIN" -P "" -A
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+      - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Fetch Swift Packages
+        run: tuist fetch
+      - name: Use xcconfig file
+        env:
+          DEV_XC_CONFIG_FILE: ${{ secrets.DEV_XC_CONFIG_FILE }}
+          PROD_XC_CONFIG_FILE: ${{ secrets.PROD_XC_CONFIG_FILE }}
+        run: |
+          echo "$DEV_XC_CONFIG_FILE" > DevConfig.xcconfig
+          echo "$PROD_XC_CONFIG_FILE" > ProdConfig.xcconfig
+      - name: Generate
+        run: tuist generate
+        # build version을 testflight/* 로 변경
+      - name: Change build version
+        run: |
+            INFO_PLIST="Projects/App/Support/Info.plist"
+            NEW_VERSION="${BRANCH_NAME//[^0-9]/}"
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEW_VERSION" "${INFO_PLIST}"
+      - name: Archive app
+        # 빌드 및 아카이브
+        run: |
+          xcodebuild clean archive -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -archivePath $XC_ARCHIVE
+      - name: Export app
+        # export 를 통해 ipa 파일 만듦
+        run: |
+          xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+      - name: Install private API key P8
+        run: | 
+          gpg -d -o "$DECRYPTED_APPSTORE_PRIVATE_KEY_PATH" --pinentry-mode=loopback --passphrase "$CERT_SIGNING_KEY" "$ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH"
+          mkdir -p ~/private_keys
+          cp $DECRYPTED_APPSTORE_PRIVATE_KEY_PATH ~/private_keys
+      - name: Upload app to AppStore
+        env:
+          API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
+          API_ISSUER : ${{ secrets.APPSTORE_ISSUER_ID  }}
+        run: xcrun altool --output-format xml --upload-app -f App.ipa -t ios --apiKey $API_KEY --apiIssuer $API_ISSUER

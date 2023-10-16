@@ -1,0 +1,30 @@
+
+name: Build
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use xcconfig file
+        env:
+          DEV_XC_CONFIG_FILE: ${{ secrets.DEV_XC_CONFIG_FILE }}
+          PROD_XC_CONFIG_FILE: ${{ secrets.PROD_XC_CONFIG_FILE }}
+        run: |
+          echo "$DEV_XC_CONFIG_FILE" > DevConfig.xcconfig
+          echo "$PROD_XC_CONFIG_FILE" > ProdConfig.xcconfig
+      - name: Install Tuist
+        run: curl -Ls https://install.tuist.io | bash
+      - name: Tuist Fetch Dependency
+        run: |
+          tuist fetch && tuist generate
+      - name: Tuist build
+        run: | 
+          tuist build
