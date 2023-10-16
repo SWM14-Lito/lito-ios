@@ -10,6 +10,7 @@ import Domain
 import SwiftUI
 
 public class ProblemDetailViewModel: BaseViewModel {
+    private(set) var keywordRange = [(Int, Int)]()
     private let useCase: ProblemDetailUseCase
     private let keywordBoxMaxLength = 9
     let problemId: Int
@@ -26,7 +27,6 @@ public class ProblemDetailViewModel: BaseViewModel {
     @Published private(set) var faqIsOpened: [Bool]?
     @Published private(set) var inputErrorMessage: String = ""
     @Published private(set) var answerSplited = [String]()
-    @Published private(set) var keywordRange = [(Int, Int)]()
     @Published private(set) var isLoading: Bool = false
     @Published private(set) var isFirstTry: Bool = true
     @Published private(set) var isWrongInput: Bool = false
