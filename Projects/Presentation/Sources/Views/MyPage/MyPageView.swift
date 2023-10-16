@@ -81,43 +81,42 @@ public struct MyPageView: View {
                     }
                 }
                 .padding(.bottom, 20)
-                
-                HStack {
-                    Image(.iconPoint)
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(.trailing, 8)
-                    Text(StringLiteral.myPageMypoint)
-                        .font(.Body2Regular)
-                        .foregroundColor(.Text_Default)
-                    Spacer()
-                    Text(String(userInfo.point) + "P")
-                        .font(.Head2Bold)
-                        .foregroundColor(.Text_Point)
-                    Button {
-                        // 충전 페이지로 이동
-                    } label: {
-                        Text(StringLiteral.myPageCharge)
-                            .font(.Body3SemiBold)
-                            .foregroundColor(.white)
-                    }
-                    .padding(.horizontal, 13)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14 )
-                            .fill(.Button_Point)
-                    )
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 24)
-                .background(
-                    RoundedRectangle(cornerRadius: 14 )
-                        .fill(.Bg_Point_Light)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(.Border_Serve, lineWidth: 1)
-                )
+//                HStack {
+//                    Image(.iconPoint)
+//                        .resizable()
+//                        .frame(width: 24, height: 24)
+//                        .padding(.trailing, 8)
+//                    Text(StringLiteral.myPageMypoint)
+//                        .font(.Body2Regular)
+//                        .foregroundColor(.Text_Default)
+//                    Spacer()
+//                    Text(String(userInfo.point) + "P")
+//                        .font(.Head2Bold)
+//                        .foregroundColor(.Text_Point)
+//                    Button {
+//                        // 충전 페이지로 이동
+//                    } label: {
+//                        Text(StringLiteral.myPageCharge)
+//                            .font(.Body3SemiBold)
+//                            .foregroundColor(.white)
+//                    }
+//                    .padding(.horizontal, 13)
+//                    .padding(.vertical, 6)
+//                    .background(
+//                        RoundedRectangle(cornerRadius: 14 )
+//                            .fill(.Button_Point)
+//                    )
+//                }
+//                .padding(.horizontal, 20)
+//                .padding(.vertical, 24)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 14 )
+//                        .fill(.Bg_Point_Light)
+//                )
+//                .overlay(
+//                    RoundedRectangle(cornerRadius: 14)
+//                        .stroke(.Border_Serve, lineWidth: 1)
+//                )
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 27)
@@ -129,30 +128,30 @@ public struct MyPageView: View {
         VStack(spacing: 0) {
             Divider()
             Group {
-                HStack(spacing: 10) {
-                    Image(systemName: SymbolName.squareAndArrowDown)
-                        .font(.system(size: 18))
-                        .padding(.trailing, 8)
-                    Text(StringLiteral.myPageUploadedProblem)
-                        .font(.Body1Regular)
-                    Spacer()
-                    Image(systemName: SymbolName.chevronRight)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
-                Divider()
-                HStack(spacing: 10) {
-                    Image(systemName: SymbolName.squareAndArrowDown)
-                        .font(.system(size: 18))
-                        .padding(.trailing, 8)
-                    Text(StringLiteral.myPagePurchasedProblem)
-                        .font(.Body1Regular)
-                    Spacer()
-                    Image(systemName: SymbolName.chevronRight)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 18)
-                Divider()
+//                HStack(spacing: 10) {
+//                    Image(systemName: SymbolName.squareAndArrowDown)
+//                        .font(.system(size: 18))
+//                        .padding(.trailing, 8)
+//                    Text(StringLiteral.myPageUploadedProblem)
+//                        .font(.Body1Regular)
+//                    Spacer()
+//                    Image(systemName: SymbolName.chevronRight)
+//                }
+//                .padding(.horizontal, 20)
+//                .padding(.vertical, 18)
+//                Divider()
+//                HStack(spacing: 10) {
+//                    Image(systemName: SymbolName.squareAndArrowDown)
+//                        .font(.system(size: 18))
+//                        .padding(.trailing, 8)
+//                    Text(StringLiteral.myPagePurchasedProblem)
+//                        .font(.Body1Regular)
+//                    Spacer()
+//                    Image(systemName: SymbolName.chevronRight)
+//                }
+//                .padding(.horizontal, 20)
+//                .padding(.vertical, 18)
+//                Divider()
                 HStack(spacing: 10) {
                     Image(systemName: SymbolName.bell)
                         .font(.system(size: 18))

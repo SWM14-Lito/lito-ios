@@ -114,13 +114,13 @@ public struct LearningHomeView: View {
                     .font(.system(size: 24))
                     .foregroundColor(.white)
             }
-            Button {
-                viewModel.onNotiListButtonClicked()
-            } label: {
-                Image(systemName: SymbolName.bellFill)
-                    .font(.system(size: 24))
-                    .foregroundColor(.white)
-            }
+//            Button {
+//                viewModel.onNotiListButtonClicked()
+//            } label: {
+//                Image(systemName: SymbolName.bellFill)
+//                    .font(.system(size: 24))
+//                    .foregroundColor(.white)
+//            }
         }
     }
     

@@ -15,4 +15,6 @@ public enum ImageName: String {
     case imgProfileDefault
     case iconChatgpt
     case iconPoint
+    case imgLuncherLogo
+    case imgTextLogo
 }
