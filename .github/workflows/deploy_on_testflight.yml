@@ -69,9 +69,11 @@ jobs:
         run: tuist fetch
       - name: Use xcconfig file
         env:
-          XC_CONFIG_FILE: ${{ secrets.XC_CONFIG_FILE }}
+          DEV_XC_CONFIG_FILE: ${{ secrets.DEV_XC_CONFIG_FILE }}
+          PROD_XC_CONFIG_FILE: ${{ secrets.PROD_XC_CONFIG_FILE }}
         run: |
-          echo "$XC_CONFIG_FILE" > config.xcconfig
+          echo "$DEV_XC_CONFIG_FILE" > DevConfig.xcconfig
+          echo "$PROD_XC_CONFIG_FILE" > ProdConfig.xcconfig
       - name: Generate
         run: tuist generate
         # build version을 testflight/* 로 변경
