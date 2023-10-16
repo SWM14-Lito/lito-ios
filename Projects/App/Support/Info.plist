@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>20231010070400</string>
+	<string>20231016205600</string>
 	<key>DEVELOPMENT_SERVER_URL</key>
 	<string>${DEVELOPMENT_SERVER_URL}</string>
 	<key>KAKAO_NATIVE_APP_KEY</key>
