@@ -183,9 +183,6 @@ public class ProblemDetailViewModel: BaseViewModel {
             }
             
             answerSplited = keywordDistinguished.split(separator: " ").map { String($0) }
-            
-            print(keywordRange)
-            print(answerSplited)
         }
     }
 }

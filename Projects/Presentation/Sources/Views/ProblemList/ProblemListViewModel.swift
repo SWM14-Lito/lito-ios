@@ -15,6 +15,7 @@ final public class ProblemListViewModel: BaseViewModel {
     private let problemSize = 10
     private var problemPage = 0
     private var problemTotalSize: Int?
+    private var isAlreadyAppeared = false
     @Published var problemCellList: [DefaultProblemCellVO] = []
     @Published var selectedSubject: SubjectInfo = .all
     @Published var selectedFilters: [ProblemListFilter] = []
@@ -27,7 +28,10 @@ final public class ProblemListViewModel: BaseViewModel {
     
     // 문제 리스트 가져오기
     public func onProblemListAppeared() {
-        getProblemList()
+        if !isAlreadyAppeared {
+            getProblemList()
+            isAlreadyAppeared = true
+        }
     }
     
     // 무힌스크롤로 다음 문제 리스트 가져오기
