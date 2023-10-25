@@ -115,6 +115,7 @@ public class ProblemSearchViewModel: BaseViewModel {
     
     public func removeRecentKeywords() {
         recentKeywords = []
+        useCase.setRecentKeywords(recentKeywords: recentKeywords)
     }
     
     public func searchRemoveButtonClicked() {
