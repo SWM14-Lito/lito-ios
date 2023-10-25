@@ -40,10 +40,8 @@ struct HeadFilterView<T: FilterComponent>: View {
                             }
                         }
                         .onTapGesture {
-                            withAnimation(.easeInOut) {
-                                changeFilter(filter: filter)
-                                filterHandling.onFilterChanged()
-                            }
+                            changeFilter(filter: filter)
+                            filterHandling.onFilterChanged()
                         }
                     }
                 }
