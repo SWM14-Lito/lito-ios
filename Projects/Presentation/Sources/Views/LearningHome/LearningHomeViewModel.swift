@@ -39,6 +39,11 @@ public final class LearningHomeViewModel: BaseViewModel {
         coordinator.push(.problemListScene)
     }
     
+    // 검색 화면으로 이동하기
+    func onSearchButtonClicked() {
+        coordinator.push(.problemSearchScene)
+    }
+    
     // 찜한 목록 화면으로 이동하기
     func onFavoriteListButtonClicked() {
         coordinator.push(.favoriteProblemListScene)

@@ -114,6 +114,13 @@ public struct LearningHomeView: View {
                     .font(.system(size: 24))
                     .foregroundColor(.white)
             }
+            Button {
+                viewModel.onSearchButtonClicked()
+            } label: {
+                Image(systemName: SymbolName.magnifyingglass)
+                    .font(.system(size: 24))
+                    .foregroundColor(.white)
+            }
 //            Button {
 //                viewModel.onNotiListButtonClicked()
 //            } label: {
