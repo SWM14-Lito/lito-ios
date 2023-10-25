@@ -20,7 +20,7 @@ public struct FavoriteProblemListView: View {
         ZStack {
             VStack(spacing: 0) {
                 headFilter
-                    .padding([.top, .leading], 20)
+                    .padding([.top, .leading, .trailing], 20)
                 Divider()
                 VStack(spacing: 0) {
                     filter
