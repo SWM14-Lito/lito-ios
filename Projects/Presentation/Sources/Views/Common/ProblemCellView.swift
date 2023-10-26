@@ -75,7 +75,7 @@ struct ProblemCellView<T: ProblemCell>: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16)
-                .stroke(problemCellVO.problemStatus == .solved ? .Border_Serve : .Border_Default, lineWidth: 1)
+                .strokeBorder(problemCellVO.problemStatus == .solved ? .Border_Serve : .Border_Default, lineWidth: 1)
         )
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct ProfileSettingView: View {
     @StateObject private var viewModel: ProfileSettingViewModel
-    @FocusState private var focus: ProfileTextFieldCategory?
+    @FocusState private var focused: ProfileTextFieldCategory?
     
     public init(viewModel: ProfileSettingViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -27,13 +27,17 @@ public struct ProfileSettingView: View {
             .padding(.bottom, 28)
             PhotoPickerView(imageData: $viewModel.imageData)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focus)
+            profileTextField(fieldCategory: .nickname, limitedText: $viewModel.nickname, focus: _focused)
                 .padding(.bottom, 30)
-            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focus)
+            profileTextField(fieldCategory: .introduce, limitedText: $viewModel.introduce, focus: _focused)
                 .padding(.bottom, 30)
             textErrorMessage
             finishButton
             Spacer()
+        }
+        .background(Color.white)
+        .onTapGesture {
+            focused = nil
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)
@@ -41,16 +45,16 @@ public struct ProfileSettingView: View {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 Button {
-                    switch focus {
+                    switch focused {
                     case .nickname:
-                        focus = .introduce
+                        focused = .introduce
                     case .introduce:
-                        focus = nil
+                        focused = nil
                     case .none:
                         break
                     }
                 } label: {
-                    if focus == .introduce {
+                    if focused == .introduce {
                         Text(StringLiteral.profileSettingFocusEnd)
                     } else {
                         Text(StringLiteral.profileSettingFocusNext)

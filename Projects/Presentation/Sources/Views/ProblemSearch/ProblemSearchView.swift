@@ -11,6 +11,7 @@ import SwiftUI
 public struct ProblemSearchView: View {
     
     @StateObject private var viewModel: ProblemSearchViewModel
+    @FocusState private var focused: Bool 
     
     public init(viewModel: ProblemSearchViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -27,6 +28,10 @@ public struct ProblemSearchView: View {
                 searchResult
             }
             Spacer()
+        }
+        .background(Color.white)
+        .onTapGesture {
+            focused = false
         }
         .modifier(CustomNavigation(
             title: StringLiteral.problemSearchViewNavigationTitle,
@@ -47,6 +52,7 @@ public struct ProblemSearchView: View {
                 .onSubmit {
                     viewModel.onSearchKeywordSubmitted()
                 }
+                .focused($focused)
                 .padding(.leading, 18)
             HStack(spacing: 13) {
                 if viewModel.searchKeyword.count != 0 {

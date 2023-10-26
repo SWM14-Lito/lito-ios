@@ -60,6 +60,9 @@ public struct ProblemDetailView: View {
                 LoadingView()
             }
         }
+        .onTapGesture {
+            focused = false
+        }
         .modifier(ErrorAlert(presentAlert: $viewModel.presentErrorAlert, message: viewModel.errorMessageForAlert, action: viewModel.lastNetworkAction))
         .modifier(CustomNavigation(
             title: StringLiteral.problemDetailViewNavigationTitle,

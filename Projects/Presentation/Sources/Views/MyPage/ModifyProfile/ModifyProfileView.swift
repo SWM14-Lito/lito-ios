@@ -86,7 +86,7 @@ public struct ModifyProfileView: View {
     
     @ViewBuilder
     private var checkAccountDeleteAlert: some View {
-        CustomAlert(presentAlert: $viewModel.presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", rightButtonAction: viewModel.onAcoountDeleteButtonClicked, alertStyle: .destructive)
+        CustomAlert(presentAlert: $viewModel.presentCustomAlert, alertTitle: "회원탈퇴", alertContent: "탈퇴하면 재가입이 불가합니다. 정말 탈퇴하시겠습니까?", leftButtonTitle: "취소", rightButtonTitle: "탈퇴", rightButtonAction: viewModel.onAcoountDeleteButtonClicked, alertStyle: .destructive)
     }
     
     @ViewBuilder
