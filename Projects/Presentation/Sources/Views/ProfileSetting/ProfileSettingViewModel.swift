@@ -43,13 +43,19 @@ public class ProfileSettingViewModel: BaseViewModel {
     // 글자 입력 관련하여 안채워진게 있는지 확인하기
     private func checkAllTextAreFilled() -> Bool {
         if nickname.text.count < 2 {
-            textErrorMessage = ProfileTextFieldCategory.nickname.errorMessageForLength
+            DispatchQueue.main.async {
+                self.textErrorMessage = ProfileTextFieldCategory.nickname.errorMessageForLength
+            }
             return false
         } else if !IsAlpOrNum(nickname.text) {
-            textErrorMessage = ProfileTextFieldCategory.nickname.errrorMessageForSpecialCharacter
+            DispatchQueue.main.async {
+                self.textErrorMessage = ProfileTextFieldCategory.nickname.errrorMessageForSpecialCharacter
+            }
             return false
         } else {
-            textErrorMessage = nil
+            DispatchQueue.main.async {
+                self.textErrorMessage = nil
+            }
             return true
         }
     }
@@ -98,7 +104,6 @@ public class ProfileSettingViewModel: BaseViewModel {
         
         try await withCheckedThrowingContinuation { continuation in
             publisher
-                .receive(on: DispatchQueue.main)
                 .sinkToResultWithHandler({ result in
                     switch result {
                     case .success( _):
@@ -117,7 +122,6 @@ public class ProfileSettingViewModel: BaseViewModel {
         
         try await withCheckedThrowingContinuation { continuation in
             publisher
-                .receive(on: DispatchQueue.main)
                 .sinkToResultWithHandler({ result in
                     switch result {
                     case .success( _):
@@ -136,7 +140,6 @@ public class ProfileSettingViewModel: BaseViewModel {
         
         try await withCheckedThrowingContinuation { continuation in
             publisher
-                .receive(on: DispatchQueue.main)
                 .sinkToResultWithHandler({ result in
                     switch result {
                     case .success( _):
