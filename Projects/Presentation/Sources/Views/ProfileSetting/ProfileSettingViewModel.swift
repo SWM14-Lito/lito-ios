@@ -36,9 +36,7 @@ public class ProfileSettingViewModel: BaseViewModel {
             } else {
                 self.acceptAlarm = false
             }
-            DispatchQueue.main.async {
-                self.uplodadInfoAndMoveToLearningHomeView()
-            }
+            self.uplodadInfoAndMoveToLearningHomeView()
         })
     }
     
@@ -72,39 +70,82 @@ public class ProfileSettingViewModel: BaseViewModel {
         guard checkAllTextAreFilled() else { return }
         
         buttonIsLocked = true
-        preparePublisher()
-            .sinkToResultWithHandler({ result in
-                switch result {
-                case .success( _):
-                    KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+
+        Task {
+            do {
+                if let data = imageData {
+                    try await sendProfileImage(data: data)
+                    try await sendProfileInfo()
+                    try await sendAlarmAcceptance()
+                } else {
+                    try await sendProfileInfo()
+                    try await sendAlarmAcceptance()
+                }
+                KeyChainManager.createUserInfo(userAuthVO: self.userAuthVO)
+                await MainActor.run {
                     self.coordinator.pop()
                     self.coordinator.push(.rootTabScene)
-                case .failure( _):
-                    break
                 }
-                self.buttonIsLocked = false
-            }, errorHandler: errorHandler)
-            .store(in: cancelBag)
+            } catch {
+                buttonIsLocked = false
+            }
+        }
     }
     
-    private func preparePublisher() -> AnyPublisher<Any, Error> {
-        let profileInfoDTO = ProfileInfoDTO(nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
-        let alarmAcceptanceDTO = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
+    private func sendProfileImage(data: Data) async throws {
+        let dto = ProfileImageDTO(image: data, accessToken: userAuthVO.accessToken)
+        let publisher = useCase.postProfileImage(profileImageDTO: dto)
         
-        let postProfileInfoPublisher = useCase.postProfileInfo(profileInfoDTO: profileInfoDTO)
-        let postAlarmAcceptancePublusher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: alarmAcceptanceDTO)
+        try await withCheckedThrowingContinuation { continuation in
+            publisher
+                .receive(on: DispatchQueue.main)
+                .sinkToResultWithHandler({ result in
+                    switch result {
+                    case .success( _):
+                        continuation.resume()
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }, errorHandler: errorHandler)
+                .store(in: cancelBag)
+        }
+    }
+    
+    private func sendProfileInfo() async throws {
+        let dto = ProfileInfoDTO(nickname: nickname.text, introduce: introduce.text, accessToken: userAuthVO.accessToken)
+        let publisher = useCase.postProfileInfo(profileInfoDTO: dto)
         
-        if let data = imageData {
-            let profileImageDTO = ProfileImageDTO(image: data, accessToken: userAuthVO.accessToken)
-            let postProfileImagePublisher = useCase.postProfileImage(profileImageDTO: profileImageDTO)
-            
-            return postProfileInfoPublisher
-                .combineLatest(postProfileImagePublisher, postAlarmAcceptancePublusher) { _, _, _ in }
-                .eraseToAnyPublisher()
-        } else {
-            return postProfileInfoPublisher
-                .combineLatest(postAlarmAcceptancePublusher) { _, _ in }
-                .eraseToAnyPublisher()
+        try await withCheckedThrowingContinuation { continuation in
+            publisher
+                .receive(on: DispatchQueue.main)
+                .sinkToResultWithHandler({ result in
+                    switch result {
+                    case .success( _):
+                        continuation.resume()
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }, errorHandler: errorHandler)
+                .store(in: cancelBag)
+        }
+    }
+    
+    private func sendAlarmAcceptance() async throws {
+        let dto = AlarmAcceptanceDTO(getAlarm: acceptAlarm, accessToken: userAuthVO.accessToken)
+        let publisher = useCase.postAlarmAcceptance(alarmAcceptanceDTO: dto)
+        
+        try await withCheckedThrowingContinuation { continuation in
+            publisher
+                .receive(on: DispatchQueue.main)
+                .sinkToResultWithHandler({ result in
+                    switch result {
+                    case .success( _):
+                        continuation.resume()
+                    case .failure(let error):
+                        continuation.resume(throwing: error)
+                    }
+                }, errorHandler: errorHandler)
+                .store(in: cancelBag)
         }
     }
 }
