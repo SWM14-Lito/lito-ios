@@ -1,6 +1,22 @@
-# lito-ios
-개발직군 면접을 준비를 하는 것에 도움을 주기 위해 CS 문제를 제공해주는 서비스입니다.
+<div align="center">
+  <img src="https://github.com/SWM14-Lito/lito-ios/assets/56781342/24eafb32-a2c1-4a92-9766-c85381989fe8" width="100" >
+</div>
+<h2 align="center"> 러닝잇 - 기술 면접 대비 CS 학습 </h2>
 
+
+<a href="https://apps.apple.com/kr/app/%EB%9F%AC%EB%8B%9D%EC%9E%87-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EB%8C%80%EB%B9%84-cs-%ED%95%99%EC%8A%B5/id6451151076" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 100px; height: 35px;"> <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/white/en-US?size=250x83&amp;releaseDate=1601596800&h=cf93971b907cb46ebd5dc8f2d957a6ef" alt="Download on the App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 100px; height: 35px;"></a>
+
+
+![러닝잇 앱스토어](https://github.com/SWM14-Lito/lito-ios/assets/56781342/f376541f-e4f4-4974-903d-0845b9ea6e32)
+
+## Requirements
+
+<img width="77" alt="ios-version" src="https://img.shields.io/badge/iOS-16.0%2B-lightgrey"> 
+<img width="100" alt="xcode-version" src="https://img.shields.io/badge/Xcode-14.3.1-informational"> 
+
+<br/>
+
+# Development Detail
 ## CleanArchitecture
 
 ![LitoCleanArchitecture-Layer drawio (1)](https://github.com/SWM14-Lito/lito-ios/assets/56781342/f50ae5cf-b578-4e1d-9540-db4c5b986dff)
@@ -81,11 +97,3 @@
 - Combine: 비동기처리
 - Kingfisher: 이미지처리
   
-## 앱 스크린샷
-|홈|문제 리스트|문제 풀이|
-|:---:|:---:|:---:|
-|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/72b7a847-f0c3-4a10-8983-152b59b0bab9">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/41fc6669-abea-408c-8f82-9a42dd0f47cb">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/6336ebe1-4101-4a64-9cc0-54e779a9df3f">|
-
-|ChatGPT 질의응답|마이 페이지|
-|:---:|:---:|
-|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/ecbf34b9-f37b-4e32-8f80-e4c454c46ed9">|<img width="250" src="https://github.com/SWM14-Lito/lito-ios/assets/72330884/42e068d8-61a3-4987-b658-43c3678e3c59">|
