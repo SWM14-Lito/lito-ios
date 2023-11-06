@@ -16,6 +16,17 @@
 
 <br/>
 
+
+## Tech stacks
+### Architecture
+- SwiftUI + MVVM + Clean Architecture + Modularization
+### Frameworks
+- Combine, Tuist, Swinject, Moya, Lottie, KakaoSDK
+### CI / CD
+- Github Action
+
+<br/>
+
 # Development Detail
 ## CleanArchitecture
 
@@ -68,7 +79,7 @@
 
 <br/>
 
-## 에러 핸들링
+## Error handling
 
 ![LitoCleanArchitecture-ErrorHandling 수정후 drawio](https://github.com/SWM14-Lito/lito-ios/assets/56781342/d4a31379-b9aa-481d-8f9c-091a9e453665)
 
@@ -80,7 +91,7 @@
 
 <br/>
 
-## 유닛 테스트
+## Unit test
     🎯 유닛테스트
     - 하나의 기능에 대해 독립적으로 테스트
     - 안정적으로 코드 변경 가능
@@ -89,11 +100,4 @@
 > ViewModel 유닛 테스트
 - 사용자의 동작에 따라 변한 특정 변수의 값이 예상한 값과 일치하는지 테스트
 - 상위 객체와는 독립적으로 테스트 하기 위해 정해진 값을 바로 반환해주는 MockUseCase 주입
-
-## 사용한 라이브러리
-- Tuist: 모듈화
-- Swinject: DI
-- Moya: Network
-- Combine: 비동기처리
-- Kingfisher: 이미지처리
   
