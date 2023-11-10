@@ -27,6 +27,8 @@ public protocol ProblemRepository {
     
     func getProblemList(problemsQueryDTO: SolvingProblemsQueryDTO) -> AnyPublisher<SolvingProblemListVO, Error>
     
+    func getProblemList(problemsQueryDTO: WrongProblemQueryDTO) -> AnyPublisher<WrongProblemListVO, Error>
+    
     func setProblemGoalCount(problemGoalCount: Int)
     
     func getProblemGoalCount() -> Int

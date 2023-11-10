@@ -73,6 +73,11 @@ public struct DomainAssembly: Assembly {
             return DefaultMyPageUseCase(userRepository: userRepository, authRepository: authRepository, fileRepository: fileRepository, imageHelper: imageHelper)
         }
         
+        container.register(WrongProblemListUseCase.self) { resolver in
+            let problemRepository = resolver.resolve(ProblemRepository.self)!
+            return DefaultWrongProblemListUseCase(repository: problemRepository)
+        }
+        
     }
     
 }

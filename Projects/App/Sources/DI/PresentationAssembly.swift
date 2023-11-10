@@ -151,6 +151,17 @@ public struct PresentationAssembly: Assembly {
             let viewModel = resolver.resolve(MyPageViewModel.self)!
             return ModifyProfileView(viewModel: viewModel)
         }
+        
+        container.register(WrongProblemListViewModel.self) { resolver in
+            let useCase = resolver.resolve(WrongProblemListUseCase.self)!
+            return WrongProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
+        }
+        
+        container.register(WrongProblemListView.self) { resolver in
+            let viewModel = resolver.resolve(WrongProblemListViewModel.self)!
+            return WrongProblemListView(viewModel: viewModel)
+        }
+        
     }
     
 }

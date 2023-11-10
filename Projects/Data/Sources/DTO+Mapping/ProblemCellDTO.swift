@@ -16,6 +16,7 @@ public struct ProblemCellDTO: Decodable {
     let question: String?
     let problemStatus: String?
     let favorite: Bool?
+    let unsolvedCnt: Int?
     
     func toProblemCellVO() -> DefaultProblemCellVO? {
         if let problemId = problemId {
@@ -53,6 +54,21 @@ public struct ProblemCellDTO: Decodable {
                 subjectName: subjectName ?? "Unknown",
                 question: question ?? "Unknown",
                 problemStatus: ProblemSolvedStatus(rawValue: problemStatus)
+            )
+        } else {
+            return nil
+        }
+    }
+    
+    func toWrongProblemCellVO() -> WrongProblemCellVO? {
+        if let problemId = problemId {
+            return WrongProblemCellVO(
+                problemId: problemId,
+                subjectName: subjectName ?? "Unknown",
+                question: question ?? "Unknown",
+                problemStatus: ProblemSolvedStatus(rawValue: problemStatus),
+                favorite: ProblemFavoriteStatus(isFavorite: favorite),
+                unsolvedCnt: unsolvedCnt ?? 0
             )
         } else {
             return nil

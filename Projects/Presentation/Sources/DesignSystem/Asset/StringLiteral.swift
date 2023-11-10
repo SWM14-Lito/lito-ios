@@ -83,4 +83,6 @@ struct StringLiteral {
     static let tab3Title = "마이페이지"
     static let solvingProblemListViewNavigationTitle = "풀던 문제"
     static let noSolvingProblemListMessage = "풀던 문제가 없습니다."
+    static let wrongProblemListViewNavigationTitle = "오답노트"
+    static let wrongProblemList = "오답노트"
 }

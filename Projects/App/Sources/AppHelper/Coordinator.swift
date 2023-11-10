@@ -81,6 +81,8 @@ public class Coordinator: ObservableObject, CoordinatorProtocol {
             injector?.resolve(ProblemSearchView.self)
         case .modifyProfileScene:
             injector?.resolve(ModifyProfileView.self)
+        case .wrongProblemListScene:
+            injector?.resolve(WrongProblemListView.self)
         }
     }
     
