@@ -56,10 +56,14 @@ extension MoyaError {
                 if response.statusCode == 500 {
                     do {
                         let serverErrorMessage = try convertServerErrorMessage(response: response)
-                        return .retryableError(serverErrorMessage.errors[0].reason)
+                        print(serverErrorMessage)
+                        if !serverErrorMessage.errors.isEmpty {
+                            return .retryableError(serverErrorMessage.errors[0].reason)
+                        }
                     } catch {
                         return .retryableError("일시적인 서버 에러입니다. 잠시 후 다시 시도해주세요.")
                     }
+                    return .retryableError("일시적인 서버 에러입니다. 잠시 후 다시 시도해주세요.")
                 }
                 // 리팩토링 필요.
                 if response.statusCode == 400 {
