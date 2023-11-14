@@ -21,9 +21,12 @@ struct ProblemCellView<T: ProblemCell>: View {
     @Binding private var problemCellVO: T
     private let problemCellHandling: ProblemCellHandling
     
-    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling) {
+    private let unsolvedCnt: Int?
+    
+    init(problemCellVO: Binding<T>, problemCellHandling: ProblemCellHandling, unsolvedCnt: Int? = nil) {
         self._problemCellVO = problemCellVO
         self.problemCellHandling = problemCellHandling
+        self.unsolvedCnt = unsolvedCnt
     }
     
     var body: some View {
@@ -36,16 +39,26 @@ struct ProblemCellView<T: ProblemCell>: View {
                             .foregroundColor(problemCellVO.problemStatus == .solved ? .Button_Point : .Text_Serve)
                             .font(.system(size: 14))
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(problemCellVO.subjectName)
-                                .font(.InfoRegular)
-                                .foregroundColor(.Text_Info)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(1)
+                            HStack {
+                                Text(problemCellVO.subjectName)
+                                    .font(.InfoRegular)
+                                    .foregroundColor(.Text_Info)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(1)
+                                Spacer()
+                                if let cnt = unsolvedCnt {
+                                    Text("틀린 횟수: \(cnt)")
+                                        .font(.InfoRegular)
+                                        .foregroundColor(.Text_Point_Red)
+                                        .multilineTextAlignment(.trailing)
+                                        .lineLimit(1)
+                                }
+                            }
                             Text(problemCellVO.question)
                                 .font(.Body2Regular)
                                 .foregroundColor(.Text_Default)
                                 .multilineTextAlignment(.leading)
-                                .lineLimit(2)
+                                .lineLimit(3)
                         }
                         Spacer()
                     }

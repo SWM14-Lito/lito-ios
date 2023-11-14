@@ -16,6 +16,7 @@ enum ProblemAPI {
     case searchedProblemList(SearchedProblemsQueryDTO)
     case solvingProblemList(SolvingProblemsQueryDTO)
     case favoriteProblemList(FavoriteProblemsQueryDTO)
+    case wrongProblemList(WrongProblemQueryDTO)
     case problemDetail(id: Int)
     case favoriteToggle(id: Int)
     case enterProblem(id: Int)
@@ -38,6 +39,8 @@ extension ProblemAPI: TargetType {
             return "/api/v1/problems/process-status"
         case .favoriteProblemList:
             return "/api/v1/problems/favorites"
+        case .wrongProblemList:
+            return "/api/v1/problems/reviews"
         case .problemDetail(let id):
             return "/api/v1/problems/" + String(id)
         case .favoriteToggle(let id):
@@ -62,6 +65,8 @@ extension ProblemAPI: TargetType {
         case .solvingProblemList:
             return .get
         case .favoriteProblemList:
+            return .get
+        case .wrongProblemList:
             return .get
         case .favoriteToggle:
             return .patch
@@ -117,6 +122,11 @@ extension ProblemAPI: TargetType {
             }
             parameters["page"] = favoriteProblemsQueryDTO.page
             parameters["size"] = favoriteProblemsQueryDTO.size
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .wrongProblemList(let wrongProblemsQueryDTO):
+            var parameters: [String: Any] = [:]
+            parameters["page"] = wrongProblemsQueryDTO.page
+            parameters["size"] = wrongProblemsQueryDTO.size
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .problemDetail:
             return .requestPlain

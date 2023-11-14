@@ -128,6 +128,22 @@ public struct MyPageView: View {
         VStack(spacing: 0) {
             Divider()
             Group {
+                Button {
+                    viewModel.onWrongProblemListclicked()
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: SymbolName.squareAndPencil)
+                            .font(.system(size: 18))
+                            .padding(.trailing, 8)
+                        Text(StringLiteral.wrongProblemList)
+                            .font(.Body1Regular)
+                        Spacer()
+                        Image(systemName: SymbolName.chevronRight)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 18)
+                }
+                .foregroundColor(.black)
 //                HStack(spacing: 10) {
 //                    Image(systemName: SymbolName.squareAndArrowDown)
 //                        .font(.system(size: 18))

@@ -28,6 +28,11 @@ public struct ProblemListDTO: Decodable {
         let problems = problems?.compactMap { $0.toFavoriteProblemCellVO() }
         return FavoriteProblemListVO(problemsCellVO: problems, total: total)
     }
+    
+    func toWrongProblemListVO() -> WrongProblemListVO {
+        let problems = problems?.compactMap { $0.toWrongProblemCellVO() }
+        return WrongProblemListVO(problemsCellVO: problems, total: total)
+    }
 }
 
 #if DEBUG

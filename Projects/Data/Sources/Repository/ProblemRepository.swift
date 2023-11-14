@@ -66,6 +66,12 @@ final public class DefaultProblemRepository: ProblemRepository {
             .eraseToAnyPublisher()
     }
     
+    public func getProblemList(problemsQueryDTO: WrongProblemQueryDTO) -> AnyPublisher<WrongProblemListVO, Error> {
+        dataSource.getProblemList(problemsQueryDTO: problemsQueryDTO)
+            .map { $0.toWrongProblemListVO() }
+            .eraseToAnyPublisher()
+    }
+    
     public func setProblemGoalCount(problemGoalCount: Int) {
         dataSource.setProblemGoalCount(problemGoalCount: problemGoalCount)
     }

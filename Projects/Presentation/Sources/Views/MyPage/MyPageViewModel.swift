@@ -142,3 +142,11 @@ extension MyPageViewModel: PhotoPickerHandling {
     }
     
 }
+
+extension MyPageViewModel {
+    
+    public func onWrongProblemListclicked() {
+        coordinator.push(.wrongProblemListScene)
+    }
+    
+}
