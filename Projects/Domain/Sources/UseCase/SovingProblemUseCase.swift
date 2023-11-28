@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import SWMLogging
 
 public protocol SolvingProblemListUseCase {
     func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error>
@@ -16,9 +17,11 @@ public protocol SolvingProblemListUseCase {
 
 public final class DefaultSolvingProblemListUseCase: SolvingProblemListUseCase {
     private let repository: ProblemRepository
+    private let logger: SWMLogger
     
-    public init(repository: ProblemRepository) {
+    public init(repository: ProblemRepository, logger: SWMLogger) {
         self.repository = repository
+        self.logger = logger
     }
     
     public func toggleProblemFavorite(id: Int) -> AnyPublisher<Void, Error> {

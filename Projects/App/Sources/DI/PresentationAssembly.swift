@@ -9,11 +9,13 @@
 import Swinject
 import Domain
 import Presentation
+import SWMLogging
 
 public struct PresentationAssembly: Assembly {
     
     let coordinator: Coordinator
     let toastHelper: ToastHelper
+    let logger: SWMLogger
     
     public func assemble(container: Container) {
         // ------------------------ Common ------------------------
@@ -79,7 +81,7 @@ public struct PresentationAssembly: Assembly {
         // SolvingProblemList
         container.register(SolvingProblemListViewModel.self) { resolver in
             let useCase = resolver.resolve(SolvingProblemListUseCase.self)!
-            return SolvingProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper)
+            return SolvingProblemListViewModel(useCase: useCase, coordinator: coordinator, toastHelper: toastHelper, logger: logger)
         }
         
         container.register(SolvingProblemListView.self) { resolver in

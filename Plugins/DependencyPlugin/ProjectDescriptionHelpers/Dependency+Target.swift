@@ -17,4 +17,9 @@ public extension TargetDependency.Projcet {
         target: "Data",
         path: .relativeToRoot("Projects/Data")
     )
+    
+    static let SWMLogging = TargetDependency.project(
+        target: "SWMLogging",
+        path: .relativeToRoot("Projects/SWMLogging")
+    )
 }

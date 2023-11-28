@@ -2,7 +2,7 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by Lee Myeonghwan on 2023/06/17.
+//  Created by Lee Myeonghwan on 2023/10/02.
 //
 
 import ProjectDescription
@@ -10,10 +10,10 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: "Domain",
-    platform: .iOS,
-    product: .staticFramework,
+    name: "SWMLogging",
+    product: .staticLibrary,
     dependencies: [
-        .Projcet.SWMLogging
+        .SPM.Moya,
+        .SPM.CombineMoya
     ]
 )

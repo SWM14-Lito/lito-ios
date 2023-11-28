@@ -4,6 +4,7 @@ import Presentation
 import Domain
 import Swinject
 import KakaoSDKCommon
+import SWMLogging
 
 @main
 struct LitoApp: App {
@@ -19,11 +20,14 @@ struct LitoApp: App {
         injector = DependencyInjector(container: Container())
         toastHelper = ToastHelper()
         coordinator = Coordinator(.loginScene)
-        injector.assemble([DomainAssembly(),
+        // TODO: 우리 서버 API에 맞게 주소 변경 필요
+        let logger = SWMLogger(serverUrl: "https://dev.swm-lgtm.com", serverPath: "/v1/log", OSNameAndVersion: "iOS 16", appVersion: "1.0")
+        injector.assemble([DomainAssembly(logger: logger),
                            DataAssembly(),
                            PresentationAssembly(
                             coordinator: coordinator,
-                            toastHelper: toastHelper
+                            toastHelper: toastHelper,
+                            logger: logger
                            )])
         coordinator.injector = injector
         if KeyChainManager.isPossibleAutoLogin {

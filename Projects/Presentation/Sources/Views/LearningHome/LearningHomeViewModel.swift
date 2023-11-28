@@ -73,11 +73,44 @@ public final class LearningHomeViewModel: BaseViewModel {
             .store(in: cancelBag)
         goalCount = useCase.getProblemGoalCount()
     }
+    
+    private func recommendedProblemClickedLogging(id: Int, index: Int) {
+        let scheme = LearningHomeRecommendedProblemClickedScheme.Builder()
+            .setLearningGoal(goalCount)
+            .setLearningPercent(learningRate)
+            .setIsSolvingProblemExist(learningHomeVO?.processProblem != nil)
+            .setProblemId(id)
+            .setProblemCategory(recommendProblems[index].subjectName)
+            .setProblemQuestion(recommendProblems[index].question)
+            .setProblemFavorite(recommendProblems[index].favorite == .favorite)
+            .build()
+        useCase.fireLogging(scheme: scheme)
+    }
+    
+    private func solvingProblemClickedSchemeLogging(id: Int) {
+        guard let processProblem = processProblem else { return }
+        let scheme = LearningHomeSolvingProblemClickedScheme.Builder()
+            .setLearningGoal(goalCount)
+            .setLearningPercent(learningRate)
+            .setRecommendedProblemsCount(recommendProblems.count)
+            .setrecommendedProblemsSolvedCount(recommendProblems.filter{$0.problemStatus == .solved}.count)
+            .setProblemId(id)
+            .setProblemCategory(processProblem.subjectName)
+            .setProblemQuestion(processProblem.question)
+            .setProblemFavorite(processProblem.favorite == .favorite)
+            .build()
+        useCase.fireLogging(scheme: scheme)
+    }
 }
 extension LearningHomeViewModel: ProblemCellHandling {
     // 해당 문제 풀이 화면으로 이동하기
     public func onProblemCellClicked(id: Int) {
         coordinator.push(.problemDetailScene(id: id))
+        if let index = self.recommendProblems.firstIndex(where: { $0.problemId == id}) {
+            recommendedProblemClickedLogging(id: id, index: index)
+        } else {
+            solvingProblemClickedSchemeLogging(id: id)
+        }
     }
     
     // 찜하기 or 찜해제하기

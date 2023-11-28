@@ -9,6 +9,7 @@
 import SwiftUI
 import Domain
 import Combine
+import SWMLogging
 
 public final class SolvingProblemListViewModel: BaseViewModel {
     private let useCase: SolvingProblemListUseCase
@@ -17,9 +18,11 @@ public final class SolvingProblemListViewModel: BaseViewModel {
     private var problemTotalSize: Int?
     @Published private(set) var isLoading: Bool = false
     @Published var problemCellList: [SolvingProblemCellVO] = []
+    private let logger: SWMLogger
 
-    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol) {
+    public init(useCase: SolvingProblemListUseCase, coordinator: CoordinatorProtocol, toastHelper: ToastHelperProtocol, logger: SWMLogger) {
         self.useCase = useCase
+        self.logger = logger
         super.init(coordinator: coordinator, toastHelper: toastHelper)
     }
     
