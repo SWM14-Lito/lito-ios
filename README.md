@@ -3,10 +3,6 @@
 </div>
 <h2 align="center"> 러닝잇 - 기술 면접 대비 CS 학습 </h2>
 
-
-<a href="https://apps.apple.com/kr/app/%EB%9F%AC%EB%8B%9D%EC%9E%87-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EB%8C%80%EB%B9%84-cs-%ED%95%99%EC%8A%B5/id6451151076" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 100px; height: 35px;"> <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/white/en-US?size=250x83&amp;releaseDate=1601596800&h=cf93971b907cb46ebd5dc8f2d957a6ef" alt="Download on the App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 100px; height: 35px;"></a>
-
-
 ## Requirements
 
 <img width="77" alt="ios-version" src="https://img.shields.io/badge/iOS-16.0%2B-lightgrey"> 
